@@ -37,6 +37,9 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 101  
   - **Expected output**: purchase denied OR no change  
 
+- **TC5b: Buy with Double.MAX_VALUE (extreme boundary)** ( :x: )  
+  - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
+  - **Expected output**: purchase denied OR no change
 
 ## Method under test: `sell(double amount)`
 
@@ -52,10 +55,9 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 50  
   - **Expected output**: balance becomes 150  
 
-- **TC9: Sell very large amount** ( :x: )  
-  - **State of the system**: balance = 100, amount = VERY LARGE  
-  - **Expected output**: balance increases correctly (check overflow handling)  
-
+- **TC9: Sell maximum double value** ( :x: )  
+  - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
+  - **Expected output**: balance updates safely OR operation rejected due to overflow handling  
 
 ## Method under test: `canAfford(double amount)`
 
@@ -79,6 +81,9 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = -10  
   - **Expected output**: true OR invalid input handled  
 
+- **TC14b: Amount = Double.MAX_VALUE** ( :x: )  
+  - **State of the system**: balance = 100, amount = Double.MAX_VALUE
+  - **Expected output**: false  
 
 ## Method under test: `addProperty(PropertyTile property)`
 
@@ -131,6 +136,14 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: jailPosition = -1  
   - **Expected output**: rejected OR handled safely  
 
+- **TC24b: Maximum integer jail position (invalid)** ( :x: )
+  - **State of the system**: jailPosition = Integer.MAX_VALUE
+  - **Expected output**: rejected OR handled safely
+
+- **TC24c: Minimum integer jail position (invalid)** ( :x: )
+  - **State of the system**: jailPosition = Integer.MIN_VALUE
+  - **Expected output**: rejected OR handled safely
+
 
 ## Method under test: `leaveJail()`
 
@@ -155,5 +168,4 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC29: Balance negative** ( :white_check_mark: )  
   - **State of the system**: balance = -10  
-  - **Expected output**: true  
-
+  - **Expected output**: true
