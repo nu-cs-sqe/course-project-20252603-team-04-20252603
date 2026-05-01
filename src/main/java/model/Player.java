@@ -1,9 +1,9 @@
-package Model;
+package model;
 
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import Model.Properties;
+import model.Properties;
 
 public class Player {
 

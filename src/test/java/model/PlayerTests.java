@@ -2,9 +2,9 @@ package model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Properties;
+import model.Properties;
 
-import Model.Player;
+import model.Player;
 
 public class PlayerTests {
 
