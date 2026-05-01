@@ -201,6 +201,47 @@ public class PlayerTests {
         assertEquals(1, player.getOwnedProperties().size(), "Player should only own one instance of the property");
     }
 
+    //
+    // Test suite for removeProperty method
+    ///
+    @Test
+    public void Test_Removing_Property_From_Player_Exists() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        
+        EasyMock.replay(propertyMock);
+
+        player.addProperty(propertyMock);
+        boolean success = player.removeProperty(propertyMock);
+
+        assertTrue(success, "Removing an existing property should be successful");
+        assertFalse(player.getOwnedProperties().contains(propertyMock), "Player's owned properties should no longer contain the removed property");
+    }
+
+    @Test
+    public void Test_Removing_Property_From_Player_Not_Exists() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        
+        EasyMock.replay(propertyMock);
+
+        boolean success = player.removeProperty(propertyMock);
+
+        assertFalse(success, "Removing a non-existing property should be rejected");
+    }
+
+    @Test
+    public void Test_Removing_Property_From_Player_With_No_Properties() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        
+        EasyMock.replay(propertyMock);
+
+        boolean success = player.removeProperty(propertyMock);
+
+        assertFalse(success, "Removing a property from a player with no properties should be rejected");
+    }
+
 
 
 
