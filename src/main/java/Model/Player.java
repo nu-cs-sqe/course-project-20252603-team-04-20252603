@@ -45,7 +45,10 @@ public class Player {
         return true;
     }
     public boolean canAfford(double price) {
-       return true;
+        if (price < 0 || price == Double.MAX_VALUE) {
+            return false;
+        }
+        return this.balance >= price;
     }
 
 
