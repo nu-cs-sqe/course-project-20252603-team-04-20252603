@@ -1,6 +1,9 @@
 package model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Properties;
+
 import Model.Player;
 
 public class PlayerTests {
@@ -155,6 +158,19 @@ public class PlayerTests {
         
         assertFalse(result, "Should not be able to afford Double.MAX_VALUE");
     }
+
+    //
+    // Test suite for addproperty class 
+    //
+    @Test
+    public void Test_Adding_Property_To_Player() {
+        EasyMock propertyMock = EasyMock.crreateMock(Properties.class);
+        
+        Player player = new Player("John", 100.0);
+
+    }
+
+
 
 
 
