@@ -1,4 +1,5 @@
 package model;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.easymock.EasyMock;
@@ -10,9 +11,10 @@ import model.Player;
 public class PlayerTests {
 
     // ==================================================================================================
-    // Test suite for the buy method of the Player class, covering various scenarios including edge cases
+    // Test suite for the buy method of the Player class, covering various scenarios
+    // including edge cases
     // ==================================================================================================
-    @Test 
+    @Test
     public void Tests_Buying_With_No_Money() {
         Player player = new Player("John", 100.0);
         boolean success = player.buy(0.0);
@@ -39,7 +41,7 @@ public class PlayerTests {
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
 
-    @Test 
+    @Test
     public void Tests_Buying_With_Exact_Money() {
         Player player = new Player("John", 100.0);
         boolean success = player.buy(100.0);
@@ -47,6 +49,7 @@ public class PlayerTests {
         assertTrue(success, "Buying with exact funds should be successful");
         assertEquals(0, player.getBalance(), 0.001, "Balance should = 0 after buying with exact funds");
     }
+
     @Test
 
     public void Tests_Buying_With_Valid_Money() {
@@ -57,7 +60,7 @@ public class PlayerTests {
         assertEquals(50.0, player.getBalance(), 0.001, "Balance should decrease by the purchase amount");
     }
 
-    @Test 
+    @Test
     public void Tests__Buying_With_Max_Integer() {
         Player player = new Player("John", 100.0);
         boolean success = player.buy(Double.MAX_VALUE);
@@ -65,6 +68,7 @@ public class PlayerTests {
         assertFalse(success, "Buying with maximum amount should be rejected/properly handled");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
+
     public void Tests__Buying_With_Min_Integer() {
         Player player = new Player("John", 100.0);
         boolean success = player.buy(Double.MIN_VALUE);
@@ -74,16 +78,18 @@ public class PlayerTests {
     }
 
     // ==================================================================================================
-    // Test suite for the sell method of the Player class, covering various scenarios including edge cases
-    //===================================================================================================
+    // Test suite for the sell method of the Player class, covering various
+    // scenarios including edge cases
+    // ===================================================================================================
     @Test
     public void Tests_Selling_With_No_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.sell(0.0);
+        boolean success = player.sell(0.0); // 0 * 0.8 = 0
 
         assertTrue(success);
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged when selling with no money");
     }
+
     @Test
     public void Tests_Selling_With_Negative_Money() {
         Player player = new Player("John", 100.0);
@@ -92,14 +98,19 @@ public class PlayerTests {
         assertFalse(success, "Selling with negative amount should not be allowed");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
-    @Test 
+
+    @Test
     public void Tests_Selling_With_Valid_Money() {
         Player player = new Player("John", 100.0);
+
+        // Passed value is 50.0. Added amount should be 50.0 * 0.8 = 40.0.
+        // New balance = 100.0 + 40.0 = 140.0
         boolean success = player.sell(50.0);
 
         assertTrue(success, "Selling with valid amount should be successful");
-        assertEquals(150.0, player.getBalance(), 0.001, "Balance should increase by the sale amount");
+        assertEquals(140.0, player.getBalance(), 0.001, "Balance should increase by 80% of the sale amount");
     }
+
     @Test
     public void Tests_Selling_With_Max_Amout() {
         Player player = new Player("John", 100.0);
@@ -109,14 +120,15 @@ public class PlayerTests {
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
     // ==================================================================================================
-    // Test suite for the canAfford method of the Player class, covering BVA scenarios
+    // Test suite for the canAfford method of the Player class, covering BVA
+    // scenarios
     // ==================================================================================================
-    
+
     @Test
     public void Tests_CanAfford_With_Zero_Amount() {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(0.0);
-        
+
         assertTrue(result, "Should be able to afford 0 amount");
     }
 
@@ -124,7 +136,7 @@ public class PlayerTests {
     public void Tests_CanAfford_Slightly_Less_Than_Balance() {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(99.99);
-        
+
         assertTrue(result, "Should be able to afford amount slightly less than balance");
     }
 
@@ -132,7 +144,7 @@ public class PlayerTests {
     public void Tests_CanAfford_Exact_Balance() {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(100.0);
-        
+
         assertTrue(result, "Should be able to afford exact balance amount");
     }
 
@@ -140,57 +152,62 @@ public class PlayerTests {
     public void Tests_CannotAfford_Slightly_Greater_Than_Balance() {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(100.01);
-        
+
         assertFalse(result, "Should not be able to afford amount greater than balance");
     }
 
     @Test
     public void Tests_CanAfford_Negative_Amount() {
         Player player = new Player("John", 100.0);
-        
+
         boolean result = player.canAfford(-10.0);
-        assertFalse(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled");
+        assertFalse(result,
+                "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled");
     }
 
     @Test
     public void Tests_CannotAfford_Max_Double() {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(Double.MAX_VALUE);
-        
+
         assertFalse(result, "Should not be able to afford Double.MAX_VALUE");
     }
 
     //
-    // Test suite for addproperty class 
+    // Test suite for addproperty class
     //
     @Test
     public void Test_Adding_Property_To_Player() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
-        
+
         EasyMock.replay(propertyMock);
 
         boolean success = player.addProperty(propertyMock);
 
         assertTrue(success, "Adding a property should be successful");
         assertEquals(1, player.getOwnedProperties().size(), "Player should own the added property");
-        assertTrue(player.getOwnedProperties().contains(propertyMock), "Player's owned properties should contain the added property");
+        assertTrue(player.getOwnedProperties().contains(propertyMock),
+                "Player's owned properties should contain the added property");
 
     }
+
     @Test
     public void Test_Adding_Null_Property_To_Player() {
         Player player = new Player("John", 100.0);
-        
+
         boolean success = player.addProperty(null);
 
         assertFalse(success, "Adding a null property should be rejected");
-        assertTrue(player.getOwnedProperties().isEmpty(), "Player should not own any properties after attempting to add null");
+        assertTrue(player.getOwnedProperties().isEmpty(),
+                "Player should not own any properties after attempting to add null");
     }
+
     @Test
     public void Test_Adding_Duplicate_Property_To_Player() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
-        
+
         EasyMock.replay(propertyMock);
 
         boolean firstAddSuccess = player.addProperty(propertyMock);
@@ -208,21 +225,22 @@ public class PlayerTests {
     public void Test_Removing_Property_From_Player_Exists() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
-        
+
         EasyMock.replay(propertyMock);
 
         player.addProperty(propertyMock);
         boolean success = player.removeProperty(propertyMock);
 
         assertTrue(success, "Removing an existing property should be successful");
-        assertFalse(player.getOwnedProperties().contains(propertyMock), "Player's owned properties should no longer contain the removed property");
+        assertFalse(player.getOwnedProperties().contains(propertyMock),
+                "Player's owned properties should no longer contain the removed property");
     }
 
     @Test
     public void Test_Removing_Property_From_Player_Not_Exists() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
-        
+
         EasyMock.replay(propertyMock);
 
         boolean success = player.removeProperty(propertyMock);
@@ -234,17 +252,18 @@ public class PlayerTests {
     public void Test_Removing_Property_From_Player_With_No_Properties() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
-        
+
         EasyMock.replay(propertyMock);
 
         boolean success = player.removeProperty(propertyMock);
 
         assertFalse(success, "Removing a property from a player with no properties should be rejected");
     }
+
     @Test
     public void Test_Removing_Null_Property_From_Player() {
         Player player = new Player("John", 100.0);
-        
+
         boolean success = player.removeProperty(null);
 
         assertFalse(success, "Removing a null property should be rejected");
@@ -253,8 +272,8 @@ public class PlayerTests {
     //
     // Test suite for sell property method
     //
-    @Test 
-    
+    @Test
+
     public void Tests_Selling_Owned_Property() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
@@ -262,7 +281,7 @@ public class PlayerTests {
         EasyMock.expect(propertyMock.getPrice()).andReturn(100.0);
         EasyMock.replay(propertyMock);
 
-        player.addProperty(propertyMock)
+        player.addProperty(propertyMock);
         boolean success = player.sellProperty(propertyMock);
 
         assertTrue(success, "Selling an owned property should be successful");
@@ -271,13 +290,11 @@ public class PlayerTests {
         assertEquals(180.0, player.getBalance(), 0.001, "Balance should increase by 80% of the property price");
     }
 
-
     @Test
     public void Test_Selling_Unowned_Property() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
         EasyMock.replay(propertyMock);
-
 
         boolean success = player.sellProperty(propertyMock);
 
@@ -288,21 +305,11 @@ public class PlayerTests {
     @Test
     public void Test_Selling_Null_Property() {
         Player player = new Player("John", 100.0);
-        
+
         boolean success = player.sellProperty(null);
 
         assertFalse(success, "Selling a null property should fail");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
     }
-
-
-
-
-
-
-
-
-
-    
 
 }
