@@ -62,8 +62,11 @@ public class Player {
         return this.ownedProperties.add(proptery);
     }
     public boolean removeProperty(Properties property){
-        return true;
+        if (property == null){ return false; }
+
+        return this.ownedProperties.remove(property);
     }
+    
 
 
 

@@ -250,6 +250,51 @@ public class PlayerTests {
         assertFalse(success, "Removing a null property should be rejected");
     }
 
+    //
+    // Test suite for sell property method
+    //
+    @Test 
+    
+    public void Tests_Selling_Owned_Property() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+
+        EasyMock.expect(propertyMock.getPrice()).andReturn(100.0);
+        EasyMock.replay(propertyMock);
+
+        player.addProperty(propertyMock)
+        boolean success = player.sellProperty(propertyMock);
+
+        assertTrue(success, "Selling an owned property should be successful");
+        assertFalse(player.getOwnedProperties().contains(propertyMock), "Property should be removed from ownership");
+
+        assertEquals(180.0, player.getBalance(), 0.001, "Balance should increase by 80% of the property price");
+    }
+
+
+    @Test
+    public void Test_Selling_Unowned_Property() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        EasyMock.replay(propertyMock);
+
+
+        boolean success = player.sellProperty(propertyMock);
+
+        assertFalse(success, "Selling an unowned property should fail");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
+    }
+
+    @Test
+    public void Test_Selling_Null_Property() {
+        Player player = new Player("John", 100.0);
+        
+        boolean success = player.sellProperty(null);
+
+        assertFalse(success, "Selling a null property should fail");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
+    }
+
 
 
 
