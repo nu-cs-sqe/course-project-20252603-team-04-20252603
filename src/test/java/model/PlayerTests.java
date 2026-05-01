@@ -54,14 +54,58 @@ public class PlayerTests {
     }
 
     @Test 
-
     public void Tests__Buying_With_Max_Integer() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(Integer.MAX_VALUE);
+        boolean success = player.buy(Double.MAX_VALUE);
 
         assertFalse(success, "Buying with maximum amount should be rejected/properly handled");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
+    public void Tests__Buying_With_Min_Integer() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.buy(Double.MIN_VALUE);
+
+        assertFalse(success, "Buying with maximum amount should be rejected/properly handled");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
+    }
+
+    // ==================================================================================================
+    // Test suite for the sell method of the Player class, covering various scenarios including edge cases
+    //===================================================================================================
+    @Test
+    public void Tests_Selling_With_No_Money() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.sell(0.0);
+
+        assertTrue(success);
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged when selling with no money");
+    }
+    @Test
+    public void Tests_Selling_With_Negative_Money() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.sell(-10.0);
+
+        assertFalse(success, "Selling with negative amount should not be allowed");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
+    }
+    @Test 
+    public void Tests_Selling_With_Valid_Money() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.sell(50.0);
+
+        assertTrue(success, "Selling with valid amount should be successful");
+        assertEquals(150.0, player.getBalance(), 0.001, "Balance should increase by the sale amount");
+    }
+    @Test
+    public void Tests_Selling_With_Max_Amout() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.sell(Double.MAX_VALUE);
+
+        assertFalse(success, "Selling with maximum amount should fail due to overflow");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
+    }
+
+
 
 
 
