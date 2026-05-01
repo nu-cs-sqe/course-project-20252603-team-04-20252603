@@ -50,6 +50,9 @@ public class Player {
         }
         return this.balance >= price;
     }
+    public boolean addProperty(Properties proptery){
+        return true;
+    }
 
 
 
