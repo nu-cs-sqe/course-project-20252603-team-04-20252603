@@ -28,7 +28,17 @@ public class Player {
         return this.balance;
     }
     public boolean buy(double price) {
-       return true;
+        if (price < 0) {
+            return false;
+        }
+        if (this.balance >= price) {
+            this.balance -= price;
+            return true;
+        }
+        return false;
+    }
+    public boolean sell(double price) {
+        return true;
     }
 
 
