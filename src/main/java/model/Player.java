@@ -66,6 +66,10 @@ public class Player {
 
         return this.ownedProperties.remove(property);
     }
+    public boolean sellProperty(Properties property)
+    {
+        return true;
+    }
     
 
 
