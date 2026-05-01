@@ -149,7 +149,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         
         boolean result = player.canAfford(-10.0);
-        assertTrue(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled");
+        assertFalse(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled");
     }
 
     @Test

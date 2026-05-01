@@ -22,6 +22,7 @@ public class Player {
         this.jailTurnCount = 0;
         this.position = 0;
         this.active = true;
+        this.ownedProperties = new java.util.HashSet<>();
     }
 
     public double getBalance() {
@@ -50,8 +51,15 @@ public class Player {
         }
         return this.balance >= price;
     }
+
+    public Set<Properties> getOwnedProperties() {
+        return this.ownedProperties;
+    }
+
     public boolean addProperty(Properties proptery){
-        return true;
+        if (proptery == null){ return false; }
+
+        return this.ownedProperties.add(proptery);
     }
 
 
