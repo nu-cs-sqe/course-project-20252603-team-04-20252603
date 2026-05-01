@@ -104,6 +104,57 @@ public class PlayerTests {
         assertFalse(success, "Selling with maximum amount should fail due to overflow");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
+    // ==================================================================================================
+    // Test suite for the canAfford method of the Player class, covering BVA scenarios
+    // ==================================================================================================
+    
+    @Test
+    public void Tests_CanAfford_With_Zero_Amount() {
+        Player player = new Player("John", 100.0);
+        boolean result = player.canAfford(0.0);
+        
+        assertTrue(result, "Should be able to afford 0 amount (TC10)");
+    }
+
+    @Test
+    public void Tests_CanAfford_Slightly_Less_Than_Balance() {
+        Player player = new Player("John", 100.0);
+        boolean result = player.canAfford(99.99);
+        
+        assertTrue(result, "Should be able to afford amount slightly less than balance (TC11)");
+    }
+
+    @Test
+    public void Tests_CanAfford_Exact_Balance() {
+        Player player = new Player("John", 100.0);
+        boolean result = player.canAfford(100.0);
+        
+        assertTrue(result, "Should be able to afford exact balance amount (TC12)");
+    }
+
+    @Test
+    public void Tests_CannotAfford_Slightly_Greater_Than_Balance() {
+        Player player = new Player("John", 100.0);
+        boolean result = player.canAfford(100.01);
+        
+        assertFalse(result, "Should not be able to afford amount greater than balance (TC13)");
+    }
+
+    @Test
+    public void Tests_CanAfford_Negative_Amount() {
+        Player player = new Player("John", 100.0);
+        
+        boolean result = player.canAfford(-10.0);
+        assertTrue(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled (TC14)");
+    }
+
+    @Test
+    public void Tests_CannotAfford_Max_Double() {
+        Player player = new Player("John", 100.0);
+        boolean result = player.canAfford(Double.MAX_VALUE);
+        
+        assertFalse(result, "Should not be able to afford Double.MAX_VALUE (TC14b)");
+    }
 
 
 
