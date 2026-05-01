@@ -42,7 +42,7 @@ public class Player {
         if (price < 0 || price == Double.MAX_VALUE) {
             return false;
         }
-        this.balance += price;
+        this.balance += price * 0.8;
         return true;
     }
     public boolean canAfford(double price) {
@@ -68,7 +68,14 @@ public class Player {
     }
     public boolean sellProperty(Properties property)
     {
-        return true;
+        if (property == null){ return false; }
+        if (!this.ownedProperties.contains(property)){ return false; }
+
+        double price = property.getPrice();
+        if (this.sell(price)){
+            return this.removeProperty(property);
+        }
+        return false;
     }
     
 
