@@ -113,7 +113,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(0.0);
         
-        assertTrue(result, "Should be able to afford 0 amount (TC10)");
+        assertTrue(result, "Should be able to afford 0 amount");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(99.99);
         
-        assertTrue(result, "Should be able to afford amount slightly less than balance (TC11)");
+        assertTrue(result, "Should be able to afford amount slightly less than balance");
     }
 
     @Test
@@ -129,7 +129,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(100.0);
         
-        assertTrue(result, "Should be able to afford exact balance amount (TC12)");
+        assertTrue(result, "Should be able to afford exact balance amount");
     }
 
     @Test
@@ -137,7 +137,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(100.01);
         
-        assertFalse(result, "Should not be able to afford amount greater than balance (TC13)");
+        assertFalse(result, "Should not be able to afford amount greater than balance");
     }
 
     @Test
@@ -145,7 +145,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         
         boolean result = player.canAfford(-10.0);
-        assertTrue(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled (TC14)");
+        assertTrue(result, "Negative amounts should evaluate to true if checking strictly mathematically, or validly handled");
     }
 
     @Test
@@ -153,7 +153,7 @@ public class PlayerTests {
         Player player = new Player("John", 100.0);
         boolean result = player.canAfford(Double.MAX_VALUE);
         
-        assertFalse(result, "Should not be able to afford Double.MAX_VALUE (TC14b)");
+        assertFalse(result, "Should not be able to afford Double.MAX_VALUE");
     }
 
 

@@ -44,6 +44,9 @@ public class Player {
         this.balance += price;
         return true;
     }
+    public boolean canAfford(double price) {
+       return true;
+    }
 
 
 
