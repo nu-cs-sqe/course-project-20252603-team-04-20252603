@@ -28,7 +28,7 @@ public class Player {
         return this.balance;
     }
     public boolean buy(double price) {
-        if (price < 0) {
+        if (price < 0 || price == Double.MAX_VALUE) {
             return false;
         }
         if (this.balance >= price) {
@@ -38,6 +38,10 @@ public class Player {
         return false;
     }
     public boolean sell(double price) {
+        if (price < 0 || price == Double.MAX_VALUE) {
+            return false;
+        }
+        this.balance += price;
         return true;
     }
 
