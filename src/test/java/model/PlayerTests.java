@@ -1,6 +1,7 @@
 package model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.easymock.EasyMock;
 
 import model.Properties;
 
@@ -164,11 +165,42 @@ public class PlayerTests {
     //
     @Test
     public void Test_Adding_Property_To_Player() {
-        EasyMock propertyMock = EasyMock.crreateMock(Properties.class);
-        
         Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        
+        EasyMock.replay(propertyMock);
+
+        boolean success = player.addProperty(propertyMock);
+
+        assertTrue(success, "Adding a property should be successful");
+        assertEquals(1, player.getOwnedProperties().size(), "Player should own the added property");
+        assertTrue(player.getOwnedProperties().contains(propertyMock), "Player's owned properties should contain the added property");
 
     }
+    @Test
+    public void Test_Adding_Null_Property_To_Player() {
+        Player player = new Player("John", 100.0);
+        
+        boolean success = player.addProperty(null);
+
+        assertFalse(success, "Adding a null property should be rejected");
+        assertTrue(player.getOwnedProperties().isEmpty(), "Player should not own any properties after attempting to add null");
+    }
+    @Test
+    public void Test_Adding_Duplicate_Property_To_Player() {
+        Player player = new Player("John", 100.0);
+        Properties propertyMock = EasyMock.createMock(Properties.class);
+        
+        EasyMock.replay(propertyMock);
+
+        boolean firstAddSuccess = player.addProperty(propertyMock);
+        boolean secondAddSuccess = player.addProperty(propertyMock);
+
+        assertTrue(firstAddSuccess, "First addition of a property should be successful");
+        assertFalse(secondAddSuccess, "Adding the same property again should be rejected");
+        assertEquals(1, player.getOwnedProperties().size(), "Player should only own one instance of the property");
+    }
+
 
 
 
