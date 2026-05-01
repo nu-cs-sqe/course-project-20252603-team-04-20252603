@@ -241,6 +241,14 @@ public class PlayerTests {
 
         assertFalse(success, "Removing a property from a player with no properties should be rejected");
     }
+    @Test
+    public void Test_Removing_Null_Property_From_Player() {
+        Player player = new Player("John", 100.0);
+        
+        boolean success = player.removeProperty(null);
+
+        assertFalse(success, "Removing a null property should be rejected");
+    }
 
 
 
