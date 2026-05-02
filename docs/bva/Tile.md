@@ -57,6 +57,7 @@ Output equivalent classes:
 | Valid IRS tile name | `TileType.IRS` |
 | Valid GO tile name | `TileType.GO` |
 | Valid free tile name | `TileType.FREE` |
+| Valid jail tile name | `TileType.JAIL` |
 | Valid go-to-jail tile name | `TileType.GOTOJAIL` |
 | Null tile name | `null` |
 
@@ -95,32 +96,36 @@ Output equivalent classes:
   - **Expected output**: `getName()` returns `TileType.FREE`.
 
 - **TC6: Go-to-jail tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.JAIL` as its name.
+  - **Expected output**: `getName()` returns `TileType.JAIL`.
+
+- **TC7: Go-to-jail tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.GOTOJAIL` as its name.
   - **Expected output**: `getName()` returns `TileType.GOTOJAIL`.
 
-- **TC7: Null tile name** ( :x: )
+- **TC8: Null tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `null` as its name.
   - **Expected output**: Construction is rejected, and `getName()` should never return `null`.
 
 ### Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC8: Valid active player lands on tile** ( :x: )
+- **TC9: Valid active player lands on tile** ( :x: )
   - **State of the system**: A valid active player lands on a tile while the game state is valid.
   - **Expected output**: The tile's effect is applied exactly once.
 
-- **TC9: Null player input** ( :x: )
+- **TC10: Null player input** ( :x: )
   - **State of the system**: `player` is `null` and `game` is valid.
   - **Expected output**: The method rejects the invalid player input, such as by throwing an exception.
 
-- **TC10: Null game input** ( :x: )
+- **TC11: Null game input** ( :x: )
   - **State of the system**: `player` is valid and `game` is `null`.
   - **Expected output**: The method rejects the invalid game input, such as by throwing an exception.
 
-- **TC11: Null player and null game input** ( :x: )
+- **TC12: Null player and null game input** ( :x: )
   - **State of the system**: Both `player` and `game` are `null`.
   - **Expected output**: The method rejects the invalid inputs and does not apply any tile effect.
 
-- **TC12: Eliminated player lands on tile** ( :x: )
+- **TC13: Eliminated player lands on tile** ( :x: )
   - **State of the system**: The player has already been eliminated before landing on the tile.
   - **Expected output**: No tile effect is applied to the eliminated player, or the method rejects the action.
 
