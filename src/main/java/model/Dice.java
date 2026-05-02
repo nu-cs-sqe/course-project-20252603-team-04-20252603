@@ -29,4 +29,8 @@ public class Dice {
         return dieOne + dieTwo;
     }
 
+    public boolean isDoubles() {
+        return true;
+    }
+
 }
