@@ -28,6 +28,13 @@ public class TileTest {
         assertEquals(TileType.IRS, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNameCHANCE() {
+        Tile tile = new TestTile(TileType.CHANCE);
+
+        assertEquals(TileType.CHANCE, tile.getName());
+    }
+
 
 
 }
