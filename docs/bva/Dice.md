@@ -55,7 +55,7 @@
 2. Output type: Boolean
 3. Output values: true, false
 
-- **TC1: isDoubles_WhenDiceAreEqual_ReturnTrue** ( :x: )
+- **TC1: isDoubles_WhenDiceAreEqual_ReturnTrue** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: true
 

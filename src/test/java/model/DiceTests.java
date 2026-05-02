@@ -3,8 +3,8 @@ package model;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import java.util.Random;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class DiceTests {
 
     @Test
@@ -127,4 +127,17 @@ public class DiceTests {
         assertTrue(dice.isDoubles());
     }
 
+    @Test
+    public void isDoubles_WhenDiceAreDifferent_ReturnFalse() {
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andReturn(0);
+        EasyMock.expect(rand.nextInt(6)).andReturn(1);
+        EasyMock.replay(rand);
+
+        Dice dice = new Dice(rand);
+        dice.roll();
+
+        assertFalse(dice.isDoubles());
+        EasyMock.verify(rand);
+    }
 }
