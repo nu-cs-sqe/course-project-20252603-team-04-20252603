@@ -4,16 +4,25 @@ import java.util.Random;
 
 public class Dice {
 
-    public void roll() {
+    private Random rand;
+    private int dieOne;
+    private int dieTwo;
 
+    public Dice(Random rand) {
+        this.rand = rand;
+    }
+
+    public void roll() {
+        dieOne = rand.nextInt(6) + 1;
+        dieTwo = rand.nextInt(6) + 1;
     }
 
     public int getDieOne() {
-        return 1;
+        return dieOne;
     }
 
     public int getDieTwo() {
-        return 1;
+        return dieTwo;
     }
 
 }
