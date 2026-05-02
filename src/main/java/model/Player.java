@@ -77,6 +77,12 @@ public class Player {
         }
         return false;
     }
+    public int getPosition() {
+        return this.position;
+    }
+    public boolean inJail() {
+        return this.inJail;
+    }
     public boolean goToJail(int position)
     {
 
@@ -88,6 +94,12 @@ public class Player {
         this.inJail = true;
         this.jailTurnCount = 0;
         this.position = 10;
+        return true;
+    }
+    public boolean leaveJail() {
+        return true;
+    }
+    public boolean isBankrupt() {
         return true;
     }
     
