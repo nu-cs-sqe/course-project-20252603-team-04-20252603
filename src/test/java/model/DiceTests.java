@@ -37,4 +37,17 @@ public class DiceTests {
         assertEquals(expected, dice.getDieTwo());
     }
 
+    @Test
+    public void getDieOne_OnLowestRoll_Return1() {
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(0);
+        EasyMock.replay(rand);
+
+        Dice dice = new Dice(rand);
+        dice.roll();
+
+        int expected = 1;
+        assertEquals(expected, dice.getDieOne());
+    }
+
 }
