@@ -21,6 +21,13 @@ public class TileTest {
         assertEquals(TileType.PROPERTY, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNameIRS() {
+        Tile tile = new TestTile(TileType.IRS);
+
+        assertEquals(TileType.IRS, tile.getName());
+    }
+
 
 
 }
