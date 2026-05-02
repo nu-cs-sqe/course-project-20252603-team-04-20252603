@@ -42,4 +42,11 @@ public class TileTest {
         assertEquals(TileType.FREE, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNameGOTOJAIL() {
+        Tile tile = new TestTile(TileType.GOTOJAIL);
+
+        assertEquals(TileType.GOTOJAIL, tile.getName());
+    }
+
 }
