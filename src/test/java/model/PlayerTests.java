@@ -311,5 +311,20 @@ public class PlayerTests {
         assertFalse(success, "Selling a null property should fail");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
     }
+    //
+    // Test suite for goToJail method
+    //
+    @Test
+    public void Test_Player_In_Jail(){
+        Player player = new Player("John", 100.0);
+        player.goToJail();
 
+        assertTrue(player.isInJail(), "Player should be in jail after calling goToJail");
+    }
+    @Test
+    public void Test_Player_Not_In_Jail(){
+        Player player = new Player("John", 100.0);
+
+        assertFalse(player.isInJail(), "Player should not be in jail by default");
+    }
 }
