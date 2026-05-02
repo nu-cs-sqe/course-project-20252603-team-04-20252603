@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DiceTests {
 
+    @Test
+    public void roll_OnLowestValues_SetDiceTo1And1() {
 
+        Dice dice = new Dice();
+        dice.roll();
+    }
 
 }
