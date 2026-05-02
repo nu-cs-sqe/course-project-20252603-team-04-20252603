@@ -370,9 +370,11 @@ public class PlayerTests {
         assertTrue(player.inJail(), "Setup confirmation: Player should be in jail initially");
         
         boolean success = player.leaveJail();
+        int positionAfterLeaving = 11;
         
         assertTrue(success, "Player who is in jail should leave successfully");
         assertFalse(player.inJail(), "inJail flag should be false after leaving jail");
+        assertEquals(positionAfterLeaving, player.getPosition(), "Player position should advance by 1 after leaving jail");
     }
 
     @Test
