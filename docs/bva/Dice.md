@@ -59,6 +59,6 @@
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: true
 
-- **TC2: isDoubles_WhenDiceAreDifferent_ReturnFalse** ( :x: )
+- **TC2: isDoubles_WhenDiceAreDifferent_ReturnFalse** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 2`
   - **Expected output**: false

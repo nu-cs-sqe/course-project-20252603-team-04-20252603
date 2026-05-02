@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Dice {
 
-    private Random rand;
+    private final Random rand;
     private int dieOne;
     private int dieTwo;
 
@@ -30,7 +30,7 @@ public class Dice {
     }
 
     public boolean isDoubles() {
-        return true;
+        return dieOne == dieTwo;
     }
 
 }
