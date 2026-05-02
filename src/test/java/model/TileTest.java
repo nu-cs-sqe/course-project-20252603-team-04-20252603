@@ -8,7 +8,13 @@ public class TileTest {
 
     @Test
     void getName_ReturnsNormalValidTileName() {
-        Tile tile = new TestTile("Test");
-        assertEquals("Test", tile.getName());
+        Tile tile = new TestTile("GO");
+        assertEquals("GO", tile.getName());
+    }
+
+    @Test
+    void getName_ReturnsShortestValidTileName() {
+        Tile tile = new TestTile("A");
+        assertEquals("A", tile.getName());
     }
 }
