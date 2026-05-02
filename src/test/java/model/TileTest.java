@@ -14,6 +14,13 @@ public class TileTest {
         assertEquals(TileType.GO, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNamePROPERTY() {
+        Tile tile = new TestTile(TileType.PROPERTY);
+
+        assertEquals(TileType.PROPERTY, tile.getName());
+    }
+
 
 
 }
