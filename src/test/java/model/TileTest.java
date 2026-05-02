@@ -56,4 +56,9 @@ public class TileTest {
         assertEquals(TileType.JAIL, tile.getName());
     }
 
+    @Test
+    void getName_ThrowsExceptionWhenNameIsNull() {
+        assertThrows(NullPointerException.class, () -> new TestTile(null));
+    }
+
 }
