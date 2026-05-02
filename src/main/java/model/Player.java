@@ -77,10 +77,21 @@ public class Player {
         }
         return false;
     }
-    public boolean goToJail() {
+    public boolean goToJail(int position)
+    {
+
+        // this is bad practice we should not be using checking with magic numbers th emax bound should be the length of the baord class tiles 
+        // just for testing purposes we will assume there are 32 tiles on the board and the jail tile is at position 10
+        if (position < 0 || position > 31) {
+            return false;
+        }
+        this.inJail = true;
+        this.jailTurnCount = 0;
+        this.position = 10;
         return true;
     }
     
+
 
 
 
