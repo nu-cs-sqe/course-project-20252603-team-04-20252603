@@ -46,4 +46,16 @@ public class DiceTests {
         assertEquals(expected, dice.roll());
     }
 
+    @Test
+    public void roll_OnRandomRoll_Return12() {
+
+        Random rand = new Random();
+
+        Dice dice = new Dice(rand);
+
+        int expected = 12;
+        assertEquals(expected, dice.roll());
+
+    }
+
 }
