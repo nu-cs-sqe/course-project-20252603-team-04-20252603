@@ -95,7 +95,7 @@ Output equivalent classes:
   - **State of the system**: A concrete tile is created with `TileType.FREE` as its name.
   - **Expected output**: `getName()` returns `TileType.FREE`.
 
-- **TC6: Go-to-jail tile name** ( :x: )
+- **TC6: Jail tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.JAIL` as its name.
   - **Expected output**: `getName()` returns `TileType.JAIL`.
 
