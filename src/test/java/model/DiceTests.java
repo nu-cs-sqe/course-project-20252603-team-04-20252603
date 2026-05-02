@@ -12,6 +12,7 @@ public class DiceTests {
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(6)).andStubReturn(0);
+        EasyMock.replay(rand);
 
         Dice dice = new Dice(rand);
 
@@ -24,6 +25,8 @@ public class DiceTests {
     public void getDieOne_OneRandomRoll_Return6() {
 
         Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(5);
+        EasyMock.replay(rand);
 
         Dice dice = new Dice(rand);
 
