@@ -35,4 +35,15 @@ public class DiceTests {
 
     }
 
+    @Test
+    public void roll_OnRandomRoll_Return2() {
+
+        Random rand = new Random();
+
+        Dice dice = new Dice(rand);
+
+        int expected = 2;
+        assertEquals(expected, dice.roll());
+    }
+
 }
