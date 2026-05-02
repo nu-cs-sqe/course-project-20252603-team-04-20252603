@@ -18,4 +18,15 @@ public class DiceTests {
         assertEquals(expected, dice.getDieTwo());
     }
 
+    @Test
+    public void roll_OnHighestValues_SetDiceTo6And6() {
+
+        Dice dice = new Dice();
+        dice.roll();
+
+        int expected = 6;
+        assertEquals(expected, dice.getDieOne());
+        assertEquals(expected, dice.getDieTwo());
+    }
+
 }
