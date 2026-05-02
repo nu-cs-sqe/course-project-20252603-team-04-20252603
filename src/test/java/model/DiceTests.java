@@ -16,4 +16,14 @@ public class DiceTests {
 
     }
 
+    @Test
+    public void getDieOne_OneRandomRoll_Return6() {
+
+        Dice dice = new Dice();
+
+        int expected = 6;
+        assertEquals(expected, dice.getDieOne());
+
+    }
+
 }
