@@ -102,4 +102,17 @@ public class DiceTests {
         assertEquals(expected, dice.getTotal());
     }
 
+    @Test
+    public void getTotal_WhenDiceAre6And6_Return12() {
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(5);
+        EasyMock.replay(rand);
+
+        Dice dice = new Dice(rand);
+        dice.roll();
+
+        int expected = 12;
+        assertEquals(expected, dice.getTotal());
+    }
+
 }

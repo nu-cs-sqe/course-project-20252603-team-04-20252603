@@ -42,7 +42,7 @@
 2. Output type: Interval
 3. Output range: [2,12]
 
-- **TC1: getTotal_WhenDiceAre1And1_Return2** ( :x: )
+- **TC1: getTotal_WhenDiceAre1And1_Return2** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: 2
 
