@@ -49,4 +49,11 @@ public class TileTest {
         assertEquals(TileType.GOTOJAIL, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNameJAIL() {
+        Tile tile = new TestTile(TileType.JAIL);
+
+        assertEquals(TileType.JAIL, tile.getName());
+    }
+
 }

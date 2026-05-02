@@ -6,5 +6,6 @@ public enum TileType {
     IRS,
     GO,
     FREE,
-    GOTOJAIL
+    GOTOJAIL,
+    JAIL
 }
