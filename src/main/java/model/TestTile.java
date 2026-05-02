@@ -2,17 +2,17 @@ package model;
 
 public class TestTile implements Tile{
 
-    private final String name;
+    private final TileType name;
 
-    public TestTile(String name) {
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Tile name cannot be empty");
+    public TestTile(TileType name) {
+        if (name == null) {
+            throw new NullPointerException("Tile name cannot be empty");
         }
         this.name = name;
     }
 
     @Override
-    public String getName() {
+    public TileType getName() {
         return name;
     }
 }

@@ -8,19 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TileTest {
 
     @Test
-    void getName_ReturnsNormalValidTileName() {
-        Tile tile = new TestTile("GO");
-        assertEquals("GO", tile.getName());
+    void getName_ReturnsValidTileNameGO() {
+        Tile tile = new TestTile(TileType.GO);
+
+        assertEquals(TileType.GO, tile.getName());
     }
 
-    @Test
-    void getName_ReturnsShortestValidTileName() {
-        Tile tile = new TestTile("A");
-        assertEquals("A", tile.getName());
-    }
 
-    @Test
-    void getName_RejectsEmptyTileName() {
-        assertThrows(IllegalArgumentException.class, () -> new TestTile(""));
-    }
+
 }
