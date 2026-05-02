@@ -1,7 +1,8 @@
 package model;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
-
+import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DiceTests {
@@ -9,7 +10,10 @@ public class DiceTests {
     @Test
     public void getDieOne_OneRandomRoll_Return1() {
 
-        Dice dice = new Dice();
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(0);
+
+        Dice dice = new Dice(rand);
 
         int expected = 1;
         assertEquals(expected, dice.getDieOne());
@@ -19,7 +23,9 @@ public class DiceTests {
     @Test
     public void getDieOne_OneRandomRoll_Return6() {
 
-        Dice dice = new Dice();
+        Random rand = EasyMock.createMock(Random.class);
+
+        Dice dice = new Dice(rand);
 
         int expected = 6;
         assertEquals(expected, dice.getDieOne());
