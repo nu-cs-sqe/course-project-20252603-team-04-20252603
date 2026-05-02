@@ -35,6 +35,11 @@ public class TileTest {
         assertEquals(TileType.CHANCE, tile.getName());
     }
 
+    @Test
+    void getName_ReturnsValidTileNameFREE() {
+        Tile tile = new TestTile(TileType.FREE);
 
+        assertEquals(TileType.FREE, tile.getName());
+    }
 
 }
