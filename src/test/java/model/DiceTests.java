@@ -10,7 +10,11 @@ public class DiceTests {
     @Test
     public void roll_OnLowestValues_SetDiceTo1And1() {
 
-        Dice dice = new Dice();
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(0);
+        EasyMock.replay(rand);
+
+        Dice dice = new Dice(rand);
         dice.roll();
 
         int expected = 1;
@@ -21,7 +25,11 @@ public class DiceTests {
     @Test
     public void roll_OnHighestValues_SetDiceTo6And6() {
 
-        Dice dice = new Dice();
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(5);
+        EasyMock.replay(rand);
+
+        Dice dice = new Dice(rand);
         dice.roll();
 
         int expected = 6;
