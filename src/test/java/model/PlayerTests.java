@@ -291,6 +291,7 @@ public class PlayerTests {
     }
 
     @Test
+    
     public void Test_Selling_Unowned_Property() {
         Player player = new Player("John", 100.0);
         Properties propertyMock = EasyMock.createMock(Properties.class);
@@ -315,16 +316,35 @@ public class PlayerTests {
     // Test suite for goToJail method
     //
     @Test
-    public void Test_Player_In_Jail(){
+    public void Test_GoToJail_Valid_Position() {
         Player player = new Player("John", 100.0);
-        player.goToJail();
-
-        assertTrue(player.isInJail(), "Player should be in jail after calling goToJail");
+        boolean success = player.goToJail(8);
+        
+        assertTrue(success, "Sending player to valid jail position should be successful");
+        
     }
-    @Test
-    public void Test_Player_Not_In_Jail(){
-        Player player = new Player("John", 100.0);
 
-        assertFalse(player.isInJail(), "Player should not be in jail by default");
+    @Test
+    public void Test_GoToJail_Negative_Position() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.goToJail(-1);
+        
+        assertFalse(success, "Negative jail position should be rejected");
+    }
+
+    @Test
+    public void Test_GoToJail_Max_Integer_Position() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.goToJail(Integer.MAX_VALUE);
+        
+        assertFalse(success, "Maximum integer jail position should be rejected");
+    }
+
+    @Test
+    public void Test_GoToJail_Min_Integer_Position() {
+        Player player = new Player("John", 100.0);
+        boolean success = player.goToJail(Integer.MIN_VALUE);
+        
+        assertFalse(success, "Minimum integer jail position should be rejected");
     }
 }
