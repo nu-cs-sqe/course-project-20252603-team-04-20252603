@@ -92,15 +92,26 @@ public class Player {
             return false;
         }
         this.inJail = true;
-        this.jailTurnCount = 0;
+        this.jailTurnCount = 1;
         this.position = 10;
         return true;
     }
     public boolean leaveJail() {
+        if(!this.inJail) {
+            return false;
+        }
+        this.inJail = false;
+        this.jailTurnCount = 0;
+        this.position += 1;
         return true;
+
     }
     public boolean isBankrupt() {
-        return true;
+        if (this.balance <= 0.0) {
+            this.active = false;
+            return true;
+        }        
+        return false;
     }
     
 
