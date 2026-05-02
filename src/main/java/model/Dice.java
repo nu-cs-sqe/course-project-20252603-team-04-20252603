@@ -26,7 +26,7 @@ public class Dice {
     }
 
     public int getTotal() {
-        return 2;
+        return dieOne + dieTwo;
     }
 
 }

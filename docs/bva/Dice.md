@@ -46,7 +46,7 @@
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: 2
 
-- **TC2: getTotal_WhenDiceAre6And6_Return12** ( :x: )
+- **TC2: getTotal_WhenDiceAre6And6_Return12** ( :white_check_mark: )
   - **State of the system**: `dieOne = 6`, `dieTwo = 6`
   - **Expected output**: 12
 
