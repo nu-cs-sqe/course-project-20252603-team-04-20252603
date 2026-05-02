@@ -77,6 +77,9 @@ public class Player {
         }
         return false;
     }
+    public boolean goToJail() {
+        return true;
+    }
     
 
 
