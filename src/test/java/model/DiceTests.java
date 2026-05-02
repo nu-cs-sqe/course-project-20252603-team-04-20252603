@@ -38,7 +38,9 @@ public class DiceTests {
     @Test
     public void roll_OnRandomRoll_Return2() {
 
-        Random rand = new Random();
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(6)).andStubReturn(0);
+        EasyMock.replay(rand);
 
         Dice dice = new Dice(rand);
 
