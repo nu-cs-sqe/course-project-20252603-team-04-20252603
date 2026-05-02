@@ -312,39 +312,108 @@ public class PlayerTests {
         assertFalse(success, "Selling a null property should fail");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
     }
-    //
+    // ==================================================================================================
     // Test suite for goToJail method
-    //
+    // ==================================================================================================
     @Test
     public void Test_GoToJail_Valid_Position() {
         Player player = new Player("John", 100.0);
+        // Note: based on your Player class logic, valid bounds are 0 to 31.
         boolean success = player.goToJail(8);
         
         assertTrue(success, "Sending player to valid jail position should be successful");
-        
+        assertTrue(player.inJail(), "Player should be marked as in jail");
+        assertEquals(10, player.getPosition(), "Player position should be set to 10 (the jail tile)");
     }
 
     @Test
     public void Test_GoToJail_Negative_Position() {
         Player player = new Player("John", 100.0);
+        int initialPosition = player.getPosition();
         boolean success = player.goToJail(-1);
         
         assertFalse(success, "Negative jail position should be rejected");
+        assertFalse(player.inJail(), "Player should not be in jail");
+        assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
     }
 
     @Test
     public void Test_GoToJail_Max_Integer_Position() {
         Player player = new Player("John", 100.0);
+        int initialPosition = player.getPosition();
         boolean success = player.goToJail(Integer.MAX_VALUE);
         
         assertFalse(success, "Maximum integer jail position should be rejected");
+        assertFalse(player.inJail(), "Player should not be in jail");
+        assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
     }
 
     @Test
     public void Test_GoToJail_Min_Integer_Position() {
         Player player = new Player("John", 100.0);
+        int initialPosition = player.getPosition();
         boolean success = player.goToJail(Integer.MIN_VALUE);
         
         assertFalse(success, "Minimum integer jail position should be rejected");
+        assertFalse(player.inJail(), "Player should not be in jail");
+        assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
+    }
+
+    // ==================================================================================================
+    // Test suite for leaveJail method
+    // ==================================================================================================
+    
+    @Test
+    public void Test_LeaveJail_When_In_Jail() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(10); // Setup: Put player in jail
+        assertTrue(player.inJail(), "Setup confirmation: Player should be in jail initially");
+        
+        boolean success = player.leaveJail();
+        
+        assertTrue(success, "Player who is in jail should leave successfully");
+        assertFalse(player.inJail(), "inJail flag should be false after leaving jail");
+    }
+
+    @Test
+    public void Test_LeaveJail_When_Not_In_Jail() {
+        Player player = new Player("John", 100.0); // Never put in jail
+        assertFalse(player.inJail(), "Setup confirmation: Player should not be in jail initially");
+        
+        boolean success = player.leaveJail();
+        
+        assertFalse(success, "Expected no change/failure when leaving jail while not in jail");
+        assertFalse(player.inJail(), "inJail flag should still be false");
+    }
+
+    // ==================================================================================================
+    // Test suite for isBankrupt method
+    // ==================================================================================================
+
+    @Test
+    public void Test_IsBankrupt_Zero_Balance() {
+        Player player = new Player("John", 0.0);
+        
+        boolean bankrupt = player.isBankrupt();
+        
+        assertTrue(bankrupt, "Player with 0.0 balance should be considered bankrupt");
+    }
+
+    @Test
+    public void Test_IsBankrupt_Slightly_Above_Zero() {
+        Player player = new Player("John", 0.01);
+        
+        boolean bankrupt = player.isBankrupt();
+        
+        assertFalse(bankrupt, "Player with balance slightly above 0 should not be bankrupt");
+    }
+
+    @Test
+    public void Test_IsBankrupt_Negative_Balance() {
+        Player player = new Player("John", -10.0);
+        
+        boolean bankrupt = player.isBankrupt();
+        
+        assertTrue(bankrupt, "Player with negative balance should be considered bankrupt");
     }
 }
