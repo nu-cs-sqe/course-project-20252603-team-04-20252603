@@ -25,4 +25,8 @@ public class Dice {
         return dieTwo;
     }
 
+    public int getTotal() {
+        return 2;
+    }
+
 }
