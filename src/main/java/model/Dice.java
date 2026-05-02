@@ -14,4 +14,8 @@ public class Dice {
         return this.rand.nextInt(6) + 1;
     }
 
+    public int roll() {
+        return 2;
+    }
+
 }
