@@ -5,20 +5,19 @@
 Assumed public methods for the `Tile` interface:
 
 ```java
-String getName();
+TileType getName();
 void landOn(Player player, GameEngine game);
 ```
 
 #### `getName()`
 
 Input equivalent classes:
-- Valid tile name
-- Empty tile name
-- Null tile name
+- Valid `TileType` enum value
+- Null `TileType` enum value
 
 Output equivalent classes:
-- Returns the tile's name as a non-null `String`
-- Rejects an invalid name before `getName()` can return it
+- Returns the tile's name as a non-null `TileType`
+- Rejects an invalid tile name before `getName()` can return it
 
 #### `landOn(Player player, GameEngine game)`
 
@@ -37,8 +36,8 @@ Output equivalent classes:
 
 #### `getName()`
 
-- Input: `String name`, usually provided when constructing a concrete tile
-- Output: `String`
+- Input: `TileType name`, usually provided when constructing a concrete tile
+- Output: `TileType`, or an exception such as `IllegalArgumentException` or `NullPointerException` if the tile name is invalid
 
 #### `landOn(Player player, GameEngine game)`
 
@@ -53,10 +52,13 @@ Output equivalent classes:
 
 | Boundary | Concrete Value |
 |---|---|
-| Null name | `null` |
-| Empty name | `""` |
-| Shortest valid name | `"A"` |
-| Normal valid name | `"GO"` |
+| Valid property tile name | `TileType.PROPERTY` |
+| Valid chance tile name | `TileType.CHANCE` |
+| Valid IRS tile name | `TileType.IRS` |
+| Valid GO tile name | `TileType.GO` |
+| Valid free tile name | `TileType.FREE` |
+| Valid go-to-jail tile name | `TileType.GOTOJAIL` |
+| Null tile name | `null` |
 
 #### `landOn(Player player, GameEngine game)`
 
@@ -72,41 +74,53 @@ Output equivalent classes:
 
 ### Method under test: `getName()`
 
-- **TC1: Normal valid tile name** ( :x: )
-  - **State of the system**: A concrete tile is created with a normal valid name, such as `"GO"`.
-  - **Expected output**: `getName()` returns `"GO"`.
+- **TC1: Property tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.PROPERTY` as its name.
+  - **Expected output**: `getName()` returns `TileType.PROPERTY`.
 
-- **TC2: Shortest valid tile name** ( :x: )
-  - **State of the system**: A concrete tile is created with the shortest valid name, such as `"A"`.
-  - **Expected output**: `getName()` returns `"A"`.
+- **TC2: Chance tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.CHANCE` as its name.
+  - **Expected output**: `getName()` returns `TileType.CHANCE`.
 
-- **TC3: Empty tile name** ( :x: )
-  - **State of the system**: A concrete tile is created with an empty string `""` as its name.
-  - **Expected output**: Construction is rejected, or `getName()` returns `""` if empty names are allowed by design.
+- **TC3: IRS tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.IRS` as its name.
+  - **Expected output**: `getName()` returns `TileType.IRS`.
 
-- **TC4: Null tile name** ( :x: )
+- **TC4: GO tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.GO` as its name.
+  - **Expected output**: `getName()` returns `TileType.GO`.
+
+- **TC5: Free tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.FREE` as its name.
+  - **Expected output**: `getName()` returns `TileType.FREE`.
+
+- **TC6: Go-to-jail tile name** ( :x: )
+  - **State of the system**: A concrete tile is created with `TileType.GOTOJAIL` as its name.
+  - **Expected output**: `getName()` returns `TileType.GOTOJAIL`.
+
+- **TC7: Null tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `null` as its name.
   - **Expected output**: Construction is rejected, and `getName()` should never return `null`.
 
 ### Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC5: Valid active player lands on tile** ( :x: )
+- **TC8: Valid active player lands on tile** ( :x: )
   - **State of the system**: A valid active player lands on a tile while the game state is valid.
   - **Expected output**: The tile's effect is applied exactly once.
 
-- **TC6: Null player input** ( :x: )
+- **TC9: Null player input** ( :x: )
   - **State of the system**: `player` is `null` and `game` is valid.
   - **Expected output**: The method rejects the invalid player input, such as by throwing an exception.
 
-- **TC7: Null game input** ( :x: )
+- **TC10: Null game input** ( :x: )
   - **State of the system**: `player` is valid and `game` is `null`.
   - **Expected output**: The method rejects the invalid game input, such as by throwing an exception.
 
-- **TC8: Null player and null game input** ( :x: )
+- **TC11: Null player and null game input** ( :x: )
   - **State of the system**: Both `player` and `game` are `null`.
   - **Expected output**: The method rejects the invalid inputs and does not apply any tile effect.
 
-- **TC9: Eliminated player lands on tile** ( :x: )
+- **TC12: Eliminated player lands on tile** ( :x: )
   - **State of the system**: The player has already been eliminated before landing on the tile.
   - **Expected output**: No tile effect is applied to the eliminated player, or the method rejects the action.
 
