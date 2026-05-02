@@ -52,12 +52,12 @@ public class PlayerTests {
 
     @Test
 
-    public void Tests_Buying_With_Slightl_Less_Than_Balance() {
+    public void Tests_Buying_With_Slightly_Less_Than_Balance() {
         Player player = new Player("John", 100.0);
         boolean success = player.buy(99.0);
 
         assertTrue(success, "Buying with valid amount should be successful");
-        assertEquals(50.0, player.getBalance(), 0.001, "Balance should decrease by the purchase amount");
+        assertEquals(1.0, player.getBalance(), 0.001, "Balance should decrease by the purchase amount");
     }
 
     @Test
