@@ -3,11 +3,11 @@
 2. Output type: Two intervals
 3. Output ranges: `dieOne` = [1,6], `dieTwo` = [1,6]
 
-- **TC1: roll_OnLowestValues_SetDiceTo1And1** ( :x: )
+- **TC1: roll_OnLowestValues_SetDiceTo1And1** ( :white_check_mark: )
   - **State of the system**: Mock Random returns 0, then 0
   - **Expected output**: `getDieOne()` returns 1, `getDieTwo()` returns 1
 
-- **TC2: roll_OnHighestValues_SetDiceTo6And6** ( :x: )
+- **TC2: roll_OnHighestValues_SetDiceTo6And6** ( :white_check_mark: )
   - **State of the system**: Mock Random returns 5, then 5
   - **Expected output**: `getDieOne()` returns 6, `getDieTwo()` returns 6
 
@@ -16,11 +16,11 @@
 2. Output type: Interval
 3. Output range: [1,6]
 
-- **TC1: getDieOne_OnLowestRoll_Return1** ( :x: )
+- **TC1: getDieOne_OnLowestRoll_Return1** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`
   - **Expected output**: 1
 
-- **TC2: getDieOne_OnHighestRoll_Return6** ( :x: )
+- **TC2: getDieOne_OnHighestRoll_Return6** ( :white_check_mark: )
   - **State of the system**: `dieOne = 6`
   - **Expected output**: 6
 
@@ -29,11 +29,11 @@
 2. Output type: Interval
 3. Output range: [1,6]
 
-- **TC1: getDieTwo_OnLowestRoll_Return1** ( :x: )
+- **TC1: getDieTwo_OnLowestRoll_Return1** ( :white_check_mark: )
   - **State of the system**: `dieTwo = 1`
   - **Expected output**: 1
 
-- **TC2: getDieTwo_OnHighestRoll_Return6** ( :x: )
+- **TC2: getDieTwo_OnHighestRoll_Return6** ( :white_check_mark: )
   - **State of the system**: `dieTwo = 6`
   - **Expected output**: 6
 
