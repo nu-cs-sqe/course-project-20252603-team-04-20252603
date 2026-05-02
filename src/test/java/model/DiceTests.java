@@ -12,6 +12,10 @@ public class DiceTests {
 
         Dice dice = new Dice();
         dice.roll();
+
+        int expected = 1;
+        assertEquals(expected, dice.getDieOne());
+        assertEquals(expected, dice.getDieTwo());
     }
 
 }
