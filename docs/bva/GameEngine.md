@@ -40,7 +40,7 @@
 
 ## Method under test: `nextTurn()`
 
-- **TC8: Advance from first to second player** ( :x: )
+- **TC8: Advance from first to second player** ( :white_check_mark: )
   - **State of the system**: `[P1, P2]`, `current = P1`
   - **Expected output**: `current = P2`
 
