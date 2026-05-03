@@ -35,5 +35,8 @@ public class GameEngine {
 
     public void nextTurn(){
         currentPlayerIndex = currentPlayerIndex + 1;
+        if (currentPlayerIndex >= players.size()) {
+            currentPlayerIndex = 0;
+        }
     }
 }
