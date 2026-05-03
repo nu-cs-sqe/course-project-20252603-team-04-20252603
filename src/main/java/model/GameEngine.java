@@ -32,4 +32,8 @@ public class GameEngine {
     public Player getCurrentPlayer(){
         return players.get(currentPlayerIndex);
     }
+
+    public void nextTurn(){
+        
+    }
 }

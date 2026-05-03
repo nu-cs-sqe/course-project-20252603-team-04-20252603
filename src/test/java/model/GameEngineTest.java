@@ -89,4 +89,19 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2);
     }
+
+    @Test
+    public void After_One_Next_Turn_Current_Player_Is_Second_Player(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2);
+        
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+        gameEngine.nextTurn();
+        assertEquals(player2, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2);
+    }
 }
