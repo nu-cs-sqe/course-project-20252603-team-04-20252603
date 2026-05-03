@@ -195,4 +195,20 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2);
     }
+
+    @Test
+    public void Remove_Player_From_Three_Player_Game_Continues_Game(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2, player3);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3));
+        gameEngine.startGame();
+        gameEngine.removeBankruptPlayer(player2);
+        assertEquals(GameStatus.IN_PROGRESS, gameEngine.getStatus());
+
+        EasyMock.verify(player1, player2, player3);
+    }
 }
