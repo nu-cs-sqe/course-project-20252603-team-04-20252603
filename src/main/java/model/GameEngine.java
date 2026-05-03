@@ -34,6 +34,6 @@ public class GameEngine {
     }
 
     public void nextTurn(){
-        
+        currentPlayerIndex = currentPlayerIndex + 1;
     }
 }

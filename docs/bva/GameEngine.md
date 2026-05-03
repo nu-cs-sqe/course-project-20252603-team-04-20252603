@@ -32,7 +32,7 @@
   - **State of the system**: `players = [P1, P2]`, after `nextTurn()`
   - **Expected output**: `P2`
 
-- **TC7: After wrapping, current player returns to first player** ( :white_check_mark: )
+- **TC7: After wrapping, current player returns to first player** ( :x: )
   - **State of the system**: `players = [P1, P2]`, after `nextTurn()` twice
   - **Expected output**: `P1`
 
