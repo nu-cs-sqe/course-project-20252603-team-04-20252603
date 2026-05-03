@@ -64,7 +64,7 @@
   - **State of the system**: `[P1, P2, P3]`, remove `P2`
   - **Expected output**: `[P1, P3]`, game not over
 
-- **TC14: Remove current player updates turn correctly** ( :x: )
+- **TC14: Remove current player updates turn correctly** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3]`, `current = P1`, remove `P1`
   - **Expected output**: `current = P2`
 
