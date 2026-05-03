@@ -76,7 +76,7 @@
 
 ## Method under test: `isGameOver()`
 
-- **TC16: No players means game is over** ( :x: )
+- **TC16: No players means game is over** ( :white_check_mark: )
   - **State of the system**: `[]`
   - **Expected output**: `true`
 

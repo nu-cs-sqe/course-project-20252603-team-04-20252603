@@ -56,4 +56,8 @@ public class GameEngine {
         }
     }
 
+    public boolean isGameOver(){
+        return true;
+    }
+
 }

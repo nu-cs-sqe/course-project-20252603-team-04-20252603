@@ -246,4 +246,13 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2, player3);
     }
+
+    // isGameOver tests
+
+    @Test
+    public void No_Players_Means_Game_Is_Over(){
+        GameEngine gameEngine = new GameEngine(List.of());
+                
+        assertEquals(true, gameEngine.isGameOver());
+    }
 }
