@@ -188,9 +188,10 @@ public class GameEngineTest {
         
         GameEngine gameEngine = new GameEngine(List.of(player1, player2));
         gameEngine.startGame();
-        gameEngine.removeBankruptPlayer(player2);
         assertEquals(GameStatus.IN_PROGRESS, gameEngine.getStatus());
+        gameEngine.removeBankruptPlayer(player2);
         assertEquals(player1, gameEngine.getCurrentPlayer());
+        assertEquals(GameStatus.GAME_OVER, gameEngine.getStatus());
 
         EasyMock.verify(player1, player2);
     }

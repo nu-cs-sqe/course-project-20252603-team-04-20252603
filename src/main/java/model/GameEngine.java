@@ -40,6 +40,8 @@ public class GameEngine {
         }
     }
 
-    public void removeBankruptPlayer(Player player){}
+    public void removeBankruptPlayer(Player player){
+        status = GameStatus.GAME_OVER;
+    }
 
 }

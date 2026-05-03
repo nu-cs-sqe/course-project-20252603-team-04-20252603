@@ -56,7 +56,7 @@
 
 ## Method under test: `removeBankruptPlayer(Player player)`
 
-- **TC12: Remove player from 2-player game ends game** ( :x: )
+- **TC12: Remove player from 2-player game ends game** ( :white_check_mark: )
   - **State of the system**: `[P1, P2]`, remove `P2`
   - **Expected output**: `[P1]`, game over
 
