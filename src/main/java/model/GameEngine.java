@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GameEngine {
@@ -11,7 +10,7 @@ public class GameEngine {
     private int currentPlayerIndex;
 
     public GameEngine(List<Player> players) {
-        this.players = players;
+        this.players = new ArrayList<>(players);
         this.status = GameStatus.NOT_STARTED;
         this.currentPlayerIndex = 0;
     }
@@ -41,7 +40,11 @@ public class GameEngine {
     }
 
     public void removeBankruptPlayer(Player player){
-        status = GameStatus.GAME_OVER;
+        players.remove(player);
+        if (players.size() == 1) {
+            status = GameStatus.GAME_OVER;
+ 
+        }
     }
 
 }

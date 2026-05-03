@@ -60,7 +60,7 @@
   - **State of the system**: `[P1, P2]`, remove `P2`
   - **Expected output**: `[P1]`, game over
 
-- **TC13: Remove player from 3-player game continues game** ( :x: )
+- **TC13: Remove player from 3-player game continues game** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3]`, remove `P2`
   - **Expected output**: `[P1, P3]`, game not over
 
