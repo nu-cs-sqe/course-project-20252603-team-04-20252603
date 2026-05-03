@@ -227,4 +227,23 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2, player3);
     }
+
+    @Test
+    public void Remove_Last_Player_In_Turn_Order_Wraps_Correctly(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+
+
+        EasyMock.replay(player1, player2, player3);
+        
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3));
+        gameEngine.startGame();
+        gameEngine.nextTurn();
+        gameEngine.nextTurn();
+        gameEngine.removeBankruptPlayer(player3);
+        assertEquals(player1, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2, player3);
+    }
 }
