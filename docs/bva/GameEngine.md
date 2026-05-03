@@ -16,7 +16,7 @@
   - **State of the system**: `players = [P1, P2, P3, P4]`
   - **Expected output**: `status = IN_PROGRESS`, `current player = P1`
 
-- **TC4: Start game with 5 players throws exception** ( :x: )
+- **TC4: Start game with 5 players throws exception** ( :white_check_mark: )
   - **State of the system**: `players = [P1, P2, P3, P4, P5]`
   - **Expected output**: `IllegalArgumentException`
 
