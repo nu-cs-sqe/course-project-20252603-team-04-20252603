@@ -104,6 +104,6 @@
   - **State of the system**: `[P1]`
   - **Expected output**: `P1`
 
-- **TC22: No players means no winner** ( :x: )
+- **TC22: No players means no winner** ( :white_check_mark: )
   - **State of the system**: `[]`
   - **Expected output**: `null` or `Optional.empty()`

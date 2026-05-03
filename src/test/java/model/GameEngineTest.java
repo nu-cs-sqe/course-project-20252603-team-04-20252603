@@ -323,4 +323,12 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2);
     }
+
+    @Test
+    public void No_Players_Means_No_Winner(){
+        GameEngine gameEngine = new GameEngine(List.of());
+        assertEquals(Optional.empty(), gameEngine.getWinner());
+
+        EasyMock.verify();
+    }
 }
