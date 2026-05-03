@@ -12,7 +12,7 @@
   - **State of the system**: `players = [P1, P2]`
   - **Expected output**: `status = IN_PROGRESS`, `current player = P1`
 
-- **TC3: Start game with 4 players succeeds** ( :x: )
+- **TC3: Start game with 4 players succeeds** ( :white_check_mark: )
   - **State of the system**: `players = [P1, P2, P3, P4]`
   - **Expected output**: `status = IN_PROGRESS`, `current player = P1`
 

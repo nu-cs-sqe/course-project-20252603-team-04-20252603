@@ -37,4 +37,23 @@ public class GameEngineTest {
 
         EasyMock.verify(player1);
     }
+
+    @Test
+    public void Start_Game_With_Four_Players_Succeeds(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+        Player player4 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2, player3, player4);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3, player4));
+        gameEngine.startGame();
+
+        assertEquals(GameStatus.IN_PROGRESS, gameEngine.getStatus());
+        assertSame(player1, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2, player3, player4);
+        
+    }
 }
