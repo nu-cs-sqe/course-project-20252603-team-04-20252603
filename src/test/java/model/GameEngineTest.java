@@ -1,8 +1,10 @@
 package model;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.annotation.Testable;
 import org.easymock.EasyMock;
 import java.util.List;
+import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -293,5 +295,17 @@ public class GameEngineTest {
         assertEquals(false, gameEngine.isGameOver());
 
         EasyMock.verify(player1, player2, player3, player4);
+    }
+
+    // getWinner tests
+    @Test
+    public void No_Winner_When_Multiple_Players_Remain(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1, player2);
+        
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+        assertEquals(Optional.empty(), gameEngine.getWinner());
     }
 }

@@ -96,7 +96,7 @@
 
 ## Method under test: `getWinner()`
 
-- **TC20: No winner when multiple players remain** ( :x: )
+- **TC20: No winner when multiple players remain** ( :white_check_mark: )
   - **State of the system**: `[P1, P2]`
   - **Expected output**: `null` or `Optional.empty()`
 

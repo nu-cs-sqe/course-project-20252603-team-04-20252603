@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GameEngine {
 
@@ -61,6 +62,10 @@ public class GameEngine {
             return true;
         }
         return status == GameStatus.GAME_OVER;
+    }
+
+    public Optional<Player> getWinner() {
+        return Optional.empty();
     }
 
 }
