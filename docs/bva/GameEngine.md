@@ -84,11 +84,11 @@
   - **State of the system**: `[P1]`
   - **Expected output**: `true`
 
-- **TC18: Two players means game is not over** ( :x: )
+- **TC18: Two players means game is not over** ( :white_check_mark: )
   - **State of the system**: `[P1, P2]`
   - **Expected output**: `false`
 
-- **TC19: Four players means game is not over** ( :x: )
+- **TC19: Four players means game is not over** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3, P4]`
   - **Expected output**: `false`
 
