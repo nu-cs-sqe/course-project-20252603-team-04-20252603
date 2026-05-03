@@ -24,7 +24,7 @@
 
 ## Method under test: `getCurrentPlayer()`
 
-- **TC5: Before any turns, current player is first player** ( :x: )
+- **TC5: Before any turns, current player is first player** ( :white_check_mark: )
   - **State of the system**: `players = [P1, P2]`, `currentPlayerIndex = 0`
   - **Expected output**: `P1`
 

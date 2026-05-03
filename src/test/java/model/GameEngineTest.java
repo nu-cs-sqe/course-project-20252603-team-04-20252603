@@ -72,4 +72,21 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2, player3, player4, player5);
     }
+
+    // getCurrentPlayer tests
+
+    @Test
+    public void Before_Any_Turns_Current_Player_Is_First_Player(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2);
+        
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+
+        assertEquals(player1, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2);
+    }
 }
