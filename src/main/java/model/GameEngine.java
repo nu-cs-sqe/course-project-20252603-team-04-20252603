@@ -39,4 +39,7 @@ public class GameEngine {
             currentPlayerIndex = 0;
         }
     }
+
+    public void removeBankruptPlayer(Player player){}
+
 }
