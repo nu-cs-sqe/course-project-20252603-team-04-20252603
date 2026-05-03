@@ -48,7 +48,7 @@
   - **State of the system**: `[P1, P2, P3, P4]`, `current = P2`
   - **Expected output**: `current = P3`
 
-- **TC11: Wrap in larger game** ( :x: )
+- **TC11: Wrap in larger game** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3, P4]`, `current = P4`
   - **Expected output**: `current = P1`
 
