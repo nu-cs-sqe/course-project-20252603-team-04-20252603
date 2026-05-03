@@ -44,7 +44,7 @@
   - **State of the system**: `[P1, P2]`, `current = P1`
   - **Expected output**: `current = P2`
 
-- **TC10: Advance in larger game (middle case)** ( :x: )
+- **TC10: Advance in larger game (middle case)** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3, P4]`, `current = P2`
   - **Expected output**: `current = P3`
 
