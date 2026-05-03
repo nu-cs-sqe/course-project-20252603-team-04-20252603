@@ -39,11 +39,20 @@ public class GameEngine {
         }
     }
 
-    public void removeBankruptPlayer(Player player){
-        players.remove(player);
+    public void removeBankruptPlayer(Player player) {
+        int removeIdx = players.indexOf(player);
+        if (removeIdx < 0) {
+            return;
+        }
+        players.remove(removeIdx);
+        if (removeIdx < currentPlayerIndex) {
+            currentPlayerIndex--;
+        }
+        if (currentPlayerIndex >= players.size()) {
+            currentPlayerIndex = 0;
+        }
         if (players.size() == 1) {
             status = GameStatus.GAME_OVER;
- 
         }
     }
 

@@ -68,7 +68,7 @@
   - **State of the system**: `[P1, P2, P3]`, `current = P1`, remove `P1`
   - **Expected output**: `current = P2`
 
-- **TC15: Remove last player in turn order wraps correctly** ( :x: )
+- **TC15: Remove last player in turn order wraps correctly** ( :white_check_mark: )
   - **State of the system**: `[P1, P2, P3]`, `current = P3`, remove `P3`
   - **Expected output**: `current = P1`
 
