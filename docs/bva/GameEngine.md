@@ -100,7 +100,7 @@
   - **State of the system**: `[P1, P2]`
   - **Expected output**: `null` or `Optional.empty()`
 
-- **TC21: Single remaining player is winner** ( :x: )
+- **TC21: Single remaining player is winner** ( :white_check_mark: )
   - **State of the system**: `[P1]`
   - **Expected output**: `P1`
 

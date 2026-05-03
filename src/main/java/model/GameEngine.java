@@ -65,7 +65,10 @@ public class GameEngine {
     }
 
     public Optional<Player> getWinner() {
-        return Optional.empty();
+        if (players.size() != 1 || status != GameStatus.GAME_OVER) {
+            return Optional.empty();
+        }
+        return Optional.of(players.get(0));
     }
 
 }

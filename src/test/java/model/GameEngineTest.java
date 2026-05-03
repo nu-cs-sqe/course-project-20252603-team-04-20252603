@@ -308,4 +308,19 @@ public class GameEngineTest {
         gameEngine.startGame();
         assertEquals(Optional.empty(), gameEngine.getWinner());
     }
+
+    @Test
+    public void Single_Remaining_Player_Is_Winner() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+        gameEngine.removeBankruptPlayer(player2);
+
+        assertEquals(Optional.of(player1), gameEngine.getWinner());
+
+        EasyMock.verify(player1, player2);
+    }
 }
