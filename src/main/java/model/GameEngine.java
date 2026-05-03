@@ -56,8 +56,11 @@ public class GameEngine {
         }
     }
 
-    public boolean isGameOver(){
-        return true;
+    public boolean isGameOver() {
+        if (players.size() < 2) {
+            return true;
+        }
+        return status == GameStatus.GAME_OVER;
     }
 
 }

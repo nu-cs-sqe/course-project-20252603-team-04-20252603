@@ -80,7 +80,7 @@
   - **State of the system**: `[]`
   - **Expected output**: `true`
 
-- **TC17: One player means game is over** ( :x: )
+- **TC17: One player means game is over** ( :white_check_mark: )
   - **State of the system**: `[P1]`
   - **Expected output**: `true`
 

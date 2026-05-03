@@ -255,4 +255,15 @@ public class GameEngineTest {
                 
         assertEquals(true, gameEngine.isGameOver());
     }
+
+    @Test
+    public void One_Player_Means_Game_Is_Over(){
+        Player player1 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1);
+        
+        GameEngine gameEngine = new GameEngine(List.of(player1));
+        assertEquals(true, gameEngine.isGameOver());
+
+        EasyMock.verify(player1);
+    }
 }
