@@ -5,6 +5,7 @@ import org.easymock.EasyMock;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GameEngineTest {
     @Test
@@ -23,5 +24,17 @@ public class GameEngineTest {
         EasyMock.verify(player1, player2);
 
 
+    }
+
+    @Test 
+    public void Start_Game_With_One_Player_Throws_Exception(){
+        Player player1 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1));
+        assertThrows(IllegalArgumentException.class, () -> gameEngine.startGame());
+
+        EasyMock.verify(player1);
     }
 }

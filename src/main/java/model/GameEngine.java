@@ -17,6 +17,9 @@ public class GameEngine {
     }
 
     public void startGame() {
+        if (players.size() < 2) {
+            throw new IllegalArgumentException("At least 2 players are required to start the game");
+        }
         status = GameStatus.IN_PROGRESS;
     }
 

@@ -4,11 +4,11 @@
 
 ## Method under test: `startGame()`
 
-- **TC1: Start game with 1 player throws exception** ( :x: )
+- **TC1: Start game with 1 player throws exception** ( :white_check_mark: )
   - **State of the system**: `players = [P1]`
   - **Expected output**: `IllegalArgumentException`
 
-- **TC2: Start game with 2 players succeeds** ( :x: )
+- **TC2: Start game with 2 players succeeds** ( :white_check_mark: )
   - **State of the system**: `players = [P1, P2]`
   - **Expected output**: `status = IN_PROGRESS`, `current player = P1`
 
