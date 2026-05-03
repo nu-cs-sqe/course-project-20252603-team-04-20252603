@@ -44,10 +44,6 @@
   - **State of the system**: `[P1, P2]`, `current = P1`
   - **Expected output**: `current = P2`
 
-- **TC9: Wrap from last player back to first** ( :x: )
-  - **State of the system**: `[P1, P2]`, `current = P2`
-  - **Expected output**: `current = P1`
-
 - **TC10: Advance in larger game (middle case)** ( :x: )
   - **State of the system**: `[P1, P2, P3, P4]`, `current = P2`
   - **Expected output**: `current = P3`
