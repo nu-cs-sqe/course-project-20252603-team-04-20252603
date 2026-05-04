@@ -75,35 +75,35 @@ Output equivalent classes:
 
 ### Method under test: `getName()`
 
-- **TC1: Property tile name** ( :white_check_mark: )
+- **TC1: Property tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.PROPERTY` as its name.
   - **Expected output**: `getName()` returns `TileType.PROPERTY`.
 
-- **TC2: Chance tile name** ( :white_check_mark: )
+- **TC2: Chance tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.CHANCE` as its name.
   - **Expected output**: `getName()` returns `TileType.CHANCE`.
 
-- **TC3: IRS tile name** ( :white_check_mark: )
+- **TC3: IRS tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.IRS` as its name.
   - **Expected output**: `getName()` returns `TileType.IRS`.
 
-- **TC4: GO tile name** ( :white_check_mark: )
+- **TC4: GO tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.GO` as its name.
   - **Expected output**: `getName()` returns `TileType.GO`.
 
-- **TC5: Free tile name** ( :white_check_mark: )
+- **TC5: Free tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.FREE` as its name.
   - **Expected output**: `getName()` returns `TileType.FREE`.
 
-- **TC6: Jail tile name** ( :white_check_mark: )
+- **TC6: Jail tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.JAIL` as its name.
   - **Expected output**: `getName()` returns `TileType.JAIL`.
 
-- **TC7: Go-to-jail tile name** ( :white_check_mark: )
+- **TC7: Go-to-jail tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `TileType.GOTOJAIL` as its name.
   - **Expected output**: `getName()` returns `TileType.GOTOJAIL`.
 
-- **TC8: Null tile name** ( :white_check_mark: )
+- **TC8: Null tile name** ( :x: )
   - **State of the system**: A concrete tile is created with `null` as its name.
   - **Expected output**: Construction is rejected, and `getName()` should never return `null`.
 
