@@ -29,7 +29,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 100  
   - **Expected output**: balance becomes 0  
 
-- **TC4: Buy with slightly less than balance** ( :x: )  
+- **TC4: Buy with slightly less than balance** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 99.99  
   - **Expected output**: balance becomes 0.01  
 
@@ -37,7 +37,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 101  
   - **Expected output**: purchase denied OR no change  
 
-- **TC5b: Buy with Double.MAX_VALUE (extreme boundary)** ( :x: )  
+- **TC5b: Buy with Double.MAX_VALUE (extreme boundary)** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
   - **Expected output**: purchase denied OR no change
 
@@ -55,7 +55,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 50  
   - **Expected output**: balance becomes 150  
 
-- **TC9: Sell maximum double value** ( :x: )  
+- **TC9: Sell maximum double value** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
   - **Expected output**: balance updates safely OR operation rejected due to overflow handling  
 
@@ -77,11 +77,11 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = 100.01  
   - **Expected output**: false  
 
-- **TC14: Negative amount** ( :x: )  
+- **TC14: Negative amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = -10  
   - **Expected output**: true OR invalid input handled  
 
-- **TC14b: Amount = Double.MAX_VALUE** ( :x: )  
+- **TC14b: Amount = Double.MAX_VALUE** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE
   - **Expected output**: false  
 
@@ -95,7 +95,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: property already exists  
   - **Expected output**: no duplicate added  
 
-- **TC17: Add null property** ( :x: )  
+- **TC17: Add null property** ( :white_check_mark: )  
   - **State of the system**: property = null  
   - **Expected output**: rejected / no change  
 
@@ -132,15 +132,15 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: position = any valid  
   - **Expected output**: inJail = true, position = jailPosition  
 
-- **TC24: Negative jail position** ( :x: )  
+- **TC24: Negative jail position** (  :white_check_mark:  )  
   - **State of the system**: jailPosition = -1  
   - **Expected output**: rejected OR handled safely  
 
-- **TC24b: Maximum integer jail position (invalid)** ( :x: )
+- **TC24b: Maximum integer jail position (invalid)** (  :white_check_mark:  )
   - **State of the system**: jailPosition = Integer.MAX_VALUE
   - **Expected output**: rejected OR handled safely
 
-- **TC24c: Minimum integer jail position (invalid)** ( :x: )
+- **TC24c: Minimum integer jail position (invalid)** (  :white_check_mark:  )
   - **State of the system**: jailPosition = Integer.MIN_VALUE
   - **Expected output**: rejected OR handled safely
 
