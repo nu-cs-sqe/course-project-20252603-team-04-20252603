@@ -16,11 +16,11 @@
 2. Output type: Interval
 3. Output range: [1,6]
 
-- **TC1: getDieOne_OnLowestRoll_Return1** ( :white_check_mark: )
+- **TC3: getDieOne_OnLowestRoll_Return1** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`
   - **Expected output**: 1
 
-- **TC2: getDieOne_OnHighestRoll_Return6** ( :white_check_mark: )
+- **TC4: getDieOne_OnHighestRoll_Return6** ( :white_check_mark: )
   - **State of the system**: `dieOne = 6`
   - **Expected output**: 6
 
@@ -29,11 +29,11 @@
 2. Output type: Interval
 3. Output range: [1,6]
 
-- **TC1: getDieTwo_OnLowestRoll_Return1** ( :white_check_mark: )
+- **TC5: getDieTwo_OnLowestRoll_Return1** ( :white_check_mark: )
   - **State of the system**: `dieTwo = 1`
   - **Expected output**: 1
 
-- **TC2: getDieTwo_OnHighestRoll_Return6** ( :white_check_mark: )
+- **TC6: getDieTwo_OnHighestRoll_Return6** ( :white_check_mark: )
   - **State of the system**: `dieTwo = 6`
   - **Expected output**: 6
 
@@ -42,11 +42,11 @@
 2. Output type: Interval
 3. Output range: [2,12]
 
-- **TC1: getTotal_WhenDiceAre1And1_Return2** ( :white_check_mark: )
+- **TC7: getTotal_WhenDiceAre1And1_Return2** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: 2
 
-- **TC2: getTotal_WhenDiceAre6And6_Return12** ( :white_check_mark: )
+- **TC8: getTotal_WhenDiceAre6And6_Return12** ( :white_check_mark: )
   - **State of the system**: `dieOne = 6`, `dieTwo = 6`
   - **Expected output**: 12
 
@@ -55,10 +55,10 @@
 2. Output type: Boolean
 3. Output values: true, false
 
-- **TC1: isDoubles_WhenDiceAreEqual_ReturnTrue** ( :white_check_mark: )
+- **TC9: isDoubles_WhenDiceAreEqual_ReturnTrue** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 1`
   - **Expected output**: true
 
-- **TC2: isDoubles_WhenDiceAreDifferent_ReturnFalse** ( :white_check_mark: )
+- **TC10: isDoubles_WhenDiceAreDifferent_ReturnFalse** ( :white_check_mark: )
   - **State of the system**: `dieOne = 1`, `dieTwo = 2`
   - **Expected output**: false
