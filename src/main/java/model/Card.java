@@ -8,8 +8,8 @@ public class Card {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("title must not be null or empty");
         }
-        if (description == null) {
-            throw new IllegalArgumentException("description must not be null");
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("description must not be null or empty");
         }
         this.description = description;
     }

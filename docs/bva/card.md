@@ -27,7 +27,7 @@ Card Class:
     - **State of the system**: `title = "Go to Jail"`, `description = null`, valid `effect`
     - **Expected output**: `IllegalArgumentException` thrown
 
-- **TC5: Empty description** ( :x: )
+- **TC5: Empty description** ( :white_check_mark: )
     - **State of the system**: `title = "Go to Jail"`, `description = ""`, valid `effect`
     - **Expected output**: `IllegalArgumentException` thrown
 
