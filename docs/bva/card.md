@@ -39,11 +39,11 @@ Card Class:
 
 ### Method under test: `getDescription()`
 
-- **TC7: Normal description** ( :x: )
+- **TC7: Normal description** ( :white_check_mark: )
     - **State of the system**: Card constructed with `description = "AI bubble pops: lose $500"`
     - **Expected output**: Returns `"AI bubble pops: lose $500"` (exact match)
 
-- **TC8: Description with special characters** ( :x: )
+- **TC8: Description with special characters** ( :white_check_mark: )
     - **State of the system**: Card constructed with `description = "Pay $100 for a subscription service!"`
     - **Expected output**: Returns `"Pay $100 for a subscription service!"` unchanged
 

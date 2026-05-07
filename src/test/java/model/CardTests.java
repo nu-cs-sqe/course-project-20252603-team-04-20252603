@@ -65,4 +65,22 @@ public class CardTests {
         assertThrows(IllegalArgumentException.class,
                 () -> new Card(title, description, effect));
     }
+
+    @Test
+    public void getDescription_OnNormalDescription_ReturnsExactString() {
+        CardEffect effect = (player, game) -> {};
+        Card card = new Card("AI Bubble", "AI bubble pops: lose $500", effect);
+
+        assertEquals("AI bubble pops: lose $500", card.getDescription());
+    }
+
+    @Test
+    public void getDescription_OnDescriptionWithSpecialCharacters_ReturnsUnchanged() {
+        CardEffect effect = (player, game) -> {};
+        Card card = new Card("Subscription",
+                "Pay $100 for a subscription service!", effect);
+
+        assertEquals("Pay $100 for a subscription service!",
+                card.getDescription());
+    }
 }
