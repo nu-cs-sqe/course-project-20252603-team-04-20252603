@@ -1,6 +1,6 @@
 # Property BVA Analysis
 
-## Constructor: `Property(double price, double rent)`
+## Constructor: `Property(string name, double price, double rent)`
 
 ### Price Parameter Boundaries
 - **TC1: Valid price** ( :x: )
