@@ -25,4 +25,14 @@ public class CardTests {
         assertThrows(IllegalArgumentException.class,
                 () -> new Card(title, description, effect));
     }
+
+    @Test
+    public void constructor_OnEmptyTitle_ThrowsIllegalArgumentException() {
+        String title = "";
+        String description = "Go directly to jail.";
+        CardEffect effect = (player, game) -> {};
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Card(title, description, effect));
+    }
 }
