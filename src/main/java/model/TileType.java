@@ -3,7 +3,7 @@ package model;
 public enum TileType {
     PropertyTile,
     ChanceTile,
-    TaxTile,
+    IRSTile,
     JailTile,
     GoTile,
     FreeTile,

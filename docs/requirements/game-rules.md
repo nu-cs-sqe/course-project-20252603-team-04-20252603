@@ -286,7 +286,7 @@ System
 - [ ] Create abstract `Tile` class or `Tile` interface.
 - [ ] Create `PropertyTile`.
 - [ ] Create `ChanceTile`.
-- [ ] Create `TaxTile` / `IRSTile`.
+- [ ] Create `IRSTile`.
 - [ ] Create `JailTile`.
 - [ ] Create `GoTile`.
 - [ ] Create `FreeTile`.
