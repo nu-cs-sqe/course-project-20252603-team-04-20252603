@@ -57,7 +57,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC9: Sell maximum double value** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
-  - **Expected output**: balance updates safely OR operation rejected due to overflow handling  
+  - **Expected output**: operation rejected OR no change  
 
 ## Method under test: `canAfford(double amount)`
 
@@ -79,13 +79,13 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC14: Negative amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = -10  
-  - **Expected output**: true OR invalid input handled  
+  - **Expected output**: false  
 
 - **TC14b: Amount = Double.MAX_VALUE** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE
   - **Expected output**: false  
 
-## Method under test: `addProperty(PropertyTile property)`
+## Method under test: `addProperty(Property property)`
 
 - **TC15: Add to empty property set** ( :white_check_mark: )  
   - **State of the system**: properties = empty  
@@ -100,7 +100,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **Expected output**: rejected / no change  
 
 
-## Method under test: `removeProperty(PropertyTile property)`
+## Method under test: `removeProperty(Property property)`
 
 - **TC18: Remove existing property** ( :white_check_mark: )  
   - **State of the system**: property exists in set  
@@ -114,8 +114,12 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: properties = empty  
   - **Expected output**: no change  
 
+- **TC20a: Remove null property** ( :white_check_mark: )  
+  - **State of the system**: property = null  
+  - **Expected output**: rejected / no change  
 
-## Method under test: `sellProperty(PropertyTile property)`
+
+## Method under test: `sellProperty(Property property)`
 
 - **TC21: Sell owned property** ( :white_check_mark: )  
   - **State of the system**: property in set  
@@ -125,12 +129,16 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: property not in set  
   - **Expected output**: no change  
 
+- **TC22a: Sell null property** ( :white_check_mark: )  
+  - **State of the system**: property = null  
+  - **Expected output**: rejected / no change  
+
 
 ## Method under test: `goToJail(int jailPosition)`
 
 - **TC23: Valid jail position** ( :white_check_mark: )  
   - **State of the system**: position = any valid  
-  - **Expected output**: inJail = true, position = jailPosition  
+  - **Expected output**: inJail = true, position = 10  
 
 - **TC24: Negative jail position** (  :white_check_mark:  )  
   - **State of the system**: jailPosition = -1  
@@ -149,7 +157,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC25: Player is in jail** ( :white_check_mark: )  
   - **State of the system**: inJail = true  
-  - **Expected output**: inJail = false, jailTurnCount reset  
+  - **Expected output**: inJail = false, jailTurnCount reset, position increases by 1  
 
 - **TC26: Player not in jail** ( :white_check_mark: )  
   - **State of the system**: inJail = false  
