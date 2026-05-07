@@ -1,9 +1,11 @@
 package model;
 
+
 import java.util.Set;
 
 import javax.swing.ImageIcon;
 import model.Property;
+import util.Constants;
 
 public class Player {
 
@@ -42,7 +44,7 @@ public class Player {
         if (price < 0 || price == Double.MAX_VALUE) {
             return false;
         }
-        this.balance += price * 0.8;
+        this.balance += price * Constants.SELL_MULTIPLIER;
         return true;
     }
     public boolean canAfford(double price) {
@@ -85,9 +87,6 @@ public class Player {
     }
     public boolean goToJail(int position)
     {
-
-        // this is bad practice we should not be using checking with magic numbers th emax bound should be the length of the baord class tiles 
-        // just for testing purposes we will assume there are 32 tiles on the board and the jail tile is at position 10
         if (position < 0 || position > 31) {
             return false;
         }
