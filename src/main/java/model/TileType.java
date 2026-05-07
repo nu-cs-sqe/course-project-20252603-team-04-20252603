@@ -1,11 +1,11 @@
 package model;
 
 public enum TileType {
-    PropertyTile,
-    ChanceTile,
-    IRSTile,
-    JailTile,
-    GoTile,
-    FreeTile,
-    GoToJailTile
+    PROPERTY,
+    CHANCE,
+    IRS,
+    JAIL,
+    GO,
+    FREE,
+    GOTOJAIL
 }
