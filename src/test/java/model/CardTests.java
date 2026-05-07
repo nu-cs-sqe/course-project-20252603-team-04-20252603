@@ -15,4 +15,14 @@ public class CardTests {
 
         assertEquals("Go directly to jail.", card.getDescription());
     }
+
+    @Test
+    public void constructor_OnNullTitle_ThrowsIllegalArgumentException() {
+        String title = null;
+        String description = "Go directly to jail.";
+        CardEffect effect = (player, game) -> {};
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Card(title, description, effect));
+    }
 }

@@ -15,7 +15,7 @@ Card Class:
     - **State of the system**: `title = "Go to Jail"`, `description = "Go directly to jail."`, `effect` is a valid `CardEffect` lambda
     - **Expected output**: Card is created successfully; `getDescription()` returns `"Go directly to jail."`
 
-- **TC2: Null title** ( :x: )
+- **TC2: Null title** ( :white_check_mark: )
     - **State of the system**: `title = null`, `description = "Go directly to jail."`, valid `effect`
     - **Expected output**: `IllegalArgumentException` thrown
 
