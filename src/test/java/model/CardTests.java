@@ -55,4 +55,14 @@ public class CardTests {
         assertThrows(IllegalArgumentException.class,
                 () -> new Card(title, description, effect));
     }
+
+    @Test
+    public void constructor_OnNullEffect_ThrowsIllegalArgumentException() {
+        String title = "Go to Jail";
+        String description = "Go directly to jail.";
+        CardEffect effect = null;
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Card(title, description, effect));
+    }
 }

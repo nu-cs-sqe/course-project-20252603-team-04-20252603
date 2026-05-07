@@ -11,6 +11,9 @@ public class Card {
         if (description == null || description.isEmpty()) {
             throw new IllegalArgumentException("description must not be null or empty");
         }
+        if (effect == null) {
+            throw new IllegalArgumentException("effect must not be null");
+        }
         this.description = description;
     }
 
