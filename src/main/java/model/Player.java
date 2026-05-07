@@ -3,13 +3,13 @@ package model;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import model.Properties;
+import model.Property;
 
 public class Player {
 
     private String name;
     private double balance;
-    private Set<Properties> ownedProperties;
+    private Set<Property> ownedProperties;
     private boolean inJail;
     private int jailTurnCount;
     private int position;
@@ -52,21 +52,21 @@ public class Player {
         return this.balance >= price;
     }
 
-    public Set<Properties> getOwnedProperties() {
+    public Set<Property> getOwnedProperties() {
         return this.ownedProperties;
     }
 
-    public boolean addProperty(Properties proptery){
-        if (proptery == null){ return false; }
+    public boolean addProperty(Property property){
+        if (property == null){ return false; }
 
-        return this.ownedProperties.add(proptery);
+        return this.ownedProperties.add(property);
     }
-    public boolean removeProperty(Properties property){
+    public boolean removeProperty(Property property){
         if (property == null){ return false; }
 
         return this.ownedProperties.remove(property);
     }
-    public boolean sellProperty(Properties property)
+    public boolean sellProperty(Property property)
     {
         if (property == null){ return false; }
         if (!this.ownedProperties.contains(property)){ return false; }
@@ -93,7 +93,7 @@ public class Player {
         }
         this.inJail = true;
         this.jailTurnCount = 1;
-        this.position = 10;
+        this.position = position;
         return true;
     }
     public boolean leaveJail() {

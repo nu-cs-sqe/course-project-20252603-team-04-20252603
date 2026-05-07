@@ -30,8 +30,8 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **Expected output**: balance becomes 0  
 
 - **TC4: Buy with slightly less than balance** ( :white_check_mark: )  
-  - **State of the system**: balance = 100, amount = 99.99  
-  - **Expected output**: balance becomes 0.01  
+  - **State of the system**: balance = 100, amount = 99.00
+  - **Expected output**: balance becomes 1.00 
 
 - **TC5: Buy with more than balance** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 101  
@@ -53,7 +53,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC8: Sell positive amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 50  
-  - **Expected output**: balance becomes 150  
+  - **Expected output**: balance becomes 140
 
 - **TC9: Sell maximum double value** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  

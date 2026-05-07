@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.easymock.EasyMock;
 
-import model.Properties;
+import model.Property;
 
 import model.Player;
 
@@ -171,7 +171,7 @@ public class PlayerTests {
     @Test
     public void Test_Adding_Property_To_Player() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.replay(propertyMock);
 
@@ -198,7 +198,7 @@ public class PlayerTests {
     @Test
     public void Test_Adding_Duplicate_Property_To_Player() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.replay(propertyMock);
 
@@ -216,7 +216,7 @@ public class PlayerTests {
     @Test
     public void Test_Removing_Property_From_Player_Exists() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.replay(propertyMock);
 
@@ -231,7 +231,7 @@ public class PlayerTests {
     @Test
     public void Test_Removing_Property_From_Player_Not_Exists() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.replay(propertyMock);
 
@@ -243,7 +243,7 @@ public class PlayerTests {
     @Test
     public void Test_Removing_Property_From_Player_With_No_Properties() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.replay(propertyMock);
 
@@ -268,7 +268,7 @@ public class PlayerTests {
 
     public void Tests_Selling_Owned_Property() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
 
         EasyMock.expect(propertyMock.getPrice()).andReturn(100.0);
         EasyMock.replay(propertyMock);
@@ -286,7 +286,7 @@ public class PlayerTests {
     
     public void Test_Selling_Unowned_Property() {
         Player player = new Player("John", 100.0);
-        Properties propertyMock = EasyMock.createMock(Properties.class);
+        Property propertyMock = EasyMock.createMock(Property.class);
         EasyMock.replay(propertyMock);
 
         boolean success = player.sellProperty(propertyMock);
@@ -309,9 +309,10 @@ public class PlayerTests {
     // ==================================================================================================
     @Test
     public void Test_GoToJail_Valid_Position() {
+        final int JAIL_POSITION = 10; // Assuming 10 is the valid jail position based on your game board design
         Player player = new Player("John", 100.0);
         // Note: based on your Player class logic, valid bounds are 0 to 31.
-        boolean success = player.goToJail(8);
+        boolean success = player.goToJail(JAIL_POSITION);
         
         assertTrue(success, "Sending player to valid jail position should be successful");
         assertTrue(player.inJail(), "Player should be marked as in jail");

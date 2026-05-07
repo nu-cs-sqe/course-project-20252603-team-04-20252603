@@ -1,6 +1,6 @@
 package model;
 
-public class Properties {
+public class Property {
 
 
     public double getPrice() {
