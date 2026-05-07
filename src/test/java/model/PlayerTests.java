@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.easymock.EasyMock;
 
 import model.Property;
+import util.Constants;
 
 import model.Player;
 
@@ -309,10 +310,9 @@ public class PlayerTests {
     // ==================================================================================================
     @Test
     public void Test_GoToJail_Valid_Position() {
-        final int JAIL_POSITION = 10; // Assuming 10 is the valid jail position based on your game board design
+   
         Player player = new Player("John", 100.0);
-        // Note: based on your Player class logic, valid bounds are 0 to 31.
-        boolean success = player.goToJail(JAIL_POSITION);
+        boolean success = player.goToJail(Constants.JAIL_POSITION);
         
         assertTrue(success, "Sending player to valid jail position should be successful");
         assertTrue(player.inJail(), "Player should be marked as in jail");
