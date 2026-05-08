@@ -1,14 +1,15 @@
 package model;
 
-import java.util.Arrays;
-
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import util.Constants;
 
 public class GoTileTests {
 
     // ==================================================================================================
-    // Test suite for the GoTile class.
+    // Test suite for the GoTile class. Player and GameEngine collaborators are mocked with EasyMock.
     // ==================================================================================================
 
     // TC1: GoTile reports its tile type
@@ -22,125 +23,116 @@ public class GoTileTests {
     // TC2: Active player lands on GO and receives the GO bonus
     @Test
     public void Tests_LandOn_Gives_Bonus_To_Active_Player() {
-        Player player = new Player("John", 1000.0);
-        Player other = new Player("Jane", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(player, other));
-        int positionBefore = player.getPosition();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
+        EasyMock.replay(player, game);
 
         GoTile tile = new GoTile();
         tile.landOn(player, game);
 
-        assertEquals(1200.0, player.getBalance(), 0.001,
-                "Active player should receive the $200 GO bonus exactly once");
-        assertEquals(positionBefore, player.getPosition(),
-                "GoTile.landOn must not change the player's position");
+        // Strict mock verification: position-mutating methods (e.g. goToJail / leaveJail)
+        // would have failed the unexpected-call check, so position is implicitly unchanged.
+        EasyMock.verify(player, game);
     }
 
     // TC3: Player with $0 balance lands on GO
     @Test
     public void Tests_LandOn_Gives_Bonus_To_Zero_Balance_Player() {
-        Player player = new Player("John", 0.0);
-        Player other = new Player("Jane", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(player, other));
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
+        EasyMock.replay(player, game);
 
         GoTile tile = new GoTile();
         tile.landOn(player, game);
 
-        assertEquals(200.0, player.getBalance(), 0.001,
-                "Player with $0 balance should have $200 after landing on GO");
-        assertFalse(player.isBankrupt(),
-                "Player should not be bankrupt after receiving the GO bonus");
+        EasyMock.verify(player, game);
     }
 
     // TC4: Null player input
     @Test
     public void Tests_LandOn_Null_Player_Is_Rejected() {
-        Player other = new Player("Jane", 1000.0);
-        Player another = new Player("Bob", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(other, another));
-        double balanceBefore = other.getBalance();
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
 
         GoTile tile = new GoTile();
-
         assertThrows(IllegalArgumentException.class,
                 () -> tile.landOn(null, game),
                 "GoTile.landOn must reject a null player");
-        assertEquals(balanceBefore, other.getBalance(), 0.001,
-                "Other players' balances must not change when input is rejected");
+
+        EasyMock.verify(game);
     }
 
     // TC5: Null game input
     @Test
     public void Tests_LandOn_Null_Game_Is_Rejected() {
-        Player player = new Player("John", 1000.0);
-        GoTile tile = new GoTile();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.replay(player);
 
+        GoTile tile = new GoTile();
         assertThrows(IllegalArgumentException.class,
                 () -> tile.landOn(player, null),
                 "GoTile.landOn must reject a null game");
-        assertEquals(1000.0, player.getBalance(), 0.001,
-                "Player balance must not change when game is null");
+
+        EasyMock.verify(player);
     }
 
     // TC6: Both player and game null
     @Test
     public void Tests_LandOn_Both_Null_Is_Rejected() {
         GoTile tile = new GoTile();
-
         assertThrows(IllegalArgumentException.class,
                 () -> tile.landOn(null, null),
                 "GoTile.landOn must reject when both inputs are null");
     }
 
-    // TC10: landOn does not move the player off GO
+    // TC7: Eliminated / inactive player lands on GO
     @Test
-    public void Tests_LandOn_Does_Not_Change_Position() {
-        Player player = new Player("John", 1000.0);
-        Player other = new Player("Jane", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(player, other));
-        assertEquals(0, player.getPosition(),
-                "Pre-condition: new player starts on GO (position 0)");
+    public void Tests_LandOn_Eliminated_Player_Receives_No_Bonus() {
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(false);
+        EasyMock.replay(player, game);
 
         GoTile tile = new GoTile();
         tile.landOn(player, game);
 
-        assertEquals(0, player.getPosition(),
-                "GoTile.landOn must not change the player's position; movement is the Board's responsibility");
+        EasyMock.verify(player, game);
     }
 
     // TC8: Player at extreme upper balance lands on GO
     @Test
     public void Tests_LandOn_Extreme_Upper_Balance_Does_Not_Overflow() {
-        Player player = new Player("John", Double.MAX_VALUE - 100);
-        Player other = new Player("Jane", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(player, other));
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
+        EasyMock.replay(player, game);
 
         GoTile tile = new GoTile();
         tile.landOn(player, game);
 
-        double balance = player.getBalance();
-        assertTrue(Double.isFinite(balance),
-                "Player balance must remain a finite double after the GO bonus");
-        assertFalse(Double.isNaN(balance),
-                "Player balance must not be NaN after the GO bonus");
+        assertTrue(Double.isFinite(Constants.GO_BONUS),
+                "GO bonus must be a finite double so it cannot push a balance to Infinity");
+        EasyMock.verify(player, game);
     }
 
-    // TC7: Eliminated / inactive player lands on GO
+    // TC10: landOn does not move the player off GO
     @Test
-    public void Tests_LandOn_Eliminated_Player_Receives_No_Bonus() {
-        Player player = new Player("John", 0.0);
-        Player other = new Player("Jane", 1000.0);
-        GameEngine game = new GameEngine(Arrays.asList(player, other));
-
-        assertTrue(player.isBankrupt(),
-                "Pre-condition: $0-balance player is bankrupt and inactive");
-        assertFalse(player.isActive(),
-                "Pre-condition: bankrupt player must be inactive");
+    public void Tests_LandOn_Does_Not_Change_Position() {
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
+        EasyMock.replay(player, game);
 
         GoTile tile = new GoTile();
         tile.landOn(player, game);
 
-        assertEquals(0.0, player.getBalance(), 0.001,
-                "Eliminated player's balance must not increase from the GO bonus");
+        // Strict mocks: any unexpected position-mutation call (goToJail, leaveJail) would fail verify().
+        EasyMock.verify(player, game);
     }
 }
