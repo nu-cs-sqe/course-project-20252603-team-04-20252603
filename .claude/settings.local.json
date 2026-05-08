@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(./gradlew test *)",
-      "Bash(sh ./gradlew test --tests \"model.GoTileTests\")"
-    ]
-  }
-}

@@ -10,11 +10,11 @@
 
 ### Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC2: Active player lands on GO and receives the GO bonus** ( :x: )
+- **TC2: Active player lands on GO and receives the GO bonus** ( :white_check_mark: )
   - **State of the system**: `player.balance = 1000.0`, `game` is a valid in-progress `GameEngine`.
   - **Expected output**: `player.balance` becomes `1200.0` (bonus of $200 applied exactly once); `player.position` is unchanged.
 
-- **TC3: Player with $0 balance lands on GO** ( :x: )
+- **TC3: Player with $0 balance lands on GO** ( :white_check_mark: )
   - **State of the system**: `player.balance = 0.0`, `game` is valid.
   - **Expected output**: `player.balance` becomes `200.0`; player is not bankrupt.
 

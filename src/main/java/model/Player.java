@@ -47,6 +47,13 @@ public class Player {
         this.balance += price * Constants.SELL_MULTIPLIER;
         return true;
     }
+    public boolean receive(double amount) {
+        if (amount < 0 || amount == Double.MAX_VALUE) {
+            return false;
+        }
+        this.balance += amount;
+        return true;
+    }
     public boolean canAfford(double price) {
         if (price < 0 || price == Double.MAX_VALUE) {
             return false;
