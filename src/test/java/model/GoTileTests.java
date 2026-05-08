@@ -51,4 +51,44 @@ public class GoTileTests {
         assertFalse(player.isBankrupt(),
                 "Player should not be bankrupt after receiving the GO bonus");
     }
+
+    // TC4: Null player input
+    @Test
+    public void Tests_LandOn_Null_Player_Is_Rejected() {
+        Player other = new Player("Jane", 1000.0);
+        Player another = new Player("Bob", 1000.0);
+        GameEngine game = new GameEngine(Arrays.asList(other, another));
+        double balanceBefore = other.getBalance();
+
+        GoTile tile = new GoTile();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> tile.landOn(null, game),
+                "GoTile.landOn must reject a null player");
+        assertEquals(balanceBefore, other.getBalance(), 0.001,
+                "Other players' balances must not change when input is rejected");
+    }
+
+    // TC5: Null game input
+    @Test
+    public void Tests_LandOn_Null_Game_Is_Rejected() {
+        Player player = new Player("John", 1000.0);
+        GoTile tile = new GoTile();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> tile.landOn(player, null),
+                "GoTile.landOn must reject a null game");
+        assertEquals(1000.0, player.getBalance(), 0.001,
+                "Player balance must not change when game is null");
+    }
+
+    // TC6: Both player and game null
+    @Test
+    public void Tests_LandOn_Both_Null_Is_Rejected() {
+        GoTile tile = new GoTile();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> tile.landOn(null, null),
+                "GoTile.landOn must reject when both inputs are null");
+    }
 }

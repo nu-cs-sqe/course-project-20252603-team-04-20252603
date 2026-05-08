@@ -18,15 +18,15 @@
   - **State of the system**: `player.balance = 0.0`, `game` is valid.
   - **Expected output**: `player.balance` becomes `200.0`; player is not bankrupt.
 
-- **TC4: Null player input** ( :x: )
+- **TC4: Null player input** ( :white_check_mark: )
   - **State of the system**: `player = null`, `game` is valid.
   - **Expected output**: The method rejects the invalid input (e.g. throws `NullPointerException` / `IllegalArgumentException`); no state is mutated.
 
-- **TC5: Null game input** ( :x: )
+- **TC5: Null game input** ( :white_check_mark: )
   - **State of the system**: `player` is a valid active player, `game = null`.
   - **Expected output**: The method rejects the invalid input (throws an exception) OR safely no-ops; the player's balance does not change spuriously.
 
-- **TC6: Both player and game null** ( :x: )
+- **TC6: Both player and game null** ( :white_check_mark: )
   - **State of the system**: `player = null`, `game = null`.
   - **Expected output**: The method rejects the invalid inputs and applies no effect.
 
