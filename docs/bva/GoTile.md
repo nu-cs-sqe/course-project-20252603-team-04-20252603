@@ -38,6 +38,6 @@
   - **State of the system**: `player.balance = Double.MAX_VALUE - 100`, `game` is valid.
   - **Expected output**: Bonus is rejected / safely capped so the balance does not overflow to `Infinity`; balance remains a finite, valid `double`.
 
-- **TC10: `landOn` does not move the player off GO** ( :x: )
+- **TC10: `landOn` does not move the player off GO** ( :white_check_mark: )
   - **State of the system**: `player.position = 0` (on GO), `game` is valid.
   - **Expected output**: After `landOn`, `player.position == 0` (GoTile must not change position; movement is the Board's responsibility).

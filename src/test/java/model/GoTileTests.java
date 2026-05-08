@@ -92,6 +92,22 @@ public class GoTileTests {
                 "GoTile.landOn must reject when both inputs are null");
     }
 
+    // TC10: landOn does not move the player off GO
+    @Test
+    public void Tests_LandOn_Does_Not_Change_Position() {
+        Player player = new Player("John", 1000.0);
+        Player other = new Player("Jane", 1000.0);
+        GameEngine game = new GameEngine(Arrays.asList(player, other));
+        assertEquals(0, player.getPosition(),
+                "Pre-condition: new player starts on GO (position 0)");
+
+        GoTile tile = new GoTile();
+        tile.landOn(player, game);
+
+        assertEquals(0, player.getPosition(),
+                "GoTile.landOn must not change the player's position; movement is the Board's responsibility");
+    }
+
     // TC8: Player at extreme upper balance lands on GO
     @Test
     public void Tests_LandOn_Extreme_Upper_Balance_Does_Not_Overflow() {
