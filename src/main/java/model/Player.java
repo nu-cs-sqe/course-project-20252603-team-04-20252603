@@ -112,6 +112,9 @@ public class Player {
         return true;
 
     }
+    public boolean isActive() {
+        return this.active;
+    }
     public boolean isBankrupt() {
         if (this.balance <= 0.0) {
             this.active = false;

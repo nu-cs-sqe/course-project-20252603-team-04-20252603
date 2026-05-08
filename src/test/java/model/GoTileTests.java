@@ -91,4 +91,23 @@ public class GoTileTests {
                 () -> tile.landOn(null, null),
                 "GoTile.landOn must reject when both inputs are null");
     }
+
+    // TC7: Eliminated / inactive player lands on GO
+    @Test
+    public void Tests_LandOn_Eliminated_Player_Receives_No_Bonus() {
+        Player player = new Player("John", 0.0);
+        Player other = new Player("Jane", 1000.0);
+        GameEngine game = new GameEngine(Arrays.asList(player, other));
+
+        assertTrue(player.isBankrupt(),
+                "Pre-condition: $0-balance player is bankrupt and inactive");
+        assertFalse(player.isActive(),
+                "Pre-condition: bankrupt player must be inactive");
+
+        GoTile tile = new GoTile();
+        tile.landOn(player, game);
+
+        assertEquals(0.0, player.getBalance(), 0.001,
+                "Eliminated player's balance must not increase from the GO bonus");
+    }
 }

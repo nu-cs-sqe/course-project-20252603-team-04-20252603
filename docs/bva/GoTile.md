@@ -30,7 +30,7 @@
   - **State of the system**: `player = null`, `game = null`.
   - **Expected output**: The method rejects the invalid inputs and applies no effect.
 
-- **TC7: Eliminated / inactive player lands on GO** ( :x: )
+- **TC7: Eliminated / inactive player lands on GO** ( :white_check_mark: )
   - **State of the system**: `player.isBankrupt() == true` (already eliminated), `game` is valid.
   - **Expected output**: No bonus is applied to the eliminated player, OR the action is rejected. The eliminated player's balance is not increased.
 

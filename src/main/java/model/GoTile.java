@@ -14,6 +14,9 @@ public class GoTile implements Tile {
         if (player == null || game == null) {
             throw new IllegalArgumentException("player and game must be non-null");
         }
+        if (!player.isActive()) {
+            return;
+        }
         player.receive(Constants.GO_BONUS);
     }
 }
