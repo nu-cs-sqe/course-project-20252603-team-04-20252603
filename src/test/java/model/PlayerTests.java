@@ -438,4 +438,62 @@ public class PlayerTests {
         
         assertFalse(active, "Player should be inactive after going bankrupt");
     }
+
+    // ==================================================================================================
+    // Test suite for getName method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetName_Returns_Correct_Name() {
+        String playerName = "Alice";
+        Player player = new Player(playerName, 100.0);
+        
+        String retrievedName = player.getName();
+        
+        assertEquals(playerName, retrievedName, "getName() should return the name provided during construction");
+    }
+
+    @Test
+    public void Test_GetName_With_Different_Name() {
+        String playerName = "Bob";
+        Player player = new Player(playerName, 500.0);
+        
+        String retrievedName = player.getName();
+        
+        assertEquals(playerName, retrievedName, "getName() should return the correct name for different players");
+    }
+
+    // ==================================================================================================
+    // Test suite for getJailTurnCount method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetJailTurnCount_Initially_Zero() {
+        Player player = new Player("John", 100.0);
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(0, jailTurnCount, "Player should have jailTurnCount of 0 when created");
+    }
+
+    @Test
+    public void Test_GetJailTurnCount_After_Going_To_Jail() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(10);
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(1, jailTurnCount, "jailTurnCount should be 1 after going to jail");
+    }
+
+    @Test
+    public void Test_GetJailTurnCount_After_Leaving_Jail() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(10);
+        player.leaveJail();
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
+    }
 }
