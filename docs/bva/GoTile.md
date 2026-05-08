@@ -34,7 +34,7 @@
   - **State of the system**: `player.isBankrupt() == true` (already eliminated), `game` is valid.
   - **Expected output**: No bonus is applied to the eliminated player, OR the action is rejected. The eliminated player's balance is not increased.
 
-- **TC8: Player at extreme upper balance lands on GO** ( :x: )
+- **TC8: Player at extreme upper balance lands on GO** ( :white_check_mark: )
   - **State of the system**: `player.balance = Double.MAX_VALUE - 100`, `game` is valid.
   - **Expected output**: Bonus is rejected / safely capped so the balance does not overflow to `Infinity`; balance remains a finite, valid `double`.
 

@@ -92,6 +92,23 @@ public class GoTileTests {
                 "GoTile.landOn must reject when both inputs are null");
     }
 
+    // TC8: Player at extreme upper balance lands on GO
+    @Test
+    public void Tests_LandOn_Extreme_Upper_Balance_Does_Not_Overflow() {
+        Player player = new Player("John", Double.MAX_VALUE - 100);
+        Player other = new Player("Jane", 1000.0);
+        GameEngine game = new GameEngine(Arrays.asList(player, other));
+
+        GoTile tile = new GoTile();
+        tile.landOn(player, game);
+
+        double balance = player.getBalance();
+        assertTrue(Double.isFinite(balance),
+                "Player balance must remain a finite double after the GO bonus");
+        assertFalse(Double.isNaN(balance),
+                "Player balance must not be NaN after the GO bonus");
+    }
+
     // TC7: Eliminated / inactive player lands on GO
     @Test
     public void Tests_LandOn_Eliminated_Player_Receives_No_Bonus() {
