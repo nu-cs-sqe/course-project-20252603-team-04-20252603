@@ -280,13 +280,13 @@ System
 
 ## Implementation Tasks
 
-### Model / Logic
+### model / Logic
 - [ ] Create `Player` class with name, balance, icon, properties, position, and `inJail`.
 - [ ] Create `Dice` class with random two-dice rolling.
 - [ ] Create abstract `Tile` class or `Tile` interface.
 - [ ] Create `PropertyTile`.
 - [ ] Create `ChanceTile`.
-- [ ] Create `TaxTile` / `IRSTile`.
+- [ ] Create `IRSTile`.
 - [ ] Create `JailTile`.
 - [ ] Create `GoTile`.
 - [ ] Create `FreeTile`.
