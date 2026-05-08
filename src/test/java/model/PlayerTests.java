@@ -392,6 +392,7 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertTrue(bankrupt, "Player with 0.0 balance should be considered bankrupt");
+        assertFalse(player.getActive(), "Player should be marked as inactive after being bankrupt");
     }
 
     @Test
@@ -401,6 +402,8 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertFalse(bankrupt, "Player with balance slightly above 0 should not be bankrupt");
+        assertTrue(player.getActive(), "Player should remain active since balance is above 0");
+
     }
 
     @Test
@@ -410,5 +413,29 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertTrue(bankrupt, "Player with negative balance should be considered bankrupt");
+        assertFalse(player.getActive(), "Player should be marked as inactive after being bankrupt");
+    }
+
+    // ==================================================================================================
+    // Test suite for getActive method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetActive_When_Active() {
+        Player player = new Player("John", 100.0);
+        
+        boolean active = player.getActive();
+        
+        assertTrue(active, "Player should be active when balance is positive");
+    }
+
+    @Test
+    public void Test_GetActive_When_Inactive() {
+        Player player = new Player("John", 0.0);
+        player.isBankrupt(); // This sets active to false
+        
+        boolean active = player.getActive();
+        
+        assertFalse(active, "Player should be inactive after going bankrupt");
     }
 }
