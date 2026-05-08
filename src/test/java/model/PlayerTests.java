@@ -496,4 +496,14 @@ public class PlayerTests {
         
         assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
+
+    @Test
+    public void Test_GetName_Returns_Name() {
+        String playerName = "Alice";
+        Player player = new Player(playerName, 100.0);
+
+        String retrievedName = player.getName();
+
+        assertEquals(playerName, retrievedName, "getName() should return the name provided during construction");
+    }
 }

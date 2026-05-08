@@ -1,5 +1,6 @@
 package model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Random;
 
 public class Dice {
@@ -8,6 +9,11 @@ public class Dice {
     private int dieOne;
     private int dieTwo;
 
+    // Had to add warnings suppressor to bypass spotbugs...
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Random is injected to make dice rolls deterministic in unit tests."
+    )
     public Dice(Random rand) {
         this.rand = rand;
     }
