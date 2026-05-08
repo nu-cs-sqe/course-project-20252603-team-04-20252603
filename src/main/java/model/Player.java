@@ -1,6 +1,7 @@
 package model;
 
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -55,7 +56,7 @@ public class Player {
     }
 
     public Set<Property> getOwnedProperties() {
-        return this.ownedProperties;
+        return Collections.unmodifiableSet(this.ownedProperties);
     }
 
     public boolean addProperty(Property property){
@@ -78,6 +79,12 @@ public class Player {
             return this.removeProperty(property);
         }
         return false;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public int getJailTurnCount() {
+        return this.jailTurnCount;
     }
     public int getPosition() {
         return this.position;
@@ -104,13 +111,16 @@ public class Player {
         this.position += 1;
         return true;
 
-    }
+    } 
     public boolean isBankrupt() {
         if (this.balance <= 0.0) {
             this.active = false;
             return true;
         }        
         return false;
+    }
+    public boolean getActive() {
+        return this.active;
     }
     
 
