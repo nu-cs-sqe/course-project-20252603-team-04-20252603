@@ -4,7 +4,7 @@
 
 ### Method under test: `getName()`
 
-- **TC1: GoTile reports its tile type** ( :x: )
+- **TC1: GoTile reports its tile type** ( :white_check_mark: )
   - **State of the system**: A `GoTile` is constructed.
   - **Expected output**: `getName()` returns `TileType.GO`.
 
