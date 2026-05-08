@@ -186,4 +186,28 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC31: Get active status when false** ( :white_check_mark: )  
   - **State of the system**: active = false  
-  - **Expected output**: returns false
+  - **Expected output**: returns false  
+
+## Method under test: `getName()`
+
+- **TC32: Get name for player "Alice"** ( :white_check_mark: )  
+  - **State of the system**: name = "Alice"  
+  - **Expected output**: returns "Alice"  
+
+- **TC33: Get name for player "Bob"** ( :white_check_mark: )  
+  - **State of the system**: name = "Bob"  
+  - **Expected output**: returns "Bob"  
+
+## Method under test: `getJailTurnCount()`
+
+- **TC34: Get jailTurnCount when initially created** ( :white_check_mark: )  
+  - **State of the system**: jailTurnCount = 0 (initial state)  
+  - **Expected output**: returns 0  
+
+- **TC35: Get jailTurnCount after going to jail** ( :white_check_mark: )  
+  - **State of the system**: player just called goToJail()  
+  - **Expected output**: returns 1  
+
+- **TC36: Get jailTurnCount after leaving jail** ( :white_check_mark: )  
+  - **State of the system**: player called goToJail() then leaveJail()  
+  - **Expected output**: returns 0
