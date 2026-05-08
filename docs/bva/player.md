@@ -168,12 +168,22 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC27: Balance = 0** ( :white_check_mark: )  
   - **State of the system**: balance = 0  
-  - **Expected output**: true  
+  - **Expected output**: true AND active = false  
 
 - **TC28: Balance slightly above 0** ( :white_check_mark: )  
   - **State of the system**: balance = 0.01  
-  - **Expected output**: false  
+  - **Expected output**: false AND active remains true  
 
 - **TC29: Balance negative** ( :white_check_mark: )  
   - **State of the system**: balance = -10  
-  - **Expected output**: true
+  - **Expected output**: true AND active = false
+
+## Method under test: `getActive()`
+
+- **TC30: Get active status when true** ( :white_check_mark: )  
+  - **State of the system**: active = true  
+  - **Expected output**: returns true  
+
+- **TC31: Get active status when false** ( :white_check_mark: )  
+  - **State of the system**: active = false  
+  - **Expected output**: returns false
