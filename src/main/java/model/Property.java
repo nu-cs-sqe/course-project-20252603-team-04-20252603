@@ -95,15 +95,13 @@ public class Property implements Tile {
         }
         Player ownerPlayer = this.owner.get();
         if (player.equals(ownerPlayer)) {
-            return false; // Owner does not pay rent to themselves
+            return false; 
         }
         if (!player.canAfford(this.rent)) {
-            return false; // Player cannot afford rent
+            return false; 
         }
         if (player.buy(this.rent)) {
-            ownerPlayer.sell(this.rent / Constants.SELL_MULTIPLIER); // Owner receives rent
-            return true;
-        }
+            ownerPlayer.sell(this.rent / Constants.SELL_MULTIPLIER); 
         return false;
     }
 
