@@ -155,32 +155,28 @@
   - **Expected output**: No change / idempotent
 
 
-## Method under test: `onLand(Player player, Game game)`
+## Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC34: Land on unowned property with buying option** ( :x: )
-  - **State of the system**: ownershipStatus = UNOWNED, player has balance >= price
-  - **Expected output**: Player offered option to buy
+- **TC34: Land on owned property (not yours) with sufficient balance** ( :x: )
+  - **State of the system**: ownershipStatus = OWNED, player != owner, renter.balance >= rent
+  - **Expected output**: Rent charged to current player, owner receives rent
 
-- **TC35: Land on unowned property without buying option** ( :x: )
-  - **State of the system**: ownershipStatus = UNOWNED, player has balance < price
-  - **Expected output**: Player cannot buy
+- **TC35: Land on owned property (not yours) with insufficient balance** ( :x: )
+  - **State of the system**: ownershipStatus = OWNED, player != owner, renter.balance < rent
+  - **Expected output**: chargeRent returns false, no money transferred
 
-- **TC36: Land on owned property (not yours)** ( :x: )
-  - **State of the system**: ownershipStatus = OWNED, renter has balance >= rent
-  - **Expected output**: Rent charged to current player
-
-- **TC37: Land on owned property (not yours) - insufficient balance** ( :x: )
-  - **State of the system**: ownershipStatus = OWNED, renter.balance < rent
-  - **Expected output**: Renter must sell property OR bankruptcy triggered
-
-- **TC38: Land on own property** ( :x: )
+- **TC36: Land on own property** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, owner == player
-  - **Expected output**: Safe zone / no action required
+  - **Expected output**: Safe zone / no rent charged
 
-- **TC39: Land with null player** ( :x: )
+- **TC37: Land on unowned property** ( :x: )
+  - **State of the system**: ownershipStatus = UNOWNED
+  - **Expected output**: No action / GameEngine handles purchase prompt
+
+- **TC38: Land with null player throws exception** ( :x: )
   - **State of the system**: player = null
-  - **Expected output**: Handled safely / rejected
+  - **Expected output**: IllegalArgumentException thrown
 
-- **TC40: Land with null game** ( :x: )
+- **TC39: Land with null game (no validation)** ( :x: )
   - **State of the system**: game = null
-  - **Expected output**: Handled safely / rejected
+  - **Expected output**: Method executes normally (game param not used)
