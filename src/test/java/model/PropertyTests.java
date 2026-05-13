@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import util.OwnershipStatus;
+import util.Constants;
+import model.GameEngine;
 
 public class PropertyTests {
 
@@ -131,7 +133,8 @@ public class PropertyTests {
 
         assertEquals(false, result, "Unowned property should return false");
     }
-    @Test 
+
+    @Test
     public void TC15_Valid_Purchase_By_Player_With_Enough_Balance() {
         Player player = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -246,7 +249,8 @@ public class PropertyTests {
 
         assertEquals(false, result, "Rent charge should fail with insufficient balance");
         assertEquals(25.0, renter.getBalance(), 0.001, "Renter balance should not change");
-        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase but no rent received");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase but no rent received");
     }
 
     @Test
@@ -258,7 +262,8 @@ public class PropertyTests {
         boolean result = property.chargeRent(null);
 
         assertEquals(false, result, "Rent charge to null player should fail");
-        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase but no rent received");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase but no rent received");
     }
 
     @Test
@@ -295,7 +300,8 @@ public class PropertyTests {
 
         assertEquals(true, result, "Rent charge should succeed even with zero rent");
         assertEquals(100.0, renter.getBalance(), 0.001, "Renter balance should not change for zero rent");
-        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase and zero rent received");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase and zero rent received");
     }
 
     @Test
@@ -314,7 +320,7 @@ public class PropertyTests {
     public void TC33_Reset_When_Property_Already_Unowned() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
-        property.resetOwner(); 
+        property.resetOwner();
 
         assertEquals(false, property.isOwned());
     }
@@ -363,5 +369,52 @@ public class PropertyTests {
         assertEquals(Double.MAX_VALUE * 0.8, resaleValue, "Large price resale should be handled");
     }
 
+    @Test
+    public void TC34_Land_On_Owned_Property_Not_Yours() {
+        Player owner = new Player("Alice", 200.0);
+        Player renter = new Player("Bob", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(owner, renter));
+        property.purchase(owner);
+
+        property.landOn(renter, game);
+
+        assertEquals(50.0, renter.getBalance(), 0.001, "Renter should pay rent");
+        assertEquals(150.0, owner.getBalance(), 0.001, "Owner should receive rent");
+    }
+
+    @Test
+    public void TC35_Land_On_Owned_Property_Yours() {
+        Player owner = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(owner));
+        property.purchase(owner);
+
+        property.landOn(owner, game);
+
+        assertEquals(100.0, owner.getBalance(), 0.001, "Owner should not pay themselves rent");
+    }
+
+    @Test
+    public void TC36_Land_On_Unowned_Property() {
+        Player player = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(player));
+
+        property.landOn(player, game);
+
+        assertEquals(200.0, player.getBalance(), 0.001, "No change for unowned property");
+        assertEquals(false, property.isOwned(), "Property should remain unowned");
+    }
+
+    @Test
+    public void TC37_Land_With_Null_Player_Throws_Exception() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            property.landOn(null, game);
+        }, "Should throw exception for null player");
+    }
 
 }
