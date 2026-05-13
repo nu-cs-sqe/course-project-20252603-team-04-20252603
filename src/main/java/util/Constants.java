@@ -8,7 +8,8 @@ public class Constants {
     public static final int JAIL_POSITION = 10;
     public static final int BOARD_SIZE = 32;
     public static final double SELL_MULTIPLIER = 0.8;
-    public static final Player NO_OWNER = null;
+    public static final double GO_BONUS = 200.0;
+
 
     private Constants() {}
 
