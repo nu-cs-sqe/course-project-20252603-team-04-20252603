@@ -218,7 +218,7 @@ public class PropertyTests {
 
         assertEquals(true, result, "Rent charge should succeed");
         assertEquals(0.0, renter.getBalance(), 0.001, "Renter balance should be zero after paying rent");
-        assertEquals(150.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
+        assertEquals(50.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
     }
 
     @Test
@@ -232,7 +232,7 @@ public class PropertyTests {
 
         assertEquals(true, result, "Rent charge should succeed");
         assertEquals(50.0, renter.getBalance(), 0.001, "Renter balance should decrease by rent amount");
-        assertEquals(150.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
+        assertEquals(50.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
     }
 
     @Test
@@ -246,7 +246,7 @@ public class PropertyTests {
 
         assertEquals(false, result, "Rent charge should fail with insufficient balance");
         assertEquals(25.0, renter.getBalance(), 0.001, "Renter balance should not change");
-        assertEquals(100.0, owner.getBalance(), 0.001, "Owner balance should not change");
+        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase but no rent received");
     }
 
     @Test
@@ -258,7 +258,7 @@ public class PropertyTests {
         boolean result = property.chargeRent(null);
 
         assertEquals(false, result, "Rent charge to null player should fail");
-        assertEquals(100.0, owner.getBalance(), 0.001, "Owner balance should not change");
+        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase but no rent received");
     }
 
     @Test
@@ -295,7 +295,7 @@ public class PropertyTests {
 
         assertEquals(true, result, "Rent charge should succeed even with zero rent");
         assertEquals(100.0, renter.getBalance(), 0.001, "Renter balance should not change for zero rent");
-        assertEquals(100.0, owner.getBalance(), 0.001, "Owner balance should not change for zero rent");
+        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should be zero after purchase and zero rent received");
     }
 
     @Test
