@@ -314,9 +314,9 @@ public class PropertyTests {
     public void TC33_Reset_When_Property_Already_Unowned() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
-        property.resetOwner(); // Should do nothing
+        property.resetOwner(); 
 
-        assertEquals(false, property.isOwned()); // Still unowned
+        assertEquals(false, property.isOwned());
     }
 
     @Test
