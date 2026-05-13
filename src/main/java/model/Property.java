@@ -102,6 +102,7 @@ public class Property implements Tile {
         }
         if (player.buy(this.rent)) {
             ownerPlayer.sell(this.rent / Constants.SELL_MULTIPLIER); 
+        }
         return false;
     }
 
