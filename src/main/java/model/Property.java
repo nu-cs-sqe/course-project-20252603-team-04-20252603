@@ -13,7 +13,6 @@ public class Property implements Tile {
     private OwnershipStatus ownershipStatus;
     private Optional<Player> owner;
 
-
     public Property(String name, double price, double rent) {
 
         if (price < 0) {
@@ -40,7 +39,16 @@ public class Property implements Tile {
 
     @Override
     public void landOn(Player player, GameEngine game) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
 
+        if (this.isOwned()) {
+            Player ownerPlayer = this.owner.get();
+            if (!player.equals(ownerPlayer)) {
+                this.chargeRent(player);
+            }
+        }
     }
 
     public double getPrice() {
@@ -89,25 +97,30 @@ public class Property implements Tile {
         }
         return false;
     }
+
     public boolean chargeRent(Player player) {
         if (player == null || !this.isOwned() || !this.owner.isPresent()) {
             return false;
         }
         Player ownerPlayer = this.owner.get();
         if (player.equals(ownerPlayer)) {
-            return false; 
+            return false;
         }
         if (!player.canAfford(this.rent)) {
-            return false; 
+            return false;
         }
         if (player.buy(this.rent)) {
-            ownerPlayer.sell(this.rent / Constants.SELL_MULTIPLIER); 
+            ownerPlayer.sell(this.rent / Constants.SELL_MULTIPLIER);
+            return true;
         }
         return false;
+    }
+
+    public double getResaleValue() {
+        return this.price * Constants.SELL_MULTIPLIER;
     }
 
     Optional<Player> getOwner() {
         return this.owner;
     }
-
 }
