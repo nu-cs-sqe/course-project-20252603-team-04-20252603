@@ -19,4 +19,9 @@ public class BoardTests {
         return tiles;
     }
 
+    @Test
+    public void initializeBoard_With31Tiles_ThrowsException() {
+        List<Tile> tiles = createTiles(31);
+        Board board = new Board(tiles);
+    }
 }
