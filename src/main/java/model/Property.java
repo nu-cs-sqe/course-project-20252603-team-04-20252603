@@ -1,5 +1,62 @@
 package model;
 
-public interface Property {
-    double getPrice();
+
+import java.util.Optional;
+import model.Tile;
+import util.OwnershipStatus;
+import util.Constants;
+
+public class Property implements Tile {
+
+    private String propertyName;
+    private double price;
+    private double rent;
+    private OwnershipStatus ownershipStatus;
+    private Optional<Player> owner;
+
+    public Property(String propertyName, double price, double rent) {
+
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (rent < 0) {
+            throw new IllegalArgumentException("Rent cannot be negative");
+        }
+        if (propertyName == null || propertyName.isEmpty()) {
+            throw new IllegalArgumentException("Property name cannot be null or empty");
+        }
+
+        this.propertyName = propertyName;
+        this.price = price;
+        this.rent = rent;
+        this.owner = Optional.empty();
+        this.ownershipStatus = OwnershipStatus.UNOWNED;
+    }
+
+    @Override
+    public TileType getName() {
+        return TileType.PROPERTY;
+    }
+
+   
+    
+    @Override
+    public void landOn(Player player, GameEngine game) {
+       
+    }
+    
+    public double getPrice() {
+        return this.price;
+    }
+
+    public double getRent() {
+        return this.rent;
+    }
+
+    public boolean isOwned() {
+        return this.ownershipStatus.equals(OwnershipStatus.OWNED);
+    }
+
+
+    
 }
