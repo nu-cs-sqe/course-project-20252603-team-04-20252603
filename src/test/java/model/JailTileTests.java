@@ -79,4 +79,16 @@ public class JailTileTests {
         EasyMock.verify(player);
     }
 
+    @Test
+    public void TC7_JailTile_LandOn_InactivePlayer_Invalid() {
+        JailTile jailTile = new JailTile();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andStubReturn(false);
+        EasyMock.replay(player);
+        EasyMock.replay(game);
+        jailTile.landOn(player, game);
+        EasyMock.verify(player);
+    }
+
 }

@@ -30,7 +30,7 @@
     - **State of the system**: `player = null`, `game = null`.
     - **Expected output**: The method rejects the invalid inputs and applies no effect.
 
-- **TC7: Inactive player lands on jail** ( :x: )
+- **TC7: Inactive player lands on jail** ( :white_check_mark: )
     - **State of the system**: `player.isActive() == false`, `game` is valid.
     - **Expected output**: No effect is applied. Balance, position, and jail state remain unchanged.
 
