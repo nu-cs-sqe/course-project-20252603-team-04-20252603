@@ -77,5 +77,63 @@ public class PropertyTests {
         assertEquals(100.0, property.getRent(), 0.001, "System allows rent greater than price");
     }
 
-    
+    // Ownership checks
+    @Test
+    public void TC9_Property_Unowned_Returns_False() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        assertEquals(false, property.isOwned(), "Newly created property should not be owned");
+    }
+
+    @Test
+    public void TC10_Property_Owned_Returns_True() {
+        Player player = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(player); // Sets ownershipStatus to OWNED
+
+        assertEquals(true, property.isOwned(), "Purchased property should be owned");
+    }
+
+    @Test
+    public void TC11_Check_Ownership_With_Null_Player_Returns_False() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.isOwnedBy(null);
+
+        assertEquals(false, result, "Null player should never own property");
+    }
+
+    @Test
+    public void TC12_Check_Ownership_Player_Is_Owner_Returns_True() {
+        Player owner = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.isOwnedBy(owner);
+
+        assertEquals(true, result, "Owner should own the property");
+    }
+
+    @Test
+    public void TC13_Check_Ownership_Player_Is_Not_Owner_Returns_False() {
+        Player owner = new Player("Alice", 200.0);
+        Player notOwner = new Player("Bob", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.isOwnedBy(notOwner);
+
+        assertEquals(false, result, "Non-owner should not own property");
+    }
+
+    @Test
+    public void TC14_Check_Ownership_Property_Unowned_Returns_False() {
+        Player player = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.isOwnedBy(player);
+
+        assertEquals(false, result, "Unowned property should return false");
+    }
+
 }
