@@ -110,7 +110,7 @@ public class Property implements Tile {
             return false;
         }
         if (player.remove(this.rent)) {
-            ownerPlayer.receive(this.getResaleValue());
+            ownerPlayer.receive(this.rent);
             return true;
         }
         return false;
