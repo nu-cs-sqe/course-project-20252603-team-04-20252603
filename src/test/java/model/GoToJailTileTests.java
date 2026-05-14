@@ -72,4 +72,17 @@ public class GoToJailTileTests {
                 () -> tile.landOn(null, null),
                 "GoToJailTile.landOn must reject when both inputs are null");
     }
+    // TC6: Eliminated / inactive player lands on GoToJailTile
+    @Test
+    public void Tests_LandOn_Eliminated_Player_Is_Not_Sent_To_Jail() {
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(false);
+        EasyMock.replay(player, game);
+
+        GoToJailTile tile = new GoToJailTile();
+        tile.landOn(player, game);
+
+        EasyMock.verify(player, game);
+    }
 }
