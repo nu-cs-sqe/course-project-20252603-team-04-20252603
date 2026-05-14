@@ -35,4 +35,18 @@ public class GoToJailTileTests {
 
         EasyMock.verify(player, game);
     }
+
+    // TC3: Null player input
+    @Test
+    public void Tests_LandOn_Null_Player_Is_Rejected() {
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        GoToJailTile tile = new GoToJailTile();
+        assertThrows(IllegalArgumentException.class,
+                () -> tile.landOn(null, game),
+                "GoToJailTile.landOn must reject a null player");
+
+        EasyMock.verify(game);
+    }
 }
