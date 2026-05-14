@@ -85,4 +85,20 @@ public class GoToJailTileTests {
 
         EasyMock.verify(player, game);
     }
+
+    // TC7: landOn does not modify player's balance
+    @Test
+    public void Tests_LandOn_Does_Not_Modify_Balance() {
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
+        EasyMock.replay(player, game);
+
+        GoToJailTile tile = new GoToJailTile();
+        tile.landOn(player, game);
+
+        // Strict mocks: any unexpected call to receive/buy/sell would fail verify().
+        EasyMock.verify(player, game);
+    }
 }
