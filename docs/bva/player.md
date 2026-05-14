@@ -15,7 +15,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 # Player BVA Analysis
 
-## Method under test: `buy(double amount)`
+## Method under test: `remove(double amount)`
 
 - **TC1: Buy with zero amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 0  
@@ -41,7 +41,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
   - **Expected output**: purchase denied OR no change
 
-## Method under test: `sell(double amount)`
+## Method under test: `receive(double amount)`
 
 - **TC6: Sell zero amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 0  
@@ -53,7 +53,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC8: Sell positive amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 50  
-  - **Expected output**: balance becomes 140
+  - **Expected output**: balance becomes 150
 
 - **TC9: Sell maximum double value** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
