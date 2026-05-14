@@ -7,6 +7,8 @@ public class JailTile implements Tile{
     }
     @Override
     public void landOn(Player player, GameEngine engine) {
-
+        if (player == null || engine == null) {
+            throw new IllegalArgumentException("Invalid Player or GameEngine");
+        }
     }
 }

@@ -7,6 +7,7 @@ import util.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JailTileTests {
@@ -51,5 +52,18 @@ public class JailTileTests {
         EasyMock.verify(player, game);
     }
 
+    @Test
+    public void TC4_JailTile_LandOn_NullPlayer_Invalid(){
+        // rejects invalid input with IllegalArgumentException
+        JailTile jailTile = new JailTile();
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> jailTile.landOn(null, game),
+                "Invalid Player or GameEngine");
+
+        EasyMock.verify(game);
+    }
 
 }

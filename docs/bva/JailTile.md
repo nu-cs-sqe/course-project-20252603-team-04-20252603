@@ -18,7 +18,7 @@
     - **State of the system**: `player.inJail() == true`, player position is the jail position, `game` is valid.
     - **Expected output**: Player remains in jail. `landOn` does not call `leaveJail()` or otherwise change jail state.
 
-- **TC4: Null player input** ( :x: )
+- **TC4: Null player input** ( :white_check_mark: )
     - **State of the system**: `player = null`, `game` is valid.
     - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; no state is mutated.
 
