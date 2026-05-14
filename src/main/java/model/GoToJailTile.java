@@ -1,5 +1,7 @@
 package model;
 
+import util.Constants;
+
 public class GoToJailTile implements Tile {
 
     @Override
@@ -9,5 +11,9 @@ public class GoToJailTile implements Tile {
 
     @Override
     public void landOn(Player player, GameEngine game) {
+        if (!player.isActive()) {
+            return;
+        }
+        player.goToJail(Constants.JAIL_POSITION);
     }
 }
