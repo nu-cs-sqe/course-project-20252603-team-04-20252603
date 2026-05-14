@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BoardTests {
@@ -27,5 +28,13 @@ public class BoardTests {
         Board board = new Board(tiles);
 
         assertThrows(IllegalStateException.class, board::initializeBoard);
+    }
+
+    @Test
+    public void initializeBoard_With32Tiles_InitializesBoard() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+
+        assertDoesNotThrow(board::initializeBoard);
     }
 }

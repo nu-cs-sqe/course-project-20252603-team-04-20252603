@@ -4,11 +4,17 @@ import java.util.List;
 
 public class Board {
 
-    public Board(List<Tile> tiles) {
+    private static final int BOARD_SIZE = 32;
 
+    private final List<Tile> tiles;
+
+    public Board(List<Tile> tiles) {
+        this.tiles = tiles;
     }
 
     public void initializeBoard() {
-        throw new IllegalStateException("Board must contain exactly 32 tiles");
+        if (tiles.size() != BOARD_SIZE) {
+            throw new IllegalStateException("Board must contain exactly 32 tiles");
+        }
     }
 }

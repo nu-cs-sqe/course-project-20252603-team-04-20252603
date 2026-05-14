@@ -3,11 +3,11 @@
 2. Input: collection size / count, Output: success or exception
 3. Input values: 31, 32, 33
 
-- **TC1: initializeBoard_With31Tiles_ThrowsException** ( :x: )
+- **TC1: initializeBoard_With31Tiles_ThrowsException** ( :white_check_mark: )
   - **State of the system**: `tiles.size()` = 31
   - **Expected output**: throws `IllegalStateException`
 
-- **TC2: initializeBoard_With32Tiles_InitializesBoard** ( :x: )
+- **TC2: initializeBoard_With32Tiles_InitializesBoard** ( :white_check_mark: )
   - **State of the system**: `tiles.size()` = 32
   - **Expected output**: board initializes successfully
 
