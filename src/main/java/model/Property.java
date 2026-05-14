@@ -80,7 +80,29 @@ public class Property implements Tile {
         }
         return false;
     }
-    
+     public boolean chargeRent(Player player) {
+        if (player == null || !this.isOwned() || !this.owner.isPresent()) {
+            return false;
+        }
+        Player ownerPlayer = this.owner.get();
+        if (player.equals(ownerPlayer)) {
+            return false;
+        }
+        if (!player.canAfford(this.rent)) {
+            return false;
+        }
+        if (player.remove(this.rent)) {
+            ownerPlayer.receive(this.getResaleValue());
+            return true;
+        }
+        return false;
+    }
+     public double getResaleValue() {
+        return this.price * Constants.SELL_MULTIPLIER;
+    }
+
+
+
 
 
 
