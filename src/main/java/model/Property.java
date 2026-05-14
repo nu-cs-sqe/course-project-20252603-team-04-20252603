@@ -44,7 +44,7 @@ public class Property implements Tile {
     public void landOn(Player player, GameEngine game) {
        
     }
-    
+
     public double getPrice() {
         return this.price;
     }
@@ -56,6 +56,33 @@ public class Property implements Tile {
     public boolean isOwned() {
         return this.ownershipStatus.equals(OwnershipStatus.OWNED);
     }
+    public boolean isOwnedBy(Player player) {
+        if (player == null) {
+            return false;
+        }
+        return this.owner.isPresent() && this.owner.get().equals(player);
+    }
+    public boolean purchase(Player player) {
+        if (player == null) {
+            return false;
+        }
+        if (this.isOwned()) {
+            return false;
+        }
+        if (!player.canAfford(this.price)) {
+            return false;
+        }
+        if (player.remove(this.price)) {
+            this.owner = Optional.of(player);
+            this.ownershipStatus = OwnershipStatus.OWNED;
+            player.addProperty(this);
+            return true;
+        }
+        return false;
+    }
+    
+
+
 
 
     
