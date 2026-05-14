@@ -63,4 +63,13 @@ public class GoToJailTileTests {
 
         EasyMock.verify(player);
     }
+
+    // TC5: Both player and game null
+    @Test
+    public void Tests_LandOn_Both_Null_Is_Rejected() {
+        GoToJailTile tile = new GoToJailTile();
+        assertThrows(IllegalArgumentException.class,
+                () -> tile.landOn(null, null),
+                "GoToJailTile.landOn must reject when both inputs are null");
+    }
 }
