@@ -22,7 +22,7 @@
     - **State of the system**: `player = null`, `game` is valid.
     - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; no state is mutated.
 
-- **TC5: Null game input** ( :x: )
+- **TC5: Null game input** ( :white_check_mark: )
     - **State of the system**: `player` is valid, `game = null`.
     - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; player state is unchanged.
 

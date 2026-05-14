@@ -66,4 +66,17 @@ public class JailTileTests {
         EasyMock.verify(game);
     }
 
+    @Test
+    public void TC5_JailTile_LandOn_NullGame_Invalid() {
+        JailTile jailTile = new JailTile();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.replay(player);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> jailTile.landOn(player, null),
+                "Invalid Player or GameEngine");
+
+        EasyMock.verify(player);
+    }
+
 }
