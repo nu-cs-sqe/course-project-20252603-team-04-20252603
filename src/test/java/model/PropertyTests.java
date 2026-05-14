@@ -352,4 +352,75 @@ public class PropertyTests {
         assertEquals(Double.MAX_VALUE * 0.8, resaleValue, "Large price resale should be handled");
     }
 
+    // Reset ownership
+    @Test
+    public void TC32_Reset_When_Property_Owned() {
+        Player owner = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        property.resetOwner();
+
+        assertEquals(false, property.isOwned());
+        assertEquals(false, property.isOwnedBy(owner));
+    }
+
+    @Test
+    public void TC33_Reset_When_Property_Already_Unowned() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        property.resetOwner();
+
+        assertEquals(false, property.isOwned());
+    }
+
+    // Land on property behavior
+    @Test
+    public void TC34_Land_On_Owned_Property_Not_Yours() {
+        Player owner = new Player("Alice", 200.0);
+        Player renter = new Player("Bob", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(owner, renter));
+        property.purchase(owner);
+
+        property.landOn(renter, game);
+
+        assertEquals(50.0, renter.getBalance(), 0.001, "Renter should pay rent");
+        assertEquals(150.0, owner.getBalance(), 0.001, "Owner should receive rent");
+    }
+
+    @Test
+    public void TC35_Land_On_Owned_Property_Yours() {
+        Player owner = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(owner));
+        property.purchase(owner);
+
+        property.landOn(owner, game);
+
+        assertEquals(100.0, owner.getBalance(), 0.001, "Owner should not pay themselves rent");
+    }
+
+    @Test
+    public void TC36_Land_On_Unowned_Property() {
+        Player player = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of(player));
+
+        property.landOn(player, game);
+
+        assertEquals(200.0, player.getBalance(), 0.001, "No change for unowned property");
+        assertEquals(false, property.isOwned(), "Property should remain unowned");
+    }
+
+    @Test
+    public void TC37_Land_With_Null_Player_Throws_Exception() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+        GameEngine game = new GameEngine(java.util.List.of());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            property.landOn(null, game);
+        }, "Should throw exception for null player");
+    }
+
 }
