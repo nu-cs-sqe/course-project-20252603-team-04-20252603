@@ -11,7 +11,7 @@
   - **State of the system**: `tiles.size()` = 32
   - **Expected output**: board initializes successfully
 
-- **TC3: initializeBoard_With33Tiles_ThrowsException** ( :x: )
+- **TC3: initializeBoard_With33Tiles_ThrowsException** ( :white_check_mark: )
   - **State of the system**: `tiles.size()` = 33
   - **Expected output**: throws `IllegalStateException`
 

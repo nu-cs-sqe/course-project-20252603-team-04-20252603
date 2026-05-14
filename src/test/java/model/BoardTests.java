@@ -37,4 +37,12 @@ public class BoardTests {
 
         assertDoesNotThrow(board::initializeBoard);
     }
+
+    @Test
+    public void initializeBoard_With33Tiles_ThrowsException() {
+        List<Tile> tiles = createTiles(33);
+        Board board = new Board(tiles);
+
+        assertThrows(IllegalStateException.class, board::initializeBoard);
+    }
 }
