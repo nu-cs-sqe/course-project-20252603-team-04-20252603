@@ -3,18 +3,22 @@ package model;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import util.Constants;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JailTileTests {
 
     @Test
-    public void Test_JailTile_Name(){
+    public void TC1_JailTile_Name(){
         JailTile jailTile = new JailTile();
         assert(jailTile.getName() == TileType.JAIL);
     }
 
     @Test
-    public void Test_JailTile_LandOn_NotInJail(){
+    public void TC2_JailTile_LandOn_NotInJail(){
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
@@ -25,4 +29,27 @@ public class JailTileTests {
         assertFalse(player.inJail());
         EasyMock.verify(player, game);
     }
+
+    @Test
+    public void TC3_JailTile_LandOn_InJail(){
+        // Active player already in jail lands/remains on jail
+        JailTile jailTile = new JailTile();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.isActive()).andStubReturn(true);
+        EasyMock.expect(player.inJail()).andStubReturn(true);
+        EasyMock.expect(player.getPosition()).andStubReturn(Constants.JAIL_POSITION);
+        EasyMock.expect(player.getBalance()).andStubReturn(1000.0);
+        EasyMock.replay(player, game);
+
+        jailTile.landOn(player, game);
+
+        assertTrue(player.isActive(), "Setup check: player should be active");
+        assertTrue(player.inJail(), "JailTile should not release a player who is already in jail");
+        assertEquals(Constants.JAIL_POSITION, player.getPosition(), "JailTile should not move the player");
+        assertEquals(1000.0, player.getBalance(), "JailTile should not change the player's balance");
+        EasyMock.verify(player, game);
+    }
+
+
 }

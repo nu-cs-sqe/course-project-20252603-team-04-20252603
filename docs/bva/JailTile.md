@@ -4,17 +4,17 @@
 
 ### Method under test: `getName()`
 
-- **TC1: JailTile reports its tile type** ( :x: )
+- **TC1: JailTile reports its tile type** ( :white_check_mark: )
     - **State of the system**: A `JailTile` is constructed.
     - **Expected output**: `getName()` returns `TileType.JAIL`.
 
 ### Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC2: Active player lands on jail while not in jail** ( :x: )
+- **TC2: Active player lands on jail while not in jail** ( :white_check_mark: )
     - **State of the system**: `player.inJail() == false`, `player.isActive() == true`, `game` is valid.
     - **Expected output**: No jail status is applied. Player remains not in jail, balance is unchanged, and position is unchanged.
 
-- **TC3: Active player already in jail lands/remains on jail** ( :x: )
+- **TC3: Active player already in jail lands/remains on jail** ( :white_check_mark: )
     - **State of the system**: `player.inJail() == true`, player position is the jail position, `game` is valid.
     - **Expected output**: Player remains in jail. `landOn` does not call `leaveJail()` or otherwise change jail state.
 
