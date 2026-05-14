@@ -307,5 +307,27 @@ public class PropertyTests {
                 "Owner balance should be zero after purchase and zero rent received");
     }
 
+    // Resale value
+    @Test
+    public void TC28_Standard_Resale_80_Percent_Of_Price() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+        Player owner = new Player("Alice", 200.0);
+        property.purchase(owner);
+
+        double resaleValue = property.getResaleValue();
+
+        assertEquals(80.0, resaleValue, 0.001, "Resale value should be 80% of price");
+    }
+
+    @Test
+    public void TC29_Zero_Price_Resale() {
+        Property property = new Property("Test Property", 0.0, 50.0);
+        Player owner = new Player("Alice", 200.0);
+        property.purchase(owner);
+
+        double resaleValue = property.getResaleValue();
+
+        assertEquals(0.0, resaleValue, 0.001, "Resale value should be zero for zero price");
+    }
 
 }
