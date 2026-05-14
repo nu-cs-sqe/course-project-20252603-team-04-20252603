@@ -1,6 +1,5 @@
 package model;
 
-
 import java.util.Optional;
 import model.Tile;
 import util.OwnershipStatus;
@@ -38,11 +37,18 @@ public class Property implements Tile {
         return TileType.PROPERTY;
     }
 
-   
-    
     @Override
     public void landOn(Player player, GameEngine game) {
-       
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+
+        if (this.isOwned()) {
+            Player ownerPlayer = this.owner.get();
+            if (!player.equals(ownerPlayer)) {
+                this.chargeRent(player);
+            }
+        }
     }
 
     public double getPrice() {
@@ -56,12 +62,23 @@ public class Property implements Tile {
     public boolean isOwned() {
         return this.ownershipStatus.equals(OwnershipStatus.OWNED);
     }
+
     public boolean isOwnedBy(Player player) {
         if (player == null) {
             return false;
         }
         return this.owner.isPresent() && this.owner.get().equals(player);
     }
+
+    public void resetOwner() {
+        if (this.owner.isPresent()) {
+            Player currentOwner = this.owner.get();
+            currentOwner.removeProperty(this);
+        }
+        this.owner = Optional.empty();
+        this.ownershipStatus = OwnershipStatus.UNOWNED;
+    }
+
     public boolean purchase(Player player) {
         if (player == null) {
             return false;
@@ -80,7 +97,8 @@ public class Property implements Tile {
         }
         return false;
     }
-     public boolean chargeRent(Player player) {
+
+    public boolean chargeRent(Player player) {
         if (player == null || !this.isOwned() || !this.owner.isPresent()) {
             return false;
         }
@@ -97,15 +115,9 @@ public class Property implements Tile {
         }
         return false;
     }
-     public double getResaleValue() {
+
+    public double getResaleValue() {
         return this.price * Constants.SELL_MULTIPLIER;
     }
 
-
-
-
-
-
-
-    
 }
