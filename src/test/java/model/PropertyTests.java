@@ -213,4 +213,99 @@ public class PropertyTests {
         assertEquals(100.0, player.getBalance(), 0.001, "Player balance should not change for free property");
     }
 
+    @Test
+    public void TC21_Charge_Rent_With_Player_Having_Exact_Amount() {
+        Player owner = new Player("Alice", 100.0);
+        Player renter = new Player("Bob", 50.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(renter);
+
+        assertEquals(true, result, "Rent charge should succeed");
+        assertEquals(0.0, renter.getBalance(), 0.001, "Renter balance should be zero after paying rent");
+        assertEquals(50.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
+    }
+
+    @Test
+    public void TC22_Charge_Rent_With_Player_Having_More_Than_Rent() {
+        Player owner = new Player("Alice", 100.0);
+        Player renter = new Player("Bob", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(renter);
+
+        assertEquals(true, result, "Rent charge should succeed");
+        assertEquals(50.0, renter.getBalance(), 0.001, "Renter balance should decrease by rent amount");
+        assertEquals(50.0, owner.getBalance(), 0.001, "Owner should receive exact rent amount");
+    }
+
+    @Test
+    public void TC23_Charge_Rent_With_Insufficient_Balance() {
+        Player owner = new Player("Alice", 100.0);
+        Player renter = new Player("Bob", 25.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(renter);
+
+        assertEquals(false, result, "Rent charge should fail with insufficient balance");
+        assertEquals(25.0, renter.getBalance(), 0.001, "Renter balance should not change");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase but no rent received");
+    }
+
+    @Test
+    public void TC24_Charge_Rent_To_Null_Player() {
+        Player owner = new Player("Alice", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(null);
+
+        assertEquals(false, result, "Rent charge to null player should fail");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase but no rent received");
+    }
+
+    @Test
+    public void TC25_Charge_Rent_On_Unowned_Property() {
+        Player player = new Player("Alice", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.chargeRent(player);
+
+        assertEquals(false, result, "Rent charge on unowned property should fail");
+        assertEquals(100.0, player.getBalance(), 0.001, "Player balance should not change");
+    }
+
+    @Test
+    public void TC26_Owner_Pays_Rent_To_Self() {
+        Player owner = new Player("Alice", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(owner);
+
+        assertEquals(false, result, "Owner should not pay rent to themselves");
+        assertEquals(0.0, owner.getBalance(), 0.001, "Owner balance should remain the same after purchase");
+    }
+
+    @Test
+    public void TC27_Charge_Zero_Rent() {
+        Player owner = new Player("Alice", 100.0);
+        Player renter = new Player("Bob", 100.0);
+        Property property = new Property("Test Property", 100.0, 0.0);
+        property.purchase(owner);
+
+        boolean result = property.chargeRent(renter);
+
+        assertEquals(true, result, "Rent charge should succeed even with zero rent");
+        assertEquals(100.0, renter.getBalance(), 0.001, "Renter balance should not change for zero rent");
+        assertEquals(0.0, owner.getBalance(), 0.001,
+                "Owner balance should be zero after purchase and zero rent received");
+    }
+
+
 }
