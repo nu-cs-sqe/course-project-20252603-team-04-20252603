@@ -136,4 +136,81 @@ public class PropertyTests {
         assertEquals(false, result, "Unowned property should return false");
     }
 
+    // Purchase behavior
+    @Test
+    public void TC15_Valid_Purchase_By_Player_With_Enough_Balance() {
+        Player player = new Player("Alice", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        property.purchase(player);
+
+        assertEquals(true, property.isOwned(), "Property should be owned after purchase");
+        assertEquals(true, property.isOwnedBy(player), "Purchasing player should own the property");
+        assertEquals(100.0, player.getBalance(), 0.001, "Player balance should decrease by property price");
+    }
+
+    @Test
+    public void TC16_Purchase_With_Exact_Balance() {
+        Player player = new Player("Alice", 100.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.purchase(player);
+
+        assertEquals(true, result, "Purchase should succeed with exact balance");
+        assertEquals(true, property.isOwned(), "Property should be owned after purchase");
+        assertEquals(true, property.isOwnedBy(player), "Purchasing player should own the property");
+        assertEquals(0.0, player.getBalance(), 0.001, "Player balance should be zero after purchase");
+    }
+
+    @Test
+    public void TC17_Purchase_With_Insufficient_Balance() {
+        Player player = new Player("Alice", 50.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.purchase(player);
+
+        assertEquals(false, result, "Purchase should fail with insufficient balance");
+        assertEquals(false, property.isOwned(), "Property should remain unowned");
+        assertEquals(false, property.isOwnedBy(player), "Purchasing player should not own the property");
+        assertEquals(50.0, player.getBalance(), 0.001, "Player balance should not change");
+    }
+
+    @Test
+    public void TC18_Purchase_Null_Player() {
+        Property property = new Property("Test Property", 100.0, 50.0);
+
+        boolean result = property.purchase(null);
+
+        assertEquals(false, result, "Purchase with null player should fail");
+        assertEquals(false, property.isOwned(), "Property should remain unowned");
+    }
+
+    @Test
+    public void TC19_Purchase_Already_Owned_Property() {
+        Player owner = new Player("Alice", 200.0);
+        Player buyer = new Player("Bob", 200.0);
+        Property property = new Property("Test Property", 100.0, 50.0);
+        property.purchase(owner);
+
+        boolean result = property.purchase(buyer);
+
+        assertEquals(false, result, "Purchase of already owned property should fail");
+        assertEquals(true, property.isOwnedBy(owner), "Original owner should still own the property");
+        assertEquals(false, property.isOwnedBy(buyer), "Buyer should not own the property");
+        assertEquals(200.0, buyer.getBalance(), 0.001, "Buyer balance should not change");
+    }
+
+    @Test
+    public void TC20_Purchase_Zero_Price_Property() {
+        Player player = new Player("Alice", 100.0);
+        Property property = new Property("Test Property", 0.0, 50.0);
+
+        boolean result = property.purchase(player);
+
+        assertEquals(true, result, "Purchase of free property should succeed");
+        assertEquals(true, property.isOwned(), "Property should be owned after purchase");
+        assertEquals(true, property.isOwnedBy(player), "Purchasing player should own the property");
+        assertEquals(100.0, player.getBalance(), 0.001, "Player balance should not change for free property");
+    }
+
 }
