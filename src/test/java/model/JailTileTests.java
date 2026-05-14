@@ -80,7 +80,7 @@ public class JailTileTests {
     }
 
     @Test
-    public void TC7_JailTile_LandOn_InactivePlayer_Invalid() {
+    public void TC7_JailTile_LandOn_InactivePlayer_NoEffect() {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
