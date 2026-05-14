@@ -330,4 +330,26 @@ public class PropertyTests {
         assertEquals(0.0, resaleValue, 0.001, "Resale value should be zero for zero price");
     }
 
+    @Test
+    public void TC30_Small_Price_Resale() {
+        Property property = new Property("Test Property", 1.0, 50.0);
+        Player owner = new Player("Alice", 200.0);
+        property.purchase(owner);
+
+        double resaleValue = property.getResaleValue();
+
+        assertEquals(0.8, resaleValue, 0.001, "Resale value should be 0.8 for price of 1.0");
+    }
+
+    @Test
+    public void TC31_Large_Price_Resale() {
+        Property property = new Property("Test Property", Double.MAX_VALUE, 50.0);
+        Player owner = new Player("Alice", Double.MAX_VALUE);
+        property.purchase(owner);
+
+        double resaleValue = property.getResaleValue();
+
+        assertEquals(Double.MAX_VALUE * 0.8, resaleValue, "Large price resale should be handled");
+    }
+
 }
