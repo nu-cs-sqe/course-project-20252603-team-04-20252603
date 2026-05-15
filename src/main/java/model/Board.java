@@ -17,4 +17,8 @@ public class Board {
             throw new IllegalStateException("Board must contain exactly 32 tiles");
         }
     }
+
+    public void getTile(int boardIndex) {
+        throw new IndexOutOfBoundsException();
+    }
 }
