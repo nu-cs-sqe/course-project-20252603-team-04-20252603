@@ -25,4 +25,9 @@ public class Board {
 
         return tiles.get(boardIndex);
     }
+
+    public int getPlayerPosition(Player player) {
+        throw new IllegalArgumentException("Player does not have a stored board position");
+    }
+
 }
