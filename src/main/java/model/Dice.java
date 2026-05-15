@@ -8,13 +8,15 @@ public class Dice {
     private int dieOne;
     private int dieTwo;
 
-    public Dice(Random rand) {
+
+    Dice(Random rand) {
         this.rand = rand;
     }
 
     public void roll() {
-        dieOne = rand.nextInt(6) + 1;
-        dieTwo = rand.nextInt(6) + 1;
+        int NUM_DIE_SIDES = 6;
+        dieOne = rand.nextInt(NUM_DIE_SIDES) + 1;
+        dieTwo = rand.nextInt(NUM_DIE_SIDES) + 1;
     }
 
     public int getDieOne() {
