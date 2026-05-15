@@ -45,4 +45,13 @@ public class BoardTests {
 
         assertThrows(IllegalStateException.class, board::initializeBoard);
     }
+
+    @Test
+    public void getTile_WithNegativeIndex_ThrowsException() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(-1));
+    }
 }
