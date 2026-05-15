@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTests {
 
@@ -55,4 +54,15 @@ public class BoardTests {
         assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(-1));
     }
 
+    @Test
+    public void getTile_WithFirstIndex_ReturnsFirstTile() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Tile expected = tiles.get(0);
+        Tile actual = board.getTile(0);
+
+        assertSame(expected, actual);
+    }
 }

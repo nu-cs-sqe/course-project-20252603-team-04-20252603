@@ -18,7 +18,11 @@ public class Board {
         }
     }
 
-    public void getTile(int boardIndex) {
-        throw new IndexOutOfBoundsException(boardIndex + " is an out of bounds index");
+    public Tile getTile(int boardIndex) {
+        if(boardIndex < 0 || boardIndex >= BOARD_SIZE) {
+            throw new IndexOutOfBoundsException(boardIndex + " is an out of bounds index");
+        }
+
+        return tiles.get(boardIndex);
     }
 }
