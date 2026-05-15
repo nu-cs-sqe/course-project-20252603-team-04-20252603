@@ -54,4 +54,5 @@ public class BoardTests {
 
         assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(-1));
     }
+
 }

@@ -19,6 +19,6 @@ public class Board {
     }
 
     public void getTile(int boardIndex) {
-        throw new IndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException(boardIndex + " is an out of bounds index");
     }
 }
