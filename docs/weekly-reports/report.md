@@ -12,7 +12,17 @@
 # Week 5 (04/27/2026-05/03/2026) (You can change the format to whatever the team likes better)
 **Planning and Progress Tracking**:
 1. [done] Met on April 30 to distribute implementation tasks. 
-2. [currently in progress] Performing BVA and TDD on all objects for the game. More draft PRs and PRs to be reviewed are currently eitehr coming in or being reviewed. 
+2. [currently in progress] Performing BVA and TDD on all objects for the game. More draft PRs and PRs to be reviewed are currently eitehr coming in or being reviewed.
+
+# Week 6 (05/04/2026-05/10/2026) (You can change the format to whatever the team likes better)
+**Planning and Progress Tracking**:
+1. [almost done] Added spotbugs and checkstyle, pending PR review.
+2. [currently in progress] BVA and TDD still in progress.
+
+# week 7 (05/11/2026-05/17/2026)
+1.  [done] Added spotbugs and checkstyle, pitest, jacoco
+2.  [currently in progress] Implementation still in progress
+3.  [currently in progress] Integration testing plan and i18n plan in progress.
 
 # Week X (XX/XX/2026-XX/XX/2026) TEMPLATE (You can change the format to whatever the team likes better)
 **Planning and Progress Tracking**:
