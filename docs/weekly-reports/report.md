@@ -23,6 +23,7 @@
 1.  [done] Added spotbugs and checkstyle, pitest, jacoco
 2.  [currently in progress] Implementation still in progress
 3.  [currently in progress] Integration testing plan and i18n plan in progress.
+4.  Classes to implement: GUI, Controller, Jail, Chance Tile, and board class.
 
 # Week X (XX/XX/2026-XX/XX/2026) TEMPLATE (You can change the format to whatever the team likes better)
 **Planning and Progress Tracking**:
