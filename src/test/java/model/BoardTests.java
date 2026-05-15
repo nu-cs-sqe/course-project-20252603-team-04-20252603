@@ -87,4 +87,15 @@ public class BoardTests {
         assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(32));
     }
 
+    @Test
+    public void getPlayerPosition_WhenPlayerNotOnBoard_ThrowsException() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+
+        assertThrows(IllegalArgumentException.class, () -> board.getPlayerPosition(player));
+    }
+
 }
