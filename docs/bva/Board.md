@@ -20,19 +20,19 @@
 2. Input: Interval, Output: `Tile` Object Reference
 3. Input: [0, 31] (-1, 0, 31, 32), Output: The valid `Tile` reference
 
-- **TC4: getTile_WithNegativeIndex_ThrowsException** ( :x: )
+- **TC4: getTile_WithNegativeIndex_ThrowsException** ( :white_check_mark: )
   - **State of the system**: initialized board, `index` = -1
   - **Expected output**: throws `IndexOutOfBoundsException`
 
-- **TC5: getTile_WithFirstIndex_ReturnsFirstTile** ( :x: )
+- **TC5: getTile_WithFirstIndex_ReturnsFirstTile** ( :white_check_mark: )
   - **State of the system**: initialized board, `index` = 0
   - **Expected output**: returns tile at index 0
 
-- **TC6: getTile_WithLastIndex_ReturnsLastTile** ( :x: )
+- **TC6: getTile_WithLastIndex_ReturnsLastTile** ( :white_check_mark: )
   - **State of the system**: initialized board, `index` = 31
   - **Expected output**: returns tile at index 31
 
-- **TC7: getTile_WithIndexEqualToBoardSize_ThrowsException** ( :x: )
+- **TC7: getTile_WithIndexEqualToBoardSize_ThrowsException** ( :white_check_mark: )
   - **State of the system**: initialized board, `index` = 32
   - **Expected output**: throws `IndexOutOfBoundsException`
 

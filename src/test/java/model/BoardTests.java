@@ -78,4 +78,13 @@ public class BoardTests {
         assertSame(expected, actual);
     }
 
+    @Test
+    public void getTile_WithIndexEqualToBoardSize_ThrowsException() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(32));
+    }
+
 }
