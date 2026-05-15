@@ -65,4 +65,17 @@ public class BoardTests {
 
         assertSame(expected, actual);
     }
+
+    @Test
+    public void getTile_WithLastIndex_ReturnsLastTile() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Tile expected = tiles.get(31);
+        Tile actual = board.getTile(31);
+
+        assertSame(expected, actual);
+    }
+
 }
