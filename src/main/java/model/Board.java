@@ -1,15 +1,19 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
 
     private static final int BOARD_SIZE = 32;
 
     private final List<Tile> tiles;
+    private final Map<Player, Integer> playerPositions;
 
     public Board(List<Tile> tiles) {
         this.tiles = tiles;
+        this.playerPositions = new HashMap<>();
     }
 
     public void initializeBoard() {
@@ -27,7 +31,15 @@ public class Board {
     }
 
     public int getPlayerPosition(Player player) {
-        throw new IllegalArgumentException("Player does not have a stored board position");
+        if (!playerPositions.containsKey(player)) {
+            throw new IllegalArgumentException("Player does not have a stored board position");
+        }
+
+        return playerPositions.get(player);
+    }
+
+    public void setPlayerPosition(Player player, int boardIndex) {
+        playerPositions.put(player, boardIndex);
     }
 
 }

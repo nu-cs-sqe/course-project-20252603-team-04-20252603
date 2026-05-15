@@ -45,7 +45,7 @@
   - **State of the system**: valid player has no stored board position
   - **Expected output**: throws `IllegalArgumentException`
 
-- **TC9: getPlayerPosition_WhenPlayerAtFirstIndex_ReturnsZero** ( :x: )
+- **TC9: getPlayerPosition_WhenPlayerAtFirstIndex_ReturnsZero** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 0
   - **Expected output**: returns 0
 
