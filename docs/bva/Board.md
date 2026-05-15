@@ -41,7 +41,7 @@
 2. Input: `Player` object reference, Output: array index / interval
 3. Input: Valid `Player`, Invalid `Player`, Output: [0, 31]
 
-- **TC8: getPlayerPosition_WhenPlayerNotOnBoard_ThrowsException** ( :x: )
+- **TC8: getPlayerPosition_WhenPlayerNotOnBoard_ThrowsException** ( :white_check_mark: )
   - **State of the system**: valid player has no stored board position
   - **Expected output**: throws `IllegalArgumentException`
 

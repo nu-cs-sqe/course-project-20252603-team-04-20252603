@@ -98,4 +98,19 @@ public class BoardTests {
         assertThrows(IllegalArgumentException.class, () -> board.getPlayerPosition(player));
     }
 
+    @Test
+    public void getPlayerPosition_WhenPlayerAtFirstIndex_ReturnsZero() {
+        List<Tile> tiles = createTiles(32);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+        board.setPlayerPosition(player, 0);
+
+        int expected = 0;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
+
 }
