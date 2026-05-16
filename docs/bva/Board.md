@@ -58,11 +58,11 @@
 2. Input: `Player` object reference and spaces is an interval, Output: interval
 3. Input: Valid `Player`, Invalid `Player`, spaces is [2, 12] (1, 2, 12, 13)
 
-- **TC11: movePlayer_WhenPlayerNotOnBoard_ThrowsException** ( :x: )
+- **TC11: movePlayer_WhenPlayerNotOnBoard_ThrowsException** ( :white_check_mark: )
   - **State of the system**: player not stored on board, spaces = 2
   - **Expected output**: throws `IllegalArgumentException`
 
-- **TC12: movePlayer_WithOneLessThanMinimumDiceRoll_ThrowsException** ( :x: )
+- **TC12: movePlayer_WithOneLessThanMinimumDiceRoll_ThrowsException** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 0, spaces = 1
   - **Expected output**: throws `IllegalArgumentException`
 

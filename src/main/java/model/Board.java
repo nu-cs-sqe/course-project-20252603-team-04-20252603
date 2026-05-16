@@ -43,7 +43,13 @@ public class Board {
     }
 
     public void movePlayer(Player player, int spaces) {
-        throw new IllegalArgumentException("Player must be on the board before moving");
+        if (!playerPositions.containsKey(player)) {
+            throw new IllegalArgumentException("Player must be on the board before moving");
+        }
+
+        if (spaces < 2) {
+            throw new IllegalArgumentException("Spaces must be at least 2");
+        }
     }
 
 }
