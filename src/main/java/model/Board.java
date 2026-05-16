@@ -42,4 +42,8 @@ public class Board {
         playerPositions.put(player, boardIndex);
     }
 
+    public void movePlayer(Player player, int spaces) {
+        throw new IllegalArgumentException("Player must be on the board before moving");
+    }
+
 }
