@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Objects;
 import java.util.Optional;
 import model.Tile;
 import util.OwnershipStatus;
@@ -41,9 +42,8 @@ public class Property implements Tile {
 
     @Override
     public void landOn(Player player, GameEngine game) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
+
 
         if (this.isOwned()) {
             Player ownerPlayer = this.owner.get();
@@ -70,9 +70,7 @@ public class Property implements Tile {
     }
 
     public boolean isOwnedBy(Player player) {
-        if (player == null) {
-            return false;
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
         return this.owner.isPresent() && this.owner.get().equals(player);
     }
 
@@ -86,26 +84,25 @@ public class Property implements Tile {
     }
 
     public boolean purchase(Player player) {
-        if (player == null) {
-            return false;
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
         if (this.isOwned()) {
             return false;
         }
         if (!player.canAfford(this.price)) {
             return false;
         }
-        if (player.remove(this.price)) {
-            this.owner = Optional.of(player);
-            this.ownershipStatus = OwnershipStatus.OWNED;
-            player.addProperty(this);
-            return true;
-        }
-        return false;
+
+        player.remove(this.price);
+        this.owner = Optional.of(player);
+        this.ownershipStatus = OwnershipStatus.OWNED;
+        player.addProperty(this);
+        return true;
     }
 
     public boolean chargeRent(Player player) {
-        if (player == null || !this.isOwned() || !this.owner.isPresent()) {
+        Objects.requireNonNull(player, "Player cannot be null");
+
+        if (!this.isOwned()) {
             return false;
         }
         Player ownerPlayer = this.owner.get();
@@ -115,11 +112,9 @@ public class Property implements Tile {
         if (!player.canAfford(this.rent)) {
             return false;
         }
-        if (player.remove(this.rent)) {
-            ownerPlayer.receive(this.rent);
-            return true;
-        }
-        return false;
+        player.remove(this.rent);
+        ownerPlayer.receive(this.rent);
+        return true;
     }
 
     public double getResaleValue() {
