@@ -71,4 +71,21 @@ public class ChanceTileTests {
 
         assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(null, null));
     }
+
+    // TC6: Inactive player lands on ChanceTile
+
+    @Test
+    public void Inactive_Player_Lands_On_ChanceTile_Does_Nothing() {
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+
+        EasyMock.expect(player.getActive()).andReturn(false);
+
+        EasyMock.replay(player, game);
+
+        ChanceTile chanceTile = new ChanceTile();
+        chanceTile.landOn(player, game);
+
+        EasyMock.verify(player, game);
+    }
 }

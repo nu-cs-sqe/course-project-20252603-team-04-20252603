@@ -26,6 +26,6 @@ Chancetile is only for landing on chance. The actual deal of the chance card log
   - **State of the system**: **`player = null`**, **`game = null`**.
   - **Expected output**: Inputs are rejected (e.g. **`IllegalArgumentException`**); no effect.
 
-- **TC6: Inactive player lands on ChanceTile** ( :x: )
+- **TC6: Inactive player lands on ChanceTile** ( :white_check_mark: )
   - **State of the system**: **`player`** is inactive (**`isActive() == false`** or **`getActive() == false`**, whichever your **`Player`** API uses); **`game`** is valid and mocked so Chance-draw hooks are observable.
   - **Expected output**: No Chance effect runs—**no** **`draw`** / **`handleChanceLanding`** (or equivalent) on **`game`**/`Deck`; **`landOn`** returns normally (no exception for inactive **`player`** if that matches your **`Tile`** contract).
