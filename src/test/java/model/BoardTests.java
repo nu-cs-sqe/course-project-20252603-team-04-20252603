@@ -199,4 +199,21 @@ public class BoardTests {
         assertThrows(IllegalArgumentException.class, () -> board.movePlayer(player, 13));
     }
 
+    @Test
+    public void movePlayer_WithMaximumDiceRollNearEnd_WrapsAroundBoard() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+        board.setPlayerPosition(player, 31);
+
+        board.movePlayer(player, 12);
+
+        int expected = 11;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
+
 }
