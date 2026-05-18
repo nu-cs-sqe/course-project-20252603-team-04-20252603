@@ -47,18 +47,21 @@ public class JailTileTests {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
+
         EasyMock.expect(player.getActive()).andStubReturn(true);
         EasyMock.expect(player.inJail()).andStubReturn(true);
         EasyMock.expect(player.getPosition()).andStubReturn(Constants.JAIL_POSITION);
         EasyMock.expect(player.getBalance()).andStubReturn(1000.0);
+
         EasyMock.replay(player, game);
 
         jailTile.landOn(player, game);
 
-        assertTrue(player.getActive(), "Setup check: player should be active");
-        assertTrue(player.inJail(), "JailTile should not release a player who is already in jail");
+        assertTrue(player.getActive(), "Player should remain active");
+        assertTrue(player.inJail(), "JailTile should not release a jailed player");
         assertEquals(Constants.JAIL_POSITION, player.getPosition(), "JailTile should not move the player");
-        assertEquals(1000.0, player.getBalance(), "JailTile should not change the player's balance");
+        assertEquals(1000.0, player.getBalance(), "JailTile should not change balance");
+
         EasyMock.verify(player, game);
     }
 
