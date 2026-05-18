@@ -26,7 +26,7 @@
     - **State of the system**: `player` is valid, `game = null`.
     - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; player state is unchanged.
 
-- **TC6: Both player and game null** ( :x: )
+- **TC6: Both player and game null** ( :white_check_mark: )
     - **State of the system**: `player = null`, `game = null`.
     - **Expected output**: The method rejects the invalid inputs and applies no effect.
 
@@ -34,6 +34,6 @@
     - **State of the system**: `player.isActive() == false`, `game` is valid.
     - **Expected output**: No effect is applied. Balance, position, and jail state remain unchanged.
 
-- **TC8: JailTile does not move the player** ( :x: )
+- **TC8: JailTile does not move the player** ( :white_check_mark: )
     - **State of the system**: Player is already positioned on the jail tile.
     - **Expected output**: After `landOn`, player position is unchanged. Movement is the board/game engine’s responsibility, not the tile’s.
