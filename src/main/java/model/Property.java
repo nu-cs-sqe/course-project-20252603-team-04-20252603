@@ -51,6 +51,10 @@ public class Property implements Tile {
         }
     }
 
+    public String getPropertyName() {
+        return this.propertyName;
+    }
+    
     public double getPrice() {
         return this.price;
     }
