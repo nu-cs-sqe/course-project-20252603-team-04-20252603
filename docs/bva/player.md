@@ -15,7 +15,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 # Player BVA Analysis
 
-## Method under test: `buy(double amount)`
+## Method under test: `remove(double amount)`
 
 - **TC1: Buy with zero amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 0  
@@ -41,7 +41,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
   - **Expected output**: purchase denied OR no change
 
-## Method under test: `sell(double amount)`
+## Method under test: `receive(double amount)`
 
 - **TC6: Sell zero amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 0  
@@ -53,7 +53,7 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC8: Sell positive amount** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = 50  
-  - **Expected output**: balance becomes 140
+  - **Expected output**: balance becomes 150
 
 - **TC9: Sell maximum double value** ( :white_check_mark: )  
   - **State of the system**: balance = 100, amount = Double.MAX_VALUE  
@@ -168,12 +168,46 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 
 - **TC27: Balance = 0** ( :white_check_mark: )  
   - **State of the system**: balance = 0  
-  - **Expected output**: true  
+  - **Expected output**: true AND active = false  
 
 - **TC28: Balance slightly above 0** ( :white_check_mark: )  
   - **State of the system**: balance = 0.01  
-  - **Expected output**: false  
+  - **Expected output**: false AND active remains true  
 
 - **TC29: Balance negative** ( :white_check_mark: )  
   - **State of the system**: balance = -10  
-  - **Expected output**: true
+  - **Expected output**: true AND active = false
+
+## Method under test: `getActive()`
+
+- **TC30: Get active status when true** ( :white_check_mark: )  
+  - **State of the system**: active = true  
+  - **Expected output**: returns true  
+
+- **TC31: Get active status when false** ( :white_check_mark: )  
+  - **State of the system**: active = false  
+  - **Expected output**: returns false  
+
+## Method under test: `getName()`
+
+- **TC32: Get name for player "Alice"** ( :white_check_mark: )  
+  - **State of the system**: name = "Alice"  
+  - **Expected output**: returns "Alice"  
+
+- **TC33: Get name for player "Bob"** ( :white_check_mark: )  
+  - **State of the system**: name = "Bob"  
+  - **Expected output**: returns "Bob"  
+
+## Method under test: `getJailTurnCount()`
+
+- **TC34: Get jailTurnCount when initially created** ( :white_check_mark: )  
+  - **State of the system**: jailTurnCount = 0 (initial state)  
+  - **Expected output**: returns 0  
+
+- **TC35: Get jailTurnCount after going to jail** ( :white_check_mark: )  
+  - **State of the system**: player just called goToJail()  
+  - **Expected output**: returns 1  
+
+- **TC36: Get jailTurnCount after leaving jail** ( :white_check_mark: )  
+  - **State of the system**: player called goToJail() then leaveJail()  
+  - **Expected output**: returns 0
