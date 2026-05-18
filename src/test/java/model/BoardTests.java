@@ -243,4 +243,20 @@ public class BoardTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void setPlayerPosition_WithLastIndex_StoresPosition() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+
+        board.setPlayerPosition(player, 31);
+
+        int expected = 31;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
+
 }

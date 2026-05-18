@@ -95,7 +95,7 @@
   - **State of the system**: valid player, index = 0
   - **Expected output**: `getPlayerPosition(player)` returns 0
 
-- **TC19: setPlayerPosition_WithLastIndex_StoresPosition** ( :x: )
+- **TC19: setPlayerPosition_WithLastIndex_StoresPosition** ( :white_check_mark: )
   - **State of the system**: valid player, index = 31
   - **Expected output**: `getPlayerPosition(player)` returns 31
 
