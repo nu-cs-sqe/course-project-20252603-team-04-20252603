@@ -321,4 +321,15 @@ public class BoardTests {
         assertFalse(actual);
     }
 
+    @Test
+    public void didPassGo_WhenMovingFromLastIndexToGo_ReturnsTrue() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        boolean actual = board.didPassGo(31, 0);
+
+        assertTrue(actual);
+    }
+
 }

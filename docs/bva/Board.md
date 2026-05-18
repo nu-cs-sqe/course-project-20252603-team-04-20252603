@@ -136,7 +136,7 @@ Output: true, false, exception
   - **State of the system**: oldPosition = 30, newPosition = 31
   - **Expected output**: returns `false`
 
-- **TC26: didPassGo_WhenMovingFromLastIndexToGo_ReturnsTrue** ( :x: )
+- **TC26: didPassGo_WhenMovingFromLastIndexToGo_ReturnsTrue** ( :white_check_mark: )
   - **State of the system**: oldPosition = 31, newPosition = 0
   - **Expected output**: returns `true`
 

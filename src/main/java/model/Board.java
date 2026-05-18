@@ -71,7 +71,7 @@ public class Board {
             throw new IndexOutOfBoundsException(newPosition + " is an out of bounds new position");
         }
 
-        return false;
+        return newPosition < oldPosition;
     }
 
 }
