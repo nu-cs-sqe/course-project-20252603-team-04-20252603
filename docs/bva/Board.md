@@ -49,7 +49,7 @@
   - **State of the system**: player exists on board at index 0
   - **Expected output**: returns 0
 
-- **TC10: getPlayerPosition_WhenPlayerAtLastIndex_Returns31** ( :white_check_mark: )
+- **TC10: getPlayerPosition_WhenPlayerAtLastIndex_ReturnsLastIndex** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 31
   - **Expected output**: returns 31
 

@@ -7,6 +7,8 @@ import java.util.Map;
 public class Board {
 
     private static final int BOARD_SIZE = 32;
+    private static final int MIN_DIE_ROLL = 2;
+    private static final int MAX_DIE_ROLL = 12;
 
     private final List<Tile> tiles;
     private final Map<Player, Integer> playerPositions;
@@ -23,7 +25,7 @@ public class Board {
     }
 
     public Tile getTile(int boardIndex) {
-        if(boardIndex < 0 || boardIndex >= BOARD_SIZE) {
+        if (boardIndex < 0 || boardIndex >= BOARD_SIZE) {
             throw new IndexOutOfBoundsException(boardIndex + " is an out of bounds index");
         }
 
@@ -51,9 +53,6 @@ public class Board {
         if (!playerPositions.containsKey(player)) {
             throw new IllegalArgumentException("Player must be on the board before moving");
         }
-
-        final int MIN_DIE_ROLL = 2;
-        final int MAX_DIE_ROLL = 12;
 
         if (spaces < MIN_DIE_ROLL || spaces > MAX_DIE_ROLL) {
             throw new IllegalArgumentException("Spaces must range from 2-12");

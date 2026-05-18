@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTests {
 
-    private final int NORMAL_TILE_SIZE = 32;
+    private static final int NORMAL_TILE_SIZE = 32;
+    private static final int MIN_DIE_ROLL = 2;
+    private static final int MAX_DIE_ROLL = 12;
 
     private List<Tile> createTiles(int numberOfTiles) {
         List<Tile> tiles = new ArrayList<>();
@@ -74,8 +76,8 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        Tile expected = tiles.get(31);
-        Tile actual = board.getTile(31);
+        Tile expected = tiles.get(NORMAL_TILE_SIZE - 1);
+        Tile actual = board.getTile(NORMAL_TILE_SIZE - 1);
 
         assertSame(expected, actual);
     }
@@ -86,7 +88,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(32));
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(NORMAL_TILE_SIZE));
     }
 
     @Test
@@ -116,15 +118,15 @@ public class BoardTests {
     }
 
     @Test
-    public void getPlayerPosition_WhenPlayerAtLastIndex_Returns31() {
+    public void getPlayerPosition_WhenPlayerAtLastIndex_ReturnsLastIndex() {
         List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
         Player player = new Player("John", 1000.0);
-        board.setPlayerPosition(player, 31);
+        board.setPlayerPosition(player, NORMAL_TILE_SIZE - 1);
 
-        int expected = 31;
+        int expected = NORMAL_TILE_SIZE - 1;
         int actual = board.getPlayerPosition(player);
 
         assertEquals(expected, actual);
@@ -160,9 +162,9 @@ public class BoardTests {
         board.initializeBoard();
 
         Player player = new Player("John", 1000.0);
-        board.setPlayerPosition(player, 30);
+        board.setPlayerPosition(player, NORMAL_TILE_SIZE - 2);
 
-        board.movePlayer(player, 2);
+        board.movePlayer(player, MIN_DIE_ROLL);
 
         int expected = 0;
         int actual = board.getPlayerPosition(player);
@@ -179,7 +181,7 @@ public class BoardTests {
         Player player = new Player("John", 1000.0);
         board.setPlayerPosition(player, 0);
 
-        board.movePlayer(player, 12);
+        board.movePlayer(player, MAX_DIE_ROLL);
 
         int expected = 12;
         int actual = board.getPlayerPosition(player);
@@ -208,7 +210,7 @@ public class BoardTests {
         Player player = new Player("John", 1000.0);
         board.setPlayerPosition(player, 31);
 
-        board.movePlayer(player, 12);
+        board.movePlayer(player, MAX_DIE_ROLL);
 
         int expected = 11;
         int actual = board.getPlayerPosition(player);
@@ -251,9 +253,9 @@ public class BoardTests {
 
         Player player = new Player("John", 1000.0);
 
-        board.setPlayerPosition(player, 31);
+        board.setPlayerPosition(player, NORMAL_TILE_SIZE - 1);
 
-        int expected = 31;
+        int expected = NORMAL_TILE_SIZE - 1;
         int actual = board.getPlayerPosition(player);
 
         assertEquals(expected, actual);
@@ -267,7 +269,7 @@ public class BoardTests {
 
         Player player = new Player("John", 1000.0);
 
-        assertThrows(IndexOutOfBoundsException.class, () -> board.setPlayerPosition(player, 32));
+        assertThrows(IndexOutOfBoundsException.class, () -> board.setPlayerPosition(player, NORMAL_TILE_SIZE));
     }
 
     @Test
@@ -285,7 +287,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(0, 32));
+        assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(0, NORMAL_TILE_SIZE));
     }
 
     @Test
@@ -316,7 +318,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        boolean actual = board.didPassGo(30, 31);
+        boolean actual = board.didPassGo(NORMAL_TILE_SIZE - 2, NORMAL_TILE_SIZE - 1);
 
         assertFalse(actual);
     }
@@ -327,7 +329,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        boolean actual = board.didPassGo(31, 0);
+        boolean actual = board.didPassGo(NORMAL_TILE_SIZE - 1, 0);
 
         assertTrue(actual);
     }
@@ -338,7 +340,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        boolean actual = board.didPassGo(30, 1);
+        boolean actual = board.didPassGo(NORMAL_TILE_SIZE - 2, 1);
 
         assertTrue(actual);
     }
@@ -349,7 +351,7 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        int expected = 32;
+        int expected = NORMAL_TILE_SIZE;
         int actual = board.getBoardSize();
 
         assertEquals(expected, actual);
