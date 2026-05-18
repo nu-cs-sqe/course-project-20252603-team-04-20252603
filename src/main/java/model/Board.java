@@ -62,4 +62,8 @@ public class Board {
         playerPositions.put(player, newPosition);
     }
 
+    public boolean didPassGo(int oldPosition, int newPosition) {
+        throw new IndexOutOfBoundsException(oldPosition + " is an out of bounds index");
+    }
+
 }

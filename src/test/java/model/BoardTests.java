@@ -270,4 +270,13 @@ public class BoardTests {
         assertThrows(IndexOutOfBoundsException.class, () -> board.setPlayerPosition(player, 32));
     }
 
+    @Test
+    public void didPassGo_WithOneLessThanFirstOldPosition_ThrowsException() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(-1, 0));
+    }
+
 }

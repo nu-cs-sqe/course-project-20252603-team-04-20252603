@@ -116,7 +116,7 @@
   - oldPosition = 30, newPosition = 1
 Output: true, false, exception
 
-- **TC21: didPassGo_WithOneLessThanFirstOldPosition_ThrowsException** ( :x: )
+- **TC21: didPassGo_WithOneLessThanFirstOldPosition_ThrowsException** ( :white_check_mark: )
   - **State of the system**: oldPosition = -1, newPosition = 0
   - **Expected output**: throws `IndexOutOfBoundsException`
 
