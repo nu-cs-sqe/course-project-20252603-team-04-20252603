@@ -1,11 +1,11 @@
 package model;
 
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
 import model.Property;
-import util.Constants;
 
 public class Player {
 
@@ -30,7 +30,7 @@ public class Player {
     public double getBalance() {
         return this.balance;
     }
-    public boolean buy(double price) {
+    public boolean remove(double price) {
         if (price < 0 || price == Double.MAX_VALUE) {
             return false;
         }
@@ -40,11 +40,11 @@ public class Player {
         }
         return false;
     }
-    public boolean sell(double price) {
+    public boolean receive(double price) {
         if (price < 0 || price == Double.MAX_VALUE) {
             return false;
         }
-        this.balance += price * Constants.SELL_MULTIPLIER;
+        this.balance += price;
         return true;
     }
     public boolean canAfford(double price) {
@@ -55,7 +55,7 @@ public class Player {
     }
 
     public Set<Property> getOwnedProperties() {
-        return this.ownedProperties;
+        return Collections.unmodifiableSet(this.ownedProperties);
     }
 
     public boolean addProperty(Property property){
@@ -74,10 +74,16 @@ public class Player {
         if (!this.ownedProperties.contains(property)){ return false; }
 
         double price = property.getPrice();
-        if (this.sell(price)){
+        if (this.receive(price)){
             return this.removeProperty(property);
         }
         return false;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public int getJailTurnCount() {
+        return this.jailTurnCount;
     }
     public int getPosition() {
         return this.position;
@@ -104,13 +110,16 @@ public class Player {
         this.position += 1;
         return true;
 
-    }
+    } 
     public boolean isBankrupt() {
         if (this.balance <= 0.0) {
             this.active = false;
             return true;
         }        
         return false;
+    }
+    public boolean getActive() {
+        return this.active;
     }
     
 

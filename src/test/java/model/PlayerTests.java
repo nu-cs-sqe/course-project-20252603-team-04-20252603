@@ -18,7 +18,7 @@ public class PlayerTests {
     @Test
     public void Tests_Buying_With_No_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(0.0);
+        boolean success = player.remove(0.0);
 
         assertTrue(success);
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged when buying with no money");
@@ -27,7 +27,7 @@ public class PlayerTests {
     @Test
     public void Tests_Buying_With_Enough_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(-10.0);
+        boolean success = player.remove(-10.0);
 
         assertFalse(success, "Buying with negative amount should be rejected");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
@@ -36,7 +36,7 @@ public class PlayerTests {
     @Test
     public void Tests_Buying_With_Insufficient_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(101.0);
+        boolean success = player.remove(101.0);
 
         assertFalse(success, "Buying with insufficient funds should be rejected");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
@@ -45,7 +45,7 @@ public class PlayerTests {
     @Test
     public void Tests_Buying_With_Exact_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(100.0);
+        boolean success = player.remove(100.0);
 
         assertTrue(success, "Buying with exact funds should be successful");
         assertEquals(0, player.getBalance(), 0.001, "Balance should = 0 after buying with exact funds");
@@ -55,7 +55,7 @@ public class PlayerTests {
 
     public void Tests_Buying_With_Slightly_Less_Than_Balance() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(99.0);
+        boolean success = player.remove(99.0);
 
         assertTrue(success, "Buying with valid amount should be successful");
         assertEquals(1.0, player.getBalance(), 0.001, "Balance should decrease by the purchase amount");
@@ -64,7 +64,7 @@ public class PlayerTests {
     @Test
     public void Tests__Buying_With_Max_Integer() {
         Player player = new Player("John", 100.0);
-        boolean success = player.buy(Double.MAX_VALUE);
+        boolean success = player.remove(Double.MAX_VALUE);
 
         assertFalse(success, "Buying with maximum amount should be rejected/properly handled");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
@@ -77,7 +77,7 @@ public class PlayerTests {
     @Test
     public void Tests_Selling_With_No_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.sell(0.0); // 0 * 0.8 = 0
+        boolean success = player.receive(0.0);
 
         assertTrue(success);
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged when selling with no money");
@@ -86,7 +86,7 @@ public class PlayerTests {
     @Test
     public void Tests_Selling_With_Negative_Money() {
         Player player = new Player("John", 100.0);
-        boolean success = player.sell(-10.0);
+        boolean success = player.receive(-10.0);
 
         assertFalse(success, "Selling with negative amount should not be allowed");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
@@ -96,18 +96,16 @@ public class PlayerTests {
     public void Tests_Selling_With_Valid_Money() {
         Player player = new Player("John", 100.0);
 
-        // Passed value is 50.0. Added amount should be 50.0 * 0.8 = 40.0.
-        // New balance = 100.0 + 40.0 = 140.0
-        boolean success = player.sell(50.0);
+        boolean success = player.receive(50.0);
 
         assertTrue(success, "Selling with valid amount should be successful");
-        assertEquals(140.0, player.getBalance(), 0.001, "Balance should increase by 80% of the sale amount");
+        assertEquals(150.0, player.getBalance(), 0.001, "Balance should increase by the sale amount");
     }
 
     @Test
     public void Tests_Selling_With_Max_Amout() {
         Player player = new Player("John", 100.0);
-        boolean success = player.sell(Double.MAX_VALUE);
+        boolean success = player.receive(Double.MAX_VALUE);
 
         assertFalse(success, "Selling with maximum amount should fail due to overflow");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
@@ -280,7 +278,7 @@ public class PlayerTests {
         assertTrue(success, "Selling an owned property should be successful");
         assertFalse(player.getOwnedProperties().contains(propertyMock), "Property should be removed from ownership");
 
-        assertEquals(180.0, player.getBalance(), 0.001, "Balance should increase by 80% of the property price");
+        assertEquals(200.0, player.getBalance(), 0.001, "Balance should increase by the property price");
     }
 
     @Test
@@ -392,6 +390,7 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertTrue(bankrupt, "Player with 0.0 balance should be considered bankrupt");
+        assertFalse(player.getActive(), "Player should be marked as inactive after being bankrupt");
     }
 
     @Test
@@ -401,6 +400,8 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertFalse(bankrupt, "Player with balance slightly above 0 should not be bankrupt");
+        assertTrue(player.getActive(), "Player should remain active since balance is above 0");
+
     }
 
     @Test
@@ -410,5 +411,87 @@ public class PlayerTests {
         boolean bankrupt = player.isBankrupt();
         
         assertTrue(bankrupt, "Player with negative balance should be considered bankrupt");
+        assertFalse(player.getActive(), "Player should be marked as inactive after being bankrupt");
+    }
+
+    // ==================================================================================================
+    // Test suite for getActive method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetActive_When_Active() {
+        Player player = new Player("John", 100.0);
+        
+        boolean active = player.getActive();
+        
+        assertTrue(active, "Player should be active when balance is positive");
+    }
+
+    @Test
+    public void Test_GetActive_When_Inactive() {
+        Player player = new Player("John", 0.0);
+        player.isBankrupt(); // This sets active to false
+        
+        boolean active = player.getActive();
+        
+        assertFalse(active, "Player should be inactive after going bankrupt");
+    }
+
+    // ==================================================================================================
+    // Test suite for getName method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetName_Returns_Correct_Name() {
+        String playerName = "Alice";
+        Player player = new Player(playerName, 100.0);
+        
+        String retrievedName = player.getName();
+        
+        assertEquals(playerName, retrievedName, "getName() should return the name provided during construction");
+    }
+
+    @Test
+    public void Test_GetName_With_Different_Name() {
+        String playerName = "Bob";
+        Player player = new Player(playerName, 500.0);
+        
+        String retrievedName = player.getName();
+        
+        assertEquals(playerName, retrievedName, "getName() should return the correct name for different players");
+    }
+
+    // ==================================================================================================
+    // Test suite for getJailTurnCount method
+    // ==================================================================================================
+
+    @Test
+    public void Test_GetJailTurnCount_Initially_Zero() {
+        Player player = new Player("John", 100.0);
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(0, jailTurnCount, "Player should have jailTurnCount of 0 when created");
+    }
+
+    @Test
+    public void Test_GetJailTurnCount_After_Going_To_Jail() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(10);
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(1, jailTurnCount, "jailTurnCount should be 1 after going to jail");
+    }
+
+    @Test
+    public void Test_GetJailTurnCount_After_Leaving_Jail() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(10);
+        player.leaveJail();
+        
+        int jailTurnCount = player.getJailTurnCount();
+        
+        assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
 }
