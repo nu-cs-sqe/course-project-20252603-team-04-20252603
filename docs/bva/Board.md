@@ -87,7 +87,7 @@
 2. Input `Player` object, array index, Output: side effect on player position map
 3. Input: valid player, board position [0, 31] (-1, 0, 31, 32), Output: position stored
 
-- **TC17: setPlayerPosition_WithOneLessThanFirstIndex_ThrowsException** ( :x: )
+- **TC17: setPlayerPosition_WithOneLessThanFirstIndex_ThrowsException** ( :white_check_mark: )
   - **State of the system**: valid player, index = -1
   - **Expected output**: throws `IndexOutOfBoundsException`
 

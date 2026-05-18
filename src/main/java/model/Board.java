@@ -39,6 +39,11 @@ public class Board {
     }
 
     public void setPlayerPosition(Player player, int boardIndex) {
+
+        if (boardIndex < 0 || boardIndex >= BOARD_SIZE) {
+            throw new IndexOutOfBoundsException(boardIndex + " is an out of bounds index");
+        }
+
         playerPositions.put(player, boardIndex);
     }
 
