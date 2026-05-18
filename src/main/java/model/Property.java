@@ -4,6 +4,8 @@ import java.util.Optional;
 import model.Tile;
 import util.OwnershipStatus;
 import util.Constants;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 
 public class Property implements Tile {
 
@@ -13,8 +15,8 @@ public class Property implements Tile {
     private OwnershipStatus ownershipStatus;
     private Optional<Player> owner;
 
+    @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
     public Property(String propertyName, double price, double rent) {
-
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
@@ -54,7 +56,7 @@ public class Property implements Tile {
     public String getPropertyName() {
         return this.propertyName;
     }
-    
+
     public double getPrice() {
         return this.price;
     }
