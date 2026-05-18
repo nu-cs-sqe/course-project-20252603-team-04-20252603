@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class Board {
     private final Map<Player, Integer> playerPositions;
 
     public Board(List<Tile> tiles) {
-        this.tiles = tiles;
+        this.tiles = new ArrayList<>(tiles);
         this.playerPositions = new HashMap<>();
     }
 
