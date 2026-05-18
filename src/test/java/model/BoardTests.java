@@ -288,4 +288,15 @@ public class BoardTests {
         assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(0, 32));
     }
 
+    @Test
+    public void didPassGo_WhenOldAndNewPositionsAreGo_ReturnsFalse() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        boolean actual = board.didPassGo(0, 0);
+
+        assertFalse(actual);
+    }
+
 }

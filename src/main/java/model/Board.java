@@ -63,7 +63,15 @@ public class Board {
     }
 
     public boolean didPassGo(int oldPosition, int newPosition) {
-        throw new IndexOutOfBoundsException(oldPosition + " is an out of bounds index");
+        if (oldPosition < 0 || oldPosition >= BOARD_SIZE) {
+            throw new IndexOutOfBoundsException(oldPosition + " is an out of bounds old position");
+        }
+
+        if (newPosition < 0 || newPosition >= BOARD_SIZE) {
+            throw new IndexOutOfBoundsException(newPosition + " is an out of bounds new position");
+        }
+
+        return false;
     }
 
 }
