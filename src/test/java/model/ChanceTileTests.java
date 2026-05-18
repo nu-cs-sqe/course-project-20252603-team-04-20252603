@@ -48,4 +48,18 @@ public class ChanceTileTests {
 
         EasyMock.verify(game);
     }
+
+    // TC4: Null game input
+
+    @Test
+    public void Null_Game_Input_Throws() {
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.replay(player);
+
+        ChanceTile chanceTile = new ChanceTile();
+
+        assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(player, null));
+
+        EasyMock.verify(player);
+    }
 }
