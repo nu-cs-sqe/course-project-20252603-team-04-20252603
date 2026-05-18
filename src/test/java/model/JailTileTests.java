@@ -91,4 +91,27 @@ public class JailTileTests {
         EasyMock.verify(player);
     }
 
+    @Test
+    public void TC8_JailTile_DoesNotMovePlayer() {
+        JailTile jailTile = new JailTile();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+
+        EasyMock.expect(player.getPosition())
+                .andReturn(Constants.JAIL_POSITION)
+                .times(2);
+
+        EasyMock.replay(player, game);
+
+        int startingPosition = player.getPosition();
+
+        jailTile.landOn(player, game);
+
+        assertEquals(startingPosition, player.getPosition(),
+                "JailTile should not move the player");
+
+        EasyMock.verify(player, game);
+
+    }
+
 }
