@@ -91,7 +91,7 @@
   - **State of the system**: valid player, index = -1
   - **Expected output**: throws `IndexOutOfBoundsException`
 
-- **TC18: setPlayerPosition_WithFirstIndex_StoresPosition** ( :x: )
+- **TC18: setPlayerPosition_WithFirstIndex_StoresPosition** ( :white_check_mark: )
   - **State of the system**: valid player, index = 0
   - **Expected output**: `getPlayerPosition(player)` returns 0
 

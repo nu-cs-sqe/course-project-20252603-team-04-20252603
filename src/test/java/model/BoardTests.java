@@ -227,4 +227,20 @@ public class BoardTests {
         assertThrows(IndexOutOfBoundsException.class, () -> board.setPlayerPosition(player, -1));
     }
 
+    @Test
+    public void setPlayerPosition_WithFirstIndex_StoresPosition() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+
+        board.setPlayerPosition(player, 0);
+
+        int expected = 0;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
+
 }
