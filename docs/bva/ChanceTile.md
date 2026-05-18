@@ -18,11 +18,11 @@ Chancetile is only for landing on chance. The actual deal of the chance card log
   - **State of the system**: **`player = null`**; **`game`** is valid.
   - **Expected output**: **`IllegalArgumentException`**; **`game`**/`Deck` is not invoked for a Chance draw.
 
-- **TC4: Null game input** ( :x: )
+- **TC4: Null game input** ( :white_check_mark: )
   - **State of the system**: **`player`** is a valid active **`Player`**; **`game = null`**.
   - **Expected output**: **`IllegalArgumentException`**; no Chance effect runs.
 
-- **TC5: Both player and game null** ( :x: )
+- **TC5: Both player and game null** ( :white_check_mark: )
   - **State of the system**: **`player = null`**, **`game = null`**.
   - **Expected output**: Inputs are rejected (e.g. **`IllegalArgumentException`**); no effect.
 

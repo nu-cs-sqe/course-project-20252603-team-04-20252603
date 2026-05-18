@@ -62,4 +62,13 @@ public class ChanceTileTests {
 
         EasyMock.verify(player);
     }
+
+    // TC5: Both player and game null
+
+    @Test
+    public void Null_Player_And_Game_Input_Throws() {
+        ChanceTile chanceTile = new ChanceTile();
+
+        assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(null, null));
+    }
 }
