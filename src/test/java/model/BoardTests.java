@@ -343,4 +343,16 @@ public class BoardTests {
         assertTrue(actual);
     }
 
+    @Test
+    public void getBoardSize_WhenBoardInitialized_Returns32() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        int expected = 32;
+        int actual = board.getBoardSize();
+
+        assertEquals(expected, actual);
+    }
+
 }

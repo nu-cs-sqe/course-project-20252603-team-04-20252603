@@ -149,6 +149,6 @@ Output: true, false, exception
 2. Input: None, Output: Count
 3. Output: 32
 
-- **TC28: getBoardSize_WhenBoardInitialized_Returns32** ( :x: )
+- **TC28: getBoardSize_WhenBoardInitialized_Returns32** ( :white_check_mark: )
   - **State of the system**: initialized board with 32 tiles
   - **Expected output**: returns 32

@@ -74,4 +74,8 @@ public class Board {
         return newPosition < oldPosition;
     }
 
+    public int getBoardSize() {
+        return tiles.size();
+    }
+
 }
