@@ -11,7 +11,10 @@ public class ChanceTile implements Tile {
     }
 
     @Override
-    public void landOn(Player player, GameEngine game){
+    public void landOn(Player player, GameEngine game) {
+        if (player == null) {
+            throw new IllegalArgumentException("player must be non-null");
+        }
         if (player.getActive()) {
             game.getChanceDeck().draw();
         }
