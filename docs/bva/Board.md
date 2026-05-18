@@ -120,7 +120,7 @@ Output: true, false, exception
   - **State of the system**: oldPosition = -1, newPosition = 0
   - **Expected output**: throws `IndexOutOfBoundsException`
 
-- **TC22: didPassGo_WithOneMoreThanLastNewPosition_ThrowsException** ( :x: )
+- **TC22: didPassGo_WithOneMoreThanLastNewPosition_ThrowsException** ( :white_check_mark: )
   - **State of the system**: oldPosition = 0, newPosition = 32
   - **Expected output**: throws `IndexOutOfBoundsException`
 
