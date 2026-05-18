@@ -50,6 +50,11 @@ public class Board {
         if (spaces < 2) {
             throw new IllegalArgumentException("Spaces must be at least 2");
         }
+
+        int currentPosition = playerPositions.get(player);
+        int newPosition = (currentPosition + spaces) % BOARD_SIZE;
+
+        playerPositions.put(player, newPosition);
     }
 
 }

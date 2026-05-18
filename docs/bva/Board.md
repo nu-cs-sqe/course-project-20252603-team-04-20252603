@@ -66,7 +66,7 @@
   - **State of the system**: player exists on board at index 0, spaces = 1
   - **Expected output**: throws `IllegalArgumentException`
 
-- **TC13: movePlayer_WithMinimumDiceRoll_MovesTwoSpaces** ( :x: )
+- **TC13: movePlayer_WithMinimumDiceRoll_MovesTwoSpaces** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 30, spaces = 2
   - **Expected output**: player moves to index 0
 

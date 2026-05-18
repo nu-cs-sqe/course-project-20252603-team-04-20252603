@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTests {
 
+    private final int NORMAL_TILE_SIZE = 32;
+
     private List<Tile> createTiles(int numberOfTiles) {
         List<Tile> tiles = new ArrayList<>();
 
@@ -23,7 +25,7 @@ public class BoardTests {
 
     @Test
     public void initializeBoard_With31Tiles_ThrowsException() {
-        List<Tile> tiles = createTiles(31);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE - 1);
         Board board = new Board(tiles);
 
         assertThrows(IllegalStateException.class, board::initializeBoard);
@@ -31,7 +33,7 @@ public class BoardTests {
 
     @Test
     public void initializeBoard_With32Tiles_InitializesBoard() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
 
         assertDoesNotThrow(board::initializeBoard);
@@ -39,7 +41,7 @@ public class BoardTests {
 
     @Test
     public void initializeBoard_With33Tiles_ThrowsException() {
-        List<Tile> tiles = createTiles(33);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE + 1);
         Board board = new Board(tiles);
 
         assertThrows(IllegalStateException.class, board::initializeBoard);
@@ -47,7 +49,7 @@ public class BoardTests {
 
     @Test
     public void getTile_WithNegativeIndex_ThrowsException() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -56,7 +58,7 @@ public class BoardTests {
 
     @Test
     public void getTile_WithFirstIndex_ReturnsFirstTile() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -68,7 +70,7 @@ public class BoardTests {
 
     @Test
     public void getTile_WithLastIndex_ReturnsLastTile() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -80,7 +82,7 @@ public class BoardTests {
 
     @Test
     public void getTile_WithIndexEqualToBoardSize_ThrowsException() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -89,7 +91,7 @@ public class BoardTests {
 
     @Test
     public void getPlayerPosition_WhenPlayerNotOnBoard_ThrowsException() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -100,7 +102,7 @@ public class BoardTests {
 
     @Test
     public void getPlayerPosition_WhenPlayerAtFirstIndex_ReturnsZero() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -115,7 +117,7 @@ public class BoardTests {
 
     @Test
     public void getPlayerPosition_WhenPlayerAtLastIndex_Returns31() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -130,7 +132,7 @@ public class BoardTests {
 
     @Test
     public void movePlayer_WhenPlayerNotOnBoard_ThrowsException() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -141,7 +143,7 @@ public class BoardTests {
 
     @Test
     public void movePlayer_WithOneLessThanMinimumDiceRoll_ThrowsException() {
-        List<Tile> tiles = createTiles(32);
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
         board.initializeBoard();
 
@@ -151,5 +153,21 @@ public class BoardTests {
         assertThrows(IllegalArgumentException.class, () -> board.movePlayer(player, 1));
     }
 
+    @Test
+    public void movePlayer_WithMinimumDiceRoll_MovesTwoSpaces() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+        board.setPlayerPosition(player, 30);
+
+        board.movePlayer(player, 2);
+
+        int expected = 0;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
 
 }
