@@ -74,7 +74,7 @@ public class JailTileTests {
 
         assertThrows(IllegalArgumentException.class,
                 () -> jailTile.landOn(null, game),
-                "Invalid Player or GameEngine");
+                "JailTile.landOn must reject a null player");
 
         EasyMock.verify(game);
     }
@@ -83,11 +83,12 @@ public class JailTileTests {
     public void TC5_JailTile_LandOn_NullGame_Invalid() {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
+
         EasyMock.replay(player);
 
         assertThrows(IllegalArgumentException.class,
                 () -> jailTile.landOn(player, null),
-                "Invalid Player or GameEngine");
+                "JailTile.landOn must reject a null game");
 
         EasyMock.verify(player);
     }
