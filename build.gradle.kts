@@ -22,7 +22,7 @@ application {
 }
 
 dependencies {
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.6")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.7")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
