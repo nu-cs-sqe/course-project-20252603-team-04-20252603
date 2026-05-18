@@ -114,11 +114,11 @@
 
 Shared **Chance **`Deck`** for the session; tiles (e.g. **`ChanceTile`**) retrieve it via **`game.getChanceDeck()`** rather than constructing their own **`Deck`**.
 
-- **TC23: Returns the deck supplied at construction** ( :x: )
+- **TC23: Returns the deck supplied at construction** ( :white_check_mark: )
   - **State of the system**: **`GameEngine`** constructed with **`new GameEngine(players, chanceDeck)`** where **`chanceDeck`** is a non-null **`Deck`** (or mock).
   - **Expected output**: **`getChanceDeck()`** returns the **same** **`Deck`** reference passed in.
 
-- **TC24: Default constructor leaves no chance deck** ( :x: )
+- **TC24: Default constructor leaves no chance deck** ( :white_check_mark: )
   - **State of the system**: **`GameEngine`** constructed with **`new GameEngine(players)`** only (no **`Deck`** argument).
   - **Expected output**: **`getChanceDeck()`** returns **`null`** (until the team wires a setter or builder—document if you change this contract).
 

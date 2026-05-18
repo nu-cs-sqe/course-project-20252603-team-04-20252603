@@ -6,6 +6,7 @@ import org.easymock.EasyMock;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -342,6 +343,21 @@ public class GameEngineTest {
         GameEngine gameEngine = new GameEngine(List.of(player1, player2), chanceDeck);
 
         assertSame(chanceDeck, gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
+    }
+
+    // TC24: Default constructor leaves no chance deck
+
+    @Test
+    public void Get_Chance_Deck_Null_When_Only_Players_Constructor_Used() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+
+        assertNull(gameEngine.getChanceDeck());
 
         EasyMock.verify(player1, player2);
     }
