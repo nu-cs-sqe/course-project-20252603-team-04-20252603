@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -32,5 +33,19 @@ public class ChanceTileTests {
         chanceTile.landOn(player, game);
 
         EasyMock.verify(player, game, deck);
+    }
+
+    // TC3: Null player input
+
+    @Test
+    public void Null_Player_Input_Throws() {
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        ChanceTile chanceTile = new ChanceTile();
+
+        assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(null, game));
+
+        EasyMock.verify(game);
     }
 }

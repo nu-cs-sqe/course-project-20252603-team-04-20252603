@@ -14,7 +14,7 @@ Chancetile is only for landing on chance. The actual deal of the chance card log
   - **State of the system**: **`player`** is active; **`game`** is a valid **`GameEngine`** (mocked); the engine exposes exactly one sensible entry point for “draw/play next Chance card” (whatever your design calls it, ultimately leading to **`Deck.draw()`** etc.).
   - **Expected output**: That entry point is invoked **exactly once** during **`landOn`**. **`ChanceTile`** does not implement **`shuffle`** / **`discard`** / **`reshuffleIfEmpty`** (**`Deck`** tests cover those).
 
-- **TC3: Null player input** ( :x: )
+- **TC3: Null player input** ( :white_check_mark: )
   - **State of the system**: **`player = null`**; **`game`** is valid.
   - **Expected output**: **`IllegalArgumentException`**; **`game`**/`Deck` is not invoked for a Chance draw.
 
