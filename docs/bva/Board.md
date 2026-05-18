@@ -140,7 +140,7 @@ Output: true, false, exception
   - **State of the system**: oldPosition = 31, newPosition = 0
   - **Expected output**: returns `true`
 
-- **TC27: didPassGo_WhenMovementWrapsPastGo_ReturnsTrue** ( :x: )
+- **TC27: didPassGo_WhenMovementWrapsPastGo_ReturnsTrue** ( :white_check_mark: )
   - **State of the system**: oldPosition = 30, newPosition = 1
   - **Expected output**: returns `true`
 

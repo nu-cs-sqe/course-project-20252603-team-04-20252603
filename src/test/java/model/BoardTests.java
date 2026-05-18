@@ -332,4 +332,15 @@ public class BoardTests {
         assertTrue(actual);
     }
 
+    @Test
+    public void didPassGo_WhenMovementWrapsPastGo_ReturnsTrue() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        boolean actual = board.didPassGo(30, 1);
+
+        assertTrue(actual);
+    }
+
 }
