@@ -329,4 +329,20 @@ public class GameEngineTest {
         GameEngine gameEngine = new GameEngine(List.of());
         assertEquals(Optional.empty(), gameEngine.getWinner());
     }
+
+    // TC23: getChanceDeck() returns the deck supplied at construction
+
+    @Test
+    public void Get_Chance_Deck_Returns_Deck_Supplied_At_Construction() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Deck chanceDeck = new Deck();
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2), chanceDeck);
+
+        assertSame(chanceDeck, gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
+    }
 }
