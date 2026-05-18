@@ -23,7 +23,7 @@ public class JailTileTests {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andStubReturn(true);
+        EasyMock.expect(player.getActive()).andStubReturn(true);
         EasyMock.expect(player.inJail()).andReturn(false);
         EasyMock.replay(player, game);
         jailTile.landOn(player, game);
@@ -37,7 +37,7 @@ public class JailTileTests {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andStubReturn(true);
+        EasyMock.expect(player.getActive()).andStubReturn(true);
         EasyMock.expect(player.inJail()).andStubReturn(true);
         EasyMock.expect(player.getPosition()).andStubReturn(Constants.JAIL_POSITION);
         EasyMock.expect(player.getBalance()).andStubReturn(1000.0);
@@ -45,7 +45,7 @@ public class JailTileTests {
 
         jailTile.landOn(player, game);
 
-        assertTrue(player.isActive(), "Setup check: player should be active");
+        assertTrue(player.getActive(), "Setup check: player should be active");
         assertTrue(player.inJail(), "JailTile should not release a player who is already in jail");
         assertEquals(Constants.JAIL_POSITION, player.getPosition(), "JailTile should not move the player");
         assertEquals(1000.0, player.getBalance(), "JailTile should not change the player's balance");
@@ -84,7 +84,7 @@ public class JailTileTests {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andStubReturn(false);
+        EasyMock.expect(player.getActive()).andStubReturn(false);
         EasyMock.replay(player);
         EasyMock.replay(game);
         jailTile.landOn(player, game);
