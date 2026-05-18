@@ -128,7 +128,7 @@ Output: true, false, exception
   - **State of the system**: oldPosition = 0, newPosition = 0
   - **Expected output**: returns `false`
 
-- **TC24: didPassGo_WhenMovingForwardFromGo_ReturnsFalse** ( :x: )
+- **TC24: didPassGo_WhenMovingForwardFromGo_ReturnsFalse** ( :white_check_mark: )
   - **State of the system**: oldPosition = 0, newPosition = 1
   - **Expected output**: returns `false`
 

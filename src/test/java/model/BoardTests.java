@@ -299,4 +299,15 @@ public class BoardTests {
         assertFalse(actual);
     }
 
+    @Test
+    public void didPassGo_WhenMovingForwardFromGo_ReturnsFalse() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        boolean actual = board.didPassGo(0, 1);
+
+        assertFalse(actual);
+    }
+
 }
