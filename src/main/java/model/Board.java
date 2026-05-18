@@ -52,7 +52,10 @@ public class Board {
             throw new IllegalArgumentException("Player must be on the board before moving");
         }
 
-        if (spaces < 2 || spaces > 12) {
+        final int MIN_DIE_ROLL = 2;
+        final int MAX_DIE_ROLL = 12;
+
+        if (spaces < MIN_DIE_ROLL || spaces > MAX_DIE_ROLL) {
             throw new IllegalArgumentException("Spaces must range from 2-12");
         }
 
