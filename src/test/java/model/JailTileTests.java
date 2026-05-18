@@ -94,6 +94,15 @@ public class JailTileTests {
     }
 
     @Test
+    public void TC6_JailTile_LandOn_BothNull_Invalid() {
+        JailTile jailTile = new JailTile();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> jailTile.landOn(null, null),
+                "JailTile.landOn must reject null player and null game");
+    }
+
+    @Test
     public void TC7_JailTile_LandOn_InactivePlayer_NoEffect() {
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
