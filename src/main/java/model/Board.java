@@ -47,8 +47,8 @@ public class Board {
             throw new IllegalArgumentException("Player must be on the board before moving");
         }
 
-        if (spaces < 2) {
-            throw new IllegalArgumentException("Spaces must be at least 2");
+        if (spaces < 2 || spaces > 12) {
+            throw new IllegalArgumentException("Spaces must range from 2-12");
         }
 
         int currentPosition = playerPositions.get(player);

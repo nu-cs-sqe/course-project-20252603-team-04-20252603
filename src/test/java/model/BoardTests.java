@@ -187,4 +187,16 @@ public class BoardTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void movePlayer_WithOneMoreThanMaximumDiceRoll_ThrowsException() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+        board.setPlayerPosition(player, 0);
+
+        assertThrows(IllegalArgumentException.class, () -> board.movePlayer(player, 13));
+    }
+
 }

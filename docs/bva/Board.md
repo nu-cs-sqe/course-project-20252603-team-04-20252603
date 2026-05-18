@@ -74,7 +74,7 @@
   - **State of the system**: player exists on board at index 0, spaces = 12
   - **Expected output**: player moves to index 12
 
-- **TC15: movePlayer_WithOneMoreThanMaximumDiceRoll_ThrowsException** ( :x: )
+- **TC15: movePlayer_WithOneMoreThanMaximumDiceRoll_ThrowsException** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 0, spaces = 13
   - **Expected output**: throws `IllegalArgumentException`
 
