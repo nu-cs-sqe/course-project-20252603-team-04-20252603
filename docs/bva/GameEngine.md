@@ -122,6 +122,6 @@ Shared **Chance **`Deck`** for the session; tiles (e.g. **`ChanceTile`**) retrie
   - **State of the system**: **`GameEngine`** constructed with **`new GameEngine(players)`** only (no **`Deck`** argument).
   - **Expected output**: **`getChanceDeck()`** returns **`null`** (until the team wires a setter or builder—document if you change this contract).
 
-- **TC25: Stable reference across repeated calls** ( :x: )
+- **TC25: Stable reference across repeated calls** ( :white_check_mark: )
   - **State of the system**: **`GameEngine`** built with **`(players, chanceDeck)`** as in TC23.
   - **Expected output**: **`getChanceDeck()`** called twice yields **`same`** reference both times (**`assertSame`**).

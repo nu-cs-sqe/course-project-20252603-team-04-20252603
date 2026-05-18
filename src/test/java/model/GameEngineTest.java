@@ -361,4 +361,20 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2);
     }
+
+    // TC25: getChanceDeck() returns stable reference across repeated calls
+
+    @Test
+    public void Get_Chance_Deck_Stable_Across_Repeated_Calls() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Deck chanceDeck = new Deck();
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2), chanceDeck);
+
+        assertSame(gameEngine.getChanceDeck(), gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
+    }
 }
