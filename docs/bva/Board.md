@@ -70,7 +70,7 @@
   - **State of the system**: player exists on board at index 30, spaces = 2
   - **Expected output**: player moves to index 0
 
-- **TC14: movePlayer_WithMaximumDiceRoll_MovesTwelveSpaces** ( :x: )
+- **TC14: movePlayer_WithMaximumDiceRoll_MovesTwelveSpaces** ( :white_check_mark: )
   - **State of the system**: player exists on board at index 0, spaces = 12
   - **Expected output**: player moves to index 12
 

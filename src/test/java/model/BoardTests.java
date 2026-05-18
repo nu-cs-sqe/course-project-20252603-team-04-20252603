@@ -170,4 +170,21 @@ public class BoardTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void movePlayer_WithMaximumDiceRoll_MovesTwelveSpaces() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        Player player = new Player("John", 1000.0);
+        board.setPlayerPosition(player, 0);
+
+        board.movePlayer(player, 12);
+
+        int expected = 12;
+        int actual = board.getPlayerPosition(player);
+
+        assertEquals(expected, actual);
+    }
+
 }
