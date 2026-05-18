@@ -310,4 +310,15 @@ public class BoardTests {
         assertFalse(actual);
     }
 
+    @Test
+    public void didPassGo_WhenMovingNearEndWithoutWrap_ReturnsFalse() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        boolean actual = board.didPassGo(30, 31);
+
+        assertFalse(actual);
+    }
+
 }

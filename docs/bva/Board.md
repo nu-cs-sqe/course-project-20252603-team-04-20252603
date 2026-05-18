@@ -132,7 +132,7 @@ Output: true, false, exception
   - **State of the system**: oldPosition = 0, newPosition = 1
   - **Expected output**: returns `false`
 
-- **TC25: didPassGo_WhenMovingNearEndWithoutWrap_ReturnsFalse** ( :x: )
+- **TC25: didPassGo_WhenMovingNearEndWithoutWrap_ReturnsFalse** ( :white_check_mark: )
   - **State of the system**: oldPosition = 30, newPosition = 31
   - **Expected output**: returns `false`
 
