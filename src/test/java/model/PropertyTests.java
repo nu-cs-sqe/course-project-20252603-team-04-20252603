@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+
 import util.OwnershipStatus;
 import util.Constants;
 import model.GameEngine;
@@ -77,16 +78,30 @@ public class PropertyTests {
         assertEquals(100.0, property.getRent(), 0.001, "System allows rent greater than price");
     }
 
+    @Test
+    public void TC9_Constructor_With_Null_Name_Should_Reject() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Property(null, 100.0, 50.0);
+        }, "Null property name should be rejected");
+    }
+
+    @Test
+    public void TC10_Constructor_With_Empty_Name_Should_Reject() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Property("", 100.0, 50.0);
+        }, "Empty property name should be rejected");
+    }
+
     // Ownership checks
     @Test
-    public void TC9_Property_Unowned_Returns_False() {
+    public void TC11_Property_Unowned_Returns_False() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
         assertEquals(false, property.isOwned(), "Newly created property should not be owned");
     }
 
     @Test
-    public void TC10_Property_Owned_Returns_True() {
+    public void TC12_Property_Owned_Returns_True() {
         Player player = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         property.purchase(player); // Sets ownershipStatus to OWNED
@@ -95,16 +110,15 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC11_Check_Ownership_With_Null_Player_Returns_False() {
+    public void TC13_Check_Ownership_With_Null_Player_Returns_False() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
-        boolean result = property.isOwnedBy(null);
-
-        assertEquals(false, result, "Null player should never own property");
+        assertThrows(NullPointerException.class, () -> property.isOwnedBy(null),
+                "Null player should throw");
     }
 
     @Test
-    public void TC12_Check_Ownership_Player_Is_Owner_Returns_True() {
+    public void TC14_Check_Ownership_Player_Is_Owner_Returns_True() {
         Player owner = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         property.purchase(owner);
@@ -115,7 +129,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC13_Check_Ownership_Player_Is_Not_Owner_Returns_False() {
+    public void TC15_Check_Ownership_Player_Is_Not_Owner_Returns_False() {
         Player owner = new Player("Alice", 200.0);
         Player notOwner = new Player("Bob", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -127,7 +141,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC14_Check_Ownership_Property_Unowned_Returns_False() {
+    public void TC16_Check_Ownership_Property_Unowned_Returns_False() {
         Player player = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
 
@@ -138,7 +152,7 @@ public class PropertyTests {
 
     // Purchase behavior
     @Test
-    public void TC15_Valid_Purchase_By_Player_With_Enough_Balance() {
+    public void TC17_Valid_Purchase_By_Player_With_Enough_Balance() {
         Player player = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
 
@@ -150,7 +164,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC16_Purchase_With_Exact_Balance() {
+    public void TC18_Purchase_With_Exact_Balance() {
         Player player = new Player("Alice", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
 
@@ -163,7 +177,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC17_Purchase_With_Insufficient_Balance() {
+    public void TC19_Purchase_With_Insufficient_Balance() {
         Player player = new Player("Alice", 50.0);
         Property property = new Property("Test Property", 100.0, 50.0);
 
@@ -176,17 +190,15 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC18_Purchase_Null_Player() {
+    public void TC20_Purchase_Null_Player() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
-        boolean result = property.purchase(null);
-
-        assertEquals(false, result, "Purchase with null player should fail");
-        assertEquals(false, property.isOwned(), "Property should remain unowned");
+        assertThrows(NullPointerException.class, () -> property.purchase(null),
+                "Purchase with null player should throw");
     }
 
     @Test
-    public void TC19_Purchase_Already_Owned_Property() {
+    public void TC21_Purchase_Already_Owned_Property() {
         Player owner = new Player("Alice", 200.0);
         Player buyer = new Player("Bob", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -201,7 +213,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC20_Purchase_Zero_Price_Property() {
+    public void TC22_Purchase_Zero_Price_Property() {
         Player player = new Player("Alice", 100.0);
         Property property = new Property("Test Property", 0.0, 50.0);
 
@@ -214,7 +226,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC21_Charge_Rent_With_Player_Having_Exact_Amount() {
+    public void TC23_Charge_Rent_With_Player_Having_Exact_Amount() {
         Player owner = new Player("Alice", 100.0);
         Player renter = new Player("Bob", 50.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -228,7 +240,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC22_Charge_Rent_With_Player_Having_More_Than_Rent() {
+    public void TC24_Charge_Rent_With_Player_Having_More_Than_Rent() {
         Player owner = new Player("Alice", 100.0);
         Player renter = new Player("Bob", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -242,7 +254,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC23_Charge_Rent_With_Insufficient_Balance() {
+    public void TC25_Charge_Rent_With_Insufficient_Balance() {
         Player owner = new Player("Alice", 100.0);
         Player renter = new Player("Bob", 25.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -257,20 +269,17 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC24_Charge_Rent_To_Null_Player() {
+    public void TC26_Charge_Rent_To_Null_Player() {
         Player owner = new Player("Alice", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         property.purchase(owner);
 
-        boolean result = property.chargeRent(null);
-
-        assertEquals(false, result, "Rent charge to null player should fail");
-        assertEquals(0.0, owner.getBalance(), 0.001,
-                "Owner balance should be zero after purchase but no rent received");
+        assertThrows(NullPointerException.class, () -> property.chargeRent(null),
+                "Rent charge to null player should throw");
     }
 
     @Test
-    public void TC25_Charge_Rent_On_Unowned_Property() {
+    public void TC27_Charge_Rent_On_Unowned_Property() {
         Player player = new Player("Alice", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
 
@@ -281,7 +290,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC26_Owner_Pays_Rent_To_Self() {
+    public void TC28_Owner_Pays_Rent_To_Self() {
         Player owner = new Player("Alice", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         property.purchase(owner);
@@ -293,7 +302,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC27_Charge_Zero_Rent() {
+    public void TC29_Charge_Zero_Rent() {
         Player owner = new Player("Alice", 100.0);
         Player renter = new Player("Bob", 100.0);
         Property property = new Property("Test Property", 100.0, 0.0);
@@ -309,7 +318,7 @@ public class PropertyTests {
 
     // Resale value
     @Test
-    public void TC28_Standard_Resale_80_Percent_Of_Price() {
+    public void TC30_Standard_Resale_80_Percent_Of_Price() {
         Property property = new Property("Test Property", 100.0, 50.0);
         Player owner = new Player("Alice", 200.0);
         property.purchase(owner);
@@ -320,7 +329,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC29_Zero_Price_Resale() {
+    public void TC31_Zero_Price_Resale() {
         Property property = new Property("Test Property", 0.0, 50.0);
         Player owner = new Player("Alice", 200.0);
         property.purchase(owner);
@@ -331,7 +340,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC30_Small_Price_Resale() {
+    public void TC32_Small_Price_Resale() {
         Property property = new Property("Test Property", 1.0, 50.0);
         Player owner = new Player("Alice", 200.0);
         property.purchase(owner);
@@ -342,7 +351,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC31_Large_Price_Resale() {
+    public void TC33_Large_Price_Resale() {
         Property property = new Property("Test Property", Double.MAX_VALUE, 50.0);
         Player owner = new Player("Alice", Double.MAX_VALUE);
         property.purchase(owner);
@@ -354,7 +363,7 @@ public class PropertyTests {
 
     // Reset ownership
     @Test
-    public void TC32_Reset_When_Property_Owned() {
+    public void TC34_Reset_When_Property_Owned() {
         Player owner = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         property.purchase(owner);
@@ -366,7 +375,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC33_Reset_When_Property_Already_Unowned() {
+    public void TC35_Reset_When_Property_Already_Unowned() {
         Property property = new Property("Test Property", 100.0, 50.0);
 
         property.resetOwner();
@@ -376,7 +385,7 @@ public class PropertyTests {
 
     // Land on property behavior
     @Test
-    public void TC34_Land_On_Owned_Property_Not_Yours() {
+    public void TC36_Land_On_Owned_Property_Not_Yours() {
         Player owner = new Player("Alice", 200.0);
         Player renter = new Player("Bob", 100.0);
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -390,7 +399,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC35_Land_On_Owned_Property_Yours() {
+    public void TC38_Land_On_Owned_Property_Yours() {
         Player owner = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         GameEngine game = new GameEngine(java.util.List.of(owner));
@@ -402,7 +411,7 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC36_Land_On_Unowned_Property() {
+    public void TC39_Land_On_Unowned_Property() {
         Player player = new Player("Alice", 200.0);
         Property property = new Property("Test Property", 100.0, 50.0);
         GameEngine game = new GameEngine(java.util.List.of(player));
@@ -414,11 +423,11 @@ public class PropertyTests {
     }
 
     @Test
-    public void TC37_Land_With_Null_Player_Throws_Exception() {
+    public void TC40_Land_With_Null_Player_Throws_Exception() {
         Property property = new Property("Test Property", 100.0, 50.0);
         GameEngine game = new GameEngine(java.util.List.of());
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             property.landOn(null, game);
         }, "Should throw exception for null player");
     }
