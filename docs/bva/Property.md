@@ -39,144 +39,144 @@
 
 ## Method under test: `isOwned()`
 
-- **TC9: Property unowned** ( :x: )
+- **TC11: Property unowned** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED
   - **Expected output**: false
 
-- **TC10: Property owned** ( :x: )
+- **TC12: Property owned** ( :x: )
   - **State of the system**: ownershipStatus = OWNED
   - **Expected output**: true
 
 
 ## Method under test: `isOwnedBy(Player player)`
 
-- **TC11: Check ownership with null player** ( :x: )
+- **TC13: Check ownership with null player** ( :x: )
   - **State of the system**: player = null
-  - **Expected output**: false OR rejected
+  - **Expected output**: NullPointerException thrown (fail-fast)
 
-- **TC12: Check ownership - player is owner** ( :x: )
+- **TC14: Check ownership - player is owner** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, player is owner
   - **Expected output**: true
 
-- **TC13: Check ownership - player is not owner** ( :x: )
+- **TC15: Check ownership - player is not owner** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, player is different owner
   - **Expected output**: false
 
-- **TC14: Check ownership - property unowned** ( :x: )
+- **TC16: Check ownership - property unowned** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED, player = valid Player
   - **Expected output**: false
 
 
 ## Method under test: `purchase(Player player)`
 
-- **TC15: Valid purchase by player with enough balance** ( :x: )
+- **TC17: Valid purchase by player with enough balance** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED, player.balance >= price
   - **Expected output**: ownershipStatus = OWNED, player.balance decreases by price
 
-- **TC16: Purchase with exact balance** ( :x: )
+- **TC18: Purchase with exact balance** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED, player.balance == price
   - **Expected output**: ownershipStatus = OWNED, player.balance = 0
 
-- **TC17: Purchase with insufficient balance** ( :x: )
+- **TC19: Purchase with insufficient balance** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED, player.balance < price
   - **Expected output**: Purchase rejected OR failed
 
-- **TC18: Purchase null player** ( :x: )
+- **TC20: Purchase null player** ( :x: )
   - **State of the system**: player = null
-  - **Expected output**: Purchase rejected / no change
+  - **Expected output**: NullPointerException thrown (fail-fast)
 
-- **TC19: Purchase already owned property** ( :x: )
+- **TC21: Purchase already owned property** ( :x: )
   - **State of the system**: ownershipStatus = OWNED
   - **Expected output**: Purchase rejected / no change
 
-- **TC20: Purchase zero-price property** ( :x: )
+- **TC22: Purchase zero-price property** ( :x: )
   - **State of the system**: price = 0.0, ownershipStatus = UNOWNED
   - **Expected output**: Property acquired for free, ownershipStatus = OWNED
 
 
 ## Method under test: `chargeRent(Player renter)`
 
-- **TC21: Charge rent with player having exact amount** ( :x: )
+- **TC23: Charge rent with player having exact amount** ( :x: )
   - **State of the system**: renter.balance == rent, ownershipStatus = OWNED
   - **Expected output**: renter.balance -= rent, owner.balance += rent
 
-- **TC22: Charge rent with player having more than rent** ( :x: )
+- **TC24: Charge rent with player having more than rent** ( :x: )
   - **State of the system**: renter.balance > rent, ownershipStatus = OWNED
   - **Expected output**: Rent paid successfully
 
-- **TC23: Charge rent with insufficient balance** ( :x: )
+- **TC25: Charge rent with insufficient balance** ( :x: )
   - **State of the system**: renter.balance < rent, ownershipStatus = OWNED
   - **Expected output**: Player must sell property OR lose game
 
-- **TC24: Charge rent to null player** ( :x: )
+- **TC26: Charge rent to null player** ( :x: )
   - **State of the system**: renter = null
-  - **Expected output**: Rejected / no change
+  - **Expected output**: NullPointerException thrown (fail-fast)
 
-- **TC25: Charge rent on unowned property** ( :x: )
+- **TC27: Charge rent on unowned property** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED
   - **Expected output**: No rent charged / rejected
 
-- **TC26: Owner pays rent to self (edge case)** ( :x: )
+- **TC28: Owner pays rent to self (edge case)** ( :x: )
   - **State of the system**: renter == owner, ownershipStatus = OWNED
   - **Expected output**: No rent transfer OR handled safely
 
-- **TC27: Charge zero rent** ( :x: )
+- **TC29: Charge zero rent** ( :x: )
   - **State of the system**: rent = 0.0, ownershipStatus = OWNED
   - **Expected output**: No money transferred
 
 
 ## Method under test: `getResaleValue()`
 
-- **TC28: Standard resale (80% of price)** ( :x: )
+- **TC30: Standard resale (80% of price)** ( :x: )
   - **State of the system**: price = 100.0
   - **Expected output**: 80.0
 
-- **TC29: Zero price resale** ( :x: )
+- **TC31: Zero price resale** ( :x: )
   - **State of the system**: price = 0.0
   - **Expected output**: 0.0
 
-- **TC30: Small price resale** ( :x: )
+- **TC32: Small price resale** ( :x: )
   - **State of the system**: price = 1.0
   - **Expected output**: 0.8
 
-- **TC31: Large price resale** ( :x: )
+- **TC33: Large price resale** ( :x: )
   - **State of the system**: price = Double.MAX_VALUE
   - **Expected output**: Overflow handling / safe calculation
 
 
 ## Method under test: `resetOwner()`
 
-- **TC32: Reset when property owned** ( :x: )
+- **TC34: Reset when property owned** ( :x: )
   - **State of the system**: ownershipStatus = OWNED
   - **Expected output**: ownershipStatus = UNOWNED
 
-- **TC33: Reset when property already unowned** ( :x: )
+- **TC35: Reset when property already unowned** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED
   - **Expected output**: No change / idempotent
 
 
 ## Method under test: `landOn(Player player, GameEngine game)`
 
-- **TC34: Land on owned property (not yours) with sufficient balance** ( :x: )
+- **TC36: Land on owned property (not yours) with sufficient balance** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, player != owner, renter.balance >= rent
   - **Expected output**: Rent charged to current player, owner receives rent
 
-- **TC35: Land on owned property (not yours) with insufficient balance** ( :x: )
+- **TC37: Land on owned property (not yours) with insufficient balance** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, player != owner, renter.balance < rent
   - **Expected output**: chargeRent returns false, no money transferred
 
-- **TC36: Land on own property** ( :x: )
+- **TC38: Land on own property** ( :x: )
   - **State of the system**: ownershipStatus = OWNED, owner == player
   - **Expected output**: Safe zone / no rent charged
 
-- **TC37: Land on unowned property** ( :x: )
+- **TC39: Land on unowned property** ( :x: )
   - **State of the system**: ownershipStatus = UNOWNED
   - **Expected output**: No action / GameEngine handles purchase prompt
 
-- **TC38: Land with null player throws exception** ( :x: )
+- **TC40: Land with null player throws exception** ( :x: )
   - **State of the system**: player = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown (fail-fast)
 
-- **TC39: Land with null game (no validation)** ( :x: )
+- **TC41: Land with null game (no validation)** ( :x: )
   - **State of the system**: game = null
   - **Expected output**: Method executes normally (game param not used)
