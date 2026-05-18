@@ -99,7 +99,7 @@
   - **State of the system**: valid player, index = 31
   - **Expected output**: `getPlayerPosition(player)` returns 31
 
-- **TC20: setPlayerPosition_WithOneMoreThanLastIndex_ThrowsException** ( :x: )
+- **TC20: setPlayerPosition_WithOneMoreThanLastIndex_ThrowsException** ( :white_check_mark: )
   - **State of the system**: valid player, index = 32
   - **Expected output**: throws `IndexOutOfBoundsException`
 
