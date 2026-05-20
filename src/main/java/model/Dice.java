@@ -8,7 +8,8 @@ public class Dice {
     private int dieOne;
     private int dieTwo;
 
-    public Dice(Random rand) {
+
+    Dice(Random rand) {
         this.rand = rand;
     }
 
