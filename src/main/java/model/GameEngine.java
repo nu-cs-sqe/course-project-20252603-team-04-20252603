@@ -7,11 +7,17 @@ import java.util.Optional;
 public class GameEngine {
 
     private final List<Player> players;
+    private final Board board;
     private GameStatus status;
     private int currentPlayerIndex;
 
     public GameEngine(List<Player> players) {
+        this(players, null);
+    }
+
+    public GameEngine(List<Player> players, Board board) {
         this.players = new ArrayList<>(players);
+        this.board = board;
         this.status = GameStatus.NOT_STARTED;
         this.currentPlayerIndex = 0;
     }
@@ -69,6 +75,30 @@ public class GameEngine {
             return Optional.empty();
         }
         return Optional.of(players.get(0));
+    }
+
+    public Tile getTile(int index) {
+        return board.getTile(index);
+    }
+
+    public int getPlayerPosition(Player player) {
+        return board.getPlayerPosition(player);
+    }
+
+    public void setPlayerPosition(Player player, int index) {
+        board.setPlayerPosition(player, index);
+    }
+
+    public void movePlayer(Player player, int spaces) {
+        board.movePlayer(player, spaces);
+    }
+
+    public boolean didPassGo(int oldPosition, int newPosition) {
+        return board.didPassGo(oldPosition, newPosition);
+    }
+
+    public int getBoardSize() {
+        return board.getBoardSize();
     }
 
 }
