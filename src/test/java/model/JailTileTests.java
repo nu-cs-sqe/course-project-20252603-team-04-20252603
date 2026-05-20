@@ -15,7 +15,7 @@ public class JailTileTests {
     @Test
     public void TC1_JailTile_Name(){
         JailTile jailTile = new JailTile();
-        assert(jailTile.getName() == TileType.JAIL);
+        assertEquals(jailTile.getName(),TileType.JAIL);
     }
 
     @Test
