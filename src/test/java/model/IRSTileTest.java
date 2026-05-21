@@ -33,4 +33,6 @@ public class IRSTileTest {
 
         EasyMock.verify(player, game);
     }
+
+
 }
