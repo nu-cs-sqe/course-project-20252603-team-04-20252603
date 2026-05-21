@@ -41,4 +41,14 @@ public class IRSTileTest {
         assertEquals(previousBalance - 200, player.getBalance());
     }
 
+    @Test
+    public void TC5_player_landOn_withBalance_LessThanTaxAmount() {
+        IRSTile irsTile = new IRSTile();
+        Player player = new Player("Alice", 199.0);
+        double previousBalance = player.getBalance();
+        GameEngine game = new GameEngine(java.util.List.of(player));
+        irsTile.landOn(player, game);
+        assertEquals(previousBalance, player.getBalance());
+    }
+
 }
