@@ -72,6 +72,14 @@
   - **State of the system**: `[P1, P2, P3]`, `current = P3`, remove `P3`
   - **Expected output**: `current = P1`
 
+- **TC15a: Remove player not in game is a no-op** ( :white_check_mark: )
+  - **State of the system**: `[P1, P2]`, `current = P1`, remove `Pnotingame`
+  - **Expected output**: `[P1, P2]` unchanged, `status = IN_PROGRESS`, `current = P1`
+
+- **TC15b: Remove player with index before current decrements current index** ( :white_check_mark: )
+  - **State of the system**: `[P1, P2, P3]`, `current = P2` (index 1), remove `P1`
+  - **Expected output**: `[P2, P3]`, `current = P2` (index 0)
+
 ---
 
 ## Method under test: `isGameOver()`
@@ -92,6 +100,10 @@
   - **State of the system**: `[P1, P2, P3, P4]`
   - **Expected output**: `false`
 
+- **TC19a: GAME_OVER status means game is over** ( :white_check_mark: )
+  - **State of the system**: `[P1, P2]` started, then remove `P2` (status becomes `GAME_OVER`)
+  - **Expected output**: `true`
+
 ---
 
 ## Method under test: `getWinner()`
@@ -107,6 +119,10 @@
 - **TC22: No players means no winner** ( :white_check_mark: )
   - **State of the system**: `[]`
   - **Expected output**: `null` or `Optional.empty()`
+
+- **TC22a: One player but game not over has no winner** ( :white_check_mark: )
+  - **State of the system**: `[P1]`, `status = NOT_STARTED`
+  - **Expected output**: `Optional.empty()`
 
 ---
 

@@ -240,13 +240,49 @@ public class GameEngineTest {
 
 
         EasyMock.replay(player1, player2, player3);
-        
+
         GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3));
         gameEngine.startGame();
         gameEngine.nextTurn();
         gameEngine.nextTurn();
         gameEngine.removeBankruptPlayer(player3);
         assertEquals(player1, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2, player3);
+    }
+
+    @Test
+    public void Remove_Player_Not_In_Game_Is_NoOp(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player playerNotInGame = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2, playerNotInGame);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+        gameEngine.removeBankruptPlayer(playerNotInGame);
+
+        assertEquals(GameStatus.IN_PROGRESS, gameEngine.getStatus());
+        assertSame(player1, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2, playerNotInGame);
+    }
+
+    @Test
+    public void Remove_Earlier_Player_Decrements_Current_Index(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2, player3);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3));
+        gameEngine.startGame();
+        gameEngine.nextTurn();
+        assertSame(player2, gameEngine.getCurrentPlayer());
+        gameEngine.removeBankruptPlayer(player1);
+        assertSame(player2, gameEngine.getCurrentPlayer());
 
         EasyMock.verify(player1, player2, player3);
     }
@@ -291,12 +327,27 @@ public class GameEngineTest {
         Player player4 = EasyMock.createMock(Player.class);
 
         EasyMock.replay(player1, player2, player3, player4);
-        
+
         GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3, player4));
         gameEngine.startGame();
         assertEquals(false, gameEngine.isGameOver());
 
         EasyMock.verify(player1, player2, player3, player4);
+    }
+
+    @Test
+    public void Game_Over_Status_Means_Game_Is_Over(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+        gameEngine.startGame();
+        gameEngine.removeBankruptPlayer(player2);
+        assertEquals(GameStatus.GAME_OVER, gameEngine.getStatus());
+        assertEquals(true, gameEngine.isGameOver());
+
+        EasyMock.verify(player1, player2);
     }
 
     // getWinner tests
@@ -330,6 +381,17 @@ public class GameEngineTest {
     public void No_Players_Means_No_Winner(){
         GameEngine gameEngine = new GameEngine(List.of());
         assertEquals(Optional.empty(), gameEngine.getWinner());
+    }
+
+    @Test
+    public void One_Player_But_Game_Not_Over_Has_No_Winner(){
+        Player player1 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1));
+        assertEquals(Optional.empty(), gameEngine.getWinner());
+
+        EasyMock.verify(player1);
     }
 
     // getTile tests (TC23-TC26)

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GameEngine {
+class GameEngine {
 
     private final List<Player> players;
     private final Board board;
@@ -64,10 +64,10 @@ public class GameEngine {
     }
 
     public boolean isGameOver() {
-        if (players.size() < 2) {
+        if (status == GameStatus.GAME_OVER) {
             return true;
         }
-        return status == GameStatus.GAME_OVER;
+        return players.size() < 2;
     }
 
     public Optional<Player> getWinner() {
