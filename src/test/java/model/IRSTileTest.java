@@ -24,7 +24,6 @@ public class IRSTileTest {
     public void TC3_player_landOn_withBalance_GreaterThanTaxAmount() {
         IRSTile irsTile = new IRSTile();
         Player player = new Player("Alice", 201.0);
-        // previous balance
         double previousBalance = player.getBalance();
         GameEngine game = new GameEngine(java.util.List.of(player));
         irsTile.landOn(player, game);
@@ -32,8 +31,14 @@ public class IRSTileTest {
 
     }
 
-
-
-
+    @Test
+    public void TC4_player_landOn_withBalance_EqualToTaxAmount() {
+        IRSTile irsTile = new IRSTile();
+        Player player = new Player("Alice", 200.0);
+        double previousBalance = player.getBalance();
+        GameEngine game = new GameEngine(java.util.List.of(player));
+        irsTile.landOn(player, game);
+        assertEquals(previousBalance - 200, player.getBalance());
+    }
 
 }
