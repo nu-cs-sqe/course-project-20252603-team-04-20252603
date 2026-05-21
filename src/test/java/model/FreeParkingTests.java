@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
@@ -17,10 +18,9 @@ public class FreeParkingTests {
     }
 
 
-    @Test 
+    @Test
     public void TC2_GetName_Is_Not_Null() {
-        FreeParking tile = new FreeParking();
-        assertEquals(false, tile.getName() == null, "FreeParking name should never be null");
+        assertNotNull(new FreeParking().getName(), "FreeParking name should never be null");
     }
 
     @Test
