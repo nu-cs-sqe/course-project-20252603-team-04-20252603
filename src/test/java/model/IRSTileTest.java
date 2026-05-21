@@ -34,5 +34,16 @@ public class IRSTileTest {
         EasyMock.verify(player, game);
     }
 
+    @Test
+    public void TC4_player_landOn_withBalance_EqualToTaxAmount() {
+        IRSTile irsTile = new IRSTile();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.remove(200.0)).andReturn(true);
+        EasyMock.replay(player, game);
+        irsTile.landOn(player, game);
+        EasyMock.verify(player, game);
+    }
+
 
 }
