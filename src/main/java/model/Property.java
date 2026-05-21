@@ -1,5 +1,124 @@
 package model;
 
-public interface Property {
-    double getPrice();
+import java.util.Objects;
+import java.util.Optional;
+import model.Tile;
+import util.OwnershipStatus;
+import util.Constants;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+
+public class Property implements Tile {
+
+    private String propertyName;
+    private double price;
+    private double rent;
+    private OwnershipStatus ownershipStatus;
+    private Optional<Player> owner;
+
+    @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
+    public Property(String propertyName, double price, double rent) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (rent < 0) {
+            throw new IllegalArgumentException("Rent cannot be negative");
+        }
+        if (propertyName == null || propertyName.isEmpty()) {
+            throw new IllegalArgumentException("Property name cannot be null or empty");
+        }
+
+        this.propertyName = propertyName;
+        this.price = price;
+        this.rent = rent;
+        this.owner = Optional.empty();
+        this.ownershipStatus = OwnershipStatus.UNOWNED;
+    }
+
+    @Override
+    public TileType getName() {
+        return TileType.PROPERTY;
+    }
+
+    @Override
+    public void landOn(Player player, GameEngine game) {
+        Objects.requireNonNull(player, "Player cannot be null");
+
+
+        if (this.isOwned()) {
+            Player ownerPlayer = this.owner.get();
+            if (!player.equals(ownerPlayer)) {
+                this.chargeRent(player);
+            }
+        }
+    }
+
+    public String getPropertyName() {
+        return this.propertyName;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public double getRent() {
+        return this.rent;
+    }
+
+    public boolean isOwned() {
+        return this.ownershipStatus.equals(OwnershipStatus.OWNED);
+    }
+
+    public boolean isOwnedBy(Player player) {
+        Objects.requireNonNull(player, "Player cannot be null");
+        return this.owner.isPresent() && this.owner.get().equals(player);
+    }
+
+    public void resetOwner() {
+        if (this.owner.isPresent()) {
+            Player currentOwner = this.owner.get();
+            currentOwner.removeProperty(this);
+        }
+        this.owner = Optional.empty();
+        this.ownershipStatus = OwnershipStatus.UNOWNED;
+    }
+
+    public boolean purchase(Player player) {
+        Objects.requireNonNull(player, "Player cannot be null");
+        if (this.isOwned()) {
+            return false;
+        }
+        if (!player.canAfford(this.price)) {
+            return false;
+        }
+
+        player.remove(this.price);
+        this.owner = Optional.of(player);
+        this.ownershipStatus = OwnershipStatus.OWNED;
+        player.addProperty(this);
+        return true;
+    }
+
+    public boolean chargeRent(Player player) {
+        Objects.requireNonNull(player, "Player cannot be null");
+
+        if (!this.isOwned()) {
+            return false;
+        }
+        Player ownerPlayer = this.owner.get();
+        if (player.equals(ownerPlayer)) {
+            return false;
+        }
+        if (!player.canAfford(this.rent)) {
+            return false;
+        }
+        player.remove(this.rent);
+        ownerPlayer.receive(this.rent);
+        return true;
+    }
+
+    public double getResaleValue() {
+        return this.price * Constants.SELL_MULTIPLIER;
+    }
+
 }
