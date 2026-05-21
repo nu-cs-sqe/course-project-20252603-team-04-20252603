@@ -4,9 +4,9 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GoToJailCardEffectTests {
+import util.Constants;
 
-    private static final int JAIL_POSITION = 8;
+public class GoToJailCardEffectTests {
 
     // ==================================================================================================
     // Input validation tests
@@ -55,8 +55,8 @@ public class GoToJailCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, JAIL_POSITION);
-        EasyMock.expect(player.goToJail(JAIL_POSITION)).andReturn(true);
+        game.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -71,8 +71,8 @@ public class GoToJailCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, JAIL_POSITION);
-        EasyMock.expect(player.goToJail(JAIL_POSITION)).andReturn(true);
+        game.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -87,8 +87,8 @@ public class GoToJailCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, JAIL_POSITION);
-        EasyMock.expect(player.goToJail(JAIL_POSITION)).andReturn(true);
+        game.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -103,8 +103,8 @@ public class GoToJailCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, JAIL_POSITION);
-        EasyMock.expect(player.goToJail(JAIL_POSITION)).andReturn(true);
+        game.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -138,8 +138,8 @@ public class GoToJailCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, JAIL_POSITION);
-        EasyMock.expect(player.goToJail(JAIL_POSITION)).andReturn(true);
+        game.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);

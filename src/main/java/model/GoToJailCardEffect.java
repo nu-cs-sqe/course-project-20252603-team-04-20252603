@@ -1,8 +1,8 @@
 package model;
 
-public class GoToJailCardEffect implements CardEffect {
+import util.Constants;
 
-    private static final int JAIL_POSITION = 8;
+public class GoToJailCardEffect implements CardEffect {
 
     @Override
     public void apply(Object player, Object game) {
@@ -14,7 +14,7 @@ public class GoToJailCardEffect implements CardEffect {
         if (!p.getActive()) {
             throw new IllegalArgumentException("player must be active");
         }
-        g.setPlayerPosition(p, JAIL_POSITION);
-        p.goToJail(JAIL_POSITION);
+        g.setPlayerPosition(p, Constants.JAIL_POSITION);
+        p.goToJail(Constants.JAIL_POSITION);
     }
 }

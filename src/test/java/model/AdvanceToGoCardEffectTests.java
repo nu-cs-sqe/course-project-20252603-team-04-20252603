@@ -4,10 +4,9 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AdvanceToGoCardEffectTests {
+import util.Constants;
 
-    private static final int GO_POSITION = 0;
-    private static final double GO_BONUS = 200.0;
+public class AdvanceToGoCardEffectTests {
 
     // ==================================================================================================
     // Input validation tests
@@ -56,8 +55,8 @@ public class AdvanceToGoCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, GO_POSITION);
-        EasyMock.expect(player.receive(GO_BONUS)).andReturn(true);
+        game.setPlayerPosition(player, Constants.GO_POSITION);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -72,8 +71,8 @@ public class AdvanceToGoCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, GO_POSITION);
-        EasyMock.expect(player.receive(GO_BONUS)).andReturn(true);
+        game.setPlayerPosition(player, Constants.GO_POSITION);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -88,8 +87,8 @@ public class AdvanceToGoCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, GO_POSITION);
-        EasyMock.expect(player.receive(GO_BONUS)).andReturn(true);
+        game.setPlayerPosition(player, Constants.GO_POSITION);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -104,8 +103,8 @@ public class AdvanceToGoCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, GO_POSITION);
-        EasyMock.expect(player.receive(GO_BONUS)).andReturn(true);
+        game.setPlayerPosition(player, Constants.GO_POSITION);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -139,8 +138,8 @@ public class AdvanceToGoCardEffectTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        game.setPlayerPosition(player, GO_POSITION);
-        EasyMock.expect(player.receive(GO_BONUS)).andReturn(true);
+        game.setPlayerPosition(player, Constants.GO_POSITION);
+        EasyMock.expect(player.receive(Constants.GO_BONUS)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);

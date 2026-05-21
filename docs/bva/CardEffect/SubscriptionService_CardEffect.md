@@ -51,3 +51,7 @@ The `SubscriptionServiceCardEffect` implements the `CardEffect` interface. When 
 - **TC9: Last payment causes game over (only one player remains)** ( :x: )
   - **State of the system**: `game` has 2 active players; current `player.balance = 50.0`, no properties; other player has `balance = 500.0`
   - **Expected output**: current player goes bankrupt and is removed; `game.isGameOver()` returns `false` (one player still remains as winner is declared only when 1 remains)
+
+- **TC10: Player cannot afford payment but owns properties (basis path: false branch of `getOwnedProperties().isEmpty()`)** ( :x: )
+  - **State of the system**: `player.balance < 100.0`, `player.ownedProperties` is non-empty, `game` is valid
+  - **Expected output**: `remove` is NOT called (player can't afford); `removeBankruptPlayer` is NOT called (player still has assets to sell); player remains in the game

@@ -8,15 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import util.Constants;
 
-public class AIBubblePopCardEffectTests {
+public class SubscriptionServiceCardEffectTests {
 
     // ==================================================================================================
-    // Input validation tests
+    // Input validation tests (TC1 - TC3)
     // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(game);
 
@@ -28,7 +28,7 @@ public class AIBubblePopCardEffectTests {
 
     @Test
     public void apply_OnNullGame_ThrowsIllegalArgumentException() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         EasyMock.replay(player);
 
@@ -40,25 +40,25 @@ public class AIBubblePopCardEffectTests {
 
     @Test
     public void apply_OnBothNull_ThrowsIllegalArgumentException() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
 
         assertThrows(IllegalArgumentException.class,
                 () -> effect.apply(null, null));
     }
 
     // ==================================================================================================
-    // Normal operation tests
+    // Normal operation tests (TC4 - TC7)
     // ==================================================================================================
 
     @Test
-    public void apply_OnPlayerBalanceGreaterThan500_DeductsFee() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+    public void apply_OnPlayerBalanceGreaterThan100_DeductsFee() {
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
-        EasyMock.expect(player.remove(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(true);
+        EasyMock.expect(player.remove(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -67,14 +67,14 @@ public class AIBubblePopCardEffectTests {
     }
 
     @Test
-    public void apply_OnPlayerBalanceExactly500_DeductsFeeAndRemainsActive() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+    public void apply_OnPlayerBalanceExactly100_DeductsFeeAndRemainsActive() {
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
-        EasyMock.expect(player.remove(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(true);
+        EasyMock.expect(player.remove(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(true);
         EasyMock.replay(player, game);
 
         effect.apply(player, game);
@@ -83,13 +83,13 @@ public class AIBubblePopCardEffectTests {
     }
 
     @Test
-    public void apply_OnPlayerBalance499WithNoProperties_RemovesFromGame() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+    public void apply_OnPlayerBalance99WithNoProperties_RemovesFromGame() {
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
         EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
@@ -101,12 +101,12 @@ public class AIBubblePopCardEffectTests {
 
     @Test
     public void apply_OnPlayerBalanceZeroWithNoProperties_RemovesFromGame() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
         EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
@@ -116,29 +116,13 @@ public class AIBubblePopCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    @Test
-    public void apply_OnPlayerWithStartingBalance1000_DeductsFee() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
-        Player player = EasyMock.createMock(Player.class);
-        GameEngine game = EasyMock.createMock(GameEngine.class);
-
-        EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
-        EasyMock.expect(player.remove(Constants.AI_BUBBLE_POP_FEE)).andReturn(true);
-        EasyMock.replay(player, game);
-
-        effect.apply(player, game);
-
-        EasyMock.verify(player, game);
-    }
-
     // ==================================================================================================
-    // Edge case tests
+    // Edge case tests (TC8 - TC10)
     // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
@@ -153,12 +137,12 @@ public class AIBubblePopCardEffectTests {
 
     @Test
     public void apply_OnPaymentCausingGameOver_RemovesPlayerFromGame() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
         EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
@@ -170,13 +154,13 @@ public class AIBubblePopCardEffectTests {
 
     @Test
     public void apply_OnPlayerCannotAffordButHasProperties_DoesNotRemoveFromGame() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
+        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         Property property = EasyMock.createMock(Property.class);
 
         EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
+        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
         EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.singleton(property));
         EasyMock.replay(player, game, property);
 
