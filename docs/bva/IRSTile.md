@@ -21,9 +21,9 @@
 2. Input type: `Player` object reference and `GameEngine` object reference
 3. Boundary values: player balance compared to the IRS tax amount
 
-- **TC3: Land on IRS with balance greater than tax amount** ( :white_check_mark: )  
-  - **State of the system**: mocked `Player` can pay the tax, mocked `GameEngine` is provided, player lands on IRS tile  
-  - **Expected output**: `player.remove(taxAmount)` is called once and returns `true`; player is not eliminated
+- **TC3: Land on IRS with balance greater than tax amount** ( :white_check_mark: )
+  - **State of the system**: `player.balance > taxAmount`, player lands on IRS tile
+  - **Expected output**: player's balance decreases by exactly `taxAmount`
 
 - **TC4: Land on IRS with balance equal to tax amount** ( :white_check_mark: )
   - **State of the system**: `player.balance == taxAmount`, player lands on IRS tile
