@@ -7,6 +7,6 @@ public class IRSTile implements Tile{
     }
     @Override
     public void landOn(Player player, GameEngine game) {
-
+        player.remove(200);
     }
 }
