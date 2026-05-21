@@ -88,7 +88,12 @@ public class BoardTests {
         Board board = new Board(tiles);
         board.initializeBoard();
 
-        assertThrows(IndexOutOfBoundsException.class, () -> board.getTile(NORMAL_TILE_SIZE));
+        IndexOutOfBoundsException exception = assertThrows(
+                IndexOutOfBoundsException.class,
+                () -> board.getTile(NORMAL_TILE_SIZE)
+        );
+
+        assertEquals(NORMAL_TILE_SIZE + " is an out of bounds index", exception.getMessage());
     }
 
     @Test
@@ -288,6 +293,15 @@ public class BoardTests {
         board.initializeBoard();
 
         assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(0, NORMAL_TILE_SIZE));
+    }
+
+    @Test
+    public void didPassGo_WithOneMoreThanLastOldPosition_ThrowsException() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(NORMAL_TILE_SIZE, 0));
     }
 
     @Test
