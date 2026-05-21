@@ -55,3 +55,7 @@ The `StockMarketCrashCardEffect` implements the `CardEffect` interface. When app
 - **TC10: Crash eliminates all players simultaneously** ( :x: )
   - **State of the system**: all active players have `balance < 200.0` and no properties
   - **Expected output**: all players are marked bankrupt; game-over condition is triggered
+
+- **TC11: Player cannot afford payment but owns properties (basis path: false branch of `getOwnedProperties().isEmpty()`)** ( :x: )
+  - **State of the system**: 1 active player with `balance < 200.0` and a non-empty `ownedProperties` set
+  - **Expected output**: `remove` is NOT called (player can't afford), `removeBankruptPlayer` is NOT called (player still has assets to sell), player remains in the game
