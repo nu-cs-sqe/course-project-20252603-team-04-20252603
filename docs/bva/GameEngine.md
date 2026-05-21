@@ -80,6 +80,10 @@
   - **State of the system**: `[P1, P2, P3]`, `current = P2` (index 1), remove `P1`
   - **Expected output**: `[P2, P3]`, `current = P2` (index 0)
 
+- **TC15c: Remove earlier player when current is not adjacent to end keeps current player** ( :white_check_mark: )
+  - **State of the system**: `[P1, P2, P3, P4]`, `current = P3` (index 2), remove `P1`
+  - **Expected output**: `[P2, P3, P4]`, `current = P3` (index 1)
+
 ---
 
 ## Method under test: `isGameOver()`

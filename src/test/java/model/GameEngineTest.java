@@ -287,6 +287,26 @@ public class GameEngineTest {
         EasyMock.verify(player1, player2, player3);
     }
 
+    @Test
+    public void Remove_Earlier_Player_When_Current_Index_Is_Two_Keeps_Current_Player(){
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+        Player player4 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player1, player2, player3, player4);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2, player3, player4));
+        gameEngine.startGame();
+        gameEngine.nextTurn();
+        gameEngine.nextTurn();
+        assertSame(player3, gameEngine.getCurrentPlayer());
+        gameEngine.removeBankruptPlayer(player1);
+        assertSame(player3, gameEngine.getCurrentPlayer());
+
+        EasyMock.verify(player1, player2, player3, player4);
+    }
+
     // isGameOver tests
 
     @Test
