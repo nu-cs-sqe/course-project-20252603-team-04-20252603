@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeckTests {
@@ -155,6 +156,19 @@ public class DeckTests {
                 "drawn card should no longer be in unusedCards");
         assertEquals(3, 1 + deck.getUnusedCards().size() + deck.getUsedCards().size(),
                 "total card count should remain 3");
+    }
+
+    @Test
+    public void TC8_Draw_WhenBothPilesEmpty_Throws() {
+        Deck deck = new Deck();
+
+        assertThrows(IllegalStateException.class, deck::draw,
+                "draw should throw when both unused and used piles are empty");
+
+        assertTrue(deck.getUnusedCards().isEmpty(),
+                "unusedCards should remain empty");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain empty");
     }
 
 }
