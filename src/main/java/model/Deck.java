@@ -1,25 +1,27 @@
 package model;
 
-import java.util.Deque;
-import java.util.List;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class Deck {
 
-    private Deque<Card> unusedCards;
-    private List<Card> usedCards;
+    private ArrayDeque<Card> unusedCards;
+    private ArrayList<Card> usedCards;
     public Deck(){
-
+        this.unusedCards = new ArrayDeque<>();
+        this.usedCards = new ArrayList<>();
     }
 
     public void shuffle(){
 
     }
 
-    public Deque<Card> getUnusedCards(){
+    public ArrayDeque<Card> getUnusedCards(){
         return unusedCards;
     }
 
-    public List<Card> getUsedCards(){
+    public ArrayList<Card> getUsedCards(){
         return usedCards;
     }
 }
