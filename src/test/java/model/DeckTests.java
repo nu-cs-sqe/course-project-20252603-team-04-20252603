@@ -335,4 +335,30 @@ public class DeckTests {
                 "usedCards should be empty after reshuffle");
     }
 
+    @Test
+    public void TC17_ReshuffleIfEmpty_UnusedEmptyMovesMultipleCards() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUsedCards().add(c1);
+        deck.getUsedCards().add(c2);
+        deck.getUsedCards().add(c3);
+
+        deck.reshuffleIfEmpty();
+
+        assertEquals(3, deck.getUnusedCards().size(),
+                "all used cards should move to unusedCards");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should contain C1");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should contain C2");
+        assertTrue(deck.getUnusedCards().contains(c3),
+                "unusedCards should contain C3");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should be empty after reshuffle");
+        assertEquals(3, deck.getUnusedCards().size() + deck.getUsedCards().size(),
+                "total card count should remain 3");
+    }
+
 }
