@@ -116,4 +116,19 @@ public class DeckTests {
                 "usedCards should remain empty after draw");
     }
 
+    @Test
+    public void TC6_Draw_LastCardFromUnusedPile() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+
+        Card drawn = deck.draw();
+
+        assertSame(c1, drawn, "draw should return C1");
+        assertTrue(deck.getUnusedCards().isEmpty(),
+                "unusedCards should be empty after drawing last card");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain empty after draw");
+    }
+
 }
