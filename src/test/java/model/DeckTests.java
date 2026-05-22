@@ -295,4 +295,28 @@ public class DeckTests {
                 "unknown card C3 should not be added to usedCards");
     }
 
+    @Test
+    public void TC15_ReshuffleIfEmpty_UnusedNotEmpty_NoOp() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.getUsedCards().add(c3);
+
+        deck.reshuffleIfEmpty();
+
+        assertEquals(2, deck.getUnusedCards().size(),
+                "unusedCards should be unchanged");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should still contain C1");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertEquals(1, deck.getUsedCards().size(),
+                "usedCards should be unchanged");
+        assertTrue(deck.getUsedCards().contains(c3),
+                "usedCards should still contain C3");
+    }
+
 }
