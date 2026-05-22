@@ -40,4 +40,8 @@ public class Deck {
         }
         return unusedCards.removeFirst();
     }
+
+    public void discard(Card card){
+        
+    }
 }

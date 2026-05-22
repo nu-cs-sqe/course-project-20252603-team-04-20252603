@@ -200,4 +200,15 @@ public class DeckTests {
                 "both cards should still be accounted for in the deck");
     }
 
+    @Test
+    public void TC10_Discard_NullCard_Throws() {
+        Deck deck = new Deck();
+
+        assertThrows(IllegalArgumentException.class, () -> deck.discard(null),
+                "discard should reject a null card");
+
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain unchanged");
+    }
+
 }
