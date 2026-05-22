@@ -14,7 +14,7 @@ public class GoToJailTile implements Tile {
         if (player == null || game == null) {
             throw new IllegalArgumentException("player and game must be non-null");
         }
-        if (!player.isActive()) {
+        if (!player.getActive()) {
             return;
         }
         player.goToJail(Constants.JAIL_POSITION);

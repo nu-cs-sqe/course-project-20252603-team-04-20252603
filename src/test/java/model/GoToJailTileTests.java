@@ -26,7 +26,7 @@ public class GoToJailTileTests {
     public void Tests_LandOn_Sends_Active_Player_To_Jail() {
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
@@ -77,7 +77,7 @@ public class GoToJailTileTests {
     public void Tests_LandOn_Eliminated_Player_Is_Not_Sent_To_Jail() {
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andReturn(false);
+        EasyMock.expect(player.getActive()).andReturn(false);
         EasyMock.replay(player, game);
 
         GoToJailTile tile = new GoToJailTile();
@@ -91,7 +91,7 @@ public class GoToJailTileTests {
     public void Tests_LandOn_Does_Not_Modify_Balance() {
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
-        EasyMock.expect(player.isActive()).andReturn(true);
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
         EasyMock.replay(player, game);
 
