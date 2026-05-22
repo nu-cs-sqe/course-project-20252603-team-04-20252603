@@ -1,5 +1,6 @@
 package model;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -23,7 +24,7 @@ public class DeckTests {
 
     @Test
     public void TC2_Shuffle_SingleCardInUnusedPile() {
-        Card c1 = new Card();
+        Card c1 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
 
@@ -34,6 +35,31 @@ public class DeckTests {
                 "unusedCards should still contain exactly one card");
         assertTrue(deck.getUnusedCards().contains(c1),
                 "unusedCards should still contain C1");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain empty after shuffle");
+    }
+
+    @Test
+    public void TC3_Shuffle_MultipleCardsInUnusedPile() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.getUnusedCards().add(c3);
+
+        assertDoesNotThrow(deck::shuffle,
+                "Shuffling a multi-card deck should not throw");
+
+        assertEquals(3, deck.getUnusedCards().size(),
+                "unusedCards should still contain three cards");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should still contain C1");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertTrue(deck.getUnusedCards().contains(c3),
+                "unusedCards should still contain C3");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after shuffle");
     }
