@@ -319,4 +319,20 @@ public class DeckTests {
                 "usedCards should still contain C3");
     }
 
+    @Test
+    public void TC16_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUsedCards().add(c1);
+
+        deck.reshuffleIfEmpty();
+
+        assertEquals(1, deck.getUnusedCards().size(),
+                "unusedCards should contain the reshuffled card");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should contain C1");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should be empty after reshuffle");
+    }
+
 }
