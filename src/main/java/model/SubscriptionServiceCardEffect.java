@@ -5,19 +5,17 @@ import util.Constants;
 public class SubscriptionServiceCardEffect implements CardEffect {
 
     @Override
-    public void apply(Object player, Object game) {
+    public void apply(Player player, GameEngine game) {
         if (player == null || game == null) {
             throw new IllegalArgumentException("player and game must not be null");
         }
-        Player p = (Player) player;
-        GameEngine g = (GameEngine) game;
-        if (!p.getActive()) {
+        if (!player.getActive()) {
             throw new IllegalArgumentException("player must be active");
         }
-        if (p.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)) {
-            p.remove(Constants.SUBSCRIPTION_SERVICE_FEE);
-        } else if (p.getOwnedProperties().isEmpty()) {
-            g.removeBankruptPlayer(p);
+        if (player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)) {
+            player.remove(Constants.SUBSCRIPTION_SERVICE_FEE);
+        } else if (player.getOwnedProperties().isEmpty()) {
+            game.removeBankruptPlayer(player);
         }
     }
 }

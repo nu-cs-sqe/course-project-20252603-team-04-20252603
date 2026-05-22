@@ -6,17 +6,15 @@ public class GoBackThreeSpacesCardEffect implements CardEffect {
     private static final int SPACES_BACK = 3;
 
     @Override
-    public void apply(Object player, Object game) {
+    public void apply(Player player, GameEngine game) {
         if (player == null || game == null) {
             throw new IllegalArgumentException("player and game must not be null");
         }
-        Player p = (Player) player;
-        GameEngine g = (GameEngine) game;
-        if (!p.getActive()) {
+        if (!player.getActive()) {
             throw new IllegalArgumentException("player must be active");
         }
-        int currentPosition = g.getPlayerPosition(p);
+        int currentPosition = game.getPlayerPosition(player);
         int newPosition = ((currentPosition - SPACES_BACK) % BOARD_SIZE + BOARD_SIZE) % BOARD_SIZE;
-        g.setPlayerPosition(p, newPosition);
+        game.setPlayerPosition(player, newPosition);
     }
 }
