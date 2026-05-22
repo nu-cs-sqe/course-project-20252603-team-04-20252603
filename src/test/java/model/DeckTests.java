@@ -171,4 +171,33 @@ public class DeckTests {
                 "usedCards should remain empty");
     }
 
+    @Test
+    public void TC9_ConsecutiveDrawsExhaustUnusedThenReshuffle() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+
+        Card first = deck.draw();
+        deck.getUsedCards().add(first);
+
+        Card second = deck.draw();
+        deck.getUsedCards().add(second);
+
+        Card third = deck.draw();
+
+        assertSame(c1, first, "first draw should return C1");
+        assertSame(c2, second, "second draw should return C2");
+        assertNotNull(third, "third draw should succeed after reshuffle");
+        assertTrue(third == c1 || third == c2,
+                "third draw should return a reshuffled card");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should be empty after reshuffle and third draw");
+        assertEquals(1, deck.getUnusedCards().size(),
+                "one card should remain in unusedCards");
+        assertEquals(2, 1 + deck.getUnusedCards().size() + deck.getUsedCards().size(),
+                "both cards should still be accounted for in the deck");
+    }
+
 }
