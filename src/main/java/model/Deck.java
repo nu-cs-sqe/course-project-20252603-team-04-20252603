@@ -45,6 +45,6 @@ public class Deck {
         if(card == null){
             throw new IllegalArgumentException("Card cannot be null");
         }
-        usedCards.remove(card);
+        usedCards.add(card);
     }
 }
