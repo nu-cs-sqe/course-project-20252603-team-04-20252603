@@ -25,7 +25,16 @@ public class Deck {
         return usedCards;
     }
 
+    public void reshuffleIfEmpty(){
+        if(unusedCards.isEmpty()){
+            unusedCards.addAll(usedCards);
+            usedCards.clear();
+            shuffle();
+        }
+    }
+
     public Card draw(){
+        reshuffleIfEmpty();
         return unusedCards.removeFirst();
     }
 }
