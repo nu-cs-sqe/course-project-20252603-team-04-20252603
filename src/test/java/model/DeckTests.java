@@ -230,4 +230,29 @@ public class DeckTests {
                 "unusedCards should be empty after drawing the only card");
     }
 
+    @Test
+    public void TC12_Discard_DoesNotChangeUnusedPile() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.getUnusedCards().add(c3);
+
+        Card drawn = deck.draw();
+        deck.discard(drawn);
+
+        assertEquals(2, deck.getUnusedCards().size(),
+                "unusedCards size should be unchanged by discard");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertTrue(deck.getUnusedCards().contains(c3),
+                "unusedCards should still contain C3");
+        assertFalse(deck.getUnusedCards().contains(c1),
+                "drawn card C1 should not be in unusedCards");
+        assertTrue(deck.getUsedCards().contains(c1),
+                "usedCards should contain discarded C1");
+    }
+
 }
