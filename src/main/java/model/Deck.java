@@ -45,6 +45,9 @@ public class Deck {
         if(card == null){
             throw new IllegalArgumentException("Card cannot be null");
         }
+        if(usedCards.contains(card)){
+            throw new IllegalArgumentException("Card already discarded");
+        }
         usedCards.add(card);
     }
 }
