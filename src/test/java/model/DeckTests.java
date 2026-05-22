@@ -211,4 +211,23 @@ public class DeckTests {
                 "usedCards should remain unchanged");
     }
 
+    @Test
+    public void TC11_Discard_ValidCardAfterDraw() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+
+        Card drawn = deck.draw();
+        deck.discard(drawn);
+
+        assertEquals(1, deck.getUsedCards().size(),
+                "usedCards should contain the discarded card");
+        assertTrue(deck.getUsedCards().contains(c1),
+                "usedCards should contain C1");
+        assertFalse(deck.getUnusedCards().contains(c1),
+                "C1 should not be in unusedCards after discard");
+        assertTrue(deck.getUnusedCards().isEmpty(),
+                "unusedCards should be empty after drawing the only card");
+    }
+
 }
