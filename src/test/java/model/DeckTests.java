@@ -271,4 +271,28 @@ public class DeckTests {
                 "usedCards should still contain C1");
     }
 
+    @Test
+    public void TC14_Discard_CardNotInEitherPile_Rejected() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c2);
+        deck.getUsedCards().add(c1);
+
+        assertThrows(IllegalArgumentException.class, () -> deck.discard(c3),
+                "discard should reject a card that was never drawn from this deck");
+
+        assertEquals(1, deck.getUnusedCards().size(),
+                "unusedCards should be unchanged");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertEquals(1, deck.getUsedCards().size(),
+                "usedCards should be unchanged");
+        assertTrue(deck.getUsedCards().contains(c1),
+                "usedCards should still contain C1");
+        assertFalse(deck.getUsedCards().contains(c3),
+                "unknown card C3 should not be added to usedCards");
+    }
+
 }

@@ -3,11 +3,14 @@ package model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Deck {
 
     private ArrayDeque<Card> unusedCards;
     private ArrayList<Card> usedCards;
+    private Optional<Card> lastDrawn = Optional.empty();
+
     public Deck(){
         this.unusedCards = new ArrayDeque<>();
         this.usedCards = new ArrayList<>();
@@ -38,16 +41,21 @@ public class Deck {
         if(unusedCards.isEmpty() && usedCards.isEmpty()){
             throw new IllegalStateException("Both unused and used piles are empty");
         }
-        return unusedCards.removeFirst();
+        lastDrawn = Optional.of(unusedCards.removeFirst());
+        return lastDrawn.get();
     }
 
     public void discard(Card card){
         if(card == null){
             throw new IllegalArgumentException("Card cannot be null");
         }
+        if(lastDrawn.isEmpty() || lastDrawn.get() != card){
+            throw new IllegalArgumentException("Can only discard the card that was just drawn");
+        }
         if(usedCards.contains(card)){
             throw new IllegalArgumentException("Card already discarded");
         }
         usedCards.add(card);
+        lastDrawn = Optional.empty();
     }
 }
