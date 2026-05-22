@@ -42,6 +42,9 @@ public class Deck {
     }
 
     public void discard(Card card){
-        
+        if(card == null){
+            throw new IllegalArgumentException("Card cannot be null");
+        }
+        usedCards.remove(card);
     }
 }
