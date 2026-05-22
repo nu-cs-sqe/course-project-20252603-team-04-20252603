@@ -64,4 +64,29 @@ public class DeckTests {
                 "usedCards should remain empty after shuffle");
     }
 
+    @Test
+    public void TC4_Shuffle_DoesNotModifyUsedPile() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.getUsedCards().add(c3);
+
+        assertDoesNotThrow(deck::shuffle,
+                "Shuffling should not throw when used pile has cards");
+
+        assertEquals(2, deck.getUnusedCards().size(),
+                "unusedCards should still contain two cards");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should still contain C1");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertEquals(1, deck.getUsedCards().size(),
+                "usedCards should still contain exactly one card");
+        assertTrue(deck.getUsedCards().contains(c3),
+                "usedCards should still contain C3");
+    }
+
 }
