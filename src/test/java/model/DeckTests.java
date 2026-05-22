@@ -404,4 +404,29 @@ public class DeckTests {
                 "unusedCards should contain C4");
     }
 
+    @Test
+    public void TC20_FullChanceTileCycle_DrawThenDiscard() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.shuffle();
+
+        Card drawn = deck.draw();
+        deck.discard(drawn);
+
+        assertSame(c1, drawn, "draw should return the top card");
+        assertEquals(1, deck.getUsedCards().size(),
+                "drawn card should be in usedCards after discard");
+        assertTrue(deck.getUsedCards().contains(drawn),
+                "usedCards should contain the discarded card");
+        assertFalse(deck.getUnusedCards().contains(drawn),
+                "drawn card should not be in unusedCards after discard");
+        assertEquals(1, deck.getUnusedCards().size(),
+                "remaining unused card should still be in the deck");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain the undrawn card");
+    }
+
 }
