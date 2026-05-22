@@ -255,4 +255,20 @@ public class DeckTests {
                 "usedCards should contain discarded C1");
     }
 
+    @Test
+    public void TC13_Discard_SameCardTwice_Rejected() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+
+        deck.discard(deck.draw());
+
+        assertThrows(IllegalArgumentException.class, () -> deck.discard(c1),
+                "second discard of the same card should be rejected");
+        assertEquals(1, deck.getUsedCards().size(),
+                "usedCards should contain at most one copy of C1");
+        assertTrue(deck.getUsedCards().contains(c1),
+                "usedCards should still contain C1");
+    }
+
 }
