@@ -1,5 +1,8 @@
 package model;
 
+import java.lang.reflect.Field;
+import java.util.Optional;
+
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
@@ -98,10 +101,12 @@ public class DeckTests {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
+        Card c4 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
         deck.getUnusedCards().add(c3);
+        deck.getUsedCards().add(c4);
 
         Card drawn = deck.draw();
 
@@ -114,8 +119,8 @@ public class DeckTests {
                 "unusedCards should still contain C2");
         assertTrue(deck.getUnusedCards().contains(c3),
                 "unusedCards should still contain C3");
-        assertTrue(deck.getUsedCards().isEmpty(),
-                "usedCards should remain empty after draw");
+        assertTrue(deck.getUsedCards().contains(c4),
+                "usedCards should be unchanged when drawing from unused pile");
     }
 
     @Test
@@ -138,13 +143,14 @@ public class DeckTests {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
-        Deck deck = new Deck();
+        CountingDeck deck = new CountingDeck();
         deck.getUsedCards().add(c1);
         deck.getUsedCards().add(c2);
         deck.getUsedCards().add(c3);
 
         Card drawn = deck.draw();
 
+        assertEquals(1, deck.getShuffleCount(), "draw should shuffle when unused pile is empty");
         assertNotNull(drawn, "draw should return a card after reshuffling from used");
         assertTrue(drawn == c1 || drawn == c2 || drawn == c3,
                 "drawn card should be one of the reshuffled cards");
@@ -180,10 +186,10 @@ public class DeckTests {
         deck.getUnusedCards().add(c2);
 
         Card first = deck.draw();
-        deck.getUsedCards().add(first);
+        deck.discard(first);
 
         Card second = deck.draw();
-        deck.getUsedCards().add(second);
+        deck.discard(second);
 
         Card third = deck.draw();
 
@@ -256,7 +262,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC13_Discard_SameCardTwice_Rejected() {
+    public void TC13_Discard_SameCardTwice_Rejected() throws Exception {
         Card c1 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
@@ -265,6 +271,15 @@ public class DeckTests {
 
         assertThrows(IllegalArgumentException.class, () -> deck.discard(c1),
                 "second discard of the same card should be rejected");
+
+        Field lastDrawnField = Deck.class.getDeclaredField("lastDrawn");
+        lastDrawnField.setAccessible(true);
+        lastDrawnField.set(deck, Optional.of(c1));
+
+        IllegalArgumentException alreadyDiscarded = assertThrows(IllegalArgumentException.class,
+                () -> deck.discard(c1));
+        assertTrue(alreadyDiscarded.getMessage().contains("already discarded"));
+
         assertEquals(1, deck.getUsedCards().size(),
                 "usedCards should contain at most one copy of C1");
         assertTrue(deck.getUsedCards().contains(c1),
@@ -280,13 +295,13 @@ public class DeckTests {
         deck.getUnusedCards().add(c2);
         deck.getUsedCards().add(c1);
 
-        assertThrows(IllegalArgumentException.class, () -> deck.discard(c3),
-                "discard should reject a card that was never drawn from this deck");
+        deck.draw();
 
-        assertEquals(1, deck.getUnusedCards().size(),
-                "unusedCards should be unchanged");
-        assertTrue(deck.getUnusedCards().contains(c2),
-                "unusedCards should still contain C2");
+        assertThrows(IllegalArgumentException.class, () -> deck.discard(c3),
+                "discard should reject a card that was not just drawn");
+
+        assertTrue(deck.getUnusedCards().isEmpty(),
+                "drawn card should be removed from unusedCards");
         assertEquals(1, deck.getUsedCards().size(),
                 "usedCards should be unchanged");
         assertTrue(deck.getUsedCards().contains(c1),
@@ -322,11 +337,12 @@ public class DeckTests {
     @Test
     public void TC16_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
         Card c1 = EasyMock.createMock(Card.class);
-        Deck deck = new Deck();
+        CountingDeck deck = new CountingDeck();
         deck.getUsedCards().add(c1);
 
         deck.reshuffleIfEmpty();
 
+        assertEquals(1, deck.getShuffleCount(), "reshuffleIfEmpty should call shuffle");
         assertEquals(1, deck.getUnusedCards().size(),
                 "unusedCards should contain the reshuffled card");
         assertTrue(deck.getUnusedCards().contains(c1),
@@ -427,6 +443,19 @@ public class DeckTests {
                 "remaining unused card should still be in the deck");
         assertTrue(deck.getUnusedCards().contains(c2),
                 "unusedCards should still contain the undrawn card");
+    }
+
+    private static class CountingDeck extends Deck {
+        private int shuffleCount;
+
+        @Override
+        public void shuffle() {
+            shuffleCount++;
+        }
+
+        int getShuffleCount() {
+            return shuffleCount;
+        }
     }
 
 }
