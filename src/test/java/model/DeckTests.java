@@ -361,4 +361,17 @@ public class DeckTests {
                 "total card count should remain 3");
     }
 
+    @Test
+    public void TC18_ReshuffleIfEmpty_BothPilesEmpty_NoOp() {
+        Deck deck = new Deck();
+
+        assertDoesNotThrow(deck::reshuffleIfEmpty,
+                "reshuffleIfEmpty should not throw when both piles are empty");
+
+        assertTrue(deck.getUnusedCards().isEmpty(),
+                "unusedCards should remain empty");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain empty");
+    }
+
 }
