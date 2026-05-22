@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -129,6 +130,31 @@ public class DeckTests {
                 "unusedCards should be empty after drawing last card");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after draw");
+    }
+
+    @Test
+    public void TC7_Draw_WhenUnusedEmptyTriggersReshuffleFromUsed() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUsedCards().add(c1);
+        deck.getUsedCards().add(c2);
+        deck.getUsedCards().add(c3);
+
+        Card drawn = deck.draw();
+
+        assertNotNull(drawn, "draw should return a card after reshuffling from used");
+        assertTrue(drawn == c1 || drawn == c2 || drawn == c3,
+                "drawn card should be one of the reshuffled cards");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should be empty after reshuffle and draw");
+        assertEquals(2, deck.getUnusedCards().size(),
+                "unusedCards should hold the two remaining cards");
+        assertFalse(deck.getUnusedCards().contains(drawn),
+                "drawn card should no longer be in unusedCards");
+        assertEquals(3, 1 + deck.getUnusedCards().size() + deck.getUsedCards().size(),
+                "total card count should remain 3");
     }
 
 }
