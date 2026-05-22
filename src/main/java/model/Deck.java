@@ -24,4 +24,8 @@ public class Deck {
     public ArrayList<Card> getUsedCards(){
         return usedCards;
     }
+
+    public Card draw(){
+        return unusedCards.removeFirst();
+    }
 }

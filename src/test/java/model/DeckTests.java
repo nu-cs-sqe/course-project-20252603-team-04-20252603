@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeckTests {
@@ -87,6 +89,31 @@ public class DeckTests {
                 "usedCards should still contain exactly one card");
         assertTrue(deck.getUsedCards().contains(c3),
                 "usedCards should still contain C3");
+    }
+
+    @Test
+    public void TC5_Draw_WhenUnusedPileHasMultipleCards() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+        Deck deck = new Deck();
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+        deck.getUnusedCards().add(c3);
+
+        Card drawn = deck.draw();
+
+        assertSame(c1, drawn, "draw should return front card C1");
+        assertEquals(2, deck.getUnusedCards().size(),
+                "unusedCards should have two cards after draw");
+        assertFalse(deck.getUnusedCards().contains(c1),
+                "drawn card C1 should be removed from unusedCards");
+        assertTrue(deck.getUnusedCards().contains(c2),
+                "unusedCards should still contain C2");
+        assertTrue(deck.getUnusedCards().contains(c3),
+                "unusedCards should still contain C3");
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should remain empty after draw");
     }
 
 }
