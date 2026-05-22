@@ -35,6 +35,9 @@ public class Deck {
 
     public Card draw(){
         reshuffleIfEmpty();
+        if(unusedCards.isEmpty() && usedCards.isEmpty()){
+            throw new IllegalStateException("Both unused and used piles are empty");
+        }
         return unusedCards.removeFirst();
     }
 }
