@@ -72,6 +72,28 @@ public class DeckTests {
     }
 
     @Test
+    public void TC4_Shuffle_TwoCardsWithIdentitySwap() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(2)).andReturn(1);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
+        deck.getUnusedCards().add(c1);
+        deck.getUnusedCards().add(c2);
+
+        deck.shuffle();
+
+        assertSame(c1, deck.getUnusedCards().removeFirst(),
+                "front of deque should remain C1 after shuffle");
+        assertSame(c2, deck.getUnusedCards().removeFirst(),
+                "second card in deque should remain C2 after shuffle");
+        EasyMock.verify(rand);
+    }
+
+    @Test
     public void TC6_Shuffle_DoesNotModifyUsedPile() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
@@ -424,7 +446,12 @@ public class DeckTests {
     public void TC24_FullChanceTileCycle_DrawThenDiscard() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
-        Deck deck = new Deck();
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(2)).andReturn(1);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
         deck.shuffle();
@@ -443,6 +470,7 @@ public class DeckTests {
                 "remaining unused card should still be in the deck");
         assertTrue(deck.getUnusedCards().contains(c2),
                 "unusedCards should still contain the undrawn card");
+        EasyMock.verify(rand);
     }
 
     private static class CountingDeck extends Deck {
