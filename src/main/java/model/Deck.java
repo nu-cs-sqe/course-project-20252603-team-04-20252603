@@ -3,6 +3,7 @@ package model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,8 +24,13 @@ public class Deck {
         this.usedCards = new ArrayList<>();
     }
 
-    public void shuffle(){
-
+    public void shuffle() {
+        ArrayList<Card> cards = new ArrayList<>(unusedCards);
+        Collections.shuffle(cards, rand);
+        unusedCards.clear();
+        for (Card card : cards) {
+            unusedCards.addLast(card);
+        }
     }
 
     public ArrayDeque<Card> getUnusedCards(){
