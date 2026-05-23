@@ -1,6 +1,7 @@
 package model;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,8 +35,7 @@ public class DeckTests {
     @Test
     public void TC2_Shuffle_SingleCardInUnusedPile() {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
+        Deck deck = new Deck(new Random(), List.of(c1));
 
         assertDoesNotThrow(deck::shuffle,
                 "Shuffling a single-card deck should not throw");
@@ -58,15 +57,13 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
+        Deck deck = new Deck(rand, List.of(c1, c2));
 
         deck.shuffle();
 
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(0),
                 "front of deque should be C2 after shuffle");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(1),
                 "second card in deque should be C1 after shuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after shuffle");
@@ -82,15 +79,13 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(1);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
+        Deck deck = new Deck(rand, List.of(c1, c2));
 
         deck.shuffle();
 
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(0),
                 "front of deque should remain C1 after shuffle");
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(1),
                 "second card in deque should remain C2 after shuffle");
         EasyMock.verify(rand);
     }
@@ -106,18 +101,15 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUnusedCards().add(c3);
+        Deck deck = new Deck(rand, List.of(c1, c2, c3));
 
         deck.shuffle();
 
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(0),
                 "front of deque should be C2 after shuffle");
-        assertSame(c3, deck.getUnusedCards().removeFirst(),
+        assertSame(c3, deck.getUnusedCards().get(1),
                 "second card in deque should be C3 after shuffle");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(2),
                 "third card in deque should be C1 after shuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after shuffle");
@@ -134,16 +126,13 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUsedCards().add(c3);
+        Deck deck = new Deck(rand, List.of(c1, c2), List.of(c3));
 
         deck.shuffle();
 
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(0),
                 "front of deque should be C2 after shuffle");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(1),
                 "second card in deque should be C1 after shuffle");
         assertEquals(1, deck.getUsedCards().size(),
                 "usedCards should still contain exactly one card");
@@ -165,20 +154,16 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUnusedCards().add(c3);
-        deck.getUnusedCards().add(c4);
+        Deck deck = new Deck(rand, List.of(c1, c2, c3, c4));
         deck.shuffle();
 
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(0),
                 "front of deque should be C2 after shuffle");
-        assertSame(c3, deck.getUnusedCards().removeFirst(),
+        assertSame(c3, deck.getUnusedCards().get(1),
                 "second card in deque should be C3 after shuffle");
-        assertSame(c4, deck.getUnusedCards().removeFirst(),
+        assertSame(c4, deck.getUnusedCards().get(2),
                 "third card in deque should be C4 after shuffle");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(3),
                 "fourth card in deque should be C1 after shuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after shuffle");
@@ -196,19 +181,16 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUsedCards().add(c1);
-        deck.getUsedCards().add(c2);
-        deck.getUsedCards().add(c3);
+        Deck deck = new Deck(rand, List.of(), List.of(c1, c2, c3));
         deck.reshuffleIfEmpty();
 
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should be empty after reshuffle");
-        assertSame(c2, deck.getUnusedCards().removeFirst(),
+        assertSame(c2, deck.getUnusedCards().get(0),
                 "front of deque should be C2 after shuffle");
-        assertSame(c3, deck.getUnusedCards().removeFirst(),
+        assertSame(c3, deck.getUnusedCards().get(1),
                 "second card in deque should be C3 after shuffle");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(2),
                 "third card in deque should be C1 after shuffle");
         EasyMock.verify(rand);
     }
@@ -219,11 +201,7 @@ public class DeckTests {
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Card c4 = new Card("Card 4", "Test card 4", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUnusedCards().add(c3);
-        deck.getUsedCards().add(c4);
+        Deck deck = new Deck(new Random(), List.of(c1, c2, c3), List.of(c4));
 
         Card drawn = deck.draw();
 
@@ -243,8 +221,7 @@ public class DeckTests {
     @Test
     public void TC10_Draw_LastCardFromUnusedPile() {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
+        Deck deck = new Deck(new Random(), List.of(c1));
 
         Card drawn = deck.draw();
 
@@ -266,10 +243,7 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUsedCards().add(c1);
-        deck.getUsedCards().add(c2);
-        deck.getUsedCards().add(c3);
+        Deck deck = new Deck(rand, List.of(), List.of(c1, c2, c3));
 
         Card drawn = deck.draw();
 
@@ -306,9 +280,12 @@ public class DeckTests {
     public void TC13_ConsecutiveDrawsExhaustUnusedThenReshuffle() {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(2)).andReturn(0);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand, List.of(c1, c2));
 
         Card first = deck.draw();
         deck.discard(first);
@@ -320,15 +297,14 @@ public class DeckTests {
 
         assertSame(c1, first, "first draw should return C1");
         assertSame(c2, second, "second draw should return C2");
-        assertNotNull(third, "third draw should succeed after reshuffle");
-        assertTrue(third == c1 || third == c2,
-                "third draw should return a reshuffled card");
+        assertSame(c2, third, "third draw should return front card after reshuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should be empty after reshuffle and third draw");
         assertEquals(1, deck.getUnusedCards().size(),
                 "one card should remain in unusedCards");
         assertEquals(2, 1 + deck.getUnusedCards().size() + deck.getUsedCards().size(),
                 "both cards should still be accounted for in the deck");
+        EasyMock.verify(rand);
     }
 
     @Test
@@ -345,8 +321,7 @@ public class DeckTests {
     @Test
     public void TC15_Discard_ValidCardAfterDraw() {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
+        Deck deck = new Deck(new Random(), List.of(c1));
 
         Card drawn = deck.draw();
         deck.discard(drawn);
@@ -366,10 +341,7 @@ public class DeckTests {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUnusedCards().add(c3);
+        Deck deck = new Deck(new Random(), List.of(c1, c2, c3));
 
         Card drawn = deck.draw();
         deck.discard(drawn);
@@ -389,8 +361,7 @@ public class DeckTests {
     @Test
     public void TC17_Discard_SameCardTwice_Rejected() throws Exception {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
+        Deck deck = new Deck(new Random(), List.of(c1));
 
         deck.discard(deck.draw());
 
@@ -416,9 +387,7 @@ public class DeckTests {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c2);
-        deck.getUsedCards().add(c1);
+        Deck deck = new Deck(new Random(), List.of(c2), List.of(c1));
 
         deck.draw();
 
@@ -440,10 +409,7 @@ public class DeckTests {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
-        deck.getUsedCards().add(c3);
+        Deck deck = new Deck(new Random(), List.of(c1, c2), List.of(c3));
 
         deck.reshuffleIfEmpty();
 
@@ -466,13 +432,12 @@ public class DeckTests {
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUsedCards().add(c1);
+        Deck deck = new Deck(rand, List.of(), List.of(c1));
         deck.reshuffleIfEmpty();
 
         assertEquals(1, deck.getUnusedCards().size(),
                 "unusedCards should contain the reshuffled card");
-        assertSame(c1, deck.getUnusedCards().removeFirst(),
+        assertSame(c1, deck.getUnusedCards().get(0),
                 "unusedCards should contain C1");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should be empty after reshuffle");
@@ -484,10 +449,7 @@ public class DeckTests {
         Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUsedCards().add(c1);
-        deck.getUsedCards().add(c2);
-        deck.getUsedCards().add(c3);
+        Deck deck = new Deck(new Random(), List.of(), List.of(c1, c2, c3));
 
         deck.reshuffleIfEmpty();
 
@@ -524,11 +486,7 @@ public class DeckTests {
         Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Card c4 = new Card("Card 4", "Test card 4", NO_OP_EFFECT);
-        Deck deck = new Deck();
-        deck.getUsedCards().add(c1);
-        deck.getUsedCards().add(c2);
-        deck.getUsedCards().add(c3);
-        deck.getUsedCards().add(c4);
+        Deck deck = new Deck(new Random(), List.of(), List.of(c1, c2, c3, c4));
 
         deck.reshuffleIfEmpty();
 
@@ -557,9 +515,7 @@ public class DeckTests {
         EasyMock.expect(rand.nextInt(2)).andReturn(1);
         EasyMock.replay(rand);
 
-        Deck deck = new Deck(rand);
-        deck.getUnusedCards().add(c1);
-        deck.getUnusedCards().add(c2);
+        Deck deck = new Deck(rand, List.of(c1, c2));
         deck.shuffle();
 
         Card drawn = deck.draw();
