@@ -4,14 +4,21 @@ package model;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 public class Deck {
 
+    private final Random rand;
     private ArrayDeque<Card> unusedCards;
     private ArrayList<Card> usedCards;
     private Optional<Card> lastDrawn = Optional.empty();
 
-    public Deck(){
+    public Deck() {
+        this(new Random());
+    }
+
+    Deck(Random rand) {
+        this.rand = rand;
         this.unusedCards = new ArrayDeque<>();
         this.usedCards = new ArrayList<>();
     }

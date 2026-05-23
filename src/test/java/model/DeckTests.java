@@ -2,6 +2,7 @@ package model;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
+import java.util.Random;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -47,32 +48,31 @@ public class DeckTests {
     }
 
     @Test
-    public void TC3_Shuffle_MultipleCardsInUnusedPile() {
+    public void TC3_Shuffle_TwoCardsReversesDequeOrder() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
-        Deck deck = new Deck();
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(2)).andReturn(0);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
-        deck.getUnusedCards().add(c3);
 
-        assertDoesNotThrow(deck::shuffle,
-                "Shuffling a multi-card deck should not throw");
+        deck.shuffle();
 
-        assertEquals(3, deck.getUnusedCards().size(),
-                "unusedCards should still contain three cards");
-        assertTrue(deck.getUnusedCards().contains(c1),
-                "unusedCards should still contain C1");
-        assertTrue(deck.getUnusedCards().contains(c2),
-                "unusedCards should still contain C2");
-        assertTrue(deck.getUnusedCards().contains(c3),
-                "unusedCards should still contain C3");
+        assertSame(c2, deck.getUnusedCards().removeFirst(),
+                "front of deque should be C2 after shuffle");
+        assertSame(c1, deck.getUnusedCards().removeFirst(),
+                "second card in deque should be C1 after shuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should remain empty after shuffle");
+        EasyMock.verify(rand);
     }
 
     @Test
-    public void TC4_Shuffle_DoesNotModifyUsedPile() {
+    public void TC6_Shuffle_DoesNotModifyUsedPile() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -97,7 +97,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC5_Draw_WhenUnusedPileHasMultipleCards() {
+    public void TC9_Draw_WhenUnusedPileHasMultipleCards() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -124,7 +124,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC6_Draw_LastCardFromUnusedPile() {
+    public void TC10_Draw_LastCardFromUnusedPile() {
         Card c1 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
@@ -139,7 +139,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC7_Draw_WhenUnusedEmptyTriggersReshuffleFromUsed() {
+    public void TC11_Draw_WhenUnusedEmptyTriggersReshuffleFromUsed() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -165,7 +165,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC8_Draw_WhenBothPilesEmpty_Throws() {
+    public void TC12_Draw_WhenBothPilesEmpty_Throws() {
         Deck deck = new Deck();
 
         assertThrows(IllegalStateException.class, deck::draw,
@@ -178,7 +178,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC9_ConsecutiveDrawsExhaustUnusedThenReshuffle() {
+    public void TC13_ConsecutiveDrawsExhaustUnusedThenReshuffle() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
@@ -207,7 +207,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC10_Discard_NullCard_Throws() {
+    public void TC14_Discard_NullCard_Throws() {
         Deck deck = new Deck();
 
         assertThrows(IllegalArgumentException.class, () -> deck.discard(null),
@@ -218,7 +218,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC11_Discard_ValidCardAfterDraw() {
+    public void TC15_Discard_ValidCardAfterDraw() {
         Card c1 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
@@ -237,7 +237,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC12_Discard_DoesNotChangeUnusedPile() {
+    public void TC16_Discard_DoesNotChangeUnusedPile() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -262,7 +262,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC13_Discard_SameCardTwice_Rejected() throws Exception {
+    public void TC17_Discard_SameCardTwice_Rejected() throws Exception {
         Card c1 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
@@ -287,7 +287,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC14_Discard_CardNotInEitherPile_Rejected() {
+    public void TC18_Discard_CardNotInEitherPile_Rejected() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -311,7 +311,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC15_ReshuffleIfEmpty_UnusedNotEmpty_NoOp() {
+    public void TC19_ReshuffleIfEmpty_UnusedNotEmpty_NoOp() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -335,7 +335,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC16_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
+    public void TC20_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
         Card c1 = EasyMock.createMock(Card.class);
         CountingDeck deck = new CountingDeck();
         deck.getUsedCards().add(c1);
@@ -352,7 +352,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC17_ReshuffleIfEmpty_UnusedEmptyMovesMultipleCards() {
+    public void TC21_ReshuffleIfEmpty_UnusedEmptyMovesMultipleCards() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -378,7 +378,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC18_ReshuffleIfEmpty_BothPilesEmpty_NoOp() {
+    public void TC22_ReshuffleIfEmpty_BothPilesEmpty_NoOp() {
         Deck deck = new Deck();
 
         assertDoesNotThrow(deck::reshuffleIfEmpty,
@@ -391,7 +391,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC19_ReshuffleIfEmpty_PreservesTotalCardCount() {
+    public void TC23_ReshuffleIfEmpty_PreservesTotalCardCount() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
@@ -421,7 +421,7 @@ public class DeckTests {
     }
 
     @Test
-    public void TC20_FullChanceTileCycle_DrawThenDiscard() {
+    public void TC24_FullChanceTileCycle_DrawThenDiscard() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Deck deck = new Deck();
