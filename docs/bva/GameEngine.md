@@ -130,6 +130,32 @@
 
 ---
 
+## Method under test: `getActivePlayers()`
+
+The active players in a `GameEngine` are the players that have not yet been removed via `removeBankruptPlayer`. The method returns a read-only view of that list so callers can iterate without being able to mutate engine state.
+
+- **TC_GAP1: Get active players with 2 players returns both** ( )
+  - **State of the system**: `players = [P1, P2]`
+  - **Expected output**: list of size 2 containing `[P1, P2]` in order
+
+- **TC_GAP2: Get active players with 4 players returns all four** ( )
+  - **State of the system**: `players = [P1, P2, P3, P4]`
+  - **Expected output**: list of size 4 containing `[P1, P2, P3, P4]` in order
+
+- **TC_GAP3: Get active players with empty roster returns empty list** ( )
+  - **State of the system**: `players = []`
+  - **Expected output**: empty list (size 0)
+
+- **TC_GAP4: Get active players after removeBankruptPlayer reflects removal** ( )
+  - **State of the system**: `players = [P1, P2, P3]`, then `removeBankruptPlayer(P2)`
+  - **Expected output**: list of size 2 containing `[P1, P3]` in order
+
+- **TC_GAP5: Returned list is unmodifiable** ( )
+  - **State of the system**: `players = [P1, P2]`
+  - **Expected output**: `UnsupportedOperationException` thrown when caller attempts `list.add(...)`
+
+---
+
 ## Method under test: `getTile(int index)`
 
 - **TC23: Get tile at index below 0 throws exception** ( )

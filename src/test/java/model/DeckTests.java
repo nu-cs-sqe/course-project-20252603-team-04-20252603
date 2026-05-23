@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeckTests {
 
+    private static final CardEffect NO_OP_EFFECT = (player, game) -> { };
+
     @Test
     public void TC1_Shuffle_EmptyUnusedPile() {
         Deck deck = new Deck();
@@ -32,7 +34,7 @@ public class DeckTests {
 
     @Test
     public void TC2_Shuffle_SingleCardInUnusedPile() {
-        Card c1 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
 
@@ -49,8 +51,8 @@ public class DeckTests {
 
     @Test
     public void TC3_Shuffle_TwoCardsReversesDequeOrder() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
@@ -73,8 +75,8 @@ public class DeckTests {
 
     @Test
     public void TC4_Shuffle_TwoCardsWithIdentitySwap() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(2)).andReturn(1);
@@ -95,9 +97,9 @@ public class DeckTests {
 
     @Test
     public void TC5_Shuffle_ThreeCardsToDeterministicOrder() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(3)).andReturn(0);
@@ -124,9 +126,9 @@ public class DeckTests {
 
     @Test
     public void TC6_Shuffle_DoesNotModifyUsedPile() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(2)).andReturn(0);
@@ -152,10 +154,10 @@ public class DeckTests {
 
     @Test
     public void TC7_Shuffle_FourCards() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
-        Card c4 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
+        Card c4 = new Card("Card 4", "Test card 4", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(4)).andReturn(0);
@@ -185,9 +187,9 @@ public class DeckTests {
 
     @Test
     public void TC8_ReshuffleIfEmpty_ShufflesMovedCards() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(3)).andReturn(0);
@@ -213,10 +215,10 @@ public class DeckTests {
 
     @Test
     public void TC9_Draw_WhenUnusedPileHasMultipleCards() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
-        Card c4 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
+        Card c4 = new Card("Card 4", "Test card 4", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
@@ -240,7 +242,7 @@ public class DeckTests {
 
     @Test
     public void TC10_Draw_LastCardFromUnusedPile() {
-        Card c1 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
 
@@ -255,9 +257,9 @@ public class DeckTests {
 
     @Test
     public void TC11_Draw_WhenUnusedEmptyTriggersReshuffleFromUsed() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(3)).andReturn(0);
@@ -302,8 +304,8 @@ public class DeckTests {
 
     @Test
     public void TC13_ConsecutiveDrawsExhaustUnusedThenReshuffle() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
@@ -342,7 +344,7 @@ public class DeckTests {
 
     @Test
     public void TC15_Discard_ValidCardAfterDraw() {
-        Card c1 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
 
@@ -361,9 +363,9 @@ public class DeckTests {
 
     @Test
     public void TC16_Discard_DoesNotChangeUnusedPile() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
@@ -386,7 +388,7 @@ public class DeckTests {
 
     @Test
     public void TC17_Discard_SameCardTwice_Rejected() throws Exception {
-        Card c1 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
 
@@ -411,9 +413,9 @@ public class DeckTests {
 
     @Test
     public void TC18_Discard_CardNotInEitherPile_Rejected() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c2);
         deck.getUsedCards().add(c1);
@@ -435,9 +437,9 @@ public class DeckTests {
 
     @Test
     public void TC19_ReshuffleIfEmpty_UnusedNotEmpty_NoOp() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
@@ -459,7 +461,7 @@ public class DeckTests {
 
     @Test
     public void TC20_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
-        Card c1 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.replay(rand);
@@ -479,9 +481,9 @@ public class DeckTests {
 
     @Test
     public void TC21_ReshuffleIfEmpty_UnusedEmptyMovesMultipleCards() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUsedCards().add(c1);
         deck.getUsedCards().add(c2);
@@ -518,10 +520,10 @@ public class DeckTests {
 
     @Test
     public void TC23_ReshuffleIfEmpty_PreservesTotalCardCount() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
-        Card c3 = EasyMock.createMock(Card.class);
-        Card c4 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
+        Card c3 = new Card("Card 3", "Test card 3", NO_OP_EFFECT);
+        Card c4 = new Card("Card 4", "Test card 4", NO_OP_EFFECT);
         Deck deck = new Deck();
         deck.getUsedCards().add(c1);
         deck.getUsedCards().add(c2);
@@ -548,8 +550,8 @@ public class DeckTests {
 
     @Test
     public void TC24_FullChanceTileCycle_DrawThenDiscard() {
-        Card c1 = EasyMock.createMock(Card.class);
-        Card c2 = EasyMock.createMock(Card.class);
+        Card c1 = new Card("Card 1", "Test card 1", NO_OP_EFFECT);
+        Card c2 = new Card("Card 2", "Test card 2", NO_OP_EFFECT);
 
         Random rand = EasyMock.createMock(Random.class);
         EasyMock.expect(rand.nextInt(2)).andReturn(1);

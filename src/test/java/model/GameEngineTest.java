@@ -806,4 +806,84 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2, board);
     }
+
+    // ==================================================================================================
+    // getActivePlayers() tests
+    // ==================================================================================================
+
+    @Test
+    public void getActivePlayers_WithTwoPlayers_ReturnsBothInOrder() {
+        Player p1 = EasyMock.createMock(Player.class);
+        Player p2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(p1, p2);
+
+        GameEngine engine = new GameEngine(List.of(p1, p2));
+        List<Player> result = engine.getActivePlayers();
+
+        assertEquals(2, result.size());
+        assertSame(p1, result.get(0));
+        assertSame(p2, result.get(1));
+
+        EasyMock.verify(p1, p2);
+    }
+
+    @Test
+    public void getActivePlayers_WithFourPlayers_ReturnsAllInOrder() {
+        Player p1 = EasyMock.createMock(Player.class);
+        Player p2 = EasyMock.createMock(Player.class);
+        Player p3 = EasyMock.createMock(Player.class);
+        Player p4 = EasyMock.createMock(Player.class);
+        EasyMock.replay(p1, p2, p3, p4);
+
+        GameEngine engine = new GameEngine(List.of(p1, p2, p3, p4));
+        List<Player> result = engine.getActivePlayers();
+
+        assertEquals(4, result.size());
+        assertSame(p1, result.get(0));
+        assertSame(p2, result.get(1));
+        assertSame(p3, result.get(2));
+        assertSame(p4, result.get(3));
+
+        EasyMock.verify(p1, p2, p3, p4);
+    }
+
+    @Test
+    public void getActivePlayers_WithEmptyRoster_ReturnsEmptyList() {
+        GameEngine engine = new GameEngine(List.of());
+        List<Player> result = engine.getActivePlayers();
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void getActivePlayers_AfterRemoveBankruptPlayer_ReflectsRemoval() {
+        Player p1 = EasyMock.createMock(Player.class);
+        Player p2 = EasyMock.createMock(Player.class);
+        Player p3 = EasyMock.createMock(Player.class);
+        EasyMock.replay(p1, p2, p3);
+
+        GameEngine engine = new GameEngine(List.of(p1, p2, p3));
+        engine.removeBankruptPlayer(p2);
+        List<Player> result = engine.getActivePlayers();
+
+        assertEquals(2, result.size());
+        assertSame(p1, result.get(0));
+        assertSame(p3, result.get(1));
+
+        EasyMock.verify(p1, p2, p3);
+    }
+
+    @Test
+    public void getActivePlayers_ReturnedList_IsUnmodifiable() {
+        Player p1 = EasyMock.createMock(Player.class);
+        Player p2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(p1, p2);
+
+        GameEngine engine = new GameEngine(List.of(p1, p2));
+        List<Player> result = engine.getActivePlayers();
+
+        assertThrows(UnsupportedOperationException.class, () -> result.add(p1));
+
+        EasyMock.verify(p1, p2);
+    }
 }
