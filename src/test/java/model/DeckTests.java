@@ -127,24 +127,27 @@ public class DeckTests {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
-        Deck deck = new Deck();
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(2)).andReturn(0);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
         deck.getUnusedCards().add(c1);
         deck.getUnusedCards().add(c2);
         deck.getUsedCards().add(c3);
 
-        assertDoesNotThrow(deck::shuffle,
-                "Shuffling should not throw when used pile has cards");
+        deck.shuffle();
 
-        assertEquals(2, deck.getUnusedCards().size(),
-                "unusedCards should still contain two cards");
-        assertTrue(deck.getUnusedCards().contains(c1),
-                "unusedCards should still contain C1");
-        assertTrue(deck.getUnusedCards().contains(c2),
-                "unusedCards should still contain C2");
+        assertSame(c2, deck.getUnusedCards().removeFirst(),
+                "front of deque should be C2 after shuffle");
+        assertSame(c1, deck.getUnusedCards().removeFirst(),
+                "second card in deque should be C1 after shuffle");
         assertEquals(1, deck.getUsedCards().size(),
                 "usedCards should still contain exactly one card");
-        assertTrue(deck.getUsedCards().contains(c3),
+        assertSame(c3, deck.getUsedCards().get(0),
                 "usedCards should still contain C3");
+        EasyMock.verify(rand);
     }
 
     @Test
