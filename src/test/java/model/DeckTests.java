@@ -184,6 +184,34 @@ public class DeckTests {
     }
 
     @Test
+    public void TC8_ReshuffleIfEmpty_ShufflesMovedCards() {
+        Card c1 = EasyMock.createMock(Card.class);
+        Card c2 = EasyMock.createMock(Card.class);
+        Card c3 = EasyMock.createMock(Card.class);
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(3)).andReturn(0);
+        EasyMock.expect(rand.nextInt(2)).andReturn(0);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
+        deck.getUsedCards().add(c1);
+        deck.getUsedCards().add(c2);
+        deck.getUsedCards().add(c3);
+        deck.reshuffleIfEmpty();
+
+        assertTrue(deck.getUsedCards().isEmpty(),
+                "usedCards should be empty after reshuffle");
+        assertSame(c2, deck.getUnusedCards().removeFirst(),
+                "front of deque should be C2 after shuffle");
+        assertSame(c3, deck.getUnusedCards().removeFirst(),
+                "second card in deque should be C3 after shuffle");
+        assertSame(c1, deck.getUnusedCards().removeFirst(),
+                "third card in deque should be C1 after shuffle");
+        EasyMock.verify(rand);
+    }
+
+    @Test
     public void TC9_Draw_WhenUnusedPileHasMultipleCards() {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
