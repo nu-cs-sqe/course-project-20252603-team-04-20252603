@@ -258,25 +258,33 @@ public class DeckTests {
         Card c1 = EasyMock.createMock(Card.class);
         Card c2 = EasyMock.createMock(Card.class);
         Card c3 = EasyMock.createMock(Card.class);
-        CountingDeck deck = new CountingDeck();
+
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.expect(rand.nextInt(3)).andReturn(0);
+        EasyMock.expect(rand.nextInt(2)).andReturn(0);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
         deck.getUsedCards().add(c1);
         deck.getUsedCards().add(c2);
         deck.getUsedCards().add(c3);
 
         Card drawn = deck.draw();
 
-        assertEquals(1, deck.getShuffleCount(), "draw should shuffle when unused pile is empty");
-        assertNotNull(drawn, "draw should return a card after reshuffling from used");
-        assertTrue(drawn == c1 || drawn == c2 || drawn == c3,
-                "drawn card should be one of the reshuffled cards");
+        assertSame(c2, drawn, "draw should return front card after reshuffle");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should be empty after reshuffle and draw");
         assertEquals(2, deck.getUnusedCards().size(),
                 "unusedCards should hold the two remaining cards");
         assertFalse(deck.getUnusedCards().contains(drawn),
                 "drawn card should no longer be in unusedCards");
+        assertTrue(deck.getUnusedCards().contains(c3),
+                "unusedCards should still contain C3");
+        assertTrue(deck.getUnusedCards().contains(c1),
+                "unusedCards should still contain C1");
         assertEquals(3, 1 + deck.getUnusedCards().size() + deck.getUsedCards().size(),
                 "total card count should remain 3");
+        EasyMock.verify(rand);
     }
 
     @Test
@@ -452,18 +460,21 @@ public class DeckTests {
     @Test
     public void TC20_ReshuffleIfEmpty_UnusedEmptyMovesOneCard() {
         Card c1 = EasyMock.createMock(Card.class);
-        CountingDeck deck = new CountingDeck();
-        deck.getUsedCards().add(c1);
 
+        Random rand = EasyMock.createMock(Random.class);
+        EasyMock.replay(rand);
+
+        Deck deck = new Deck(rand);
+        deck.getUsedCards().add(c1);
         deck.reshuffleIfEmpty();
 
-        assertEquals(1, deck.getShuffleCount(), "reshuffleIfEmpty should call shuffle");
         assertEquals(1, deck.getUnusedCards().size(),
                 "unusedCards should contain the reshuffled card");
-        assertTrue(deck.getUnusedCards().contains(c1),
+        assertSame(c1, deck.getUnusedCards().removeFirst(),
                 "unusedCards should contain C1");
         assertTrue(deck.getUsedCards().isEmpty(),
                 "usedCards should be empty after reshuffle");
+        EasyMock.verify(rand);
     }
 
     @Test
@@ -564,19 +575,6 @@ public class DeckTests {
         assertTrue(deck.getUnusedCards().contains(c2),
                 "unusedCards should still contain the undrawn card");
         EasyMock.verify(rand);
-    }
-
-    private static class CountingDeck extends Deck {
-        private int shuffleCount;
-
-        @Override
-        public void shuffle() {
-            shuffleCount++;
-        }
-
-        int getShuffleCount() {
-            return shuffleCount;
-        }
     }
 
 }
