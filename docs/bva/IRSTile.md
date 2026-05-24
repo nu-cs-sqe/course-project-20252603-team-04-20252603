@@ -37,7 +37,7 @@
   - **State of the system**: `player.balance = 0.0`, player lands on IRS tile
   - **Expected output**: player cannot pay the tax and balance does not change
 
-- **TC7: Land on IRS with null player** ( :x: )
+- **TC7: Land on IRS with null player** ( :white_check_mark: )
   - **State of the system**: `player = null`, `game` is valid
   - **Expected output**: `NullPointerException` thrown (fail-fast)
 

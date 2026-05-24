@@ -63,10 +63,18 @@ public class IRSTileTest {
     }
 
     @Test
-    public void TC7_validPlayerNullGame() {
+    public void TC7_nullPlayer_throwsException() {
         IRSTile irsTile = new IRSTile();
         GameEngine game = new GameEngine(java.util.List.of());
         assertThrows(NullPointerException.class, () -> irsTile.landOn(null, game));
+    }
+
+    @Test
+    public void TC8_nullGame_runsIfNotUsed() {
+        IRSTile irsTile = new IRSTile();
+        Player player = new Player("Alice", 200.0);
+        irsTile.landOn(player, null);
+        assertEquals(0.0, player.getBalance());
     }
 
 
