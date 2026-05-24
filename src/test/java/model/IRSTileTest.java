@@ -4,6 +4,7 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IRSTileTest {
 
@@ -59,6 +60,13 @@ public class IRSTileTest {
         GameEngine game = new GameEngine(java.util.List.of(player));
         irsTile.landOn(player, game);
         assertEquals(previousBalance, player.getBalance());
+    }
+
+    @Test
+    public void TC7_validPlayerNullGame() {
+        IRSTile irsTile = new IRSTile();
+        GameEngine game = new GameEngine(java.util.List.of());
+        assertThrows(NullPointerException.class, () -> irsTile.landOn(null, game));
     }
 
 
