@@ -51,4 +51,16 @@ public class IRSTileTest {
         assertEquals(previousBalance, player.getBalance());
     }
 
+    @Test
+    public void TC6_player_landOn_withBalance_Zero() {
+        IRSTile irsTile = new IRSTile();
+        Player player = new Player("Alice", 0.0);
+        double previousBalance = player.getBalance();
+        GameEngine game = new GameEngine(java.util.List.of(player));
+        irsTile.landOn(player, game);
+        assertEquals(previousBalance, player.getBalance());
+    }
+
+
+
 }

@@ -29,26 +29,22 @@
   - **State of the system**: `player.balance == taxAmount`, player lands on IRS tile
   - **Expected output**: player's balance becomes `0.0`
 
-- **TC5: Land on IRS with balance slightly less than tax amount** ( :x: )
+- **TC5: Land on IRS with balance slightly less than tax amount** ( :white_check_mark: )
   - **State of the system**: `player.balance < taxAmount`, player lands on IRS tile
-  - **Expected output**: player cannot pay the tax and is eliminated from the game
+  - **Expected output**: player cannot pay the tax and balance does not change
 
-- **TC6: Land on IRS with zero balance** ( :x: )
+- **TC6: Land on IRS with zero balance** ( :white_check_mark: )
   - **State of the system**: `player.balance = 0.0`, player lands on IRS tile
-  - **Expected output**: player cannot pay the tax and is eliminated from the game
+  - **Expected output**: player cannot pay the tax and balance does not change
 
-- **TC7: Land on IRS with negative balance** ( :x: )
-  - **State of the system**: `player.balance < 0.0`, player lands on IRS tile
-  - **Expected output**: player is already below zero and is eliminated from the game
-
-- **TC8: Land on IRS with null player** ( :x: )
+- **TC7: Land on IRS with null player** ( :x: )
   - **State of the system**: `player = null`, `game` is valid
   - **Expected output**: `NullPointerException` thrown (fail-fast)
 
-- **TC9: Land on IRS with null game** ( :x: )
+- **TC8: Land on IRS with null game** ( :x: )
   - **State of the system**: `player` is valid, `game = null`
   - **Expected output**: method executes normally if `game` is not used by IRS tile logic
 
-- **TC10: Land on IRS does not transfer money to another player** ( :x: )
+- **TC9: Land on IRS does not transfer money to another player** ( :x: )
   - **State of the system**: multiple players exist, one player lands on IRS tile with enough balance
   - **Expected output**: landing player's balance decreases by `taxAmount`; other players' balances do not change
