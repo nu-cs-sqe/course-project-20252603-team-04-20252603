@@ -109,6 +109,7 @@
 3. Input: 
   - oldPosition = -1, newPosition = 0
   - oldPosition = 0, newPosition = 32
+  - oldPosition = 32, newPosition = 0
   - oldPosition = 0, newPosition = 0
   - oldPosition = 0, newPosition = 1
   - oldPosition = 30, newPosition = 31
@@ -124,23 +125,27 @@ Output: true, false, exception
   - **State of the system**: oldPosition = 0, newPosition = 32
   - **Expected output**: throws `IndexOutOfBoundsException`
 
-- **TC23: didPassGo_WhenOldAndNewPositionsAreGo_ReturnsFalse** ( :white_check_mark: )
+- **TC23: didPassGo_WithOneMoreThanLastOldPosition_ThrowsException** ( :x: )
+  - **State of the system**: oldPosition = 0, newPosition = 32
+  - **Expected output**: throws `IndexOutOfBoundsException`
+
+- **TC24: didPassGo_WhenOldAndNewPositionsAreGo_ReturnsFalse** ( :white_check_mark: )
   - **State of the system**: oldPosition = 0, newPosition = 0
   - **Expected output**: returns `false`
 
-- **TC24: didPassGo_WhenMovingForwardFromGo_ReturnsFalse** ( :white_check_mark: )
+- **TC25: didPassGo_WhenMovingForwardFromGo_ReturnsFalse** ( :white_check_mark: )
   - **State of the system**: oldPosition = 0, newPosition = 1
   - **Expected output**: returns `false`
 
-- **TC25: didPassGo_WhenMovingNearEndWithoutWrap_ReturnsFalse** ( :white_check_mark: )
+- **TC26: didPassGo_WhenMovingNearEndWithoutWrap_ReturnsFalse** ( :white_check_mark: )
   - **State of the system**: oldPosition = 30, newPosition = 31
   - **Expected output**: returns `false`
 
-- **TC26: didPassGo_WhenMovingFromLastIndexToGo_ReturnsTrue** ( :white_check_mark: )
+- **TC27: didPassGo_WhenMovingFromLastIndexToGo_ReturnsTrue** ( :white_check_mark: )
   - **State of the system**: oldPosition = 31, newPosition = 0
   - **Expected output**: returns `true`
 
-- **TC27: didPassGo_WhenMovementWrapsPastGo_ReturnsTrue** ( :white_check_mark: )
+- **TC28: didPassGo_WhenMovementWrapsPastGo_ReturnsTrue** ( :white_check_mark: )
   - **State of the system**: oldPosition = 30, newPosition = 1
   - **Expected output**: returns `true`
 
@@ -149,6 +154,6 @@ Output: true, false, exception
 2. Input: None, Output: Count
 3. Output: 32
 
-- **TC28: getBoardSize_WhenBoardInitialized_Returns32** ( :white_check_mark: )
+- **TC29: getBoardSize_WhenBoardInitialized_Returns32** ( :white_check_mark: )
   - **State of the system**: initialized board with 32 tiles
   - **Expected output**: returns 32

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ class GameEngine {
     }
     public Player getCurrentPlayer(){
         return players.get(currentPlayerIndex);
+    }
+
+    public List<Player> getActivePlayers() {
+        return Collections.unmodifiableList(players);
     }
 
     public void nextTurn(){
