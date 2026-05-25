@@ -45,4 +45,11 @@ public class IRSTileTest {
         EasyMock.verify(player, game);
     }
 
+    @Test
+    public void TC5_validPlayerNullGame() {
+        IRSTile irsTile = new IRSTile();
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        assertThrows(NullPointerException.class, () -> irsTile.landOn(null, game));
+    }
+
 }

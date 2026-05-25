@@ -25,7 +25,7 @@
   - **State of the system**: `player.remove(taxAmount)` returns `true`, valid `game` is provided
   - **Expected output**: tax payment is accepted and `game.removeBankruptPlayer(player)` is not called
 
-- **TC4: Land on IRS when tax payment fails** ( :x: )
+- **TC4: Land on IRS when tax payment fails** ( :white_check_mark: )
   - **State of the system**: `player.remove(taxAmount)` returns `false`, valid `game` is provided
   - **Expected output**: `game.removeBankruptPlayer(player)` is called once
 
