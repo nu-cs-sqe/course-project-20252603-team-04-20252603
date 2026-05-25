@@ -62,4 +62,14 @@ public class IRSTileTest {
         EasyMock.verify(player);
     }
 
+    @Test
+    public void TC7_nullGame_PaymentFails_ThrowsNullPointerException() {
+        IRSTile irsTile = new IRSTile();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.expect(player.remove(200)).andReturn(false);
+        EasyMock.replay(player);
+        assertThrows(NullPointerException.class, () -> irsTile.landOn(player, null), "GameEngine must be present to eliminate bankrupt player");
+        EasyMock.verify(player);
+    }
+
 }
