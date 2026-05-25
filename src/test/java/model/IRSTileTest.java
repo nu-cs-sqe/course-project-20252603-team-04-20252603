@@ -46,10 +46,20 @@ public class IRSTileTest {
     }
 
     @Test
-    public void TC5_validPlayerNullGame() {
+    public void TC5_nullPlayer_ThrowsNullPointerException() {
         IRSTile irsTile = new IRSTile();
         GameEngine game = EasyMock.createMock(GameEngine.class);
         assertThrows(NullPointerException.class, () -> irsTile.landOn(null, game));
+    }
+
+    @Test
+    public void TC6_nullGame_PaymentSucceeds() {
+        IRSTile irsTile = new IRSTile();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.expect(player.remove(200)).andReturn(true);
+        EasyMock.replay(player);
+        irsTile.landOn(player, null);
+        EasyMock.verify(player);
     }
 
 }
