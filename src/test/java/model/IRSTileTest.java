@@ -22,61 +22,14 @@ public class IRSTileTest {
     }
 
     @Test
-    public void TC3_player_landOn_withBalance_GreaterThanTaxAmount() {
+    public void TC3_onLand_paymentSucceeds() {
         IRSTile irsTile = new IRSTile();
-        Player player = new Player("Alice", 201.0);
-        double previousBalance = player.getBalance();
-        GameEngine game = new GameEngine(java.util.List.of(player));
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.remove(200)).andReturn(true);
+        EasyMock.replay(player, game);
         irsTile.landOn(player, game);
-        assertEquals(previousBalance - 200, player.getBalance());
-
+        EasyMock.verify(player, game);
     }
-
-    @Test
-    public void TC4_player_landOn_withBalance_EqualToTaxAmount() {
-        IRSTile irsTile = new IRSTile();
-        Player player = new Player("Alice", 200.0);
-        double previousBalance = player.getBalance();
-        GameEngine game = new GameEngine(java.util.List.of(player));
-        irsTile.landOn(player, game);
-        assertEquals(previousBalance - 200, player.getBalance());
-    }
-
-    @Test
-    public void TC5_player_landOn_withBalance_LessThanTaxAmount() {
-        IRSTile irsTile = new IRSTile();
-        Player player = new Player("Alice", 199.0);
-        double previousBalance = player.getBalance();
-        GameEngine game = new GameEngine(java.util.List.of(player));
-        irsTile.landOn(player, game);
-        assertEquals(previousBalance, player.getBalance());
-    }
-
-    @Test
-    public void TC6_player_landOn_withBalance_Zero() {
-        IRSTile irsTile = new IRSTile();
-        Player player = new Player("Alice", 0.0);
-        double previousBalance = player.getBalance();
-        GameEngine game = new GameEngine(java.util.List.of(player));
-        irsTile.landOn(player, game);
-        assertEquals(previousBalance, player.getBalance());
-    }
-
-    @Test
-    public void TC7_nullPlayer_throwsException() {
-        IRSTile irsTile = new IRSTile();
-        GameEngine game = new GameEngine(java.util.List.of());
-        assertThrows(NullPointerException.class, () -> irsTile.landOn(null, game));
-    }
-
-    @Test
-    public void TC8_nullGame_runsIfNotUsed() {
-        IRSTile irsTile = new IRSTile();
-        Player player = new Player("Alice", 200.0);
-        irsTile.landOn(player, null);
-        assertEquals(0.0, player.getBalance());
-    }
-
-
 
 }

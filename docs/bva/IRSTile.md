@@ -21,7 +21,7 @@
 2. Input type: `Player` object reference and `GameEngine` object reference
 3. Boundary values: the result of `player.remove(taxAmount)` and whether `game` is needed for elimination
 
-- **TC3: Land on IRS when tax payment succeeds** ( :x: )
+- **TC3: Land on IRS when tax payment succeeds** ( :white_check_mark: )
   - **State of the system**: `player.remove(taxAmount)` returns `true`, valid `game` is provided
   - **Expected output**: tax payment is accepted and `game.removeBankruptPlayer(player)` is not called
 
