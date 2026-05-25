@@ -32,4 +32,17 @@ public class IRSTileTest {
         EasyMock.verify(player, game);
     }
 
+    @Test
+    public void TC4_onLand_paymentFails() {
+        IRSTile irsTile = new IRSTile();
+        Player player = EasyMock.createMock(Player.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(player.remove(200)).andReturn(false);
+        game.removeBankruptPlayer(player);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(player, game);
+        irsTile.landOn(player, game);
+        EasyMock.verify(player, game);
+    }
+
 }

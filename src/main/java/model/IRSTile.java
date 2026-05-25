@@ -8,6 +8,9 @@ public class IRSTile implements Tile{
     @Override
     public void landOn(Player player, GameEngine game) {
 
-        player.remove(200);
+        boolean paid = player.remove(200);
+        if (!paid) {
+            game.removeBankruptPlayer(player);
+        }
     }
 }
