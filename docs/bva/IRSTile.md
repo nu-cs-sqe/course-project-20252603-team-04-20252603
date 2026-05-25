@@ -17,34 +17,26 @@
 
 ## Method under test: `landOn(Player player, GameEngine game)`
 
-1. Input: player landing on the IRS tile and the current game, Output: side effect on player balance
+1. Input: player landing on the IRS tile and the current game, Output: tax payment succeeds or player is eliminated
 2. Input type: `Player` object reference and `GameEngine` object reference
-3. Boundary values: player balance compared to the IRS tax amount
+3. Boundary values: the result of `player.remove(taxAmount)` and whether `game` is needed for elimination
 
-- **TC3: Land on IRS with balance greater than tax amount** ( :white_check_mark: )
-  - **State of the system**: `player.balance > taxAmount`, player lands on IRS tile
-  - **Expected output**: player's balance decreases by exactly `taxAmount`
+- **TC3: Land on IRS when tax payment succeeds** ( :x: )
+  - **State of the system**: `player.remove(taxAmount)` returns `true`, valid `game` is provided
+  - **Expected output**: tax payment is accepted and `game.removeBankruptPlayer(player)` is not called
 
-- **TC4: Land on IRS with balance equal to tax amount** ( :white_check_mark: )
-  - **State of the system**: `player.balance == taxAmount`, player lands on IRS tile
-  - **Expected output**: player's balance becomes `0.0`
+- **TC4: Land on IRS when tax payment fails** ( :x: )
+  - **State of the system**: `player.remove(taxAmount)` returns `false`, valid `game` is provided
+  - **Expected output**: `game.removeBankruptPlayer(player)` is called once
 
-- **TC5: Land on IRS with balance slightly less than tax amount** ( :white_check_mark: )
-  - **State of the system**: `player.balance < taxAmount`, player lands on IRS tile
-  - **Expected output**: player cannot pay the tax and balance does not change
-
-- **TC6: Land on IRS with zero balance** ( :white_check_mark: )
-  - **State of the system**: `player.balance = 0.0`, player lands on IRS tile
-  - **Expected output**: player cannot pay the tax and balance does not change
-
-- **TC7: Land on IRS with null player** ( :white_check_mark: )
+- **TC5: Land on IRS with null player** ( :white_check_mark: )
   - **State of the system**: `player = null`, `game` is valid
   - **Expected output**: `NullPointerException` thrown (fail-fast)
 
-- **TC8: Land on IRS with null game** ( :x: )
-  - **State of the system**: `player` is valid, `game = null`
-  - **Expected output**: method executes normally if `game` is not used by IRS tile logic
+- **TC6: Land on IRS with null game when tax payment succeeds** ( :x: )
+  - **State of the system**: `player.remove(taxAmount)` returns `true`, `game = null`
+  - **Expected output**: method executes normally because no elimination is needed
 
-- **TC9: Land on IRS does not transfer money to another player** ( :x: )
-  - **State of the system**: multiple players exist, one player lands on IRS tile with enough balance
-  - **Expected output**: landing player's balance decreases by `taxAmount`; other players' balances do not change
+- **TC7: Land on IRS with null game when tax payment fails** ( :x: )
+  - **State of the system**: `player.remove(taxAmount)` returns `false`, `game = null`
+  - **Expected output**: `NullPointerException` thrown because elimination requires the game engine
