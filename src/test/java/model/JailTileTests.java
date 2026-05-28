@@ -80,6 +80,20 @@ public class JailTileTests {
         EasyMock.verify(game);
     }
 
+    @Test
+    public void TC5_JailTile_LandOn_NullGame_Invalid() {
+        JailTile jailTile = new JailTile();
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(player);
+
+        assertThrows(NullPointerException.class,
+                () -> jailTile.landOn(player, null),
+                "GameEngine cannot be null");
+
+        EasyMock.verify(player);
+    }
+
 
 
     @Test
