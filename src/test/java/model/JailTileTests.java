@@ -94,6 +94,15 @@ public class JailTileTests {
         EasyMock.verify(player);
     }
 
+    @Test
+    public void TC6_JailTile_LandOn_BothNull_Invalid() {
+        JailTile jailTile = new JailTile();
+
+        assertThrows(NullPointerException.class,
+                () -> jailTile.landOn(null, null),
+                "Player cannot be null");
+    }
+
 
 
     @Test
