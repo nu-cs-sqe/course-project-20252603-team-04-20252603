@@ -1,5 +1,6 @@
 package model;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +15,21 @@ public class GoTileTests {
         TileType actual = goTile.getName();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void landOn_WhenPlayerWithZeroBalanceLandsOnGo_IncreasesBalanceByGoReward() {
+        GoTile goTile = new GoTile();
+        Player player = new Player("John", 0.0);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        goTile.landOn(player, game);
+
+        double expected = 200.0;
+        double actual = player.getBalance();
+
+        assertEquals(expected, actual, 0.001);
     }
 
 }
