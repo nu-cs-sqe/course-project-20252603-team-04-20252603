@@ -60,6 +60,14 @@ public class IRSTileTest {
         assertThrows(NullPointerException.class, () -> irsTile.landOn(player, null));
     }
 
-    
+    @Test
+    public void TC7_nullGame_PaymentFails_ThrowsNullPointerException() {
+        IRSTile irsTile = new IRSTile();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.replay(player);
+        assertThrows(NullPointerException.class, () -> irsTile.landOn(player, null), "GameEngine cannot be null");
+    }
+
+
 
 }
