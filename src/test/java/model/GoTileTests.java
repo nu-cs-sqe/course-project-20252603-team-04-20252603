@@ -4,6 +4,7 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GoTileTests {
 
@@ -45,6 +46,15 @@ public class GoTileTests {
         double actual = player.getBalance();
 
         assertEquals(expected, actual, 0.001);
+    }
+
+    @Test
+    public void landOn_WithNullPlayer_ThrowsException() {
+        GoTile goTile = new GoTile();
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        assertThrows(NullPointerException.class, () -> goTile.landOn(null, game));
     }
 
 }
