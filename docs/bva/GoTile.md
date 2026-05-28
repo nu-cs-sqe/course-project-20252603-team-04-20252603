@@ -3,7 +3,7 @@
 2. Input: None, Output: Enum
 3. Output value: `TileType.GoTile`
 
-- **TC1: getName_WhenTileIsGoTile_ReturnsGoTile** ( :x: )
+- **TC1: getName_WhenTileIsGoTile_ReturnsGoTile** ( :white_check_mark: )
     - **State of the system**: a `GoTile` object exists
     - **Expected output**: returns `TileType.GoTile`
 
