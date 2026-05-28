@@ -32,4 +32,19 @@ public class GoTileTests {
         assertEquals(expected, actual, 0.001);
     }
 
+    @Test
+    public void landOn_WhenPlayerWithStartingBalanceLandsOnGo_IncreasesBalanceByGoReward() {
+        GoTile goTile = new GoTile();
+        Player player = new Player("John", 1000.0);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        goTile.landOn(player, game);
+
+        double expected = 1200.0;
+        double actual = player.getBalance();
+
+        assertEquals(expected, actual, 0.001);
+    }
+
 }
