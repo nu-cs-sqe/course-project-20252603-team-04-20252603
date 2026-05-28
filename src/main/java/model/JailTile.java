@@ -1,14 +1,15 @@
 package model;
 
+import java.util.Objects;
+
 public class JailTile implements Tile{
     @Override
     public TileType getName() {
         return TileType.JAIL;
     }
     @Override
-    public void landOn(Player player, GameEngine engine) {
-        if (player == null || engine == null) {
-            throw new IllegalArgumentException("Invalid Player or GameEngine");
-        }
+    public void landOn(Player player, GameEngine game) {
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(game, "GameEngine cannot be null");
     }
 }

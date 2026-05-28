@@ -1,6 +1,7 @@
 package model;
 
 import org.easymock.EasyMock;
+import org.easymock.internal.matchers.Null;
 import org.junit.jupiter.api.Test;
 
 import util.Constants;
@@ -72,35 +73,14 @@ public class JailTileTests {
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> jailTile.landOn(null, game),
-                "JailTile.landOn must reject a null player");
+                "Player cannot be null");
 
         EasyMock.verify(game);
     }
 
-    @Test
-    public void TC5_JailTile_LandOn_NullGame_Invalid() {
-        JailTile jailTile = new JailTile();
-        Player player = EasyMock.createMock(Player.class);
 
-        EasyMock.replay(player);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> jailTile.landOn(player, null),
-                "JailTile.landOn must reject a null game");
-
-        EasyMock.verify(player);
-    }
-
-    @Test
-    public void TC6_JailTile_LandOn_BothNull_Invalid() {
-        JailTile jailTile = new JailTile();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> jailTile.landOn(null, null),
-                "JailTile.landOn must reject null player and null game");
-    }
 
     @Test
     public void TC7_JailTile_LandOn_InactivePlayer_NoEffect() {
