@@ -28,6 +28,6 @@
     - **State of the system**: player = valid player, game = null
     - **Expected output**: throws `NullPointerException`
 
-- **TC6: landOn_WithNullPlayerAndNullGame_ThrowsException** ( :x: )
+- **TC6: landOn_WithNullPlayerAndNullGame_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player = null, game = null
     - **Expected output**: throws `IllegalArgumentException`

@@ -65,4 +65,11 @@ public class GoTileTests {
         assertThrows(NullPointerException.class, () -> goTile.landOn(player, null));
     }
 
+    @Test
+    public void landOn_WithNullPlayerAndNullGame_ThrowsException() {
+        GoTile goTile = new GoTile();
+
+        assertThrows(NullPointerException.class, () -> goTile.landOn(null, null));
+    }
+
 }
