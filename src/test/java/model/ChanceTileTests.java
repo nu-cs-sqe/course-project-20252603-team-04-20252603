@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 public class ChanceTileTests {
 
+    private static final CardEffect NO_OP_EFFECT = (player, game) -> { };
+
     @Test
     public void Tests_ChanceTile_Reports_Its_Tile_Type() {
         ChanceTile chanceTile = new ChanceTile();
@@ -21,11 +23,11 @@ public class ChanceTileTests {
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         Deck deck = EasyMock.createMock(Deck.class);
+        Card card = new Card("Chance", "Test chance card", NO_OP_EFFECT);
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(game.getChanceDeck()).andReturn(deck);
-        deck.draw();
-        EasyMock.expectLastCall();
+        EasyMock.expect(deck.draw()).andReturn(card);
 
         EasyMock.replay(player, game, deck);
 
