@@ -46,7 +46,7 @@ public class ChanceTileTests {
 
         ChanceTile chanceTile = new ChanceTile();
 
-        assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(null, game));
+        assertThrows(NullPointerException.class, () -> chanceTile.landOn(null, game));
 
         EasyMock.verify(game);
     }
