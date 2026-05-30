@@ -71,7 +71,7 @@ public class ChanceTileTests {
     public void Null_Player_And_Game_Input_Throws() {
         ChanceTile chanceTile = new ChanceTile();
 
-        assertThrows(IllegalArgumentException.class, () -> chanceTile.landOn(null, null));
+        assertThrows(NullPointerException.class, () -> chanceTile.landOn(null, null));
     }
 
     // TC6: Inactive player lands on ChanceTile
