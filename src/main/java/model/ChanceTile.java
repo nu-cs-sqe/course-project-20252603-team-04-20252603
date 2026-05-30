@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class ChanceTile implements Tile {
 
    
@@ -12,9 +14,8 @@ public class ChanceTile implements Tile {
 
     @Override
     public void landOn(Player player, GameEngine game) {
-        if (player == null || game == null) {
-            throw new IllegalArgumentException("player and game must be non-null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(game, "GameEngine cannot be null");
         if (player.getActive()) {
             game.getChanceDeck().draw();
         }
