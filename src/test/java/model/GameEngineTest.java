@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -885,5 +886,50 @@ public class GameEngineTest {
         assertThrows(UnsupportedOperationException.class, () -> result.add(p1));
 
         EasyMock.verify(p1, p2);
+    }
+
+    // ==================================================================================================
+    // getChanceDeck() tests (TC47-TC49)
+    // ==================================================================================================
+
+    @Test
+    public void getChanceDeck_ReturnsDeckSuppliedAtConstruction() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Deck chanceDeck = new Deck();
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2), chanceDeck);
+
+        assertSame(chanceDeck, gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
+    }
+
+    @Test
+    public void getChanceDeck_NullWhenOnlyPlayersConstructorUsed() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2));
+
+        assertNull(gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
+    }
+
+    @Test
+    public void getChanceDeck_StableAcrossRepeatedCalls() {
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Deck chanceDeck = new Deck();
+        EasyMock.replay(player1, player2);
+
+        GameEngine gameEngine = new GameEngine(List.of(player1, player2), chanceDeck);
+
+        assertSame(gameEngine.getChanceDeck(), gameEngine.getChanceDeck());
+
+        EasyMock.verify(player1, player2);
     }
 }
