@@ -9,6 +9,27 @@ The following chapters of the textbook are considered: Chapter 1, 2, 3, 4, 5, 6,
 Please note that this feedback does not include evaluation of your progress, the proper use of linters, the quality of your test cases, or your compliance of TDD/BDD workflow.  
 You can find the weekly feedback from your dedicated PM/TA for that.
 
+## Week 7-8 Code Review
+This review is for the code your team developed in Week 7 and 8.
+I apologize for this delayed code review (should have been given last Friday but I got really sick...).
+As compensation, I will add one extra code review in Week 10 (around Thursday).
+
+Overall, really great progress and good code quality too! 
+Just 2 comments:
+1. It doesn't seem that your team has a consistent way to handle null. In some classes, you do explicit null check (which is not recommended by Uncle Bob).
+And in some classes, you use this mechanism:
+```
+public void landOn(Player player, GameEngine game) {
+   Objects.requireNonNull(player, "Player cannot be null");
+   Objects.requireNonNull(game, "GameEngine cannot be null");
+   }
+```
+I suggest refactor the explicit null check to the above.
+
+2. GameEngine and Player classes have magic number issues (see explaination here: https://checkstyle.sourceforge.io/checks/coding/magicnumber.html)
+
+Good job! Look forward to seeing your final product :)!!
+
 ## Week 6 Code Review
 I have read every line of production code currently in the main branch. A couple of things:
 1. In the Dice class, 
