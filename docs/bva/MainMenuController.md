@@ -32,7 +32,7 @@
     - **State of the system**: player count = 2, two valid player names, two valid icons
     - **Expected output**: returns a list with 2 player configs
 
-- **TC7: createPlayerConfigs_WithMaximumPlayers_ReturnsFourPlayerConfigs** ( :x: )
+- **TC7: createPlayerConfigs_WithMaximumPlayers_ReturnsFourPlayerConfigs** ( :white_check_mark: )
     - **State of the system**: player count = 4, four valid player names, four valid icons
     - **Expected output**: returns a list with 4 player configs
 

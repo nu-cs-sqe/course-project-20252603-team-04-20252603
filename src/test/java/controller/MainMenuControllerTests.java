@@ -67,4 +67,23 @@ public class MainMenuControllerTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void createPlayerConfigs_WithMaximumPlayers_ReturnsFourPlayerConfigs() {
+        List<String> playerNames = List.of("John", "Jane", "Jack", "Jill");
+        List<ImageIcon> playerIcons = List.of(
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon()
+        );
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        List<PlayerConfig> configs = controller.createPlayerConfigs();
+
+        int expected = 4;
+        int actual = configs.size();
+
+        assertEquals(expected, actual);
+    }
+
 }
