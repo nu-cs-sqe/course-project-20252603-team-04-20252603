@@ -94,7 +94,7 @@ public class Player {
     }
     public boolean goToJail(int position)
     {
-        if (position < 0 || position > Constants.MAX_BOARD_INDEX) {
+        if (position < 0 || position >= Constants.BOARD_SIZE) {
             return false;
         }
         this.inJail = true;
