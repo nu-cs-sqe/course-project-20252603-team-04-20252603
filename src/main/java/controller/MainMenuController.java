@@ -1,5 +1,8 @@
 package controller;
 
+import model.GameEngine;
+import model.GameStatus;
+import model.Player;
 import util.Constants;
 import util.PlayerConfig;
 import javax.swing.*;
@@ -11,6 +14,7 @@ public class MainMenuController {
 
     private final List<String> playerNames;
     private final List<ImageIcon> playerIcons;
+    private GameEngine game;
 
     public MainMenuController(List<String> playerNames, List<ImageIcon> playerIcons) {
         this.playerNames = new ArrayList<>(Objects.requireNonNull(playerNames, "Player names cannot be null"));
@@ -48,6 +52,19 @@ public class MainMenuController {
 
     public void startNewGame() {
         createPlayerConfigs();
+
+        List<Player> players = new ArrayList<>();
+
+        for (String playerName : playerNames) {
+            players.add(new Player(playerName, Constants.STARTING_BALANCE));
+        }
+
+        game = new GameEngine(players);
+        game.startGame();
+    }
+
+    public GameStatus getGameStatus() {
+        return game.getStatus();
     }
 
 }

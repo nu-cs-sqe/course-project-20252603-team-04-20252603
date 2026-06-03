@@ -1,5 +1,7 @@
 package controller;
 
+import model.GameEngine;
+import model.GameStatus;
 import org.junit.jupiter.api.Test;
 import util.PlayerConfig;
 import javax.swing.*;
@@ -169,6 +171,20 @@ public class MainMenuControllerTests {
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::startNewGame);
+    }
+
+    @Test
+    public void startNewGame_WithValidSetup_SetsGameStatusToInProgress() {
+        List<String> playerNames = List.of("John", "Jane");
+        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        controller.startNewGame();
+
+        GameStatus expected = GameStatus.IN_PROGRESS;
+        GameStatus actual = controller.getGameStatus();
+
+        assertEquals(expected, actual);
     }
 
 }

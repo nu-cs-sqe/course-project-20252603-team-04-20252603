@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-class GameEngine {
+public class GameEngine {
 
     private final List<Player> players;
     private final Board board;

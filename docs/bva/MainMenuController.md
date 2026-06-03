@@ -69,7 +69,7 @@
     - **State of the system**: player config count = 5
     - **Expected output**: throws `IllegalArgumentException`
 
-- **TC15: startNewGame_WithValidSetup_SetsGameStatusToInProgress** ( :x: )
+- **TC15: startNewGame_WithValidSetup_SetsGameStatusToInProgress** ( :white_check_mark: )
     - **State of the system**: player config count = 2, all player configs are valid
     - **Expected output**: game status becomes `GameStatus.IN_PROGRESS`
 
