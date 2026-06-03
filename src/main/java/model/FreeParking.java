@@ -1,0 +1,23 @@
+package model;
+
+import java.util.Objects;
+
+public class FreeParking implements Tile {
+
+
+    @Override
+    public TileType getName() {
+        return TileType.FREE;
+    }
+
+
+    @Override
+    public void landOn(Player player, GameEngine game) {
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(game, "GameEngine cannot be null");
+    }
+
+  
+
+
+}
