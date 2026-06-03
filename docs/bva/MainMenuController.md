@@ -28,7 +28,7 @@
     - **State of the system**: player count = 1, one valid player name, one valid icon
     - **Expected output**: throws `IllegalArgumentException`
 
-- **TC6: createPlayerConfigs_WithMinimumPlayers_ReturnsTwoPlayerConfigs** ( :x: )
+- **TC6: createPlayerConfigs_WithMinimumPlayers_ReturnsTwoPlayerConfigs** ( :white_check_mark: )
     - **State of the system**: player count = 2, two valid player names, two valid icons
     - **Expected output**: returns a list with 2 player configs
 

@@ -1,7 +1,7 @@
 package controller;
 
 import org.junit.jupiter.api.Test;
-
+import util.PlayerConfig;
 import javax.swing.*;
 import java.util.List;
 
@@ -51,6 +51,20 @@ public class MainMenuControllerTests {
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
+    }
+
+    @Test
+    public void createPlayerConfigs_WithMinimumPlayers_ReturnsTwoPlayerConfigs() {
+        List<String> playerNames = List.of("John", "Jane");
+        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        List<PlayerConfig> configs = controller.createPlayerConfigs();
+
+        int expected = 2;
+        int actual = configs.size();
+
+        assertEquals(expected, actual);
     }
 
 }

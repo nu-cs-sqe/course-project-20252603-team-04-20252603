@@ -1,7 +1,7 @@
 package controller;
 
 import util.Constants;
-
+import util.PlayerConfig;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,18 @@ public class MainMenuController {
         return count >= Constants.MIN_NUM_PLAYERS && count <= Constants.MAX_NUM_PLAYERS;
     }
 
-    public void createPlayerConfigs() {
-        throw new IllegalArgumentException("Player count must be between 2 and 4");
+    public List<PlayerConfig> createPlayerConfigs() {
+        if (!validatePlayerCount(playerNames.size())) {
+            throw new IllegalArgumentException("Player count must be between " + Constants.MIN_NUM_PLAYERS + " and " + Constants.MAX_NUM_PLAYERS);
+        }
+
+        List<PlayerConfig> playerConfigs = new ArrayList<>();
+
+        for (int i = 0; i < playerNames.size(); i++) {
+            playerConfigs.add(new PlayerConfig(playerNames.get(i), playerIcons.get(i)));
+        }
+
+        return playerConfigs;
     }
 
 }
