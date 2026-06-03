@@ -57,7 +57,7 @@
     - **State of the system**: player config count = 1
     - **Expected output**: throws `IllegalArgumentException`
 
-- **TC12: startNewGame_WithMinimumPlayers_StartsGame** ( :x: )
+- **TC12: startNewGame_WithMinimumPlayers_StartsGame** ( :white_check_mark: )
     - **State of the system**: player config count = 2, all player configs are valid
     - **Expected output**: game starts successfully
 

@@ -133,4 +133,13 @@ public class MainMenuControllerTests {
         assertThrows(IllegalArgumentException.class, controller::startNewGame);
     }
 
+    @Test
+    public void startNewGame_WithMinimumPlayers_StartsGame() {
+        List<String> playerNames = List.of("John", "Jane");
+        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        assertDoesNotThrow(controller::startNewGame);
+    }
+
 }
