@@ -44,7 +44,7 @@
     - **State of the system**: player count = 2, one player name is empty, all icons are valid
     - **Expected output**: throws `IllegalArgumentException`
 
-- **TC10: createPlayerConfigs_WithNullPlayerIcon_ThrowsException** ( :x: )
+- **TC10: createPlayerConfigs_WithNullPlayerIcon_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player count = 2, all player names are valid, one icon is null
     - **Expected output**: throws `NullPointerException`
 

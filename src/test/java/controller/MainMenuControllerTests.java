@@ -3,6 +3,7 @@ package controller;
 import org.junit.jupiter.api.Test;
 import util.PlayerConfig;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,6 +109,19 @@ public class MainMenuControllerTests {
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
+    }
+
+    @Test
+    public void createPlayerConfigs_WithNullPlayerIcon_ThrowsException() {
+        List<String> playerNames = List.of("John", "Jane");
+
+        List<ImageIcon> playerIcons = new ArrayList<>();
+        playerIcons.add(new ImageIcon());
+        playerIcons.add(null);
+
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        assertThrows(NullPointerException.class, controller::createPlayerConfigs);
     }
 
 }

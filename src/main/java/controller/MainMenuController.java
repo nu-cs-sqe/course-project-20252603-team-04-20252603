@@ -35,6 +35,11 @@ public class MainMenuController {
                 throw new IllegalArgumentException("Player name cannot be empty");
             }
 
+            ImageIcon playerIcon = Objects.requireNonNull(
+                    playerIcons.get(i),
+                    "Player icon cannot be null"
+            );
+
             playerConfigs.add(new PlayerConfig(playerName, playerIcons.get(i)));
         }
 
