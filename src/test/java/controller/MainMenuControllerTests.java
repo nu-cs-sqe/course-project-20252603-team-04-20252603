@@ -86,4 +86,19 @@ public class MainMenuControllerTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void createPlayerConfigs_WithOneMoreThanMaximumPlayers_ThrowsException() {
+        List<String> playerNames = List.of("John", "Jane", "Jack", "Jill", "James");
+        List<ImageIcon> playerIcons = List.of(
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon()
+        );
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
+    }
+
 }

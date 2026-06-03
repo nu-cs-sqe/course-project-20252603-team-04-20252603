@@ -36,7 +36,7 @@
     - **State of the system**: player count = 4, four valid player names, four valid icons
     - **Expected output**: returns a list with 4 player configs
 
-- **TC8: createPlayerConfigs_WithOneMoreThanMaximumPlayers_ThrowsException** ( :x: )
+- **TC8: createPlayerConfigs_WithOneMoreThanMaximumPlayers_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player count = 5, five valid player names, five valid icons
     - **Expected output**: throws `IllegalArgumentException`
 
