@@ -142,4 +142,18 @@ public class MainMenuControllerTests {
         assertDoesNotThrow(controller::startNewGame);
     }
 
+    @Test
+    public void startNewGame_WithMaximumPlayers_StartsGame() {
+        List<String> playerNames = List.of("John", "Jane", "Jack", "Jill");
+        List<ImageIcon> playerIcons = List.of(
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon(),
+                new ImageIcon()
+        );
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        assertDoesNotThrow(controller::startNewGame);
+    }
+
 }

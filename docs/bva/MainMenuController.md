@@ -61,7 +61,7 @@
     - **State of the system**: player config count = 2, all player configs are valid
     - **Expected output**: game starts successfully
 
-- **TC13: startNewGame_WithMaximumPlayers_StartsGame** ( :x: )
+- **TC13: startNewGame_WithMaximumPlayers_StartsGame** ( :white_check_mark: )
     - **State of the system**: player config count = 4, all player configs are valid
     - **Expected output**: game starts successfully
 
