@@ -26,8 +26,8 @@ class GameEngine {
     }
 
     public void startGame() {
-        if (players.size() < 2) {
-            throw new IllegalArgumentException("At least 2 players are required to start the game");
+        if (players.size() < Constants.MIN_NUM_PLAYERS) {
+            throw new IllegalArgumentException("At least " + Constants.MIN_NUM_PLAYERS + " players are required to start the game");
         }
         if (players.size() > Constants.MAX_NUM_PLAYERS) {
             throw new IllegalArgumentException("At most " + Constants.MAX_NUM_PLAYERS + " players are allowed to start the game");
