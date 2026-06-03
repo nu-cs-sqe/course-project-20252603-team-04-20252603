@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import model.Property;
+import util.Constants;
 
 public class Player {
 
@@ -93,7 +94,7 @@ public class Player {
     }
     public boolean goToJail(int position)
     {
-        if (position < 0 || position > 31) {
+        if (position < 0 || position >= Constants.BOARD_SIZE) {
             return false;
         }
         this.inJail = true;
