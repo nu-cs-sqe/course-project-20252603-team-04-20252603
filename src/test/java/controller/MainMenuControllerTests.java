@@ -4,7 +4,7 @@ import model.GameEngine;
 import model.GameStatus;
 import org.junit.jupiter.api.Test;
 import util.PlayerConfig;
-import javax.swing.*;
+import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 

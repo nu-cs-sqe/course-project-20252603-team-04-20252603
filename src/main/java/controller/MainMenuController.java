@@ -1,11 +1,10 @@
 package controller;
 
 import model.GameEngine;
-import model.GameStatus;
 import model.Player;
 import util.Constants;
 import util.PlayerConfig;
-import javax.swing.*;
+import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class MainMenuController {
                     "Player icon cannot be null"
             );
 
-            playerConfigs.add(new PlayerConfig(playerName, playerIcons.get(i)));
+            playerConfigs.add(new PlayerConfig(playerName, playerIcon));
         }
 
         return playerConfigs;
