@@ -124,6 +124,23 @@
   - **State of the system**: `[]`
   - **Expected output**: `null` or `Optional.empty()`
 
+---
+
+## Method under test: `getChanceDeck()`
+
+Shared **Chance **`Deck`** for the session; tiles (e.g. **`ChanceTile`**) retrieve it via **`game.getChanceDeck()`** rather than constructing their own **`Deck`**.
+
+- **TC23: Returns the deck supplied at construction** ( :white_check_mark: )
+  - **State of the system**: **`GameEngine`** constructed with **`new GameEngine(players, chanceDeck)`** where **`chanceDeck`** is a non-null **`Deck`** (or mock).
+  - **Expected output**: **`getChanceDeck()`** returns the **same** **`Deck`** reference passed in.
+
+- **TC24: Default constructor leaves no chance deck** ( :white_check_mark: )
+  - **State of the system**: **`GameEngine`** constructed with **`new GameEngine(players)`** only (no **`Deck`** argument).
+  - **Expected output**: **`getChanceDeck()`** returns **`null`** (until the team wires a setter or builder—document if you change this contract).
+
+- **TC25: Stable reference across repeated calls** ( :white_check_mark: )
+  - **State of the system**: **`GameEngine`** built with **`(players, chanceDeck)`** as in TC23.
+  - **Expected output**: **`getChanceDeck()`** called twice yields **`same`** reference both times (**`assertSame`**).
 - **TC22a: One player but game not over has no winner** ( :white_check_mark: )
   - **State of the system**: `[P1]`, `status = NOT_STARTED`
   - **Expected output**: `Optional.empty()`

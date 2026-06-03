@@ -13,16 +13,30 @@ class GameEngine {
     private final Board board;
     private GameStatus status;
     private int currentPlayerIndex;
+    private Deck chanceDeck;
+
+    private GameEngine(List<Player> players, Board board, Deck chanceDeck) {
+        this.players = new ArrayList<>(players);
+        this.board = board;
+        this.chanceDeck = chanceDeck;
+        this.status = GameStatus.NOT_STARTED;
+        this.currentPlayerIndex = 0;
+    }
 
     public GameEngine(List<Player> players) {
-        this(players, null);
+        this(players, null, null);
     }
 
     public GameEngine(List<Player> players, Board board) {
-        this.players = new ArrayList<>(players);
-        this.board = board;
-        this.status = GameStatus.NOT_STARTED;
-        this.currentPlayerIndex = 0;
+        this(players, board, null);
+    }
+
+    public GameEngine(List<Player> players, Deck chanceDeck) {
+        this(players, null, chanceDeck);
+    }
+
+    public Deck getChanceDeck(){
+        return this.chanceDeck;
     }
 
     public void startGame() {
