@@ -33,9 +33,9 @@
   - **State of the system**: `player = null`, `game` is valid
   - **Expected output**: `NullPointerException` thrown (fail-fast)
 
-- **TC6: Land on IRS with null game when tax payment succeeds** ( :x: )
+- **TC6: Land on IRS rejects null game when tax payment succeeds** ( :white_check_mark: )
   - **State of the system**: `player.remove(taxAmount)` returns `true`, `game = null`
-  - **Expected output**: method executes normally because no elimination is needed
+  - **Expected output**: `NullPointerException` thrown because the game engine should never be `null`
 
 - **TC7: Land on IRS with null game when tax payment fails** ( :x: )
   - **State of the system**: `player.remove(taxAmount)` returns `false`, `game = null`
