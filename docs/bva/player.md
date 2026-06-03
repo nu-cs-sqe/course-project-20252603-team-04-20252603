@@ -133,6 +133,10 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: property = null  
   - **Expected output**: rejected / no change  
 
+- **TC22b: Sell owned property with invalid price** ( :white_check_mark: )  
+  - **State of the system**: property in set, price = Double.MAX_VALUE  
+  - **Expected output**: rejected / no change  
+
 
 ## Method under test: `goToJail(int jailPosition)`
 
