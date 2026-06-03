@@ -3,7 +3,7 @@
 2. Input: interval, Output: boolean
 3. Input: valid player count range [2, 4], values: 1, 2, 4, 5
 
-- **TC1: validatePlayerCount_WithOneLessThanMinimum_ReturnsFalse** ( :x: )
+- **TC1: validatePlayerCount_WithOneLessThanMinimum_ReturnsFalse** ( :white_check_mark: )
     - **State of the system**: count = 1
     - **Expected output**: returns false
 
