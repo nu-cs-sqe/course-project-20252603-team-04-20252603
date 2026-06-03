@@ -33,4 +33,13 @@ public class MainMenuControllerTests {
         assertTrue(actual);
     }
 
+    @Test
+    public void validatePlayerCount_WithOneMoreThanMaximum_ReturnsFalse() {
+        MainMenuController controller = new MainMenuController();
+
+        boolean actual = controller.validatePlayerCount(5);
+
+        assertFalse(actual);
+    }
+
 }
