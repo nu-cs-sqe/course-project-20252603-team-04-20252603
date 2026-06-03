@@ -7,7 +7,7 @@
     - **State of the system**: count = 1
     - **Expected output**: returns false
 
-- **TC2: validatePlayerCount_WithMinimumPlayerCount_ReturnsTrue** ( :x: )
+- **TC2: validatePlayerCount_WithMinimumPlayerCount_ReturnsTrue** ( :white_check_mark: )
     - **State of the system**: count = 2
     - **Expected output**: returns true
 
