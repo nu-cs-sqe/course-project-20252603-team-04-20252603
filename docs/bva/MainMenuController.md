@@ -11,7 +11,7 @@
     - **State of the system**: count = 2
     - **Expected output**: returns true
 
-- **TC3: validatePlayerCount_WithMaximumPlayerCount_ReturnsTrue** ( :x: )
+- **TC3: validatePlayerCount_WithMaximumPlayerCount_ReturnsTrue** ( :white_check_mark: )
     - **State of the system**: count = 4
     - **Expected output**: returns true
 
