@@ -24,7 +24,7 @@
 2. Input: player count is an interval, player names are strings, player icons are object references, Output: collection size / count
 3. Input: valid player count range [2, 4], values: 1, 2, 4, 5; valid names, empty names; valid icons, null icons
 
-- **TC5: createPlayerConfigs_WithOneLessThanMinimumPlayers_ThrowsException** ( :x: )
+- **TC5: createPlayerConfigs_WithOneLessThanMinimumPlayers_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player count = 1, one valid player name, one valid icon
     - **Expected output**: throws `IllegalArgumentException`
 
