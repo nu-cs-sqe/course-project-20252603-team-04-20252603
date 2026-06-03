@@ -32,6 +32,12 @@
 3. Classes to implement: GUIs and Controller
 4. [not started] Need to incorporate i18n into GUIs, add integration tests
 
+# Week 9 (05/25/2026-05/31/2026)
+**Planning and Progress Tracking**:
+1. [done] Classes: Property, Board, JailTile, IRSTile, FreeParking, 6 Card Effects, Card, Deck
+2. [currently in progress] Classes: Gotile, centralization of exception types, controller
+3. [to implement]: GUIs, i18n, integration tests
+
 # Week X (XX/XX/2026-XX/XX/2026) TEMPLATE (You can change the format to whatever the team likes better)
 **Planning and Progress Tracking**:
 1. [done] Person: Task (Links to PR)
