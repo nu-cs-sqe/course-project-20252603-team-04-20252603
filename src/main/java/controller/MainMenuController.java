@@ -46,4 +46,8 @@ public class MainMenuController {
         return playerConfigs;
     }
 
+    public void startNewGame() {
+        createPlayerConfigs();
+    }
+
 }

@@ -53,7 +53,7 @@
 2. Input: player config collection size / count, Output: side effect on game state
 3. Input: valid player config count range [2, 4], values: 1, 2, 4, 5
 
-- **TC11: startNewGame_WithOneLessThanMinimumPlayers_ThrowsException** ( :x: )
+- **TC11: startNewGame_WithOneLessThanMinimumPlayers_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player config count = 1
     - **Expected output**: throws `IllegalArgumentException`
 
