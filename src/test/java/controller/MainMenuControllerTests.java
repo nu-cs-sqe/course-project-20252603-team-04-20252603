@@ -187,4 +187,18 @@ public class MainMenuControllerTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void startNewGame_WithValidSetup_SetsFirstPlayerAsCurrentPlayer() {
+        List<String> playerNames = List.of("John", "Jane");
+        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        GameEngine game = controller.startNewGame();
+
+        String expected = "John";
+        String actual = game.getCurrentPlayer().getName();
+
+        assertEquals(expected, actual);
+    }
+
 }

@@ -73,6 +73,6 @@
     - **State of the system**: player config count = 2, all player configs are valid
     - **Expected output**: game status becomes `GameStatus.IN_PROGRESS`
 
-- **TC16: startNewGame_WithValidSetup_SetsFirstPlayerAsCurrentPlayer** ( :x: )
+- **TC16: startNewGame_WithValidSetup_SetsFirstPlayerAsCurrentPlayer** ( :white_check_mark: )
     - **State of the system**: player config count = 2, all player configs are valid
     - **Expected output**: current player is the first configured player
