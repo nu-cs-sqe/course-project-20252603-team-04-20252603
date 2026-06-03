@@ -29,7 +29,13 @@ public class MainMenuController {
         List<PlayerConfig> playerConfigs = new ArrayList<>();
 
         for (int i = 0; i < playerNames.size(); i++) {
-            playerConfigs.add(new PlayerConfig(playerNames.get(i), playerIcons.get(i)));
+            String playerName = playerNames.get(i);
+
+            if (playerName.isEmpty()) {
+                throw new IllegalArgumentException("Player name cannot be empty");
+            }
+
+            playerConfigs.add(new PlayerConfig(playerName, playerIcons.get(i)));
         }
 
         return playerConfigs;

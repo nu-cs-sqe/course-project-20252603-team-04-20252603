@@ -40,7 +40,7 @@
     - **State of the system**: player count = 5, five valid player names, five valid icons
     - **Expected output**: throws `IllegalArgumentException`
 
-- **TC9: createPlayerConfigs_WithEmptyPlayerName_ThrowsException** ( :x: )
+- **TC9: createPlayerConfigs_WithEmptyPlayerName_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player count = 2, one player name is empty, all icons are valid
     - **Expected output**: throws `IllegalArgumentException`
 

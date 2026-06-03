@@ -101,4 +101,13 @@ public class MainMenuControllerTests {
         assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
     }
 
+    @Test
+    public void createPlayerConfigs_WithEmptyPlayerName_ThrowsException() {
+        List<String> playerNames = List.of("", "Jane");
+        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        MainMenuController controller = new MainMenuController(playerNames, playerIcons);
+
+        assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
+    }
+
 }
