@@ -20,15 +20,15 @@
 
 - **TC4: Null player input** ( :white_check_mark: )
     - **State of the system**: `player = null`, `game` is valid.
-    - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; no state is mutated.
+    - **Expected output**: The method rejects the invalid input, e.g. throws `NullPointerException`; no state is mutated.
 
 - **TC5: Null game input** ( :white_check_mark: )
     - **State of the system**: `player` is valid, `game = null`.
-    - **Expected output**: The method rejects the invalid input, e.g. throws `IllegalArgumentException`; player state is unchanged.
+    - **Expected output**: The method rejects the invalid input, e.g. throws `NullPointerException`; player state is unchanged.
 
 - **TC6: Both player and game null** ( :white_check_mark: )
     - **State of the system**: `player = null`, `game = null`.
-    - **Expected output**: The method rejects the invalid inputs and applies no effect.
+    - **Expected output**: The method rejects the invalid inputs and applies no effect. e.g. throws `NullPointerException`.
 
 - **TC7: Inactive player lands on jail** ( :white_check_mark: )
     - **State of the system**: `player.isActive() == false`, `game` is valid.
