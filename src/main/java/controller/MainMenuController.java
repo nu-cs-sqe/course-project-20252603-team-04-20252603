@@ -14,7 +14,6 @@ public class MainMenuController {
 
     private final List<String> playerNames;
     private final List<ImageIcon> playerIcons;
-    private GameEngine game;
 
     public MainMenuController(List<String> playerNames, List<ImageIcon> playerIcons) {
         this.playerNames = new ArrayList<>(Objects.requireNonNull(playerNames, "Player names cannot be null"));
@@ -50,7 +49,7 @@ public class MainMenuController {
         return playerConfigs;
     }
 
-    public void startNewGame() {
+    public GameEngine startNewGame() {
         createPlayerConfigs();
 
         List<Player> players = new ArrayList<>();
@@ -59,12 +58,10 @@ public class MainMenuController {
             players.add(new Player(playerName, Constants.STARTING_BALANCE));
         }
 
-        game = new GameEngine(players);
+        GameEngine game = new GameEngine(players);
         game.startGame();
-    }
 
-    public GameStatus getGameStatus() {
-        return game.getStatus();
+        return game;
     }
 
 }

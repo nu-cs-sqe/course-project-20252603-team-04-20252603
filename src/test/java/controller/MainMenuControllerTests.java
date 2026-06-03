@@ -179,10 +179,10 @@ public class MainMenuControllerTests {
         List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
-        controller.startNewGame();
+        GameEngine game = controller.startNewGame();
 
         GameStatus expected = GameStatus.IN_PROGRESS;
-        GameStatus actual = controller.getGameStatus();
+        GameStatus actual = game.getStatus();
 
         assertEquals(expected, actual);
     }
