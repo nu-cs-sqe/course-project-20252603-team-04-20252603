@@ -65,7 +65,7 @@
     - **State of the system**: player config count = 4, all player configs are valid
     - **Expected output**: game starts successfully
 
-- **TC14: startNewGame_WithOneMoreThanMaximumPlayers_ThrowsException** ( :x: )
+- **TC14: startNewGame_WithOneMoreThanMaximumPlayers_ThrowsException** ( :white_check_mark: )
     - **State of the system**: player config count = 5
     - **Expected output**: throws `IllegalArgumentException`
 
