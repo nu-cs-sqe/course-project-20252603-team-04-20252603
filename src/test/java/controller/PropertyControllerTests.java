@@ -162,4 +162,20 @@ public class PropertyControllerTests {
         assertFalse(result);
         EasyMock.verify(player, property);
     }
+
+    // =====================================================================
+    // declineProperty
+    // =====================================================================
+
+    @Test
+    public void TC11_DeclineProperty_NullPlayer_ThrowsIllegalArgumentException() {
+        PropertyController controller = new PropertyController();
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.replay(property);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.declineProperty(null, property));
+
+        EasyMock.verify(property);
+    }
 }

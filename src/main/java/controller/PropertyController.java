@@ -24,4 +24,10 @@ public class PropertyController {
         }
         return property.purchase(player);
     }
+
+    public void declineProperty(Player player, Property property) {
+        if (player == null || property == null) {
+            throw new IllegalArgumentException("Player and property cannot be null");
+        }
+    }
 }
