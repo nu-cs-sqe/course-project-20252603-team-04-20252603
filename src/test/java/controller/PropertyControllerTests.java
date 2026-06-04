@@ -218,4 +218,16 @@ public class PropertyControllerTests {
 
         EasyMock.verify(property);
     }
+
+    @Test
+    public void TC15_HandleRentPayment_NullProperty_ThrowsIllegalArgumentException() {
+        PropertyController controller = new PropertyController();
+        Player renter = EasyMock.createMock(Player.class);
+        EasyMock.replay(renter);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.handleRentPayment(renter, null));
+
+        EasyMock.verify(renter);
+    }
 }
