@@ -255,4 +255,22 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game);
     }
+
+    // TC14: Title and description differ -> values land under correct keys, not swapped
+    @Test
+    public void showCard_OnDifferingTitleAndDescription_MapsToCorrectKeys() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Card card = new Card("Stock Market Crash", "Every player pays $200.", (p, g) -> {});
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        Map<String, String> result = controller.showCard(card);
+
+        assertEquals("Stock Market Crash", result.get("title"));
+        assertEquals("Every player pays $200.", result.get("description"));
+
+        EasyMock.verify(deck, game);
+    }
 }
