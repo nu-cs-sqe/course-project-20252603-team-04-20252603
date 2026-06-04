@@ -6,6 +6,7 @@ Card Class:
 - `Card(String title, String description, CardEffect effect)`
 - `String getTitle()`
 - `String getDescription()`
+- `CardEffect getCardEffect()`
 - `void apply(Player player, GameEngine game)`
 
 ---
@@ -59,6 +60,14 @@ Card Class:
 - **TC8: Description with special characters** ( :white_check_mark: )
     - **State of the system**: Card constructed with `description = "Pay $100 for a subscription service!"`
     - **Expected output**: Returns `"Pay $100 for a subscription service!"` unchanged
+
+---
+
+### Method under test: `getCardEffect()`
+
+- **TC8a: Returns the effect supplied at construction** ( :x: )
+    - **State of the system**: Card constructed with a valid `CardEffect` mock/lambda `effect`
+    - **Expected output**: Returns the same `CardEffect` reference (identity equal to the one passed to the constructor)
 
 ---
 
