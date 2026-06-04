@@ -99,4 +99,20 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game, player);
     }
+
+    // TC6: Null player (valid card) -> IllegalArgumentException; no effect applied; game untouched
+    @Test
+    public void applyCard_OnNullPlayer_ThrowsIllegalArgumentException() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", (p, g) -> {});
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.applyCard(card, null));
+
+        EasyMock.verify(deck, game);
+    }
 }
