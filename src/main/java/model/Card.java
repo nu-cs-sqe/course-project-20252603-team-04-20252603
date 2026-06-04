@@ -2,7 +2,9 @@ package model;
 
 public final class Card {
 
+    private final String title;
     private final String description;
+    private final CardEffect effect;
 
     public Card(String title, String description, CardEffect effect) {
         if (title == null || title.isEmpty()) {
@@ -14,10 +16,20 @@ public final class Card {
         if (effect == null) {
             throw new IllegalArgumentException("effect must not be null");
         }
+        this.title = title;
         this.description = description;
+        this.effect = effect;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public CardEffect getCardEffect() {
+        return effect;
     }
 }

@@ -4,8 +4,10 @@ A `Card` represents a chance card drawn from the deck. It holds a description an
 
 Card Class:
 - `Card(String title, String description, CardEffect effect)`
+- `String getTitle()`
 - `String getDescription()`
-- `void apply(Player player, Game game)`
+- `CardEffect getCardEffect()`
+- `void apply(Player player, GameEngine game)`
 
 ---
 
@@ -37,6 +39,18 @@ Card Class:
 
 ---
 
+### Method under test: `getTitle()`
+
+- **TC7a: Normal title** ( :white_check_mark: )
+    - **State of the system**: Card constructed with `title = "Go to Jail"`
+    - **Expected output**: Returns `"Go to Jail"` (exact match)
+
+- **TC7b: Title with special characters** ( :white_check_mark: )
+    - **State of the system**: Card constructed with `title = "Pay $100!"`
+    - **Expected output**: Returns `"Pay $100!"` unchanged
+
+---
+
 ### Method under test: `getDescription()`
 
 - **TC7: Normal description** ( :white_check_mark: )
@@ -46,6 +60,14 @@ Card Class:
 - **TC8: Description with special characters** ( :white_check_mark: )
     - **State of the system**: Card constructed with `description = "Pay $100 for a subscription service!"`
     - **Expected output**: Returns `"Pay $100 for a subscription service!"` unchanged
+
+---
+
+### Method under test: `getCardEffect()`
+
+- **TC8a: Returns the effect supplied at construction** ( :white_check_mark: )
+    - **State of the system**: Card constructed with a valid `CardEffect` mock/lambda `effect`
+    - **Expected output**: Returns the same `CardEffect` reference (identity equal to the one passed to the constructor)
 
 ---
 
