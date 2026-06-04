@@ -9,6 +9,9 @@ public class PropertyController {
         if (player == null || property == null) {
             throw new IllegalArgumentException("Player and property cannot be null");
         }
+        if (property.isOwned()) {
+            return false;
+        }
         return false;
     }
 }

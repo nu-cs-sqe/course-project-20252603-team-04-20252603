@@ -44,4 +44,18 @@ public class PropertyControllerTests {
 
         EasyMock.verify(player);
     }
+
+    @Test
+    public void TC3_PromptPurchase_PropertyAlreadyOwned_ReturnsFalse() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.expect(property.isOwned()).andReturn(true);
+        EasyMock.replay(player, property);
+
+        boolean result = controller.promptPurchase(player, property);
+
+        assertFalse(result);
+        EasyMock.verify(player, property);
+    }
 }
