@@ -23,6 +23,35 @@ to the user via a popup/view.
 
 ---
 
+## Method under test: `CardController(Deck deck, GameEngine game)`
+
+The constructor must reject null collaborators up front. If a null `deck` or `game` were stored,
+the failure would surface later (e.g. `deck.draw()` in `drawChanceCard`, or `effect.apply(player, game)`
+in `applyCard`) as an opaque `NullPointerException` far from the real cause. Validating in the
+constructor fails fast at the construction site.
+
+### Argument validation
+
+- **TC16: Null deck** ( :x: )
+    - **State of the system**: `deck = null`; `game` is a valid mock
+    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+
+- **TC17: Null game** ( :x: )
+    - **State of the system**: `deck` is a valid mock; `game = null`
+    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+
+- **TC18: Both null** ( :x: )
+    - **State of the system**: `deck = null`, `game = null`
+    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+
+### Normal operation
+
+- **TC19: Both valid** ( :x: )
+    - **State of the system**: `deck` and `game` are valid mocks
+    - **Expected output**: a `CardController` instance is constructed successfully (no exception)
+
+---
+
 ## Method under test: `drawChanceCard(Player player)`
 
 ### Argument validation
