@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CardController {
@@ -36,6 +37,12 @@ public class CardController {
 	}
 
 	public Map<String, String> showCard(Card card) {
-		return null;
+		if (card == null) {
+			throw new IllegalArgumentException("Card cannot be null");
+		}
+		Map<String, String> result = new HashMap<>();
+		result.put("title", card.getTitle());
+		result.put("description", card.getDescription());
+		return result;
 	}
 }

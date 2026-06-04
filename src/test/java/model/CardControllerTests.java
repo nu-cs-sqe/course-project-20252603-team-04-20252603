@@ -202,4 +202,73 @@ public class CardControllerTests {
 		EasyMock.verify(deck, game, effect, player);
 	}
 
+	// TC12: showCard - Null card
+	@Test
+	public void TC12_showCard_nullCard_throwsIllegalArgumentException() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+
+		EasyMock.replay(deck, game);
+
+		CardController controller = new CardController(deck, game);
+		assertThrows(IllegalArgumentException.class, () -> controller.showCard(null));
+
+		EasyMock.verify(deck, game);
+	}
+
+	// TC13: showCard - Valid card returns a dictionary with title and description
+	@Test
+	public void TC13_showCard_validCard_returnsMapWithTitleAndDescription() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", effect);
+
+		EasyMock.replay(deck, game, effect);
+
+		CardController controller = new CardController(deck, game);
+		Map<String, String> result = controller.showCard(card);
+
+		assertEquals(2, result.size());
+		assertEquals("Advance to GO", result.get("title"));
+		assertEquals("Advance to GO. Collect $200.", result.get("description"));
+		EasyMock.verify(deck, game, effect);
+	}
+
+	// TC14: showCard - Title and description differ (mapped to the correct keys, not swapped)
+	@Test
+	public void TC14_showCard_differentTitleAndDescription_correctKeyMapping() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Stock Market Crash", "Every player pays $200.", effect);
+
+		EasyMock.replay(deck, game, effect);
+
+		CardController controller = new CardController(deck, game);
+		Map<String, String> result = controller.showCard(card);
+
+		assertEquals("Stock Market Crash", result.get("title"));
+		assertEquals("Every player pays $200.", result.get("description"));
+		EasyMock.verify(deck, game, effect);
+	}
+
+	// TC15: showCard - Special characters in title/description are preserved
+	@Test
+	public void TC15_showCard_specialCharacters_preservedInMap() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Pay $100!", "Pay $100 for a subscription service!", effect);
+
+		EasyMock.replay(deck, game, effect);
+
+		CardController controller = new CardController(deck, game);
+		Map<String, String> result = controller.showCard(card);
+
+		assertEquals("Pay $100!", result.get("title"));
+		assertEquals("Pay $100 for a subscription service!", result.get("description"));
+		EasyMock.verify(deck, game, effect);
+	}
+
 }
