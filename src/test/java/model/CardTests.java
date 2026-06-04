@@ -14,6 +14,14 @@ public class CardTests {
     }
 
     @Test
+    public void getTitle_OnTitleWithSpecialCharacters_ReturnsUnchanged() {
+        CardEffect effect = (player, game) -> {};
+        Card card = new Card("Pay $100!", "Pay $100 for a subscription service!", effect);
+
+        assertEquals("Pay $100!", card.getTitle());
+    }
+
+    @Test
     public void getDescription_OnValidCard_ReturnsDescription() {
         String title = "Go to Jail";
         String description = "Go directly to jail.";
