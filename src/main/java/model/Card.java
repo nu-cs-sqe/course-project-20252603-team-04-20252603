@@ -4,6 +4,7 @@ public final class Card {
 
     private final String title;
     private final String description;
+    private final CardEffect effect;
 
     public Card(String title, String description, CardEffect effect) {
         if (title == null || title.isEmpty()) {
@@ -17,6 +18,7 @@ public final class Card {
         }
         this.title = title;
         this.description = description;
+        this.effect = effect;
     }
 
     public String getTitle() {
@@ -25,5 +27,9 @@ public final class Card {
 
     public String getDescription() {
         return description;
+    }
+
+    public CardEffect getCardEffect() {
+        return effect;
     }
 }
