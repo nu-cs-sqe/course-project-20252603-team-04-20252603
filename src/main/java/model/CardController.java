@@ -10,7 +10,7 @@ public class CardController {
     private final Deck deck;
     private final GameEngine game;
 
-    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    @SuppressFBWarnings({"EI_EXPOSE_REP2", "CT_CONSTRUCTOR_THROW"})
     public CardController(Deck deck, GameEngine game) {
         if (deck == null) {
             throw new IllegalArgumentException("deck must not be null");
