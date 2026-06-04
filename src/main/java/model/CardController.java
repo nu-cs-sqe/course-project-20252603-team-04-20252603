@@ -15,6 +15,9 @@ public class CardController {
 		if (player == null) {
 			throw new IllegalArgumentException("Player cannot be null");
 		}
+		if (!player.getActive()) {
+			throw new IllegalArgumentException("Player must be active");
+		}
 		return null;
 	}
 
