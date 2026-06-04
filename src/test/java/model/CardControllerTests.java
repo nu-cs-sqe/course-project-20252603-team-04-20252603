@@ -273,4 +273,22 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game);
     }
+
+    // TC15: Special characters in title/description are preserved exactly
+    @Test
+    public void showCard_OnSpecialCharacters_PreservesValuesExactly() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Card card = new Card("Pay $100!", "Pay $100 for a subscription service!", (p, g) -> {});
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        Map<String, String> result = controller.showCard(card);
+
+        assertEquals("Pay $100!", result.get("title"));
+        assertEquals("Pay $100 for a subscription service!", result.get("description"));
+
+        EasyMock.verify(deck, game);
+    }
 }
