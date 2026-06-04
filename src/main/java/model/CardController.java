@@ -12,6 +12,9 @@ public class CardController {
 
     @SuppressFBWarnings("EI_EXPOSE_REP2")
     public CardController(Deck deck, GameEngine game) {
+        if (deck == null) {
+            throw new IllegalArgumentException("deck must not be null");
+        }
         this.deck = deck;
         this.game = game;
     }

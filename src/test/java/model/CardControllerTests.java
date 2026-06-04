@@ -9,6 +9,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CardControllerTests {
 
     // ==================================================================================================
+    // CardController(Deck deck, GameEngine game)
+    // ==================================================================================================
+
+    // TC16: Null deck -> constructor throws IllegalArgumentException
+    @Test
+    public void constructor_OnNullDeck_ThrowsIllegalArgumentException() {
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(game);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new CardController(null, game));
+
+        EasyMock.verify(game);
+    }
+
+    // ==================================================================================================
     // drawChanceCard(Player player)
     // ==================================================================================================
 

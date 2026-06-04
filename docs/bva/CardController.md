@@ -32,7 +32,7 @@ constructor fails fast at the construction site.
 
 ### Argument validation
 
-- **TC16: Null deck** ( :x: )
+- **TC16: Null deck** ( :white_check_mark: )
     - **State of the system**: `deck = null`; `game` is a valid mock
     - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
 
