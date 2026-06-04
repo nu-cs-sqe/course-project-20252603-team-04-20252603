@@ -3,11 +3,14 @@ package model;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public class CardController {
 
     private final Deck deck;
     private final GameEngine game;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public CardController(Deck deck, GameEngine game) {
         this.deck = deck;
         this.game = game;
