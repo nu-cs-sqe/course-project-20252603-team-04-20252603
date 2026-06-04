@@ -182,4 +182,24 @@ public class CardControllerTests {
 		EasyMock.verify(deck, game, effect, player);
 	}
 
+	// TC11: applyCard - Effect throws while being applied
+	@Test
+	public void TC11_applyCard_effectThrows_propagatesExceptionWithoutDiscarding() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Test Card", "Test Description", effect);
+		Player player = EasyMock.createMock(Player.class);
+
+		EasyMock.expect(player.getActive()).andReturn(true);
+		effect.apply(player, game);
+		EasyMock.expectLastCall().andThrow(new RuntimeException("Effect failed"));
+		EasyMock.replay(deck, game, effect, player);
+
+		CardController controller = new CardController(deck, game);
+		assertThrows(RuntimeException.class, () -> controller.applyCard(card, player));
+
+		EasyMock.verify(deck, game, effect, player);
+	}
+
 }
