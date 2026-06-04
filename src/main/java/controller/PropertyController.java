@@ -42,6 +42,9 @@ public class PropertyController {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
         }
+        if (player.canAfford(requiredAmount)) {
+            return true;
+        }
         return false;
     }
 }

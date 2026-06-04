@@ -270,4 +270,17 @@ public class PropertyControllerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> controller.handleForcedSale(null, 100.0));
     }
+
+    @Test
+    public void TC19_HandleForcedSale_RequiredAmountZero_ReturnsTrue() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.expect(player.canAfford(0.0)).andReturn(true);
+        EasyMock.replay(player);
+
+        boolean result = controller.handleForcedSale(player, 0.0);
+
+        assertTrue(result);
+        EasyMock.verify(player);
+    }
 }
