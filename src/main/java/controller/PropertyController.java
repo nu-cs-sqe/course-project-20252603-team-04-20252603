@@ -22,6 +22,6 @@ public class PropertyController {
         if (player == null || property == null) {
             throw new IllegalArgumentException("Player and property cannot be null");
         }
-        return false;
+        return property.purchase(player);
     }
 }
