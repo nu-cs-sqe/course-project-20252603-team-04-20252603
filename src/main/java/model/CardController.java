@@ -16,4 +16,10 @@ public class CardController {
         }
         return deck.draw();
     }
+
+    public void applyCard(Card card, Player player) {
+        if (card == null) {
+            throw new IllegalArgumentException("card must not be null");
+        }
+    }
 }
