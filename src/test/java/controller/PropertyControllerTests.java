@@ -190,4 +190,16 @@ public class PropertyControllerTests {
 
         EasyMock.verify(player);
     }
+
+    @Test
+    public void TC13_DeclineProperty_ValidInputs_CompletesWithoutException() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.replay(player, property);
+
+        assertDoesNotThrow(() -> controller.declineProperty(player, property));
+
+        EasyMock.verify(player, property);
+    }
 }
