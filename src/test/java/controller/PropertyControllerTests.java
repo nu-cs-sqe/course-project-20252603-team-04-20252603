@@ -32,4 +32,16 @@ public class PropertyControllerTests {
 
         EasyMock.verify(property);
     }
+
+    @Test
+    public void TC2_PromptPurchase_NullProperty_ThrowsIllegalArgumentException() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.replay(player);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.promptPurchase(player, null));
+
+        EasyMock.verify(player);
+    }
 }
