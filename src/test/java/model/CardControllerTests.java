@@ -60,4 +60,23 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game, player);
     }
+
+    // TC4: Deck exhausted -> deck.draw() throws IllegalStateException; propagates to caller
+    @Test
+    public void drawChanceCard_OnExhaustedDeck_PropagatesIllegalStateException() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        EasyMock.expect(deck.draw()).andThrow(new IllegalStateException("empty"));
+        EasyMock.replay(deck, game, player);
+
+        CardController controller = new CardController(deck, game);
+
+        assertThrows(IllegalStateException.class,
+                () -> controller.drawChanceCard(player));
+
+        EasyMock.verify(deck, game, player);
+    }
 }
