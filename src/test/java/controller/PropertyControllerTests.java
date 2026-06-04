@@ -258,4 +258,16 @@ public class PropertyControllerTests {
         assertFalse(result);
         EasyMock.verify(renter, property);
     }
+
+    // =====================================================================
+    // handleForcedSale
+    // =====================================================================
+
+    @Test
+    public void TC18_HandleForcedSale_NullPlayer_ThrowsIllegalArgumentException() {
+        PropertyController controller = new PropertyController();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.handleForcedSale(null, 100.0));
+    }
 }

@@ -37,4 +37,11 @@ public class PropertyController {
         }
         return property.chargeRent(renter);
     }
+
+    public boolean handleForcedSale(Player player, double requiredAmount) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+        return false;
+    }
 }
