@@ -244,4 +244,18 @@ public class PropertyControllerTests {
         assertTrue(result);
         EasyMock.verify(renter, property);
     }
+
+    @Test
+    public void TC17_HandleRentPayment_FailedRent_ReturnsFalse() {
+        PropertyController controller = new PropertyController();
+        Player renter = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.expect(property.chargeRent(renter)).andReturn(false);
+        EasyMock.replay(renter, property);
+
+        boolean result = controller.handleRentPayment(renter, property);
+
+        assertFalse(result);
+        EasyMock.verify(renter, property);
+    }
 }
