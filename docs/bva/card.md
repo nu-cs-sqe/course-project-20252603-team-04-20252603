@@ -6,7 +6,7 @@ Card Class:
 - `Card(String title, String description, CardEffect effect)`
 - `String getTitle()`
 - `String getDescription()`
-- `void apply(Player player, Game game)`
+- `void apply(Player player, GameEngine game)`
 
 ---
 
@@ -40,11 +40,11 @@ Card Class:
 
 ### Method under test: `getTitle()`
 
-- **TC7a: Normal title** ( :x: )
+- **TC7a: Normal title** ( :white_check_mark: )
     - **State of the system**: Card constructed with `title = "Go to Jail"`
     - **Expected output**: Returns `"Go to Jail"` (exact match)
 
-- **TC7b: Title with special characters** ( :x: )
+- **TC7b: Title with special characters** ( :white_check_mark: )
     - **State of the system**: Card constructed with `title = "Pay $100!"`
     - **Expected output**: Returns `"Pay $100!"` unchanged
 
