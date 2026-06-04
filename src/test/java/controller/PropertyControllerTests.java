@@ -148,4 +148,18 @@ public class PropertyControllerTests {
         assertTrue(result);
         EasyMock.verify(player, property);
     }
+
+    @Test
+    public void TC10_BuyProperty_FailedPurchase_ReturnsFalse() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.expect(property.purchase(player)).andReturn(false);
+        EasyMock.replay(player, property);
+
+        boolean result = controller.buyProperty(player, property);
+
+        assertFalse(result);
+        EasyMock.verify(player, property);
+    }
 }
