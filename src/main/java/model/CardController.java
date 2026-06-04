@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class CardController {
 
     private final Deck deck;
@@ -26,5 +29,12 @@ public class CardController {
         }
         card.getCardEffect().apply(player, game);
         deck.discard(card);
+    }
+
+    public Map<String, String> showCard(Card card) {
+        if (card == null) {
+            throw new IllegalArgumentException("card must not be null");
+        }
+        return new LinkedHashMap<>();
     }
 }

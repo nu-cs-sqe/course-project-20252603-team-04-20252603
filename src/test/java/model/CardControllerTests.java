@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -214,5 +216,24 @@ public class CardControllerTests {
                 () -> controller.applyCard(card, player));
 
         EasyMock.verify(deck, game, player, effect);
+    }
+
+    // ==================================================================================================
+    // showCard(Card card)
+    // ==================================================================================================
+
+    // TC12: Null card -> IllegalArgumentException; nothing returned
+    @Test
+    public void showCard_OnNullCard_ThrowsIllegalArgumentException() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.showCard(null));
+
+        EasyMock.verify(deck, game);
     }
 }
