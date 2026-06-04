@@ -36,6 +36,13 @@ public class CardControllerTests {
         EasyMock.verify(deck);
     }
 
+    // TC18: Both null -> constructor throws IllegalArgumentException
+    @Test
+    public void constructor_OnBothNull_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new CardController(null, null));
+    }
+
     // ==================================================================================================
     // drawChanceCard(Player player)
     // ==================================================================================================
