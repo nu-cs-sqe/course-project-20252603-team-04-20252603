@@ -21,8 +21,8 @@ public class CardController {
         if (card == null) {
             throw new IllegalArgumentException("card must not be null");
         }
-        if (player == null) {
-            throw new IllegalArgumentException("player must not be null");
+        if (player == null || !player.getActive()) {
+            throw new IllegalArgumentException("player must not be null or inactive");
         }
     }
 }
