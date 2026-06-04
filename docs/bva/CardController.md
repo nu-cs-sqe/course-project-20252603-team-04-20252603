@@ -36,7 +36,7 @@ constructor fails fast at the construction site.
     - **State of the system**: `deck = null`; `game` is a valid mock
     - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
 
-- **TC17: Null game** ( :x: )
+- **TC17: Null game** ( :white_check_mark: )
     - **State of the system**: `deck` is a valid mock; `game = null`
     - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
 

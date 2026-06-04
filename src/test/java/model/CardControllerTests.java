@@ -24,6 +24,18 @@ public class CardControllerTests {
         EasyMock.verify(game);
     }
 
+    // TC17: Null game -> constructor throws IllegalArgumentException
+    @Test
+    public void constructor_OnNullGame_ThrowsIllegalArgumentException() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        EasyMock.replay(deck);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new CardController(deck, null));
+
+        EasyMock.verify(deck);
+    }
+
     // ==================================================================================================
     // drawChanceCard(Player player)
     // ==================================================================================================

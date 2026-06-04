@@ -15,6 +15,9 @@ public class CardController {
         if (deck == null) {
             throw new IllegalArgumentException("deck must not be null");
         }
+        if (game == null) {
+            throw new IllegalArgumentException("game must not be null");
+        }
         this.deck = deck;
         this.game = game;
     }
