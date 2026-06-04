@@ -115,4 +115,19 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game);
     }
+
+    // TC7: Both null -> IllegalArgumentException; no effect applied
+    @Test
+    public void applyCard_OnBothNull_ThrowsIllegalArgumentException() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.applyCard(null, null));
+
+        EasyMock.verify(deck, game);
+    }
 }
