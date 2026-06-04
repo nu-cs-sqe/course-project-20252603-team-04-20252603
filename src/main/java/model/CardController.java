@@ -31,6 +31,8 @@ public class CardController {
 		if (!player.getActive()) {
 			throw new IllegalArgumentException("Player must be active");
 		}
+		card.getCardEffect().apply(player, game);
+		deck.discard(card);
 	}
 
 	public Map<String, String> showCard(Card card) {

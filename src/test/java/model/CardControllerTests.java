@@ -138,4 +138,48 @@ public class CardControllerTests {
 		EasyMock.verify(deck, game, effect, player);
 	}
 
+	// TC9: applyCard - Valid card applied to active player
+	@Test
+	public void TC9_applyCard_validCardActivePlayer_invokesCardEffect() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Test Card", "Test Description", effect);
+		Player player = EasyMock.createMock(Player.class);
+
+		EasyMock.expect(player.getActive()).andReturn(true);
+		effect.apply(player, game);
+		EasyMock.expectLastCall().once();
+		deck.discard(card);
+		EasyMock.expectLastCall().once();
+		EasyMock.replay(deck, game, effect, player);
+
+		CardController controller = new CardController(deck, game);
+		controller.applyCard(card, player);
+
+		EasyMock.verify(deck, game, effect, player);
+	}
+
+	// TC10: applyCard - Applied card is discarded back to the deck
+	@Test
+	public void TC10_applyCard_afterEffectApplied_discardCardToDeck() {
+		Deck deck = EasyMock.createMock(Deck.class);
+		GameEngine game = EasyMock.createMock(GameEngine.class);
+		CardEffect effect = EasyMock.createMock(CardEffect.class);
+		Card card = new Card("Test Card", "Test Description", effect);
+		Player player = EasyMock.createMock(Player.class);
+
+		EasyMock.expect(player.getActive()).andReturn(true);
+		effect.apply(player, game);
+		EasyMock.expectLastCall().once();
+		deck.discard(card);
+		EasyMock.expectLastCall().once();
+		EasyMock.replay(deck, game, effect, player);
+
+		CardController controller = new CardController(deck, game);
+		controller.applyCard(card, player);
+
+		EasyMock.verify(deck, game, effect, player);
+	}
+
 }
