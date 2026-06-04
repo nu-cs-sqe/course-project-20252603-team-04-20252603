@@ -17,4 +17,11 @@ public class PropertyController {
         }
         return true;
     }
+
+    public boolean buyProperty(Player player, Property property) {
+        if (player == null || property == null) {
+            throw new IllegalArgumentException("Player and property cannot be null");
+        }
+        return false;
+    }
 }

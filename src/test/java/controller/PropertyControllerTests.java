@@ -106,4 +106,20 @@ public class PropertyControllerTests {
         assertTrue(result);
         EasyMock.verify(player, property);
     }
+
+    // =====================================================================
+    // buyProperty
+    // =====================================================================
+
+    @Test
+    public void TC7_BuyProperty_NullPlayer_ThrowsIllegalArgumentException() {
+        PropertyController controller = new PropertyController();
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.replay(property);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> controller.buyProperty(null, property));
+
+        EasyMock.verify(property);
+    }
 }
