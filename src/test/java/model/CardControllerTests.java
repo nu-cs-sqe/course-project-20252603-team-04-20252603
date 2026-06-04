@@ -149,4 +149,25 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game, player);
     }
+
+    // TC9: Valid card applied to active player -> effect invoked exactly once with (player, game)
+    @Test
+    public void applyCard_OnValidCardAndActivePlayer_InvokesEffectOnce() {
+        Deck deck = EasyMock.createNiceMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Player player = EasyMock.createMock(Player.class);
+        CardEffect effect = EasyMock.createMock(CardEffect.class);
+        Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", effect);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        effect.apply(player, game);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(deck, game, player, effect);
+
+        CardController controller = new CardController(deck, game);
+
+        controller.applyCard(card, player);
+
+        EasyMock.verify(deck, game, player, effect);
+    }
 }

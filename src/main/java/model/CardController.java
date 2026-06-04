@@ -24,5 +24,6 @@ public class CardController {
         if (player == null || !player.getActive()) {
             throw new IllegalArgumentException("player must not be null or inactive");
         }
+        card.getCardEffect().apply(player, game);
     }
 }
