@@ -283,4 +283,17 @@ public class PropertyControllerTests {
         assertTrue(result);
         EasyMock.verify(player);
     }
+
+    @Test
+    public void TC20_HandleForcedSale_PlayerAlreadyHasEnough_ReturnsTrue() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.expect(player.canAfford(500.0)).andReturn(true);
+        EasyMock.replay(player);
+
+        boolean result = controller.handleForcedSale(player, 500.0);
+
+        assertTrue(result);
+        EasyMock.verify(player);
+    }
 }
