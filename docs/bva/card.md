@@ -6,7 +6,7 @@ Card Class:
 - `Card(String title, String description, CardEffect effect)`
 - `String getTitle()`
 - `String getDescription()`
-- `void apply(Player player, Game game)`
+- `void apply(Player player, GameEngine game)`
 
 ---
 
