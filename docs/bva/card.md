@@ -65,7 +65,7 @@ Card Class:
 
 ### Method under test: `getCardEffect()`
 
-- **TC8a: Returns the effect supplied at construction** ( :x: )
+- **TC8a: Returns the effect supplied at construction** ( :white_check_mark: )
     - **State of the system**: Card constructed with a valid `CardEffect` mock/lambda `effect`
     - **Expected output**: Returns the same `CardEffect` reference (identity equal to the one passed to the constructor)
 
