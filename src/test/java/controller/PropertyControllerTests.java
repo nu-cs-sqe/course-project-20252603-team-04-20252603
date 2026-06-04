@@ -58,4 +58,20 @@ public class PropertyControllerTests {
         assertFalse(result);
         EasyMock.verify(player, property);
     }
+
+    @Test
+    public void TC4_PromptPurchase_PlayerCannotAfford_ReturnsFalse() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        EasyMock.expect(property.isOwned()).andReturn(false);
+        EasyMock.expect(property.getPrice()).andReturn(200.0);
+        EasyMock.expect(player.canAfford(200.0)).andReturn(false);
+        EasyMock.replay(player, property);
+
+        boolean result = controller.promptPurchase(player, property);
+
+        assertFalse(result);
+        EasyMock.verify(player, property);
+    }
 }

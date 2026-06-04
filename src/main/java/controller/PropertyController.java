@@ -12,6 +12,9 @@ public class PropertyController {
         if (property.isOwned()) {
             return false;
         }
+        if (!player.canAfford(property.getPrice())) {
+            return false;
+        }
         return false;
     }
 }
