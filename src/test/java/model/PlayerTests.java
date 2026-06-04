@@ -303,6 +303,23 @@ public class PlayerTests {
         assertFalse(success, "Selling a null property should fail");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
     }
+
+    @Test
+    public void Test_Selling_Owned_Property_When_Receive_Fails() {
+        Player player = new Player("John", 100.0);
+        Property propertyMock = EasyMock.createMock(Property.class);
+
+        EasyMock.expect(propertyMock.getPrice()).andReturn(Double.MAX_VALUE);
+        EasyMock.replay(propertyMock);
+
+        player.addProperty(propertyMock);
+        boolean success = player.sellProperty(propertyMock);
+
+        assertFalse(success, "Selling should fail when receive rejects the price");
+        assertTrue(player.getOwnedProperties().contains(propertyMock),
+                "Property should remain owned when sale fails");
+        assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
+    }
     // ==================================================================================================
     // Test suite for goToJail method
     // ==================================================================================================
@@ -494,4 +511,5 @@ public class PlayerTests {
         
         assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
+
 }

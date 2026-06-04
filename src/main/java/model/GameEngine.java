@@ -1,5 +1,7 @@
 package model;
 
+import util.Constants;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,24 +13,38 @@ class GameEngine {
     private final Board board;
     private GameStatus status;
     private int currentPlayerIndex;
+    private Deck chanceDeck;
 
-    public GameEngine(List<Player> players) {
-        this(players, null);
-    }
-
-    public GameEngine(List<Player> players, Board board) {
+    private GameEngine(List<Player> players, Board board, Deck chanceDeck) {
         this.players = new ArrayList<>(players);
         this.board = board;
+        this.chanceDeck = chanceDeck;
         this.status = GameStatus.NOT_STARTED;
         this.currentPlayerIndex = 0;
     }
 
+    public GameEngine(List<Player> players) {
+        this(players, null, null);
+    }
+
+    public GameEngine(List<Player> players, Board board) {
+        this(players, board, null);
+    }
+
+    public GameEngine(List<Player> players, Deck chanceDeck) {
+        this(players, null, chanceDeck);
+    }
+
+    public Deck getChanceDeck(){
+        return this.chanceDeck;
+    }
+
     public void startGame() {
-        if (players.size() < 2) {
-            throw new IllegalArgumentException("At least 2 players are required to start the game");
+        if (players.size() < Constants.MIN_NUM_PLAYERS) {
+            throw new IllegalArgumentException("At least " + Constants.MIN_NUM_PLAYERS + " players are required to start the game");
         }
-        if (players.size() > 4) {
-            throw new IllegalArgumentException("At most 4 players are allowed to start the game");
+        if (players.size() > Constants.MAX_NUM_PLAYERS) {
+            throw new IllegalArgumentException("At most " + Constants.MAX_NUM_PLAYERS + " players are allowed to start the game");
         }
         status = GameStatus.IN_PROGRESS;
     }
