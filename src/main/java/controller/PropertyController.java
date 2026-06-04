@@ -30,4 +30,11 @@ public class PropertyController {
             throw new IllegalArgumentException("Player and property cannot be null");
         }
     }
+
+    public boolean handleRentPayment(Player renter, Property property) {
+        if (renter == null || property == null) {
+            throw new IllegalArgumentException("Renter and property cannot be null");
+        }
+        return false;
+    }
 }
