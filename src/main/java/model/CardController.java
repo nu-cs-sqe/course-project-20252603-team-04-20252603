@@ -35,6 +35,9 @@ public class CardController {
         if (card == null) {
             throw new IllegalArgumentException("card must not be null");
         }
-        return new LinkedHashMap<>();
+        Map<String, String> result = new LinkedHashMap<>();
+        result.put("title", card.getTitle());
+        result.put("description", card.getDescription());
+        return result;
     }
 }

@@ -236,4 +236,23 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game);
     }
+
+    // TC13: Valid card -> map with exactly two entries: title and description
+    @Test
+    public void showCard_OnValidCard_ReturnsTitleAndDescriptionMap() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", (p, g) -> {});
+        EasyMock.replay(deck, game);
+
+        CardController controller = new CardController(deck, game);
+
+        Map<String, String> result = controller.showCard(card);
+
+        assertEquals(2, result.size());
+        assertEquals("Advance to GO", result.get("title"));
+        assertEquals("Advance to GO. Collect $200.", result.get("description"));
+
+        EasyMock.verify(deck, game);
+    }
 }
