@@ -296,4 +296,19 @@ public class PropertyControllerTests {
         assertTrue(result);
         EasyMock.verify(player);
     }
+
+    @Test
+    public void TC21_HandleForcedSale_NoProperties_ReturnsFalse() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        EasyMock.expect(player.canAfford(500.0)).andReturn(false);
+        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
+        EasyMock.expect(player.canAfford(500.0)).andReturn(false);
+        EasyMock.replay(player);
+
+        boolean result = controller.handleForcedSale(player, 500.0);
+
+        assertFalse(result);
+        EasyMock.verify(player);
+    }
 }

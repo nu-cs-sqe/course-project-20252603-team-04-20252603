@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import model.Player;
 import model.Property;
 
@@ -45,6 +47,15 @@ public class PropertyController {
         if (player.canAfford(requiredAmount)) {
             return true;
         }
-        return false;
+        List<Property> properties = new ArrayList<>(player.getOwnedProperties());
+        for (Property prop : properties) {
+            if (player.canAfford(requiredAmount)) {
+                break;
+            }
+            double resaleValue = prop.getResaleValue();
+            prop.resetOwner();
+            player.receive(resaleValue);
+        }
+        return player.canAfford(requiredAmount);
     }
 }
