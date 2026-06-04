@@ -25,5 +25,6 @@ public class CardController {
             throw new IllegalArgumentException("player must not be null or inactive");
         }
         card.getCardEffect().apply(player, game);
+        deck.discard(card);
     }
 }

@@ -170,4 +170,27 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game, player, effect);
     }
+
+    // TC10: Applied card is discarded back to the deck -> deck.discard(card) called once with same instance
+    @Test
+    public void applyCard_OnValidCard_DiscardsSameCardOnce() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Player player = EasyMock.createMock(Player.class);
+        CardEffect effect = EasyMock.createMock(CardEffect.class);
+        Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", effect);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        effect.apply(player, game);
+        EasyMock.expectLastCall().once();
+        deck.discard(card);
+        EasyMock.expectLastCall().once();
+        EasyMock.replay(deck, game, player, effect);
+
+        CardController controller = new CardController(deck, game);
+
+        controller.applyCard(card, player);
+
+        EasyMock.verify(deck, game, player, effect);
+    }
 }
