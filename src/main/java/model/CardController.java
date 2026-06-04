@@ -18,7 +18,7 @@ public class CardController {
 		if (!player.getActive()) {
 			throw new IllegalArgumentException("Player must be active");
 		}
-		return null;
+		return deck.draw();
 	}
 
 	public void applyCard(Card card, Player player) {
