@@ -311,4 +311,27 @@ public class PropertyControllerTests {
         assertFalse(result);
         EasyMock.verify(player);
     }
+
+    @Test
+    public void TC22_HandleForcedSale_OnePropertyCoversAmount_ReturnsTrue() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+        Set<Property> properties = new HashSet<>();
+        properties.add(property);
+
+        EasyMock.expect(player.canAfford(300.0)).andReturn(false);
+        EasyMock.expect(player.getOwnedProperties()).andReturn(properties);
+        EasyMock.expect(player.canAfford(300.0)).andReturn(false);
+        EasyMock.expect(property.getResaleValue()).andReturn(400.0);
+        property.resetOwner();
+        EasyMock.expect(player.receive(400.0)).andReturn(true);
+        EasyMock.expect(player.canAfford(300.0)).andReturn(true);
+        EasyMock.replay(player, property);
+
+        boolean result = controller.handleForcedSale(player, 300.0);
+
+        assertTrue(result);
+        EasyMock.verify(player, property);
+    }
 }
