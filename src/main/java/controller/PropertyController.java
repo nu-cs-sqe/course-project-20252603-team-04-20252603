@@ -35,6 +35,6 @@ public class PropertyController {
         if (renter == null || property == null) {
             throw new IllegalArgumentException("Renter and property cannot be null");
         }
-        return false;
+        return property.chargeRent(renter);
     }
 }
