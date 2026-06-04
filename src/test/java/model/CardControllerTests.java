@@ -43,6 +43,18 @@ public class CardControllerTests {
                 () -> new CardController(null, null));
     }
 
+    // TC19: Both valid -> constructs successfully (no exception)
+    @Test
+    public void constructor_OnValidDeckAndGame_ConstructsSuccessfully() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        EasyMock.replay(deck, game);
+
+        assertDoesNotThrow(() -> new CardController(deck, game));
+
+        EasyMock.verify(deck, game);
+    }
+
     // ==================================================================================================
     // drawChanceCard(Player player)
     // ==================================================================================================

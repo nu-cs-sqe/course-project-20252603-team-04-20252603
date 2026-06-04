@@ -46,7 +46,7 @@ constructor fails fast at the construction site.
 
 ### Normal operation
 
-- **TC19: Both valid** ( :x: )
+- **TC19: Both valid** ( :white_check_mark: )
     - **State of the system**: `deck` and `game` are valid mocks
     - **Expected output**: a `CardController` instance is constructed successfully (no exception)
 
