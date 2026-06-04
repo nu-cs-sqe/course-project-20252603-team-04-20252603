@@ -41,4 +41,23 @@ public class CardControllerTests {
 
         EasyMock.verify(deck, game, player);
     }
+
+    // TC3: Active player draws the top card -> returns C1; deck.draw() called once
+    @Test
+    public void drawChanceCard_OnActivePlayer_ReturnsTopCardAndDrawsOnce() {
+        Deck deck = EasyMock.createMock(Deck.class);
+        GameEngine game = EasyMock.createMock(GameEngine.class);
+        Player player = EasyMock.createMock(Player.class);
+        Card c1 = new Card("Advance to GO", "Advance to GO. Collect $200.", (p, g) -> {});
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        EasyMock.expect(deck.draw()).andReturn(c1);
+        EasyMock.replay(deck, game, player);
+
+        CardController controller = new CardController(deck, game);
+
+        assertSame(c1, controller.drawChanceCard(player));
+
+        EasyMock.verify(deck, game, player);
+    }
 }
