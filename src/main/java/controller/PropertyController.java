@@ -15,6 +15,6 @@ public class PropertyController {
         if (!player.canAfford(property.getPrice())) {
             return false;
         }
-        return false;
+        return true;
     }
 }
