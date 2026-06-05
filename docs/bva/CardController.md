@@ -61,7 +61,7 @@ constructor fails fast at the construction site.
     - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
 
 - **TC2: Inactive (eliminated) player** ( :white_check_mark: )
-    - **State of the system**: `player.isActive() == false`; `deck` valid
+    - **State of the system**: `player.getActive() == false`; `deck` valid
     - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
 
 ### Normal operation
