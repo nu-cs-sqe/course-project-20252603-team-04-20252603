@@ -95,7 +95,7 @@ constructor fails fast at the construction site.
     - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
 
 - **TC8: Inactive player** ( :white_check_mark: )
-    - **State of the system**: `card` valid, `player.isActive() == false`
+    - **State of the system**: `card` valid, `player.getActive() == false`
     - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
 
 ### Normal operation
