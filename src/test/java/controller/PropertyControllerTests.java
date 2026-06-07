@@ -22,24 +22,24 @@ public class PropertyControllerTests {
     // =====================================================================
 
     @Test
-    public void TC1_PromptPurchase_NullPlayer_ThrowsIllegalArgumentException() {
+    public void TC1_PromptPurchase_NullPlayer_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Property property = EasyMock.createMock(Property.class);
         EasyMock.replay(property);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.promptPurchase(null, property));
 
         EasyMock.verify(property);
     }
 
     @Test
-    public void TC2_PromptPurchase_NullProperty_ThrowsIllegalArgumentException() {
+    public void TC2_PromptPurchase_NullProperty_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Player player = EasyMock.createMock(Player.class);
         EasyMock.replay(player);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.promptPurchase(player, null));
 
         EasyMock.verify(player);
@@ -112,24 +112,24 @@ public class PropertyControllerTests {
     // =====================================================================
 
     @Test
-    public void TC7_BuyProperty_NullPlayer_ThrowsIllegalArgumentException() {
+    public void TC7_BuyProperty_NullPlayer_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Property property = EasyMock.createMock(Property.class);
         EasyMock.replay(property);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.buyProperty(null, property));
 
         EasyMock.verify(property);
     }
 
     @Test
-    public void TC8_BuyProperty_NullProperty_ThrowsIllegalArgumentException() {
+    public void TC8_BuyProperty_NullProperty_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Player player = EasyMock.createMock(Player.class);
         EasyMock.replay(player);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.buyProperty(player, null));
 
         EasyMock.verify(player);
@@ -168,24 +168,24 @@ public class PropertyControllerTests {
     // =====================================================================
 
     @Test
-    public void TC11_DeclineProperty_NullPlayer_ThrowsIllegalArgumentException() {
+    public void TC11_DeclineProperty_NullPlayer_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Property property = EasyMock.createMock(Property.class);
         EasyMock.replay(property);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.declineProperty(null, property));
 
         EasyMock.verify(property);
     }
 
     @Test
-    public void TC12_DeclineProperty_NullProperty_ThrowsIllegalArgumentException() {
+    public void TC12_DeclineProperty_NullProperty_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Player player = EasyMock.createMock(Player.class);
         EasyMock.replay(player);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.declineProperty(player, null));
 
         EasyMock.verify(player);
@@ -208,24 +208,24 @@ public class PropertyControllerTests {
     // =====================================================================
 
     @Test
-    public void TC14_HandleRentPayment_NullRenter_ThrowsIllegalArgumentException() {
+    public void TC14_HandleRentPayment_NullRenter_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Property property = EasyMock.createMock(Property.class);
         EasyMock.replay(property);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.handleRentPayment(null, property));
 
         EasyMock.verify(property);
     }
 
     @Test
-    public void TC15_HandleRentPayment_NullProperty_ThrowsIllegalArgumentException() {
+    public void TC15_HandleRentPayment_NullProperty_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
         Player renter = EasyMock.createMock(Player.class);
         EasyMock.replay(renter);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.handleRentPayment(renter, null));
 
         EasyMock.verify(renter);
@@ -264,10 +264,10 @@ public class PropertyControllerTests {
     // =====================================================================
 
     @Test
-    public void TC18_HandleForcedSale_NullPlayer_ThrowsIllegalArgumentException() {
+    public void TC18_HandleForcedSale_NullPlayer_ThrowsNullPointerException() {
         PropertyController controller = new PropertyController();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.handleForcedSale(null, 100.0));
     }
 
