@@ -141,4 +141,20 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC8: payJailFee - Null player
+    @Test
+    public void TC8_PayJailFee_NullPlayer_ThrowsNullPointerException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(gameEngine, dice);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertThrows(NullPointerException.class,
+                () -> controller.payJailFee(null),
+                "payJailFee must reject a null player");
+
+        EasyMock.verify(gameEngine, dice);
+    }
+
 }

@@ -29,4 +29,9 @@ public class JailController {
         Objects.requireNonNull(player, "Player cannot be null");
         return player.leaveJail();
     }
+
+    public boolean payJailFee(Player player){
+        Objects.requireNonNull(player, "Player cannot be null");
+        return false;
+    }
 }
