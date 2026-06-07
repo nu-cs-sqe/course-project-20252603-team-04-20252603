@@ -12,34 +12,34 @@ public class CardControllerTests {
     // CardController(Deck deck, GameEngine game)
     // ==================================================================================================
 
-    // TC16: Null deck -> constructor throws IllegalArgumentException
+    // TC16: Null deck -> constructor throws NullPointerException
     @Test
-    public void constructor_OnNullDeck_ThrowsIllegalArgumentException() {
+    public void constructor_OnNullDeck_ThrowsNullPointerException() {
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> new CardController(null, game));
 
         EasyMock.verify(game);
     }
 
-    // TC17: Null game -> constructor throws IllegalArgumentException
+    // TC17: Null game -> constructor throws NullPointerException
     @Test
-    public void constructor_OnNullGame_ThrowsIllegalArgumentException() {
+    public void constructor_OnNullGame_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         EasyMock.replay(deck);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> new CardController(deck, null));
 
         EasyMock.verify(deck);
     }
 
-    // TC18: Both null -> constructor throws IllegalArgumentException
+    // TC18: Both null -> constructor throws NullPointerException
     @Test
-    public void constructor_OnBothNull_ThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+    public void constructor_OnBothNull_ThrowsNullPointerException() {
+        assertThrows(NullPointerException.class,
                 () -> new CardController(null, null));
     }
 

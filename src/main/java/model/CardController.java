@@ -2,6 +2,7 @@ package model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -12,14 +13,8 @@ public class CardController {
 
     @SuppressFBWarnings({"EI_EXPOSE_REP2", "CT_CONSTRUCTOR_THROW"})
     public CardController(Deck deck, GameEngine game) {
-        if (deck == null) {
-            throw new IllegalArgumentException("deck must not be null");
-        }
-        if (game == null) {
-            throw new IllegalArgumentException("game must not be null");
-        }
-        this.deck = deck;
-        this.game = game;
+        this.deck = Objects.requireNonNull(deck, "deck must not be null");
+        this.game = Objects.requireNonNull(game, "game must not be null");
     }
 
     public Card drawChanceCard(Player player) {
