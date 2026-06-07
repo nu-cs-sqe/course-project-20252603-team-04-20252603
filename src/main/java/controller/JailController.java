@@ -68,7 +68,10 @@ public class JailController {
         if (!player.inJail()) {
             return false;
         }
-        return false;
+        if (player.getJailTurnCount() < Constants.MAX_JAIL_TURNS) {
+            player.incrementJailTurnCount();
+        }
+        return true;
     }
 
 }

@@ -416,4 +416,25 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC22: handleJailTurn - Player in jail, first turn in jail
+    @Test
+    public void TC22_HandleJailTurn_PlayerInJailFirstTurn_IncrementsTurnCount() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(1);
+        player.incrementJailTurnCount();
+        EasyMock.expectLastCall();
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertTrue(controller.handleJailTurn(player),
+                "handleJailTurn must return true when the first jail turn is recorded");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
