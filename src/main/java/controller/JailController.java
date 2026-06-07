@@ -1,6 +1,9 @@
 package controller;
 
 import model.GameEngine;
+
+import java.util.Objects;
+
 import model.Dice;
 import model.Player;
 public class JailController {
@@ -13,6 +16,7 @@ public class JailController {
     }
 
     public boolean sendToJail(Player player){
+        Objects.requireNonNull(player, "Player cannot be null");
         return false;
     }
 }
