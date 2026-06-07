@@ -175,4 +175,23 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC10: payJailFee - Player in jail, cannot afford fee
+    @Test
+    public void TC10_PayJailFee_PlayerInJailCannotAfford_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.canAfford(Constants.JAIL_FEE)).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.payJailFee(player),
+                "payJailFee must return false when the player cannot afford the fee");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
