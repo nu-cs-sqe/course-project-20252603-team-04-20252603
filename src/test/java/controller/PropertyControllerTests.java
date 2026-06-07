@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -317,7 +317,7 @@ public class PropertyControllerTests {
         PropertyController controller = new PropertyController();
         Player player = EasyMock.createMock(Player.class);
         Property property = EasyMock.createMock(Property.class);
-        Set<Property> properties = new HashSet<>();
+        Set<Property> properties = new LinkedHashSet<>();
         properties.add(property);
 
         EasyMock.expect(player.canAfford(300.0)).andReturn(false);
@@ -336,11 +336,37 @@ public class PropertyControllerTests {
     }
 
     @Test
+    public void TC24_HandleForcedSale_StopsAfterPlayerBecomesAffordable_ReturnsTrue() {
+        PropertyController controller = new PropertyController();
+        Player player = EasyMock.createMock(Player.class);
+        Property firstProperty = EasyMock.createMock(Property.class);
+        Property secondProperty = EasyMock.createMock(Property.class);
+        Set<Property> properties = new LinkedHashSet<>();
+        properties.add(firstProperty);
+        properties.add(secondProperty);
+
+        EasyMock.expect(player.canAfford(300.0)).andReturn(false);
+        EasyMock.expect(player.getOwnedProperties()).andReturn(properties);
+        EasyMock.expect(player.canAfford(300.0)).andReturn(false);
+        EasyMock.expect(firstProperty.getResaleValue()).andReturn(400.0);
+        firstProperty.resetOwner();
+        EasyMock.expect(player.receive(400.0)).andReturn(true);
+        EasyMock.expect(player.canAfford(300.0)).andReturn(true);
+        EasyMock.expect(player.canAfford(300.0)).andReturn(true);
+        EasyMock.replay(player, firstProperty, secondProperty);
+
+        boolean result = controller.handleForcedSale(player, 300.0);
+
+        assertTrue(result);
+        EasyMock.verify(player, firstProperty, secondProperty);
+    }
+
+    @Test
     public void TC23_HandleForcedSale_SellAllPropertiesStillInsufficient_ReturnsFalse() {
         PropertyController controller = new PropertyController();
         Player player = EasyMock.createMock(Player.class);
         Property property = EasyMock.createMock(Property.class);
-        Set<Property> properties = new HashSet<>();
+        Set<Property> properties = new LinkedHashSet<>();
         properties.add(property);
 
         EasyMock.expect(player.canAfford(1000.0)).andReturn(false);
