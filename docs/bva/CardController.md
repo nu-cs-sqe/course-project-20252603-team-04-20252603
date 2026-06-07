@@ -16,7 +16,7 @@ to the user via a popup/view.
 
 > `showCard` reads the card via `card.getTitle()` and `card.getDescription()` and returns a
 > dictionary `{ "title" -> <title>, "description" -> <description> }` so the popup can be
-> rendered. (`Card.getTitle()` is assumed to exist; it will be implemented separately.)
+> rendered.
 
 > Effects reach the game through `CardEffect.apply(Player, GameEngine)`. `applyCard` is the
 > seam that invokes the drawn card's effect against `game` and the given `player`.
@@ -61,7 +61,7 @@ constructor fails fast at the construction site.
     - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
 
 - **TC2: Inactive (eliminated) player** ( :white_check_mark: )
-    - **State of the system**: `player.isActive() == false`; `deck` valid
+    - **State of the system**: `player.getActive() == false`; `deck` valid
     - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
 
 ### Normal operation
@@ -95,7 +95,7 @@ constructor fails fast at the construction site.
     - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
 
 - **TC8: Inactive player** ( :white_check_mark: )
-    - **State of the system**: `card` valid, `player.isActive() == false`
+    - **State of the system**: `card` valid, `player.getActive() == false`
     - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
 
 ### Normal operation
