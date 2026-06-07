@@ -4,11 +4,11 @@
 
 - **TC1: Null player** ( :white_check_mark: )
   - **State of the system**: player = null, property = valid
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC2: Null property** ( :white_check_mark: )
   - **State of the system**: player = valid, property = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC3: Property already owned** ( :white_check_mark: )
   - **State of the system**: property.isOwned() = true
@@ -32,11 +32,11 @@
 
 - **TC7: Null player** ( :white_check_mark: )
   - **State of the system**: player = null, property = valid
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC8: Null property** ( :white_check_mark: )
   - **State of the system**: player = valid, property = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC9: Successful purchase** ( :white_check_mark: )
   - **State of the system**: property.purchase(player) = true
@@ -52,11 +52,11 @@
 
 - **TC11: Null player** ( :white_check_mark: )
   - **State of the system**: player = null, property = valid
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC12: Null property** ( :white_check_mark: )
   - **State of the system**: player = valid, property = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC13: Valid inputs** ( :white_check_mark: )
   - **State of the system**: player = valid, property = valid (unowned)
@@ -68,11 +68,11 @@
 
 - **TC14: Null renter** ( :white_check_mark: )
   - **State of the system**: renter = null, property = valid
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC15: Null property** ( :white_check_mark: )
   - **State of the system**: renter = valid, property = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC16: Successful rent charge** ( :white_check_mark: )
   - **State of the system**: property.chargeRent(renter) = true
@@ -88,7 +88,7 @@
 
 - **TC18: Null player** ( :white_check_mark: )
   - **State of the system**: player = null
-  - **Expected output**: IllegalArgumentException thrown
+  - **Expected output**: NullPointerException thrown
 
 - **TC19: requiredAmount = 0, player balance = 0** ( :white_check_mark: )
   - **State of the system**: requiredAmount = 0, player.canAfford(0) = true
