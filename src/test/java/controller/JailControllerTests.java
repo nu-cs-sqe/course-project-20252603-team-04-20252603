@@ -382,4 +382,20 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC20: handleJailTurn - Null player
+    @Test
+    public void TC20_HandleJailTurn_NullPlayer_ThrowsNullPointerException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(gameEngine, dice);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertThrows(NullPointerException.class,
+                () -> controller.handleJailTurn(null),
+                "handleJailTurn must reject a null player");
+
+        EasyMock.verify(gameEngine, dice);
+    }
+
 }

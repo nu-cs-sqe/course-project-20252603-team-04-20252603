@@ -63,4 +63,9 @@ public class JailController {
         return false;
     }
 
+    public boolean handleJailTurn(Player player){
+        Objects.requireNonNull(player, "Player cannot be null");
+        return false;
+    }
+
 }
