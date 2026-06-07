@@ -44,4 +44,9 @@ public class JailController {
         player.remove(Constants.JAIL_FEE);
         return player.leaveJail();
     }
+
+    public boolean attemptRollDoubles(Player player){
+        Objects.requireNonNull(player, "Player cannot be null");
+        return false;
+    }
 }

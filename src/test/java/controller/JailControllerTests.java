@@ -258,4 +258,20 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC14: attemptRollDoubles - Null player
+    @Test
+    public void TC14_AttemptRollDoubles_NullPlayer_ThrowsNullPointerException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(gameEngine, dice);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertThrows(NullPointerException.class,
+                () -> controller.attemptRollDoubles(null),
+                "attemptRollDoubles must reject a null player");
+
+        EasyMock.verify(gameEngine, dice);
+    }
+
 }
