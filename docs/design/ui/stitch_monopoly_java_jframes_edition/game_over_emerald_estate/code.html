@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Empire Tycoon - Victory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .victory-gradient {
+            background: radial-gradient(circle at center, #10b981 0%, #006c49 100%);
+        }
+        .confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d4dcd5",
+                        "secondary-fixed": "#e0e3e5",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#6ffbbe",
+                        "inverse-surface": "#2b322d",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "on-secondary-container": "#626567",
+                        "inverse-primary": "#4edea3",
+                        "background": "#f4fbf4",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "surface-bright": "#f4fbf4",
+                        "tertiary": "#545f73",
+                        "outline-variant": "#bbcabf",
+                        "surface-tint": "#006c49",
+                        "secondary-fixed-dim": "#c4c7c9",
+                        "secondary-container": "#e0e3e5",
+                        "surface-variant": "#dde4dd",
+                        "tertiary-container": "#98a3ba",
+                        "surface-container-high": "#e3eae3",
+                        "on-surface": "#161d19",
+                        "surface-container-low": "#eef6ee",
+                        "primary-container": "#10b981",
+                        "on-secondary-fixed": "#191c1e",
+                        "outline": "#6c7a71",
+                        "surface-container-highest": "#dde4dd",
+                        "surface-container": "#e8f0e9",
+                        "primary-fixed-dim": "#4edea3",
+                        "secondary": "#5c5f61",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-primary-fixed": "#002113",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#00422b",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#2e394c",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#3c4a42",
+                        "on-tertiary-fixed": "#111c2d",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#d8e3fb",
+                        "primary": "#006c49",
+                        "surface": "#f4fbf4",
+                        "inverse-on-surface": "#ebf3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-sm": "16px",
+                        "gutter": "24px",
+                        "margin-md": "32px",
+                        "board-tile-gap": "4px",
+                        "margin-lg": "48px"
+                    },
+                    "fontFamily": {
+                        "body-stats": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Manrope"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-main": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-stats": ["18px", {"lineHeight": "1.5", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-main selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- Confetti Overlay -->
+<canvas class="confetti-canvas" id="confetti"></canvas>
+<!-- Main Content Canvas -->
+<main class="relative min-h-screen flex items-center justify-center p-gutter overflow-y-auto">
+<!-- Victory Background Element -->
+<div class="fixed inset-0 z-0 opacity-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[600px] select-none text-primary">emoji_events</span>
+</div>
+<div class="relative z-10 w-full max-w-4xl animate-[scale-up_0.5s_ease-out]">
+<!-- Hero Victory Card -->
+<div class="bg-surface-container-lowest shadow-lg rounded-xl overflow-hidden mb-gutter border border-outline-variant flex flex-col md:flex-row">
+<!-- Winner Highlight Side -->
+<div class="md:w-1/2 victory-gradient p-margin-md flex flex-col items-center justify-center text-on-primary text-center">
+<div class="relative mb-margin-sm">
+<div class="w-48 h-48 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center p-4 border-4 border-white/30 animate-bounce">
+<img alt="Winner Token" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYKoRV1nlVYURtgdKcjmLCCDmy4g0BA8isKJu-FuFcrGqtzPDFhKs-PwMLBfAV5s2OEN0f5AfphB5tp-wU-pFDJbhBPa7erbBYX-l78DwgAmj_PSIbQvPA29uzw92wa1i6ewgbb3Qgqi-N0YfxPrGUYDosNDHP8l2vPbegnlSe3zNEQ7Bq49_cqjwxrk7pLDgT3_Amh_fcbEkvuik2c7D_WsCU6QJlHW7N0vZydKMh--Mi-_zaDzT4eaIxifOsxM37WTyKLX1w7gG1"/>
+</div>
+<div class="absolute -top-4 -right-4 bg-primary-fixed text-on-primary-fixed w-16 h-16 rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-white mb-2 tracking-tighter">VICTORY</h1>
+<p class="font-body-stats text-body-stats text-white/90">Master Tycoon</p>
+<div class="mt-margin-sm bg-white/10 rounded-full px-6 py-2 border border-white/20">
+<span class="font-headline-md text-headline-md text-white">$24,500</span>
+</div>
+</div>
+<!-- Leaderboard Stats Side -->
+<div class="md:w-1/2 p-margin-md bg-surface">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Final Standings</h2>
+<div class="space-y-4 mb-margin-md">
+<!-- Winner Row (1st) -->
+<div class="flex items-center justify-between p-4 bg-primary-container/10 border border-primary-container rounded-lg">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-primary">1</span>
+<div>
+<p class="font-body-stats text-body-stats text-on-surface">Alex Rivera</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Green Thimble</p>
+</div>
+</div>
+<span class="font-body-stats text-body-stats text-primary font-bold">$24.5k</span>
+</div>
+<!-- 2nd Place -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg hover:bg-surface-variant transition-colors group">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-secondary">2</span>
+<div>
+<p class="font-body-stats text-body-stats text-on-surface">Sarah Chen</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Red Car</p>
+</div>
+</div>
+<span class="font-body-stats text-body-stats text-secondary">$18.2k</span>
+</div>
+<!-- 3rd Place -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-tertiary">3</span>
+<div>
+<p class="font-body-stats text-body-stats text-on-surface">Marcus Knight</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Blue Boat</p>
+</div>
+</div>
+<span class="font-body-stats text-body-stats text-tertiary">$12.1k</span>
+</div>
+<!-- 4th Place -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-on-surface-variant">4</span>
+<div>
+<p class="font-body-stats text-body-stats text-on-surface">Jordan Smith</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Yellow Hat</p>
+</div>
+</div>
+<span class="font-body-stats text-body-stats text-error">Bankrupt</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-1 gap-4">
+<button class="w-full h-14 bg-primary text-on-primary rounded-full font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95 transition-all" onclick="window.location.reload()">
+<span class="material-symbols-outlined">restart_alt</span>
+                            Play Again
+                        </button>
+<button class="w-full h-14 bg-surface-variant text-on-surface-variant rounded-full font-body-stats text-body-stats flex items-center justify-center gap-2 hover:bg-outline-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">bar_chart</span>
+                            Detailed Stats
+                        </button>
+</div>
+</div>
+</div>
+<!-- Bento Grid - Achievements & Highlights -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Most Properties -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">domain</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Landlord King</p>
+<p class="font-body-stats text-body-stats">Alex Rivera</p>
+<p class="text-label-sm font-label-sm text-secondary-fixed-dim mt-1">12 Properties Owned</p>
+</div>
+<!-- Luckiest Player -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2" style="font-variation-settings: 'FILL' 1;">casino</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Luck of the Draw</p>
+<p class="font-body-stats text-body-stats">Sarah Chen</p>
+<p class="text-label-sm font-label-sm text-secondary-fixed-dim mt-1">5 Double Rolls</p>
+</div>
+<!-- Jail Bird -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-error mb-2" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Legal Trouble</p>
+<p class="font-body-stats text-body-stats">Marcus Knight</p>
+<p class="text-label-sm font-label-sm text-secondary-fixed-dim mt-1">4 Stints in Jail</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Polish Script -->
+<script>
+        // Simple Confetti Animation
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 10 + 5;
+                this.speed = Math.random() * 3 + 2;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 5 - 2.5;
+                this.color = ['#10b981', '#6ffbbe', '#006c49', '#ffffff', '#fbbf24'][Math.floor(Math.random() * 5)];
+            }
+
+            update() {
+                this.y += this.speed;
+                this.angle += this.spin;
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Reveal animation for stats
+        const rows = document.querySelectorAll('.space-y-4 > div');
+        rows.forEach((row, index) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                row.style.transition = 'all 0.5s ease-out';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, 600 + (index * 150));
+        });
+    </script>
+<style>
+        @keyframes scale-up {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</body></html>

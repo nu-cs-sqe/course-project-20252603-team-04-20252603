@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Empire Tycoon | Property &amp; Chance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#d4dcd5",
+                    "secondary-fixed": "#e0e3e5",
+                    "on-error-container": "#93000a",
+                    "primary-fixed": "#6ffbbe",
+                    "inverse-surface": "#2b322d",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-secondary-container": "#626567",
+                    "inverse-primary": "#4edea3",
+                    "background": "#f4fbf4",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "surface-bright": "#f4fbf4",
+                    "tertiary": "#545f73",
+                    "outline-variant": "#bbcabf",
+                    "surface-tint": "#006c49",
+                    "secondary-fixed-dim": "#c4c7c9",
+                    "secondary-container": "#e0e3e5",
+                    "surface-variant": "#dde4dd",
+                    "tertiary-container": "#98a3ba",
+                    "surface-container-high": "#e3eae3",
+                    "on-surface": "#161d19",
+                    "surface-container-low": "#eef6ee",
+                    "primary-container": "#10b981",
+                    "on-secondary-fixed": "#191c1e",
+                    "outline": "#6c7a71",
+                    "surface-container-highest": "#dde4dd",
+                    "surface-container": "#e8f0e9",
+                    "primary-fixed-dim": "#4edea3",
+                    "secondary": "#5c5f61",
+                    "on-secondary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#002113",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#00422b",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#2e394c",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#3c4a42",
+                    "on-tertiary-fixed": "#111c2d",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#161d19",
+                    "on-primary-fixed-variant": "#005236",
+                    "tertiary-fixed": "#d8e3fb",
+                    "primary": "#006c49",
+                    "surface": "#f4fbf4",
+                    "inverse-on-surface": "#ebf3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "margin-sm": "16px",
+                    "gutter": "24px",
+                    "margin-md": "32px",
+                    "board-tile-gap": "4px",
+                    "margin-lg": "48px"
+            },
+            "fontFamily": {
+                    "body-stats": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-caps": ["Manrope"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "body-main": ["Manrope"]
+            },
+            "fontSize": {
+                    "body-stats": ["18px", {"lineHeight": "1.5", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .board-overlay {
+            background-image: radial-gradient(#006c49 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-main text-on-background min-h-screen overflow-x-hidden">
+<!-- TopAppBar from JSON Logic -->
+<header class="bg-surface-container-low dark:bg-surface-dim shadow-sm flex justify-between items-center px-gutter w-full h-16 fixed top-0 z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Empire Tycoon</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant transition-colors rounded-full active:scale-95 transition-transform" data-icon="history">history</button>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant transition-colors rounded-full active:scale-95 transition-transform" data-icon="settings">settings</button>
+</div>
+</header>
+<!-- SideNavBar from JSON Logic -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col p-margin-sm border-r border-outline-variant bg-surface dark:bg-inverse-surface w-72 hidden md:flex pt-20">
+<div class="flex items-center gap-4 mb-margin-md px-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Active Player Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmx0DyPQ71dg_WwfP1bwr0A6_eriZi39mn151ays5bnv6eWMgw19SwkST008aUYdwO3tnFQLuEhZXiP8zBVjUwuujGOBPIXU3tBpkdoDXlg5EgJD7ldEEwsa9fj-5CEchV1lTiuwoMJ-t7KxxhqeathKnOZ__Q3R7aDA6aDA3gAyuDBkV09opV5hrbrPfEK4-oWdM2vCgTozh1W_b3Tuvc8RUrAEG9a3hCX5qwE3bR9-aGHIF3EUi_wCwc_q0iD6W1BIN8JmU7pTfT"/>
+</div>
+<div>
+<p class="font-headline-md text-headline-md font-extrabold text-primary leading-tight">Current Player</p>
+<p class="text-on-surface-variant font-body-main">$1,500 Balance</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 font-bold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>Board</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant rounded-lg px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span>Trade</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant rounded-lg px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="real_estate_agent">real_estate_agent</span>
+<span>Portfolio</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant rounded-lg px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span>Auction</span>
+</a>
+</div>
+<button class="mt-auto bg-primary text-on-primary font-headline-md rounded-lg py-4 w-full shadow-md hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
+            End Turn
+        </button>
+</nav>
+<!-- Main Content Area -->
+<main class="md:ml-72 pt-24 pb-12 px-margin-sm md:px-margin-md min-h-screen relative board-overlay">
+<div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-margin-lg items-start justify-center">
+<!-- Property Detail Card Section -->
+<section class="w-full lg:w-1/2 flex flex-col items-center">
+<div class="mb-margin-sm flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full shadow-sm">
+<span class="w-3 h-3 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">New Opportunity</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-xl border border-neutral_slate_200 w-full max-w-sm transition-transform hover:rotate-1 transform-gpu">
+<!-- Property Header -->
+<div class="h-24 bg-primary flex flex-col justify-center items-center text-on-primary">
+<span class="font-label-caps text-label-caps tracking-widest uppercase mb-1">Title Deed</span>
+<h2 class="font-headline-md text-headline-md">Emerald Plaza</h2>
+</div>
+<!-- Property Stats -->
+<div class="p-margin-md space-y-4">
+<div class="flex justify-between items-center border-b border-outline-variant pb-2">
+<span class="text-on-surface-variant font-body-main">Purchase Price</span>
+<span class="font-body-stats text-body-stats text-primary">$300</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface">Rent</span>
+<span class="font-body-stats text-body-stats">$30</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant opacity-80">
+<span class="text-sm">With 1 Office</span>
+<span class="text-sm font-semibold">$90</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant opacity-80">
+<span class="text-sm">With 2 Offices</span>
+<span class="text-sm font-semibold">$250</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant opacity-80">
+<span class="text-sm">With Skyscraper</span>
+<span class="text-sm font-semibold">$950</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-md mt-6">
+<p class="text-[11px] text-center leading-tight font-label-sm italic text-outline">
+                                If a player owns ALL the sites of any Color-Group, the rent is doubled on Unimproved Sites in that group.
+                            </p>
+</div>
+</div>
+<!-- Actions -->
+<div class="p-gutter pt-0 flex flex-col gap-3">
+<button class="bg-primary text-on-primary font-headline-md rounded-full py-4 w-full shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+                            Buy Property
+                        </button>
+<button class="bg-surface text-on-surface-variant font-headline-md border border-outline-variant rounded-full py-4 w-full hover:bg-surface-variant active:scale-95 transition-all">
+                            Decline
+                        </button>
+</div>
+</div>
+</section>
+<!-- Chance Card Section -->
+<section class="w-full lg:w-1/2 flex flex-col items-center">
+<div class="mb-margin-sm flex items-center gap-2 px-4 py-2 bg-tertiary-container rounded-full shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary-container text-sm" data-icon="casino">casino</span>
+<span class="font-label-caps text-label-caps text-on-tertiary-container uppercase">Fate Decides</span>
+</div>
+<div class="bg-surface-container-highest rounded-lg p-1 shadow-2xl w-full max-w-sm border-2 border-tertiary">
+<div class="bg-white rounded-md p-8 min-h-[400px] flex flex-col items-center justify-between text-center relative overflow-hidden">
+<!-- Decorative Pattern -->
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[150px] absolute -top-10 -right-10 rotate-12" data-icon="help">help</span>
+<span class="material-symbols-outlined text-[100px] absolute -bottom-10 -left-10 -rotate-12" data-icon="trending_down">trending_down</span>
+</div>
+<div class="relative z-10">
+<div class="w-20 h-20 bg-error-container text-on-error-container rounded-full flex items-center justify-center mx-auto mb-margin-md">
+<span class="material-symbols-outlined text-4xl" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<h3 class="font-headline-xl text-headline-xl text-on-surface mb-2">Chance</h3>
+<div class="w-16 h-1 bg-tertiary mx-auto mb-margin-md"></div>
+</div>
+<div class="relative z-10 px-4">
+<p class="font-headline-md text-headline-md text-on-surface-variant leading-tight">AI Bubble Pops: Lose $500</p>
+<p class="font-body-main text-on-surface-variant mt-4 opacity-70">Technological volatility hits the market. All digital assets depreciate instantly.</p>
+</div>
+<div class="relative z-10 w-full mt-margin-md">
+<button class="bg-tertiary text-on-tertiary font-headline-md rounded-lg py-4 w-full shadow-md hover:bg-on-tertiary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+                                Proceed
+                                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Game State Visualizer (Bento Grid Style) -->
+<div class="mt-margin-lg grid grid-cols-2 gap-4 w-full max-w-sm">
+<div class="bg-surface-container p-4 rounded-lg flex flex-col gap-1 border border-outline-variant shadow-sm">
+<span class="font-label-caps text-label-caps text-outline">Net Worth</span>
+<span class="font-headline-md text-headline-md text-primary">$4,820</span>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex flex-col gap-1 border border-outline-variant shadow-sm">
+<span class="font-label-caps text-label-caps text-outline">Properties</span>
+<span class="font-headline-md text-headline-md text-tertiary">12 Units</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Contextual FAB Suppression Logic -->
+<!-- FAB is only shown on Home/Dashboard, but we'll add a 'Roll' button for this board-like view -->
+<button class="fixed bottom-margin-md right-margin-md w-20 h-20 bg-primary-container text-on-primary-container rounded-full shadow-2xl flex flex-col items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 border-4 border-surface">
+<span class="material-symbols-outlined text-3xl" data-icon="casino">casino</span>
+<span class="font-label-caps text-[10px]">ROLL</span>
+</button>
+<!-- Mobile Navigation (BottomNavBar Logic) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-low shadow-lg h-20 flex items-center justify-around px-margin-sm z-50">
+<button class="flex flex-col items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-sm">Board</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-sm">Trade</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="real_estate_agent">real_estate_agent</span>
+<span class="font-label-sm">Portfolio</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-sm">Auction</span>
+</button>
+</nav>
+<!-- Visual Enhancements Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle parallax/tilt for cards
+            const cards = document.querySelectorAll('.bg-surface-container-lowest, .bg-surface-container-highest');
+            
+            document.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+                
+                cards.forEach(card => {
+                    // Slight variation per card
+                    const factor = card.classList.contains('bg-surface-container-lowest') ? 1 : -1;
+                    card.style.transform = `rotateY(${xAxis * factor}deg) rotateX(${yAxis * factor}deg)`;
+                });
+            });
+        });
+    </script>
+<!-- Background Images with high-quality prompts -->
+<div class="hidden">
+<img data-alt="A luxurious modern skyscraper called Emerald Plaza, showcasing green glass windows reflecting a sunset. The architecture is sharp and contemporary, sitting in a bustling financial district with professional lighting. The image has a clean, premium light-mode corporate aesthetic, dominated by soft greens and crisp whites, matching the Cobalt and Emerald brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARpUx1YwJlRa41JO4vIDzg2LAfJLnpSE3J83BP__2yRSS4R5WGnjbo84cE1HdlWEdg9daeo_7gu7TiSw-pH2c0OClJa0X0-ZFF81XtNf6wnOsuNoFevMSMexfWhhZkFVBPm7g0qDUOjkSxn8TCKEgqhUN1BOFDlYJy1bAg3tbcDGSGLiuRo2qflEj5NHXp8SXWGfEvjkbkFTcW5vXojBfR2I_yJuCHQ5LUI254e_80cfWoCqaMeAPdJZwWOWJRe4WPrZbTjD_SlSav"/>
+<img data-alt="A conceptual digital illustration of a market crash, showing glowing blue and red charts plummeting in a holographic interface. The scene is set in a high-tech future corporate environment with soft ambient lighting. The visual style is minimalist and flat, focusing on high-contrast data visualization and modern SaaS aesthetics with a sophisticated deep slate and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYk-anSEaKfHv7t8j1DoPmsPkwYildW6HTMUlSSWD2W2rOH93rCQQoziW6XjaD9u9iyri3YUuAYyNQyCft_UJsRJiTsxEyi7J7lBXPKWKvxObtBScTeWbzuRa7pFKSjmNUTK39CikE_L6jua4R5BxNWWcRW_cRuK4gd8IZ7CrXYU4num1DzvdEBNNZ2X4dElhmv_owKJKyF9P7rD7V8XZiiDfwI6yu9JsMYTgeFjOWLD6Ym__GZbzkp4AmE7z08zCNGI4Qi4hKhaj9"/>
+</div>
+</body></html>
