@@ -133,7 +133,6 @@ public class TileActionTests {
                         Double.POSITIVE_INFINITY));
     }
 
-
     @Test
     public void TC10_constructor_WithAllActionTypes_AcceptsEachType() {
         for (TileActionType type : TileActionType.values()) {
