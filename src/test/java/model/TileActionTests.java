@@ -141,4 +141,26 @@ public class TileActionTests {
         }
     }
 
+    @Test
+    public void TC11_getters_PreserveReferenceIdentity() {
+        Player player = EasyMock.createMock(Player.class);
+        Tile tile = EasyMock.createMock(Tile.class);
+        Card card = EasyMock.createMock(Card.class);
+
+        EasyMock.replay(player, tile, card);
+
+        TileAction action = new TileAction(
+                TileActionType.DRAW_CARD,
+                player,
+                tile,
+                card,
+                100.0);
+
+        assertSame(player, action.getPlayer());
+        assertSame(tile, action.getTile());
+        assertSame(card, action.getCard());
+
+        EasyMock.verify(player, tile, card);
+    }
+
 }
