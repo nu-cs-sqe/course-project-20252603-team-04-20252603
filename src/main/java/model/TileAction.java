@@ -1,11 +1,12 @@
 package model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Objects;
 
 import static java.lang.Double.isNaN;
 
 
-public final class TileAction {
+public class TileAction {
 
     private final TileActionType type;
     private final Player player;
@@ -13,6 +14,9 @@ public final class TileAction {
     private final Card card;
     private final double amount;
 
+    @SuppressFBWarnings(
+            value = {"CT_CONSTRUCTOR_THROW", "EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+            justification = "Constructor validates invariants and intentionally stores model references for controller context.")
     public TileAction(TileActionType type, Player player, Tile tile, Card card, double amount) {
 
         Objects.requireNonNull(type, "type must not be null");
@@ -30,6 +34,9 @@ public final class TileAction {
         return type;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "TileAction intentionally exposes the player reference as controller context.")
     public Player getPlayer() {
         return player;
     }
