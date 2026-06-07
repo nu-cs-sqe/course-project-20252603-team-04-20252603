@@ -41,8 +41,8 @@
 # Week 10 (06/01/2026-06/07/2026)
 **Planning and Progress Tracking**:
 1. [done] All model classes
-2. [currently in progress] controller
-3. [to implement]: GUIs, i18n, integration tests, fix checkstyle warnings
+2. [currently in progress] controller, fix checkstyle warnings, integration tests,
+3. [to implement]: GUIs, i18n,  
 
 # Week X (XX/XX/2026-XX/XX/2026) TEMPLATE (You can change the format to whatever the team likes better)
 **Planning and Progress Tracking**:
