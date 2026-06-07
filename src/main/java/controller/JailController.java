@@ -1,16 +1,21 @@
 package controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import model.Dice;
 import model.GameEngine;
+import model.Player;
+import util.Constants;
 
 import java.util.Objects;
 
-import model.Dice;
-import model.Player;
-import util.Constants;
 public class JailController {
     private final GameEngine gameEngine;
     private final Dice dice;
-    public JailController(GameEngine gameEngine, Dice dice){
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Controller intentionally stores shared GameEngine and Dice references for game coordination.")
+    public JailController(GameEngine gameEngine, Dice dice) {
         this.gameEngine = gameEngine;
         this.dice = dice;
 
