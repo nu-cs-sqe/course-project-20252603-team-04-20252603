@@ -2,15 +2,15 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import model.Player;
 import model.Property;
 
 public class PropertyController {
 
     public boolean promptPurchase(Player player, Property property) {
-        if (player == null || property == null) {
-            throw new IllegalArgumentException("Player and property cannot be null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(property, "Property cannot be null");
         if (property.isOwned()) {
             return false;
         }
@@ -21,29 +21,24 @@ public class PropertyController {
     }
 
     public boolean buyProperty(Player player, Property property) {
-        if (player == null || property == null) {
-            throw new IllegalArgumentException("Player and property cannot be null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(property, "Property cannot be null");
         return property.purchase(player);
     }
 
     public void declineProperty(Player player, Property property) {
-        if (player == null || property == null) {
-            throw new IllegalArgumentException("Player and property cannot be null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
+        Objects.requireNonNull(property, "Property cannot be null");
     }
 
     public boolean handleRentPayment(Player renter, Property property) {
-        if (renter == null || property == null) {
-            throw new IllegalArgumentException("Renter and property cannot be null");
-        }
+        Objects.requireNonNull(renter, "Renter cannot be null");
+        Objects.requireNonNull(property, "Property cannot be null");
         return property.chargeRent(renter);
     }
 
     public boolean handleForcedSale(Player player, double requiredAmount) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
+        Objects.requireNonNull(player, "Player cannot be null");
         if (player.canAfford(requiredAmount)) {
             return true;
         }
