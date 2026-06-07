@@ -89,4 +89,20 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC5: releaseFromJail - Null player
+    @Test
+    public void TC5_ReleaseFromJail_NullPlayer_ThrowsNullPointerException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(gameEngine, dice);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertThrows(NullPointerException.class,
+                () -> controller.releaseFromJail(null),
+                "releaseFromJail must reject a null player");
+
+        EasyMock.verify(gameEngine, dice);
+    }
+
 }

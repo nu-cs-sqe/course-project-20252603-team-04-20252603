@@ -24,4 +24,8 @@ public class JailController {
         gameEngine.setPlayerPosition(player, Constants.JAIL_POSITION);
         return player.goToJail(Constants.JAIL_POSITION);
     }
+
+    public void releaseFromJail(Player player){
+        Objects.requireNonNull(player, "Player cannot be null");
+    }
 }
