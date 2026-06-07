@@ -104,4 +104,10 @@ public class TileActionTests {
         assertEquals(0.0, action.getAmount(), 0.001);
     }
 
+    @Test
+    public void TC6_constructor_WithNullType_ThrowsNullPointerException() {
+        assertThrows(NullPointerException.class,
+                () -> new TileAction(null, null, null, null, 0.0));
+    }
+
 }

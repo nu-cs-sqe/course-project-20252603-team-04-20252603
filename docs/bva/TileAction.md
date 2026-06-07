@@ -157,7 +157,7 @@ Output equivalent classes:
 
 - **TC6: Null action type** ( :white_check_mark: )
   - **State of the system**: `type = null`, optional fields omitted, `amount = 0.0`.
-  - **Expected output**: `IllegalArgumentException` is thrown.
+  - **Expected output**: `NullPointerException` is thrown.
 
 - **TC7: Negative amount** ( :white_check_mark: )
   - **State of the system**: `type = PAY_TAX`, `amount = -0.01`.
