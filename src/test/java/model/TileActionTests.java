@@ -69,7 +69,7 @@ public class TileActionTests {
     @Test
     public void TC4_constructor_WithPayBankType_StoresTypeAndAmount() {
         Player player = EasyMock.createMock(Player.class);
-        Tile tile =EasyMock.createMock(Tile.class);
+        Tile tile = EasyMock.createMock(Tile.class);
 
         TileAction action = new TileAction(
                 TileActionType.PAY_BANK,
@@ -85,6 +85,23 @@ public class TileActionTests {
         assertEquals(100.0, action.getAmount(), 0.001);
     }
 
+    @Test
+    public void TC5_constructor_WithMovePlayerType_StoresTypeAndTargetTile() {
+        Player player = EasyMock.createMock(Player.class);
+        Tile tile = EasyMock.createMock(Tile.class);
 
+        TileAction action = new TileAction(
+                TileActionType.MOVE_PLAYER,
+                player,
+                tile,
+                null,
+                0.0);
+
+        assertEquals(TileActionType.MOVE_PLAYER, action.getType());
+        assertSame(player, action.getPlayer());
+        assertSame(tile, action.getTile());
+        assertNull(action.getCard());
+        assertEquals(0.0, action.getAmount(), 0.001);
+    }
 
 }
