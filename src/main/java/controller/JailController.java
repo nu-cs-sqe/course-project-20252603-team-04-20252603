@@ -54,9 +54,8 @@ public class JailController {
         if (dice.isDoubles()) {
             return releaseFromJail(player);
         }
-        player.incrementJailTurnCount();
-        if (player.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
-            return payJailFee(player);
+        if (player.getJailTurnCount() < Constants.MAX_JAIL_TURNS) {
+            player.incrementJailTurnCount();
         }
         return false;
     }
