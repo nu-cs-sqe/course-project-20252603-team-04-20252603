@@ -50,9 +50,11 @@ public class JailController {
         if (!player.inJail()) {
             return false;
         }
-        
+        dice.roll();
+        if (dice.isDoubles()) {
+            return releaseFromJail(player);
+        }
         return false;
-
     }
 
 }

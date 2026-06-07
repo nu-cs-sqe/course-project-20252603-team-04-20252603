@@ -292,4 +292,26 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC16: attemptRollDoubles - Player in jail, dice roll is doubles
+    @Test
+    public void TC16_AttemptRollDoubles_PlayerInJailRollsDoubles_ReturnsTrue() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.inJail()).andReturn(true);
+        dice.roll();
+        EasyMock.expectLastCall();
+        EasyMock.expect(dice.isDoubles()).andReturn(true);
+        EasyMock.expect(player.leaveJail()).andReturn(true);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertTrue(controller.attemptRollDoubles(player),
+                "attemptRollDoubles must return true when the player rolls doubles");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
