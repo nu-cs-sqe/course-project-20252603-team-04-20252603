@@ -499,4 +499,26 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // Basis path gap: sendToJail propagates goToJail failure
+    @Test
+    public void TC_GAP1_SendToJail_GoToJailFails_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        gameEngine.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expectLastCall();
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.sendToJail(player),
+                "sendToJail must return false when goToJail fails");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
+   
 }

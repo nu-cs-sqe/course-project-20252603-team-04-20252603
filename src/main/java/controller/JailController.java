@@ -41,7 +41,9 @@ public class JailController {
         if (!player.canAfford(Constants.JAIL_FEE)) {
             return false;
         }
-        player.remove(Constants.JAIL_FEE);
+        if (!player.remove(Constants.JAIL_FEE)) {
+            return false;
+        }
         return player.leaveJail();
     }
 
