@@ -65,6 +65,9 @@ public class JailController {
 
     public boolean handleJailTurn(Player player){
         Objects.requireNonNull(player, "Player cannot be null");
+        if (!player.inJail()) {
+            return false;
+        }
         return false;
     }
 
