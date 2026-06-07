@@ -405,6 +405,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(false);
         EasyMock.replay(gameEngine, dice, player);
 
@@ -423,6 +424,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         EasyMock.expect(player.getJailTurnCount()).andReturn(1);
         player.incrementJailTurnCount();
@@ -444,6 +446,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         EasyMock.expect(player.getJailTurnCount()).andReturn(2);
         player.incrementJailTurnCount();
@@ -465,6 +468,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         EasyMock.expect(player.getJailTurnCount()).andReturn(Constants.MAX_JAIL_TURNS);
         EasyMock.replay(gameEngine, dice, player);
@@ -473,6 +477,24 @@ public class JailControllerTests {
 
         assertTrue(controller.handleJailTurn(player),
                 "handleJailTurn must return true when the player is at max jail turns");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
+    // TC25: handleJailTurn - Inactive player in jail
+    @Test
+    public void TC25_HandleJailTurn_InactivePlayerInJail_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.handleJailTurn(player),
+                "handleJailTurn must return false for an inactive player in jail");
 
         EasyMock.verify(gameEngine, dice, player);
     }
