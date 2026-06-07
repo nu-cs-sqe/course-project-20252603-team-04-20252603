@@ -314,4 +314,28 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC17: attemptRollDoubles - Player in jail, dice not doubles, turn count below max
+    @Test
+    public void TC17_AttemptRollDoubles_PlayerInJailNoDoubles_IncrementsTurnCount() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.inJail()).andReturn(true);
+        dice.roll();
+        EasyMock.expectLastCall();
+        EasyMock.expect(dice.isDoubles()).andReturn(false);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(1);
+        player.incrementJailTurnCount();
+        EasyMock.expectLastCall();
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.attemptRollDoubles(player),
+                "attemptRollDoubles must return false when the player does not roll doubles");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
