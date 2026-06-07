@@ -519,6 +519,29 @@ public class JailControllerTests {
 
         EasyMock.verify(gameEngine, dice, player);
     }
+     // Basis path gap: payJailFee propagates remove failure
+     @Test
+     public void TC_GAP2_PayJailFee_RemoveFails_ReturnsFalse() {
+         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+         Dice dice = EasyMock.createMock(Dice.class);
+         Player player = EasyMock.createMock(Player.class);
+ 
+         EasyMock.expect(player.getActive()).andReturn(true);
+         EasyMock.expect(player.inJail()).andReturn(true);
+         EasyMock.expect(player.canAfford(Constants.JAIL_FEE)).andReturn(true);
+         EasyMock.expect(player.remove(Constants.JAIL_FEE)).andReturn(false);
+         EasyMock.replay(gameEngine, dice, player);
+ 
+         JailController controller = new JailController(gameEngine, dice);
+ 
+         assertFalse(controller.payJailFee(player),
+                 "payJailFee must return false when remove fails");
+ 
+         EasyMock.verify(gameEngine, dice, player);
+     }
+ 
+     
+ 
 
    
 }
