@@ -2,6 +2,8 @@ package model;
 
 import java.util.Objects;
 
+import static java.lang.Double.isNaN;
+
 
 public final class TileAction {
 
@@ -14,7 +16,7 @@ public final class TileAction {
     public TileAction(TileActionType type, Player player, Tile tile, Card card, double amount) {
 
         Objects.requireNonNull(type, "type must not be null");
-        if (amount < 0) {
+        if (amount < 0 || isNaN(amount)) {
             throw new IllegalArgumentException("amount must be non-negative");
         }
         this.type = type;

@@ -116,4 +116,10 @@ public class TileActionTests {
                 () -> new TileAction(TileActionType.PAY_TAX, null, null, null, -0.01));
     }
 
+    @Test
+    public void TC8_constructor_WithNanAmount_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new TileAction(TileActionType.PAY_TAX, null, null, null, Double.NaN));
+    }
+
 }
