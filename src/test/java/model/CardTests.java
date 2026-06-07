@@ -1,9 +1,21 @@
 package model;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTests {
+
+    @Test
+    public void getCardEffect_OnValidCard_ReturnsEffectFromConstructor() {
+        CardEffect effect = EasyMock.createMock(CardEffect.class);
+        EasyMock.replay(effect);
+
+        Card card = new Card("Go to Jail", "Go directly to jail.", effect);
+
+        assertSame(effect, card.getCardEffect());
+        EasyMock.verify(effect);
+    }
 
     @Test
     public void getTitle_OnNormalTitle_ReturnsExactString() {
