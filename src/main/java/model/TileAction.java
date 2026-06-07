@@ -16,8 +16,8 @@ public final class TileAction {
     public TileAction(TileActionType type, Player player, Tile tile, Card card, double amount) {
 
         Objects.requireNonNull(type, "type must not be null");
-        if (amount < 0 || isNaN(amount)) {
-            throw new IllegalArgumentException("amount must be non-negative");
+        if (amount < 0 || isNaN(amount) || amount == Double.POSITIVE_INFINITY) {
+            throw new IllegalArgumentException("amount must be non-negative, finite, and not NaN");
         }
         this.type = type;
         this.player = player;

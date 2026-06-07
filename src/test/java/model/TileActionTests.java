@@ -122,4 +122,17 @@ public class TileActionTests {
                 () -> new TileAction(TileActionType.PAY_TAX, null, null, null, Double.NaN));
     }
 
+    @Test
+    public void TC9_constructor_WithInfiniteAmount_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new TileAction(
+                        TileActionType.PAY_TAX,
+                        null,
+                        null,
+                        null,
+                        Double.POSITIVE_INFINITY));
+    }
+
+
+
 }
