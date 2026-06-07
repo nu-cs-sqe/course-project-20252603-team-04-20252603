@@ -25,7 +25,8 @@ public class JailController {
         return player.goToJail(Constants.JAIL_POSITION);
     }
 
-    public void releaseFromJail(Player player){
+    public boolean releaseFromJail(Player player){
         Objects.requireNonNull(player, "Player cannot be null");
+        return player.leaveJail();
     }
 }

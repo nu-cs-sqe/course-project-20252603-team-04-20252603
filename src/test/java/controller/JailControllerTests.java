@@ -105,4 +105,22 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice);
     }
 
+    // TC6: releaseFromJail - Player is in jail
+    @Test
+    public void TC6_ReleaseFromJail_PlayerInJail_ReturnsTrue() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.leaveJail()).andReturn(true);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertTrue(controller.releaseFromJail(player),
+                "releaseFromJail must return true when the player leaves jail");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
