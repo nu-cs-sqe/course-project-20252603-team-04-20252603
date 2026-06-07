@@ -109,3 +109,7 @@
 - **TC23: Sell all properties, still insufficient** ( :white_check_mark: )
   - **State of the system**: all properties sold, balance still < requiredAmount
   - **Expected output**: false
+
+- **TC24: First property sale makes player affordable, loop breaks before later properties** ( :white_check_mark: )
+  - **State of the system**: player is initially unaffordable, first owned property sale raises balance to requiredAmount or above, later properties remain untouched
+  - **Expected output**: true
