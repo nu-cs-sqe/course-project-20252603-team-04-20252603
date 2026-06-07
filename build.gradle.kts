@@ -95,19 +95,22 @@ tasks.jacocoTestReport {
     }
 }
 
-tasks.build {
-    dependsOn("pitest")
-}
-
 tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+    finalizedBy(tasks.jacocoTestReport)
     finalizedBy(tasks.pitest)
 }
+
 tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
+    dependsOn(tasks.test)
+}
+
+tasks.pitest {
+    dependsOn(tasks.test)
 }
 
 pitest {
+    // targetTests must cover every package in targetClasses, or PIT will show 0%
+    // line/mutation coverage (with 0 tests run) for those classes.
     targetClasses = setOf("model.*", "controller.*")
     targetTests = setOf("model.*", "controller.*")
     junit5PluginVersion = "1.2.1"
