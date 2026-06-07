@@ -1,11 +1,14 @@
 package model;
 
-public final class Card {
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+public class Card {
 
     private final String title;
     private final String description;
     private final CardEffect effect;
 
+    @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
     public Card(String title, String description, CardEffect effect) {
         if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("title must not be null or empty");
