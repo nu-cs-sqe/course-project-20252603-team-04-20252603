@@ -1,15 +1,14 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TileActionTests {
 
     @Test
-    public void constructor_WithValidFields_StoresAllFields() {
+    public void TC1_constructor_WithValidFields_StoresAllFields() {
         Player player = EasyMock.createMock(Player.class);
         Tile tile = EasyMock.createMock(Tile.class);
         CardEffect effect = EasyMock.createMock(CardEffect.class);
@@ -31,5 +30,16 @@ public class TileActionTests {
         assertEquals(100.0, action.getAmount(), 0.001);
 
         EasyMock.verify(player, tile, effect);
+    }
+
+    @Test
+    public void TC2_constructor_WithNoneAndOptionalNullFields_CreatesAction() {
+        TileAction action = new TileAction(TileActionType.NONE, null, null, null, 0.0);
+
+        assertEquals(TileActionType.NONE, action.getType());
+        assertNull(action.getPlayer());
+        assertNull(action.getTile());
+        assertNull(action.getCard());
+        assertEquals(0.0, action.getAmount(), 0.001);
     }
 }
