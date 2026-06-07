@@ -562,7 +562,28 @@ public class JailControllerTests {
          EasyMock.verify(gameEngine, dice, player);
      }
  
-     
+     // Basis path gap: attemptRollDoubles propagates leaveJail failure on doubles
+     @Test
+     public void TC_GAP4_AttemptRollDoubles_DoublesButLeaveJailFails_ReturnsFalse() {
+         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+         Dice dice = EasyMock.createMock(Dice.class);
+         Player player = EasyMock.createMock(Player.class);
+ 
+         EasyMock.expect(player.getActive()).andReturn(true);
+         EasyMock.expect(player.inJail()).andReturn(true);
+         dice.roll();
+         EasyMock.expectLastCall();
+         EasyMock.expect(dice.isDoubles()).andReturn(true);
+         EasyMock.expect(player.leaveJail()).andReturn(false);
+         EasyMock.replay(gameEngine, dice, player);
+ 
+         JailController controller = new JailController(gameEngine, dice);
+ 
+         assertFalse(controller.attemptRollDoubles(player),
+                 "attemptRollDoubles must return false when leaveJail fails after rolling doubles");
+ 
+         EasyMock.verify(gameEngine, dice, player);
+     }
  
      
  
