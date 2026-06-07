@@ -32,6 +32,9 @@ public class JailController {
 
     public boolean payJailFee(Player player){
         Objects.requireNonNull(player, "Player cannot be null");
-        return false;
+        if (!player.inJail()) {
+            return false;
+        }
+       return true;
     }
 }
