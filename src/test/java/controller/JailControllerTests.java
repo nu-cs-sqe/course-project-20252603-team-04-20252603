@@ -2,9 +2,11 @@ package controller;
 
 import model.Dice;
 import model.GameEngine;
+import model.Player;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JailControllerTests {
@@ -23,6 +25,24 @@ public class JailControllerTests {
                 "sendToJail must reject a null player");
 
         EasyMock.verify(gameEngine, dice);
+    }
+
+    // TC2: sendToJail - Inactive player
+    @Test
+    public void TC2_SendToJail_InactivePlayer_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.sendToJail(player),
+                "sendToJail must return false for an inactive player");
+
+        EasyMock.verify(gameEngine, dice, player);
     }
 
 }
