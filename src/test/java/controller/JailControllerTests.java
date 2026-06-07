@@ -5,9 +5,11 @@ import model.GameEngine;
 import model.Player;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+import util.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JailControllerTests {
 
@@ -41,6 +43,27 @@ public class JailControllerTests {
 
         assertFalse(controller.sendToJail(player),
                 "sendToJail must return false for an inactive player");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
+    // TC3: sendToJail - Active player not in jail
+    @Test
+    public void TC3_SendToJail_ActivePlayerNotInJail_ReturnsTrue() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        gameEngine.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expectLastCall();
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertTrue(controller.sendToJail(player),
+                "sendToJail must return true for an active player not in jail");
 
         EasyMock.verify(gameEngine, dice, player);
     }
