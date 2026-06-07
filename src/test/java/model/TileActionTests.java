@@ -42,4 +42,30 @@ public class TileActionTests {
         assertNull(action.getCard());
         assertEquals(0.0, action.getAmount(), 0.001);
     }
+
+    @Test
+    public void TC3_constructor_WithCollectMoneyType_StoresTypeAndAmount() {
+        Player player = EasyMock.createMock(Player.class);
+        Tile tile = EasyMock.createMock(Tile.class);
+
+        EasyMock.replay(player, tile);
+
+        TileAction action = new TileAction(
+                TileActionType.COLLECT_MONEY,
+                player,
+                tile,
+                null,
+                200.0);
+
+        assertEquals(TileActionType.COLLECT_MONEY, action.getType());
+        assertSame(player, action.getPlayer());
+        assertSame(tile, action.getTile());
+        assertNull(action.getCard());
+        assertEquals(200.0, action.getAmount(), 0.001);
+
+        EasyMock.verify(player, tile);
+    }
+
+
+
 }
