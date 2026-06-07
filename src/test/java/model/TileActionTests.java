@@ -134,5 +134,11 @@ public class TileActionTests {
     }
 
 
+    @Test
+    public void TC10_constructor_WithAllActionTypes_AcceptsEachType() {
+        for (TileActionType type : TileActionType.values()) {
+            assertDoesNotThrow(() -> new TileAction(type, null, null, null, 0.0));
+        }
+    }
 
 }
