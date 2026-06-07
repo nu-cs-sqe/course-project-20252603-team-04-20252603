@@ -163,4 +163,16 @@ public class TileActionTests {
         EasyMock.verify(player, tile, card);
     }
 
+    @Test
+    public void TC12_getAmount_PreservesNumericValue() {
+        TileAction action = new TileAction(
+                TileActionType.PAY_BANK,
+                null,
+                null,
+                null,
+                100.0);
+
+        assertEquals(100.0, action.getAmount(), 0.001);
+    }
+
 }
