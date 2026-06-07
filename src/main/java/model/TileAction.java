@@ -2,6 +2,7 @@ package model;
 
 import java.util.Objects;
 
+
 public final class TileAction {
 
     private final TileActionType type;
@@ -13,6 +14,9 @@ public final class TileAction {
     public TileAction(TileActionType type, Player player, Tile tile, Card card, double amount) {
 
         Objects.requireNonNull(type, "type must not be null");
+        if (amount < 0) {
+            throw new IllegalArgumentException("amount must be non-negative");
+        }
         this.type = type;
         this.player = player;
         this.tile = tile;

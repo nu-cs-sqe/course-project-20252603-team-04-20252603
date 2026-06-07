@@ -110,4 +110,10 @@ public class TileActionTests {
                 () -> new TileAction(null, null, null, null, 0.0));
     }
 
+    @Test
+    public void TC7_constructor_WithNegativeAmount_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new TileAction(TileActionType.PAY_TAX, null, null, null, -0.01));
+    }
+
 }
