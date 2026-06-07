@@ -68,4 +68,25 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC4: sendToJail - Active player already in jail
+    @Test
+    public void TC4_SendToJail_ActivePlayerAlreadyInJail_ReturnsTrue() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(true);
+        gameEngine.setPlayerPosition(player, Constants.JAIL_POSITION);
+        EasyMock.expectLastCall();
+        EasyMock.expect(player.goToJail(Constants.JAIL_POSITION)).andReturn(true);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertTrue(controller.sendToJail(player),
+                "sendToJail must return true for an active player already in jail");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
