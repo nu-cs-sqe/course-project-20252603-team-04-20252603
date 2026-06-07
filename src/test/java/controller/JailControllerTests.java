@@ -123,4 +123,22 @@ public class JailControllerTests {
         EasyMock.verify(gameEngine, dice, player);
     }
 
+    // TC7: releaseFromJail - Player not in jail
+    @Test
+    public void TC7_ReleaseFromJail_PlayerNotInJail_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.leaveJail()).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.releaseFromJail(player),
+                "releaseFromJail must return false when the player is not in jail");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
 }
