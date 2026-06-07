@@ -281,6 +281,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(false);
         EasyMock.replay(gameEngine, dice, player);
 
@@ -299,6 +300,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         dice.roll();
         EasyMock.expectLastCall();
@@ -321,6 +323,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         dice.roll();
         EasyMock.expectLastCall();
@@ -345,6 +348,7 @@ public class JailControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         Player player = EasyMock.createMock(Player.class);
 
+        EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.inJail()).andReturn(true);
         dice.roll();
         EasyMock.expectLastCall();
@@ -356,6 +360,24 @@ public class JailControllerTests {
 
         assertFalse(controller.attemptRollDoubles(player),
                 "attemptRollDoubles must return false when the player is at max jail turns");
+
+        EasyMock.verify(gameEngine, dice, player);
+    }
+
+    // TC19: attemptRollDoubles - Inactive player in jail
+    @Test
+    public void TC19_AttemptRollDoubles_InactivePlayerInJail_ReturnsFalse() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(player.getActive()).andReturn(false);
+        EasyMock.replay(gameEngine, dice, player);
+
+        JailController controller = new JailController(gameEngine, dice);
+
+        assertFalse(controller.attemptRollDoubles(player),
+                "attemptRollDoubles must return false for an inactive player in jail");
 
         EasyMock.verify(gameEngine, dice, player);
     }

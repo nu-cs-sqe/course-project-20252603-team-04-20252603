@@ -47,6 +47,9 @@ public class JailController {
 
     public boolean attemptRollDoubles(Player player){
         Objects.requireNonNull(player, "Player cannot be null");
+        if (!player.getActive()) {
+            return false;
+        }
         if (!player.inJail()) {
             return false;
         }
