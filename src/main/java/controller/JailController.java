@@ -17,6 +17,9 @@ public class JailController {
 
     public boolean sendToJail(Player player){
         Objects.requireNonNull(player, "Player cannot be null");
-        return false;
+        if (!player.getActive()) {
+            return false;
+        }
+        return true;
     }
 }
