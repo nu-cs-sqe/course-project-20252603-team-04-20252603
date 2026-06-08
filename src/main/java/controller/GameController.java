@@ -1,6 +1,7 @@
 package controller;
 
 import model.GameEngine;
+import model.GameStatus;
 import model.Player;
 import view.BoardView;
 import view.CardView;
@@ -33,6 +34,10 @@ public class GameController {
         if (players.size() < 2) {
             throw new IllegalArgumentException("At least two players are required to start the game");
         }
+    }
+
+    public GameStatus getStatus() {
+        return gameEngine.getStatus();
     }
 
 
