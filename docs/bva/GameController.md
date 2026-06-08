@@ -30,17 +30,17 @@ CardView cardView;
   - **State of the system**: controller has no `GameEngine`
   - **Expected output**: throws `NullPointerException`
 
-- **TC2: getStatus_WhenGameEngineStatusIsNotStarted_ReturnsNotStarted** ( :x: )
+- **TC2: getStatus_WhenGameEngineStatusIsNotStarted_ReturnsNotStarted** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.NOT_STARTED`
   - **Expected output**: controller returns `GameStatus.NOT_STARTED`
 
-- **TC3: getStatus_WhenGameEngineStatusIsInProgress_ReturnsInProgress** ( :x: )
+- **TC3: getStatus_WhenGameEngineStatusIsInProgress_ReturnsInProgress** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.IN_PROGRESS`
   - **Expected output**: returns `GameStatus.IN_PROGRESS`
 
-- **TC4: getStatus_WhenGameEngineStatusIsGameOver_ReturnsGameOver** ( :x: )
-  - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.GAME_OVER`
-  - **Expected output**: returns `GameStatus.GAME_OVER`
+  - **TC4: getStatus_WhenGameEngineStatusIsGameOver_ReturnsGameOver** ( :white_check_mark: )
+    - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.GAME_OVER`
+    - **Expected output**: returns `GameStatus.GAME_OVER`
 
 ---
 

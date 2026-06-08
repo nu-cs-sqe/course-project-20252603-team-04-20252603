@@ -52,4 +52,17 @@ public class GameControllerTests {
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
         assertEquals(GameStatus.IN_PROGRESS, gameController.getStatus());
     }
+
+    @Test
+    public void TC4_getStatus_WhenGameEngineStatusIsGameOver_ReturnsGameOver() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(gameEngine.getStatus()).andStubReturn(GameStatus.GAME_OVER);
+        EasyMock.replay(gameEngine);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertEquals(GameStatus.GAME_OVER, gameController.getStatus());
+    }
 }
