@@ -91,7 +91,12 @@ public class GameController {
             return;
         }
         if (actionType == TileActionType.PAY_BANK || actionType == TileActionType.PAY_TAX) {
-            action.getPlayer().remove(action.getAmount());
+            Player player = action.getPlayer();
+            boolean paid = player.remove(action.getAmount());
+            if (!paid) {
+                handleBankruptcy(player);
+                return;
+            }
             refreshViews();
         }
     }
