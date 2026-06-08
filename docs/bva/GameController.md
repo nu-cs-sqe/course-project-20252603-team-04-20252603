@@ -30,7 +30,7 @@ CardView cardView;
   - **State of the system**: `players = null`
   - **Expected output**: throws `NullPointerException`; no game is started and no views are refreshed
 
-- **TC2: startGame_WithZeroPlayers_ThrowsException** ( :x: )
+- **TC2: startGame_WithZeroPlayers_ThrowsException** ( :white_check_mark: )
   - **State of the system**: `players = []`
   - **Expected output**: throws `IllegalArgumentException`; `game` remains not started
 
