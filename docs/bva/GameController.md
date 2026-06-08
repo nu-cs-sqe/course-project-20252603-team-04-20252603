@@ -26,7 +26,7 @@ CardView cardView;
 2. Input type: list size / object references
 3. Input boundary values: `null`, `0`, `1`, `2`, `4`, `5`
 
-- **TC1: startGame_WithNullPlayerList_ThrowsException** ( :x: )
+- **TC1: startGame_WithNullPlayerList_ThrowsException** ( :white_check_mark: )
   - **State of the system**: `players = null`
   - **Expected output**: throws `NullPointerException`; no game is started and no views are refreshed
 
