@@ -86,7 +86,12 @@ public class GameController {
             return;
         }
         if (actionType == TileActionType.OFFER_PURCHASE) {
-            ((Property) action.getTile()).purchase(action.getPlayer());
+            Tile tile = action.getTile();
+            if (!(tile instanceof Property)) {
+                refreshViews();
+                return;
+            }
+            ((Property) tile).purchase(action.getPlayer());
             refreshViews();
             return;
         }

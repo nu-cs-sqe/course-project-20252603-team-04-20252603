@@ -681,6 +681,47 @@ public class GameControllerTests {
                 player);
     }
 
+    @Test
+    public void TC29_handleTileAction_WithActionForWrongTile_RejectsAction() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        Tile tile = EasyMock.createMock(Tile.class);
+
+        EasyMock.expect(action.getType()).andReturn(TileActionType.OFFER_PURCHASE);
+        EasyMock.expect(action.getTile()).andReturn(tile);
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                tile);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleTileAction(action);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                tile);
+    }
+
+
+
 
 
 
