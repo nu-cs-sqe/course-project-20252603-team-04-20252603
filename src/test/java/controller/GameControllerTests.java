@@ -6,6 +6,7 @@ import model.Dice;
 import model.Player;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+import util.Constants;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
@@ -318,9 +319,9 @@ public class GameControllerTests {
         dice.roll();
         EasyMock.expectLastCall().once();
 
-        EasyMock.expect(dice.getTotal()).andReturn(2);
+        EasyMock.expect(dice.getTotal()).andReturn(Constants.MIN_DICE_ROLL);
 
-        gameEngine.movePlayer(player, 2);
+        gameEngine.movePlayer(player, Constants.MIN_DICE_ROLL);
         EasyMock.expectLastCall().once();
 
         boardView.refresh(gameEngine);
@@ -358,9 +359,9 @@ public class GameControllerTests {
         dice.roll();
         EasyMock.expectLastCall().once();
 
-        EasyMock.expect(dice.getTotal()).andReturn(12);
+        EasyMock.expect(dice.getTotal()).andReturn(Constants.MAX_DICE_ROLL);
 
-        gameEngine.movePlayer(player, 12);
+        gameEngine.movePlayer(player, Constants.MAX_DICE_ROLL);
         EasyMock.expectLastCall().once();
 
         boardView.refresh(gameEngine);
