@@ -86,7 +86,7 @@ CardView cardView;
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1]`
   - **Expected output**: controller returns `[P1]`
 
-- **TC10: getActivePlayers_ReturnedListCannotMutateControllerState** ( :x: )
+- **TC10: getActivePlayers_ReturnedListCannotMutateControllerState** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns an unmodifiable list `[P1, P2]`
   - **Expected output**: controller returns an unmodifiable list, or mutating the returned list does not change the controller's active player list
 
@@ -274,6 +274,6 @@ CardView cardView;
   - **State of the system**: current tile action produced a visible card effect
   - **Expected output**: card view displays the current card details and other views remain synchronized with the model
 
-- **TC45: refreshViews_AfterBankruptcy_RemovesPlayerFromVisibleTurnOrder** ( :x: )
+- **TC45: refreshViews_AfterBankruptcy_RemovesPlayerFromVisibleTurnOrder** ( :white_check_mark: )
   - **State of the system**: `handleBankruptcy(P2)` has removed `P2` from active players
   - **Expected output**: player info view and board view no longer show `P2` as active; current player display points to the next valid player or winner

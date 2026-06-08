@@ -347,7 +347,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC17_startGame_WithOneRemainingPlayer_ThrowsException() {
+    public void TC17_startGame_WithNullPlayer_ThrowsException() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
