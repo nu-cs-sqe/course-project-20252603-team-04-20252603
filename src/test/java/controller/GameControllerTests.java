@@ -40,5 +40,16 @@ public class GameControllerTests {
         assertEquals(GameStatus.NOT_STARTED, gameController.getStatus());
     }
 
-
+    @Test
+    public void TC3_getStatus_WhenGameEngineStatusIsInProgress_ReturnsInProgress() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(gameEngine.getStatus()).andStubReturn(GameStatus.IN_PROGRESS);
+        EasyMock.replay(gameEngine);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertEquals(GameStatus.IN_PROGRESS, gameController.getStatus());
+    }
 }
