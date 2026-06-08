@@ -61,6 +61,12 @@ public class GameController {
         return gameEngine.getActivePlayers();
     }
 
+    public void handleBankruptcy(Player player) {
+        Objects.requireNonNull(player, "Player cannot be null");
+        gameEngine.removeBankruptPlayer(player);
+        refreshViews();
+    }
+
     public void handleRollDice() {
         Player currentPlayer = gameEngine.getCurrentPlayer();
         if (currentPlayer.isBankrupt()) {
@@ -68,6 +74,10 @@ public class GameController {
         }
         dice.roll();
         gameEngine.movePlayer(currentPlayer, dice.getTotal());
+        if (currentPlayer.isBankrupt()) {
+            handleBankruptcy(currentPlayer);
+            return;
+        }
         refreshViews();
     }
 
