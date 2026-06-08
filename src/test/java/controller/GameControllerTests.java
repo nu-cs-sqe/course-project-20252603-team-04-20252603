@@ -552,6 +552,48 @@ public class GameControllerTests {
                 player, property);
     }
 
+    @Test
+    public void TC26_handleTileAction_WithOptionalPurchaseAboveBalance_DoesNotPurchase() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
+
+        EasyMock.expect(action.getType()).andReturn(TileActionType.OFFER_PURCHASE);
+        EasyMock.expect(action.getTile()).andReturn(property);
+        EasyMock.expect(action.getPlayer()).andReturn(player);
+        EasyMock.expect(property.purchase(player)).andReturn(false);
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player, property);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleTileAction(action);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player, property);
+    }
+
 
     @Test
     public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
