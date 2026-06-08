@@ -170,4 +170,15 @@ public class GameControllerTests {
                 player1, player2, player3);
     }
 
+    @Test
+    public void TC11_startGame_WithNullPlayerList_ThrowsException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertThrows(NullPointerException.class, () -> gameController.startGame(null));
+    }
+
 }
