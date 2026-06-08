@@ -2,6 +2,7 @@ package controller;
 
 import model.GameEngine;
 import model.GameStatus;
+import model.Dice;
 import model.Player;
 import org.easymock.EasyMock;
 import org.easymock.internal.matchers.Null;
@@ -303,4 +304,31 @@ public class GameControllerTests {
         assertThrows(IllegalStateException.class, () -> gameController.startGame(List.of(player1, player2)));
     }
 
+    @Test
+    public void TC19_handleRollDice_WithMinimumRoll_MovesTwoSpaces() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+
+        dice.roll();
+        EasyMock.expectLastCall().once();
+
+        EasyMock.expect(dice.getTotal()).andReturn(2);
+
+        gameEngine.movePlayer(player, 2);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
+
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        gameController.handleRollDice();
+
+        EasyMock.verify(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
+    }
 }

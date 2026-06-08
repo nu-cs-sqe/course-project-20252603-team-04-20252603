@@ -2,6 +2,7 @@ package controller;
 
 import model.GameEngine;
 import model.GameStatus;
+import model.Dice;
 import model.Player;
 import util.Constants;
 import view.BoardView;
@@ -19,6 +20,7 @@ public class GameController {
     private PlayerInfoView playerInfoView;
     private DiceView diceView;
     private CardView cardView;
+    private Dice dice;
 
     GameController (GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView, CardView cardView) {
         Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
@@ -28,6 +30,11 @@ public class GameController {
         this.diceView = diceView;
         this.cardView = cardView;
 
+    }
+
+    GameController (GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView, CardView cardView, Dice dice) {
+        this(gameEngine, boardView, playerInfoView, diceView, cardView);
+        this.dice = Objects.requireNonNull(dice, "Dice cannot be null");
     }
 
     public void startGame(List<Player> players) {
@@ -52,6 +59,12 @@ public class GameController {
 
     public List<Player> getActivePlayers() {
         return gameEngine.getActivePlayers();
+    }
+
+    public void handleRollDice() {
+        Player currentPlayer = gameEngine.getCurrentPlayer();
+        dice.roll();
+        gameEngine.movePlayer(currentPlayer, dice.getTotal());
     }
 
 }
