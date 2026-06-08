@@ -303,6 +303,4 @@ public class GameControllerTests {
         assertThrows(IllegalStateException.class, () -> gameController.startGame(List.of(player1, player2)));
     }
 
-
-
 }
