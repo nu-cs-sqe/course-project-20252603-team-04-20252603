@@ -65,6 +65,7 @@ public class GameController {
         Player currentPlayer = gameEngine.getCurrentPlayer();
         dice.roll();
         gameEngine.movePlayer(currentPlayer, dice.getTotal());
+        refreshViews();
     }
 
     public void refreshViews() {
