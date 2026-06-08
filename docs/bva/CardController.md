@@ -34,15 +34,15 @@ constructor fails fast at the construction site.
 
 - **TC16: Null deck** ( :white_check_mark: )
     - **State of the system**: `deck = null`; `game` is a valid mock
-    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+    - **Expected output**: `NullPointerException` thrown; no `CardController` instance is created
 
 - **TC17: Null game** ( :white_check_mark: )
     - **State of the system**: `deck` is a valid mock; `game = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+    - **Expected output**: `NullPointerException` thrown; no `CardController` instance is created
 
 - **TC18: Both null** ( :white_check_mark: )
     - **State of the system**: `deck = null`, `game = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+    - **Expected output**: `NullPointerException` thrown; no `CardController` instance is created
 
 ### Normal operation
 
@@ -58,7 +58,7 @@ constructor fails fast at the construction site.
 
 - **TC1: Null player** ( :white_check_mark: )
     - **State of the system**: `player = null`; `deck` is a valid mock
-    - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
+    - **Expected output**: `NullPointerException` thrown; `deck.draw()` is **not** called
 
 - **TC2: Inactive (eliminated) player** ( :white_check_mark: )
     - **State of the system**: `player.getActive() == false`; `deck` valid
@@ -84,15 +84,15 @@ constructor fails fast at the construction site.
 
 - **TC5: Null card** ( :white_check_mark: )
     - **State of the system**: `card = null`, `player` active
-    - **Expected output**: `IllegalArgumentException` thrown; no effect is applied; `game` untouched
+    - **Expected output**: `NullPointerException` thrown; no effect is applied; `game` untouched
 
 - **TC6: Null player** ( :white_check_mark: )
     - **State of the system**: `card` valid mock, `player = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no effect is applied; `game` untouched
+    - **Expected output**: `NullPointerException` thrown; no effect is applied; `game` untouched
 
 - **TC7: Both null** ( :white_check_mark: )
     - **State of the system**: `card = null`, `player = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
+    - **Expected output**: `NullPointerException` thrown; no effect is applied
 
 - **TC8: Inactive player** ( :white_check_mark: )
     - **State of the system**: `card` valid, `player.getActive() == false`
@@ -122,7 +122,7 @@ constructor fails fast at the construction site.
 
 - **TC12: Null card** ( :white_check_mark: )
     - **State of the system**: `card = null`
-    - **Expected output**: `IllegalArgumentException` thrown; nothing returned; `card.getTitle()` / `card.getDescription()` not called
+    - **Expected output**: `NullPointerException` thrown; nothing returned; `card.getTitle()` / `card.getDescription()` not called
 
 ### Normal operation
 
