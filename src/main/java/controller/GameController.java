@@ -26,22 +26,12 @@ public class GameController {
             justification = "GameController intentionally keeps references to model and view collaborators supplied "
                     + "by the application wiring.")
     public GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
-                    CardView cardView) {
-        Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
-        this.gameEngine = gameEngine;
+                    CardView cardView, Dice dice) {
+        this.gameEngine = Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
         this.boardView = Objects.requireNonNull(boardView, "BoardView cannot be null");
         this.playerInfoView = Objects.requireNonNull(playerInfoView, "PlayerInfoView cannot be null");
         this.diceView = Objects.requireNonNull(diceView, "DiceView cannot be null");
         this.cardView = Objects.requireNonNull(cardView, "CardView cannot be null");
-
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",
-            justification = "GameController intentionally keeps the injected Dice so tests and UI wiring share roll state.")
-    public GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
-                    CardView cardView, Dice dice) {
-        this(gameEngine, boardView, playerInfoView, diceView, cardView);
         this.dice = Objects.requireNonNull(dice, "Dice cannot be null");
     }
 

@@ -95,8 +95,11 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
 
-        assertThrows(NullPointerException.class, () -> new GameController(null, boardView, playerInfoView, diceView, cardView));
+        assertThrows(NullPointerException.class, () -> new GameController(
+                null, boardView, playerInfoView, diceView, cardView, dice
+        ));
     }
 
     @Test
@@ -109,7 +112,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(GameStatus.NOT_STARTED, gameController.getStatus());
     }
 
@@ -122,7 +126,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(GameStatus.IN_PROGRESS, gameController.getStatus());
     }
 
@@ -135,7 +140,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(GameStatus.GAME_OVER, gameController.getStatus());
     }
 
@@ -149,7 +155,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(firstPlayer, gameController.getCurrentPlayer());
     }
 
@@ -162,7 +169,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(List.of(), gameController.getActivePlayers());
     }
 
@@ -177,7 +185,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(List.of(player1, player2), gameController.getActivePlayers());
     }
 
@@ -194,7 +203,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(List.of(player1, player2, player3, player4), gameController.getActivePlayers());
     }
 
@@ -208,7 +218,8 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertEquals(List.of(player1), gameController.getActivePlayers());
     }
 
@@ -219,6 +230,7 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
 
         Player player1 = EasyMock.createMock(Player.class);
         Player player2 = EasyMock.createMock(Player.class);
@@ -229,18 +241,16 @@ public class GameControllerTests {
         EasyMock.expect(gameEngine.getActivePlayers()).andReturn(activePlayers);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView,
-                player1, player2, player3);
+                dice, player1, player2, player3);
 
-        GameController controller = new GameController(
-                gameEngine, boardView, playerInfoView, diceView, cardView
-        );
+        GameController controller = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         List<Player> returnedPlayers = controller.getActivePlayers();
 
         assertThrows(UnsupportedOperationException.class,
                 () -> returnedPlayers.add(player3));
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView,
-                player1, player2, player3);
+                dice, player1, player2, player3);
     }
 
     @Test
@@ -250,8 +260,11 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(NullPointerException.class, () -> gameController.startGame(null));
+        EasyMock.verify(dice);
     }
 
     @Test
@@ -261,12 +274,13 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
         EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.NOT_STARTED);
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of()));
         assertEquals(GameStatus.NOT_STARTED, gameController.getStatus());
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -276,12 +290,13 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
         EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.NOT_STARTED);
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of(EasyMock.createMock(Player.class))));
         assertEquals(GameStatus.NOT_STARTED, gameController.getStatus());
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -291,17 +306,18 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
         Player player1 = EasyMock.createMock(Player.class);
         Player player2 = EasyMock.createMock(Player.class);
         EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.NOT_STARTED);
 
         gameEngine.startGame();
         EasyMock.expectLastCall().once();
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         gameController.startGame(List.of(player1, player2));
 
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -311,6 +327,7 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
         Player player1 = EasyMock.createMock(Player.class);
         Player player2 = EasyMock.createMock(Player.class);
         Player player3 = EasyMock.createMock(Player.class);
@@ -319,10 +336,10 @@ public class GameControllerTests {
 
         gameEngine.startGame();
         EasyMock.expectLastCall().once();
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         gameController.startGame(List.of(player1, player2, player3, player4));
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
 
@@ -338,12 +355,13 @@ public class GameControllerTests {
         Player player3 = EasyMock.createMock(Player.class);
         Player player4 = EasyMock.createMock(Player.class);
         Player player5 = EasyMock.createMock(Player.class);
+        Dice dice = EasyMock.createMock(Dice.class);
 
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of(player1, player2, player3, player4, player5)));
 
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -354,10 +372,11 @@ public class GameControllerTests {
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
         Player player1 = EasyMock.createMock(Player.class);
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        Dice dice = EasyMock.createMock(Dice.class);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(NullPointerException.class, () -> gameController.startGame(List.of(player1, null)));
-        EasyMock.verify(gameEngine);
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -369,10 +388,12 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Player player1 = EasyMock.createMock(Player.class);
         Player player2 = EasyMock.createMock(Player.class);
+        Dice dice = EasyMock.createMock(Dice.class);
         EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.IN_PROGRESS);
-        EasyMock.replay(gameEngine);
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, dice);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         assertThrows(IllegalStateException.class, () -> gameController.startGame(List.of(player1, player2)));
+        EasyMock.verify(gameEngine, dice);
     }
 
     @Test
@@ -524,16 +545,15 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
 
-        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
-        GameController gameController = new GameController(
-                gameEngine, boardView, playerInfoView, diceView, cardView
-        );
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
         assertThrows(NullPointerException.class, () -> gameController.handleTileAction(null));
 
-        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView);
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 
     @Test
