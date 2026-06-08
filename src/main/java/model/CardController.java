@@ -18,27 +18,25 @@ public class CardController {
     }
 
     public Card drawChanceCard(Player player) {
-        if (player == null || !player.getActive()) {
-            throw new IllegalArgumentException("player must not be null or inactive");
+        Objects.requireNonNull(player, "player must not be null");
+        if (!player.getActive()) {
+            throw new IllegalArgumentException("player must not be inactive");
         }
         return deck.draw();
     }
 
     public void applyCard(Card card, Player player) {
-        if (card == null) {
-            throw new IllegalArgumentException("card must not be null");
-        }
-        if (player == null || !player.getActive()) {
-            throw new IllegalArgumentException("player must not be null or inactive");
+        Objects.requireNonNull(card, "card must not be null");
+        Objects.requireNonNull(player, "player must not be null");
+        if (!player.getActive()) {
+            throw new IllegalArgumentException("player must not be inactive");
         }
         card.getCardEffect().apply(player, game);
         deck.discard(card);
     }
 
     public Map<String, String> showCard(Card card) {
-        if (card == null) {
-            throw new IllegalArgumentException("card must not be null");
-        }
+        Objects.requireNonNull(card, "card must not be null");
         Map<String, String> result = new LinkedHashMap<>();
         result.put("title", card.getTitle());
         result.put("description", card.getDescription());

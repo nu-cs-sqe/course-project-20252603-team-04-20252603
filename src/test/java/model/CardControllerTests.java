@@ -59,16 +59,16 @@ public class CardControllerTests {
     // drawChanceCard(Player player)
     // ==================================================================================================
 
-    // TC1: Null player -> IllegalArgumentException; deck.draw() not called
+    // TC1: Null player -> NullPointerException; deck.draw() not called
     @Test
-    public void drawChanceCard_OnNullPlayer_ThrowsIllegalArgumentException() {
+    public void drawChanceCard_OnNullPlayer_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(deck, game);
 
         CardController controller = new CardController(deck, game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.drawChanceCard(null));
 
         EasyMock.verify(deck, game);
@@ -133,9 +133,9 @@ public class CardControllerTests {
     // applyCard(Card card, Player player)
     // ==================================================================================================
 
-    // TC5: Null card -> IllegalArgumentException; no effect applied; game untouched
+    // TC5: Null card -> NullPointerException; no effect applied; game untouched
     @Test
-    public void applyCard_OnNullCard_ThrowsIllegalArgumentException() {
+    public void applyCard_OnNullCard_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         Player player = EasyMock.createMock(Player.class);
@@ -143,15 +143,15 @@ public class CardControllerTests {
 
         CardController controller = new CardController(deck, game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.applyCard(null, player));
 
         EasyMock.verify(deck, game, player);
     }
 
-    // TC6: Null player (valid card) -> IllegalArgumentException; no effect applied; game untouched
+    // TC6: Null player (valid card) -> NullPointerException; no effect applied; game untouched
     @Test
-    public void applyCard_OnNullPlayer_ThrowsIllegalArgumentException() {
+    public void applyCard_OnNullPlayer_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         Card card = new Card("Advance to GO", "Advance to GO. Collect $200.", (p, g) -> {});
@@ -159,22 +159,22 @@ public class CardControllerTests {
 
         CardController controller = new CardController(deck, game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.applyCard(card, null));
 
         EasyMock.verify(deck, game);
     }
 
-    // TC7: Both null -> IllegalArgumentException; no effect applied
+    // TC7: Both null -> NullPointerException; no effect applied
     @Test
-    public void applyCard_OnBothNull_ThrowsIllegalArgumentException() {
+    public void applyCard_OnBothNull_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(deck, game);
 
         CardController controller = new CardController(deck, game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.applyCard(null, null));
 
         EasyMock.verify(deck, game);
@@ -269,16 +269,16 @@ public class CardControllerTests {
     // showCard(Card card)
     // ==================================================================================================
 
-    // TC12: Null card -> IllegalArgumentException; nothing returned
+    // TC12: Null card -> NullPointerException; nothing returned
     @Test
-    public void showCard_OnNullCard_ThrowsIllegalArgumentException() {
+    public void showCard_OnNullCard_ThrowsNullPointerException() {
         Deck deck = EasyMock.createMock(Deck.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(deck, game);
 
         CardController controller = new CardController(deck, game);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> controller.showCard(null));
 
         EasyMock.verify(deck, game);
