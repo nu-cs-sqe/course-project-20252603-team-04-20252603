@@ -49,7 +49,11 @@ public class GameController {
         Objects.requireNonNull(players, "Players cannot be null");
 
         if (players.size() < Constants.MIN_NUM_PLAYERS || players.size() > Constants.MAX_NUM_PLAYERS) {
-            throw new IllegalArgumentException("Cannot start a game with less than two players");
+            throw new IllegalArgumentException("Player count must be between " + Constants.MIN_NUM_PLAYERS + " and "
+                    + Constants.MAX_NUM_PLAYERS);
+        }
+        for (Player player : players) {
+            Objects.requireNonNull(player, "Player cannot be null");
         }
         if (gameEngine.getStatus() == GameStatus.IN_PROGRESS) {
             throw new IllegalStateException("Game is already in progress");
