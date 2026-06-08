@@ -84,7 +84,7 @@ constructor fails fast at the construction site.
 
 - **TC5: Null card** ( :white_check_mark: )
     - **State of the system**: `card = null`, `player` active
-    - **Expected output**: `IllegalArgumentException` thrown; no effect is applied; `game` untouched
+    - **Expected output**: `NullPointerException` thrown; no effect is applied; `game` untouched
 
 - **TC6: Null player** ( :white_check_mark: )
     - **State of the system**: `card` valid mock, `player = null`
