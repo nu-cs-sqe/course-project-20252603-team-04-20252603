@@ -58,7 +58,7 @@ constructor fails fast at the construction site.
 
 - **TC1: Null player** ( :white_check_mark: )
     - **State of the system**: `player = null`; `deck` is a valid mock
-    - **Expected output**: `IllegalArgumentException` thrown; `deck.draw()` is **not** called
+    - **Expected output**: `NullPointerException` thrown; `deck.draw()` is **not** called
 
 - **TC2: Inactive (eliminated) player** ( :white_check_mark: )
     - **State of the system**: `player.getActive() == false`; `deck` valid
