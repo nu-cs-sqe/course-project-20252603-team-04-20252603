@@ -29,7 +29,7 @@ public class CardController {
         Objects.requireNonNull(card, "card must not be null");
         Objects.requireNonNull(player, "player must not be null");
         if (!player.getActive()) {
-            throw new IllegalArgumentException("player must not be inactive");
+            throw new IllegalArgumentException("player must be active");
         }
         card.getCardEffect().apply(player, game);
         deck.discard(card);
