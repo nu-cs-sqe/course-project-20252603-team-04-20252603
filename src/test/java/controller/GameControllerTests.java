@@ -229,7 +229,7 @@ public class GameControllerTests {
         EasyMock.expectLastCall().once();
         EasyMock.replay(gameEngine);
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
-        gameController.startGame(List.of(EasyMock.createMock(Player.class), EasyMock.createMock(Player.class)));
+        gameController.startGame(List.of(player1, player2));
         assertEquals(GameStatus.IN_PROGRESS, gameController.getStatus());
         assertEquals(List.of(player1, player2), gameController.getActivePlayers());
         assertSame(player1, gameController.getCurrentPlayer());
