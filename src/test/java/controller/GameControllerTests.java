@@ -139,4 +139,35 @@ public class GameControllerTests {
         assertEquals(List.of(player1), gameController.getActivePlayers());
     }
 
+    @Test
+    public void TC10_getActivePlayers_ReturnedListCannotMutateControllerState() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+
+        List<Player> activePlayers = List.of(player1, player2);
+
+        EasyMock.expect(gameEngine.getActivePlayers()).andReturn(activePlayers);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView,
+                player1, player2, player3);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView
+        );
+        List<Player> returnedPlayers = controller.getActivePlayers();
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> returnedPlayers.add(player3));
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView,
+                player1, player2, player3);
+    }
+
 }

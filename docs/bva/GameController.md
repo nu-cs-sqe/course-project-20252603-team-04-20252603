@@ -78,11 +78,11 @@ CardView cardView;
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1, P2]`
   - **Expected output**: controller returns `[P1, P2]` in turn order
 
-- **TC8: getActivePlayers_WhenGameEngineHasMaximumPlayers_ReturnsAllPlayers** ( :x: )
+- **TC8: getActivePlayers_WhenGameEngineHasMaximumPlayers_ReturnsAllPlayers** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1, P2, P3, P4]`
   - **Expected output**: controller returns `[P1, P2, P3, P4]` in turn order
 
-- **TC9: getActivePlayers_WhenGameEngineHasOneRemainingPlayer_ReturnsWinnerOnly** ( :x: )
+- **TC9: getActivePlayers_WhenGameEngineHasOneRemainingPlayer_ReturnsWinnerOnly** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1]`
   - **Expected output**: controller returns `[P1]`
 
