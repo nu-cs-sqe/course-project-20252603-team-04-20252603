@@ -114,6 +114,10 @@ public class GameController {
     }
 
     public void handleEndTurn() {
+        if (gameEngine.isGameOver()) {
+            refreshViews();
+            return;
+        }
         gameEngine.nextTurn();
         refreshViews();
     }

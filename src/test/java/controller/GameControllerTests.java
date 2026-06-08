@@ -729,6 +729,8 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
 
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
 
@@ -763,6 +765,8 @@ public class GameControllerTests {
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
+
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
 
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
@@ -799,8 +803,44 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
 
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleEndTurn();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
+    @Test
+    public void TC33_handleEndTurn_WithOneActivePlayer_EndsGame() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(true);
 
         boardView.refresh(gameEngine);
         EasyMock.expectLastCall().once();
