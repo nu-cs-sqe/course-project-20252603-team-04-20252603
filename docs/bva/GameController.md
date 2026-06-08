@@ -126,9 +126,9 @@ CardView cardView;
   - **State of the system**: `players = [P1, null]`
   - **Expected output**: throws `NullPointerException`; no partial game is started
 
-- **TC18: startGame_WhenGameAlreadyStarted_ResetsToNewGameState** ( :x: )
-  - **State of the system**: an existing game is in progress, then `startGame([P3, P4])` is called
-  - **Expected output**: previous game state is replaced, active players are `[P3, P4]`, current player is `P3`, and views show only the new game state
+- **TC18: startGame_WhenGameAlreadyInProgress_ThrowsException** ( :x: )
+  - **State of the system**: `gameEngine.getStatus()` returns `GameStatus.IN_PROGRESS`;
+  - **Expected output**: throws `IllegalStateException`; `gameEngine.startGame()` is not called; existing game state remains unchanged
 
 ---
 
