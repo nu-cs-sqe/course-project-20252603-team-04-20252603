@@ -142,7 +142,7 @@ CardView cardView;
   - **State of the system**: current player `P1` is at index `0`; dice total is controlled to `2`
   - **Expected output**: `P1` moves to index `2`, the tile at index `2` is processed, and views are refreshed
 
-- **TC20: handleRollDice_WithMaximumRoll_MovesTwelveSpaces** ( :x: )
+- **TC20: handleRollDice_WithMaximumRoll_MovesTwelveSpaces** ( :white_check_mark: )
   - **State of the system**: current player `P1` is at index `0`; dice total is controlled to `12`
   - **Expected output**: `P1` moves to index `12`, the tile at index `12` is processed, and views are refreshed
 
