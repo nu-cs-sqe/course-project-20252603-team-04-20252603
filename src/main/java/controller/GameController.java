@@ -88,6 +88,11 @@ public class GameController {
         if (actionType == TileActionType.OFFER_PURCHASE) {
             ((Property) action.getTile()).purchase(action.getPlayer());
             refreshViews();
+            return;
+        }
+        if (actionType == TileActionType.PAY_BANK || actionType == TileActionType.PAY_TAX) {
+            action.getPlayer().remove(action.getAmount());
+            refreshViews();
         }
     }
 
