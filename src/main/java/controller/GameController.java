@@ -4,6 +4,7 @@ import model.GameEngine;
 import model.GameStatus;
 import model.Dice;
 import model.Player;
+import model.TileAction;
 import util.Constants;
 import view.BoardView;
 import view.CardView;
@@ -79,6 +80,10 @@ public class GameController {
             return;
         }
         refreshViews();
+    }
+
+    public void handleTileAction(TileAction action) {
+        Objects.requireNonNull(action, "TileAction cannot be null");
     }
 
     public void refreshViews() {

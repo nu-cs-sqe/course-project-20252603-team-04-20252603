@@ -146,11 +146,11 @@ CardView cardView;
   - **State of the system**: current player `P1` is at index `0`; dice total is controlled to `12`
   - **Expected output**: `P1` moves to index `12`, the tile at index `12` is processed, and views are refreshed
 
-- **TC21: handleRollDice_WhenCurrentPlayerIsBankrupt_DoesNotMovePlayer** ( :x: )
+- **TC21: handleRollDice_WhenCurrentPlayerIsBankrupt_DoesNotMovePlayer** ( :white_check_mark: )
   - **State of the system**: current player has been removed from active players
   - **Expected output**: controller skips or rejects the roll for that player; no removed player position changes
 
-- **TC22: handleRollDice_WhenTileEffectCausesBankruptcy_HandlesBankruptcy** ( :x: )
+- **TC22: handleRollDice_WhenTileEffectCausesBankruptcy_HandlesBankruptcy** ( :white_check_mark: )
   - **State of the system**: current player lands on a tile that requires a payment greater than the player's available balance and assets
   - **Expected output**: `handleBankruptcy(currentPlayer)` is triggered, the player is removed from active turn order, and views are refreshed
 
@@ -162,7 +162,7 @@ CardView cardView;
 2. Input type: `TileAction` object reference and action-specific values
 3. Input boundary values: `null`, valid action, action requiring exact balance, action requiring more than balance
 
-- **TC23: handleTileAction_WithNullAction_ThrowsException** ( :x: )
+- **TC23: handleTileAction_WithNullAction_ThrowsException** ( :white_check_mark: )
   - **State of the system**: game is in progress, `action = null`
   - **Expected output**: throws `NullPointerException`; no game state changes
 
