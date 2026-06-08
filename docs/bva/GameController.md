@@ -138,7 +138,7 @@ CardView cardView;
 2. Input type: game status, current player position, dice total interval
 3. Input boundary values: game not started, dice total `2`, dice total `12`, board positions `0`, `30`, `31`
 
-- **TC19: handleRollDice_WithMinimumRoll_MovesTwoSpaces** ( :x: )
+- **TC19: handleRollDice_WithMinimumRoll_MovesTwoSpaces** ( :white_check_mark: )
   - **State of the system**: current player `P1` is at index `0`; dice total is controlled to `2`
   - **Expected output**: `P1` moves to index `2`, the tile at index `2` is processed, and views are refreshed
 
