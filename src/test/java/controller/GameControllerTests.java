@@ -125,5 +125,18 @@ public class GameControllerTests {
         assertEquals(List.of(player1, player2, player3, player4), gameController.getActivePlayers());
     }
 
+    @Test
+    public void TC9_getActivePlayers_WhenGameEngineHasOneRemainingPlayer_ReturnsWinnerOnly() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Player player1 = EasyMock.createMock(Player.class);
+        EasyMock.expect(gameEngine.getActivePlayers()).andStubReturn(List.of(player1));
+        EasyMock.replay(gameEngine);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertEquals(List.of(player1), gameController.getActivePlayers());
+    }
 
 }
