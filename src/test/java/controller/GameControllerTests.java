@@ -1060,4 +1060,23 @@ public class GameControllerTests {
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
+
+    @Test
+    public void TC40_refreshViews_WithNullBoardView_ThrowsExceptionBeforePartialUpdate() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+
+        EasyMock.replay(gameEngine, playerInfoView, diceView, cardView, dice);
+
+        assertThrows(NullPointerException.class, () -> new GameController(
+                gameEngine, null, playerInfoView, diceView, cardView, dice
+        ));
+
+        EasyMock.verify(gameEngine, playerInfoView, diceView, cardView, dice);
+    }
+
+
 }

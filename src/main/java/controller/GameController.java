@@ -22,7 +22,7 @@ public class GameController {
     GameController (GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView, CardView cardView) {
         Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
         this.gameEngine = gameEngine;
-        this.boardView = boardView;
+        this.boardView = Objects.requireNonNull(boardView, "BoardView cannot be null");
         this.playerInfoView = playerInfoView;
         this.diceView = diceView;
         this.cardView = cardView;
