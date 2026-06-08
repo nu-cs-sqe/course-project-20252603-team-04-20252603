@@ -35,6 +35,9 @@ public class GameController {
         if (players.size() < 2 || players.size() > 4) {
             throw new IllegalArgumentException("Cannot start a game with less than two players");
         }
+        if (gameEngine.getStatus() == GameStatus.IN_PROGRESS) {
+            throw new IllegalStateException("Game is already in progress");
+        }
         gameEngine.startGame();
     }
 
