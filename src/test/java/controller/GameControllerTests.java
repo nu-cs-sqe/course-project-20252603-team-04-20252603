@@ -511,6 +511,48 @@ public class GameControllerTests {
     }
 
     @Test
+    public void TC25_handleTileAction_WithPurchaseAtExactBalance_AllowsPurchase() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        Player player = new Player("P1", 100.0);
+        Property property = new Property("Exact Balance Property", 100.0, 10.0);
+
+        EasyMock.expect(action.getType()).andReturn(TileActionType.OFFER_PURCHASE);
+        EasyMock.expect(action.getTile()).andReturn(property);
+        EasyMock.expect(action.getPlayer()).andReturn(player);
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleTileAction(action);
+
+        assertTrue(property.isOwnedBy(player));
+        assertEquals(0.0, player.getBalance(), 0.001);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action);
+    }
+
+    @Test
     public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);

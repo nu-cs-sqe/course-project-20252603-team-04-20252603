@@ -80,7 +80,13 @@ public class GameController {
 
     public void handleTileAction(TileAction action) {
         Objects.requireNonNull(action, "TileAction cannot be null");
-        if (action.getType() == TileActionType.NONE) {
+        TileActionType actionType = action.getType();
+        if (actionType == TileActionType.NONE) {
+            refreshViews();
+            return;
+        }
+        if (actionType == TileActionType.OFFER_PURCHASE) {
+            ((Property) action.getTile()).purchase(action.getPlayer());
             refreshViews();
         }
     }
