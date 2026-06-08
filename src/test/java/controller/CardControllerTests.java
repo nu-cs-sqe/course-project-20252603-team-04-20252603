@@ -1,10 +1,16 @@
-package model;
+package controller;
 
 import java.util.Map;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import model.Card;
+import model.CardEffect;
+import model.Deck;
+import model.GameEngine;
+import model.Player;
 
 public class CardControllerTests {
 
