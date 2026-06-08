@@ -122,7 +122,7 @@ constructor fails fast at the construction site.
 
 - **TC12: Null card** ( :white_check_mark: )
     - **State of the system**: `card = null`
-    - **Expected output**: `IllegalArgumentException` thrown; nothing returned; `card.getTitle()` / `card.getDescription()` not called
+    - **Expected output**: `NullPointerException` thrown; nothing returned; `card.getTitle()` / `card.getDescription()` not called
 
 ### Normal operation
 
