@@ -63,6 +63,9 @@ public class GameController {
 
     public void handleRollDice() {
         Player currentPlayer = gameEngine.getCurrentPlayer();
+        if (currentPlayer.isBankrupt()) {
+            return;
+        }
         dice.roll();
         gameEngine.movePlayer(currentPlayer, dice.getTotal());
         refreshViews();
