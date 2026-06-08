@@ -40,5 +40,9 @@ public class GameController {
         return gameEngine.getStatus();
     }
 
+    public Player getCurrentPlayer() {
+        return gameEngine.getCurrentPlayer();
+    }
+
 
 }
