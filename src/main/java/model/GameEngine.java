@@ -1,5 +1,6 @@
 package model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import util.Constants;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-class GameEngine {
+public class GameEngine {
 
     private final List<Player> players;
     private final Board board;
@@ -15,7 +16,10 @@ class GameEngine {
     private int currentPlayerIndex;
     private Deck chanceDeck;
 
-    private GameEngine(List<Player> players, Board board, Deck chanceDeck) {
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "GameEngine intentionally keeps the provided Board so controllers and model operations share game state.")
+    public GameEngine(List<Player> players, Board board, Deck chanceDeck) {
         this.players = new ArrayList<>(players);
         this.board = board;
         this.chanceDeck = chanceDeck;
