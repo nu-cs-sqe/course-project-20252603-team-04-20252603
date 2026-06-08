@@ -1,9 +1,6 @@
 package controller;
 
-import model.GameEngine;
-import model.GameStatus;
-import model.Dice;
-import model.Player;
+import model.*;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import util.Constants;
@@ -480,6 +477,38 @@ public class GameControllerTests {
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView);
     }
 
+    @Test
+    public void TC24_handleTileAction_WithValidNoOpAction_RefreshesViewsOnly() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        EasyMock.expect(action.getType()).andReturn(TileActionType.NONE);
+
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, action, cardView, dice);
+        gameController.handleTileAction(action);
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, action, cardView, dice);
+    }
 
     @Test
     public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {

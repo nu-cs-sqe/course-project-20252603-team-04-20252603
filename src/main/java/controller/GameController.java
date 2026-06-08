@@ -1,10 +1,6 @@
 package controller;
 
-import model.GameEngine;
-import model.GameStatus;
-import model.Dice;
-import model.Player;
-import model.TileAction;
+import model.*;
 import util.Constants;
 import view.BoardView;
 import view.CardView;
@@ -84,6 +80,9 @@ public class GameController {
 
     public void handleTileAction(TileAction action) {
         Objects.requireNonNull(action, "TileAction cannot be null");
+        if (action.getType() == TileActionType.NONE) {
+            refreshViews();
+        }
     }
 
     public void refreshViews() {
@@ -92,5 +91,7 @@ public class GameController {
         diceView.refresh(dice);
         cardView.refresh(gameEngine);
     }
+
+
 
 }
