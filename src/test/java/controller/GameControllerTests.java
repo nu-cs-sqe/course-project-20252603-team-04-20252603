@@ -15,6 +15,60 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameControllerTests {
 
+    private void expectRefreshViews(GameEngine gameEngine, BoardView boardView,
+                                    PlayerInfoView playerInfoView, DiceView diceView,
+                                    CardView cardView) {
+        List<Player> activePlayers = List.of();
+
+        EasyMock.expect(gameEngine.getActivePlayers()).andReturn(activePlayers);
+
+        boardView.refresh();
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.renderPlayers(activePlayers);
+        EasyMock.expectLastCall().once();
+
+        diceView.enableRollButton();
+        EasyMock.expectLastCall().once();
+
+        cardView.close();
+        EasyMock.expectLastCall().once();
+    }
+
+    private void expectRefreshViewsWithPlayerPosition(GameEngine gameEngine, BoardView boardView,
+                                                      PlayerInfoView playerInfoView, DiceView diceView,
+                                                      CardView cardView, Player player, int position) {
+        List<Player> activePlayers = List.of(player);
+
+        EasyMock.expect(gameEngine.getActivePlayers()).andReturn(activePlayers);
+
+        boardView.refresh();
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.renderPlayers(activePlayers);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(position);
+        boardView.updatePlayerPosition(player, position);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.updateBalance(player);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.updateProperties(player);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        playerInfoView.showCurrentTurn(player);
+        EasyMock.expectLastCall().once();
+
+        diceView.enableRollButton();
+        EasyMock.expectLastCall().once();
+
+        cardView.close();
+        EasyMock.expectLastCall().once();
+    }
+
     @Test
     public void TC1_getStatus_WhenGameEngineIsNull_ThrowsNullPointerException() {
         BoardView boardView = EasyMock.createMock(BoardView.class);
@@ -319,22 +373,17 @@ public class GameControllerTests {
         dice.roll();
         EasyMock.expectLastCall().once();
 
+        EasyMock.expect(dice.getDieOne()).andReturn(1);
+        EasyMock.expect(dice.getDieTwo()).andReturn(1);
+        diceView.showRollResult(1, 1);
+        EasyMock.expectLastCall().once();
+
         EasyMock.expect(dice.getTotal()).andReturn(Constants.MIN_DICE_ROLL);
 
         gameEngine.movePlayer(player, Constants.MIN_DICE_ROLL);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
 
@@ -362,22 +411,17 @@ public class GameControllerTests {
         dice.roll();
         EasyMock.expectLastCall().once();
 
+        EasyMock.expect(dice.getDieOne()).andReturn(6);
+        EasyMock.expect(dice.getDieTwo()).andReturn(6);
+        diceView.showRollResult(6, 6);
+        EasyMock.expectLastCall().once();
+
         EasyMock.expect(dice.getTotal()).andReturn(Constants.MAX_DICE_ROLL);
 
         gameEngine.movePlayer(player, Constants.MAX_DICE_ROLL);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
 
@@ -425,6 +469,11 @@ public class GameControllerTests {
         dice.roll();
         EasyMock.expectLastCall().once();
 
+        EasyMock.expect(dice.getDieOne()).andReturn(1);
+        EasyMock.expect(dice.getDieTwo()).andReturn(1);
+        diceView.showRollResult(1, 1);
+        EasyMock.expectLastCall().once();
+
         EasyMock.expect(dice.getTotal()).andReturn(Constants.MIN_DICE_ROLL);
 
         gameEngine.movePlayer(player, Constants.MIN_DICE_ROLL);
@@ -435,17 +484,7 @@ public class GameControllerTests {
         gameEngine.removeBankruptPlayer(player);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
 
@@ -493,17 +532,7 @@ public class GameControllerTests {
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice
         );
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, action, cardView, dice);
         gameController.handleTileAction(action);
@@ -527,17 +556,7 @@ public class GameControllerTests {
         EasyMock.expect(action.getPlayer()).andReturn(player);
         EasyMock.expect(property.purchase(player)).andReturn(true);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
                 player, property);
@@ -569,17 +588,7 @@ public class GameControllerTests {
         EasyMock.expect(action.getPlayer()).andReturn(player);
         EasyMock.expect(property.purchase(player)).andReturn(false);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
                 player, property);
@@ -611,17 +620,7 @@ public class GameControllerTests {
         EasyMock.expect(action.getAmount()).andReturn(paymentAmount);
         EasyMock.expect(player.remove(paymentAmount)).andReturn(true);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
                 player);
@@ -656,17 +655,7 @@ public class GameControllerTests {
         gameEngine.removeBankruptPlayer(player);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
                 player);
@@ -695,17 +684,7 @@ public class GameControllerTests {
         EasyMock.expect(action.getType()).andReturn(TileActionType.OFFER_PURCHASE);
         EasyMock.expect(action.getTile()).andReturn(tile);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
                 tile);
@@ -734,17 +713,7 @@ public class GameControllerTests {
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -771,17 +740,7 @@ public class GameControllerTests {
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -808,17 +767,7 @@ public class GameControllerTests {
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -842,17 +791,7 @@ public class GameControllerTests {
 
         EasyMock.expect(gameEngine.isGameOver()).andReturn(true);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -879,17 +818,7 @@ public class GameControllerTests {
         gameEngine.nextTurn();
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -935,17 +864,7 @@ public class GameControllerTests {
         gameEngine.removeBankruptPlayer(player);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, player);
 
@@ -971,17 +890,7 @@ public class GameControllerTests {
         gameEngine.removeBankruptPlayer(player);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, player);
 
@@ -1007,17 +916,7 @@ public class GameControllerTests {
         gameEngine.removeBankruptPlayer(player);
         EasyMock.expectLastCall().once();
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, player);
 
@@ -1041,17 +940,7 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
 
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -1089,19 +978,9 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
 
-        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(0);
-
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViewsWithPlayerPosition(
+                gameEngine, boardView, playerInfoView, diceView, cardView, player, 0
+        );
 
         EasyMock.replay(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -1109,7 +988,6 @@ public class GameControllerTests {
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice
         );
 
-        assertEquals(0, gameEngine.getPlayerPosition(player));
         gameController.refreshViews();
 
         EasyMock.verify(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
@@ -1127,19 +1005,9 @@ public class GameControllerTests {
         Dice dice = EasyMock.createMock(Dice.class);
         int lastBoardIndex = Constants.BOARD_SIZE - 1;
 
-        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(lastBoardIndex);
-
-        boardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        playerInfoView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
-
-        diceView.refresh(dice);
-        EasyMock.expectLastCall().once();
-
-        cardView.refresh(gameEngine);
-        EasyMock.expectLastCall().once();
+        expectRefreshViewsWithPlayerPosition(
+                gameEngine, boardView, playerInfoView, diceView, cardView, player, lastBoardIndex
+        );
 
         EasyMock.replay(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
 
@@ -1147,10 +1015,31 @@ public class GameControllerTests {
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice
         );
 
-        assertEquals(lastBoardIndex, gameEngine.getPlayerPosition(player));
         gameController.refreshViews();
 
         EasyMock.verify(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
+    @Test
+    public void TC43_refreshViews_WhenNoCardIsActive_ClearsCardView() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.refreshViews();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 
 

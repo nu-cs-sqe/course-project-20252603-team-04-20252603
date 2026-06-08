@@ -24,9 +24,9 @@ public class GameController {
         Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
         this.gameEngine = gameEngine;
         this.boardView = Objects.requireNonNull(boardView, "BoardView cannot be null");
-        this.playerInfoView = playerInfoView;
-        this.diceView = diceView;
-        this.cardView = cardView;
+        this.playerInfoView = Objects.requireNonNull(playerInfoView, "PlayerInfoView cannot be null");
+        this.diceView = Objects.requireNonNull(diceView, "DiceView cannot be null");
+        this.cardView = Objects.requireNonNull(cardView, "CardView cannot be null");
 
     }
 
@@ -72,6 +72,7 @@ public class GameController {
             return;
         }
         dice.roll();
+        diceView.showRollResult(dice.getDieOne(), dice.getDieTwo());
         gameEngine.movePlayer(currentPlayer, dice.getTotal());
         if (currentPlayer.isBankrupt()) {
             handleBankruptcy(currentPlayer);
@@ -109,10 +110,20 @@ public class GameController {
     }
 
     public void refreshViews() {
-        boardView.refresh(gameEngine);
-        playerInfoView.refresh(gameEngine);
-        diceView.refresh(dice);
-        cardView.refresh(gameEngine);
+        List<Player> activePlayers = gameEngine.getActivePlayers();
+
+        boardView.refresh();
+        playerInfoView.renderPlayers(activePlayers);
+        for (Player player : activePlayers) {
+            boardView.updatePlayerPosition(player, gameEngine.getPlayerPosition(player));
+            playerInfoView.updateBalance(player);
+            playerInfoView.updateProperties(player);
+        }
+        if (!activePlayers.isEmpty()) {
+            playerInfoView.showCurrentTurn(gameEngine.getCurrentPlayer());
+        }
+        diceView.enableRollButton();
+        cardView.close();
     }
 
     public void handleEndTurn() {

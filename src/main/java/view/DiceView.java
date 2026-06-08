@@ -1,8 +1,17 @@
 package view;
 
-import model.Dice;
+import java.awt.event.ActionListener;
 
 public class DiceView {
-    public void refresh(Dice dice) {
+    public void setRollListener(ActionListener listener) {
+    }
+
+    public void showRollResult(int dieOne, int dieTwo) {
+    }
+
+    public void enableRollButton() {
+    }
+
+    public void disableRollButton() {
     }
 }
