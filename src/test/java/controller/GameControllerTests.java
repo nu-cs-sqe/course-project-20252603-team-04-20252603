@@ -1033,7 +1033,7 @@ public class GameControllerTests {
 
 
     @Test
-    public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
+    public void TC39_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
