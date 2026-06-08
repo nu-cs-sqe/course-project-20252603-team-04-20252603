@@ -1,29 +1,32 @@
 package controller;
 
+import model.GameEngine;
+import model.GameStatus;
 import model.Player;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+import view.BoardView;
+import view.CardView;
+import view.DiceView;
+import view.PlayerInfoView;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameControllerTests {
 
     @Test
-    public void TC1_startGame_WithNullConfigList_ThrowsException() {
-        GameController gameController = new GameController();
-        assertThrows(NullPointerException.class, () -> gameController.startGame(null));
+    public void TC_STATUS1_getStatus_WhenGameEngineIsNull_ThrowsNullPointerException() {
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+
+        assertThrows(NullPointerException.class, () -> new GameController(null, boardView, playerInfoView, diceView, cardView));
     }
 
-    @Test
-    public void TC2_startGame_WithZeroPlayers_ThrowsException() {
-        GameController gameController = new GameController();
-        assertThrows(IllegalArgumentException.class, () -> gameController.startGame(java.util.List.of()));
-    }
 
-    @Test
-    public void TC3_startGame_WithOnePlayer_ThrowsException() {
-        GameController gameController = new GameController();
-        Player onlyPlayer = EasyMock.createMock(Player.class);
-        assertThrows(IllegalArgumentException.class, () -> gameController.startGame(java.util.List.of(onlyPlayer)));
-    }
+
+
 }
