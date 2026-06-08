@@ -92,7 +92,7 @@ constructor fails fast at the construction site.
 
 - **TC7: Both null** ( :white_check_mark: )
     - **State of the system**: `card = null`, `player = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no effect is applied
+    - **Expected output**: `NullPointerException` thrown; no effect is applied
 
 - **TC8: Inactive player** ( :white_check_mark: )
     - **State of the system**: `card` valid, `player.getActive() == false`
