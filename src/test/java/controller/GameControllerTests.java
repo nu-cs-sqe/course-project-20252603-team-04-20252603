@@ -107,4 +107,23 @@ public class GameControllerTests {
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
         assertEquals(List.of(player1, player2), gameController.getActivePlayers());
     }
+
+    @Test
+    public void TC8_getActivePlayers_WhenGameEngineHasMaximumPlayers_ReturnsAllPlayers() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+        Player player4 = EasyMock.createMock(Player.class);
+        EasyMock.expect(gameEngine.getActivePlayers()).andStubReturn(List.of(player1, player2, player3, player4));
+        EasyMock.replay(gameEngine);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertEquals(List.of(player1, player2, player3, player4), gameController.getActivePlayers());
+    }
+
+
 }

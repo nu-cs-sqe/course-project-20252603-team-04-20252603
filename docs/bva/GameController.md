@@ -70,11 +70,11 @@ CardView cardView;
 2. Input type: none
 3. Output boundary values: empty list, minimum players, maximum players, one remaining player
 
-- **TC6: getActivePlayers_WhenGameEngineActivePlayersIsEmpty_ReturnsEmptyList** ( :x: )
+- **TC6: getActivePlayers_WhenGameEngineActivePlayersIsEmpty_ReturnsEmptyList** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[]`
   - **Expected output**: controller returns `[]`
 
-- **TC7: getActivePlayers_WhenGameEngineHasMinimumPlayers_ReturnsBothPlayers** ( :x: )
+- **TC7: getActivePlayers_WhenGameEngineHasMinimumPlayers_ReturnsBothPlayers** ( :white_check_mark: )
   - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1, P2]`
   - **Expected output**: controller returns `[P1, P2]` in turn order
 
