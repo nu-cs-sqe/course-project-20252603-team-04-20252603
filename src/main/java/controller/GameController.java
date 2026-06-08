@@ -19,7 +19,8 @@ public class GameController {
     private CardView cardView;
     private Dice dice;
 
-    GameController (GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView, CardView cardView) {
+    GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
+                    CardView cardView) {
         Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
         this.gameEngine = gameEngine;
         this.boardView = Objects.requireNonNull(boardView, "BoardView cannot be null");
@@ -29,7 +30,8 @@ public class GameController {
 
     }
 
-    GameController (GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView, CardView cardView, Dice dice) {
+    GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
+                    CardView cardView, Dice dice) {
         this(gameEngine, boardView, playerInfoView, diceView, cardView);
         this.dice = Objects.requireNonNull(dice, "Dice cannot be null");
     }
