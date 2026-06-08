@@ -4,6 +4,7 @@ import model.GameEngine;
 import model.GameStatus;
 import model.Player;
 import org.easymock.EasyMock;
+import org.easymock.internal.matchers.Null;
 import org.junit.jupiter.api.Test;
 import view.BoardView;
 import view.CardView;
@@ -279,6 +280,20 @@ public class GameControllerTests {
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
         assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of(player1, player2, player3, player4, player5)));
 
+        EasyMock.verify(gameEngine);
+    }
+
+    @Test
+    public void TC17_startGame_WithOneRemainingPlayer_ThrowsException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Player player1 = EasyMock.createMock(Player.class);
+        EasyMock.replay(gameEngine);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertThrows(NullPointerException.class, () -> gameController.startGame(List.of(player1, null)));
         EasyMock.verify(gameEngine);
     }
 

@@ -124,7 +124,7 @@ CardView cardView;
 
 - **TC17: startGame_WithNullPlayer_ThrowsException** ( :x: )
   - **State of the system**: `players = [P1, null]`
-  - **Expected output**: throws `IllegalArgumentException`; no partial game is started
+  - **Expected output**: throws `NullPointerException`; no partial game is started
 
 - **TC18: startGame_WhenGameAlreadyStarted_ResetsToNewGameState** ( :x: )
   - **State of the system**: an existing game is in progress, then `startGame([P3, P4])` is called
