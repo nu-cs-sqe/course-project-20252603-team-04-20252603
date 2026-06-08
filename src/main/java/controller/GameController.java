@@ -9,8 +9,8 @@ public class GameController {
 
     public void startGame(List<Player> players) {
         Objects.requireNonNull(players, "Player cannot be null");
-        if (players.isEmpty()) {
-            throw new IllegalArgumentException("At least one player is required to start the game");
+        if (players.size() < 2) {
+            throw new IllegalArgumentException("At least two players are required to start the game");
         }
     }
 }
