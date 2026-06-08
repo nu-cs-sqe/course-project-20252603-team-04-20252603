@@ -18,6 +18,7 @@ public class GameController {
     private DiceView diceView;
     private CardView cardView;
     private Dice dice;
+    private Card activeCard;
 
     GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
                     CardView cardView) {
@@ -85,10 +86,17 @@ public class GameController {
         Objects.requireNonNull(action, "TileAction cannot be null");
         TileActionType actionType = action.getType();
         if (actionType == TileActionType.NONE) {
+            activeCard = null;
+            refreshViews();
+            return;
+        }
+        if (actionType == TileActionType.DRAW_CARD) {
+            activeCard = action.getCard();
             refreshViews();
             return;
         }
         if (actionType == TileActionType.OFFER_PURCHASE) {
+            activeCard = null;
             Tile tile = action.getTile();
             if (!(tile instanceof Property)) {
                 refreshViews();
@@ -99,6 +107,7 @@ public class GameController {
             return;
         }
         if (actionType == TileActionType.PAY_BANK || actionType == TileActionType.PAY_TAX) {
+            activeCard = null;
             Player player = action.getPlayer();
             boolean paid = player.remove(action.getAmount());
             if (!paid) {
@@ -123,7 +132,11 @@ public class GameController {
             playerInfoView.showCurrentTurn(gameEngine.getCurrentPlayer());
         }
         diceView.enableRollButton();
-        cardView.close();
+        if (activeCard == null) {
+            cardView.close();
+        } else {
+            cardView.showCard(activeCard);
+        }
     }
 
     public void handleEndTurn() {

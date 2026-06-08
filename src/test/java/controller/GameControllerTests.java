@@ -69,6 +69,26 @@ public class GameControllerTests {
         EasyMock.expectLastCall().once();
     }
 
+    private void expectRefreshViewsWithCard(GameEngine gameEngine, BoardView boardView,
+                                            PlayerInfoView playerInfoView, DiceView diceView,
+                                            CardView cardView, Card card) {
+        List<Player> activePlayers = List.of();
+
+        EasyMock.expect(gameEngine.getActivePlayers()).andReturn(activePlayers);
+
+        boardView.refresh();
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.renderPlayers(activePlayers);
+        EasyMock.expectLastCall().once();
+
+        diceView.enableRollButton();
+        EasyMock.expectLastCall().once();
+
+        cardView.showCard(card);
+        EasyMock.expectLastCall().once();
+    }
+
     @Test
     public void TC1_getStatus_WhenGameEngineIsNull_ThrowsNullPointerException() {
         BoardView boardView = EasyMock.createMock(BoardView.class);
@@ -1040,6 +1060,33 @@ public class GameControllerTests {
         gameController.refreshViews();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
+    @Test
+    public void TC44_refreshViews_WhenCardIsActive_DisplaysCurrentCard() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        Card card = EasyMock.createMock(Card.class);
+
+        EasyMock.expect(action.getType()).andReturn(TileActionType.DRAW_CARD);
+        EasyMock.expect(action.getCard()).andReturn(card);
+
+        expectRefreshViewsWithCard(gameEngine, boardView, playerInfoView, diceView, cardView, card);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action, card);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleTileAction(action);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action, card);
     }
 
 

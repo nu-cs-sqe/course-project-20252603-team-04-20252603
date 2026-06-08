@@ -234,11 +234,11 @@ CardView cardView;
   - **State of the system**: active players are `[P1, P2]`, `player = P3`
   - **Expected output**: operation is rejected or ignored; active players remain `[P1, P2]`
 
-- **TC37: handleBankruptcy_WithThreePlayers_RemovesPlayerAndContinuesGame** ( :x: )
+- **TC37: handleBankruptcy_WithThreePlayers_RemovesPlayerAndContinuesGame** ( :white_check_mark: )
   - **State of the system**: active players are `[P1, P2, P3]`, bankrupt player is `P2`
   - **Expected output**: active players become `[P1, P3]`, game remains in progress, and views are refreshed
 
-- **TC38: handleBankruptcy_WithTwoPlayers_RemovesPlayerAndEndsGame** ( :x: )
+- **TC38: handleBankruptcy_WithTwoPlayers_RemovesPlayerAndEndsGame** ( :white_check_mark: )
   - **State of the system**: active players are `[P1, P2]`, bankrupt player is `P2`
   - **Expected output**: active players become `[P1]`, game status becomes game over, `P1` is declared winner, and views are refreshed
 
@@ -262,15 +262,15 @@ CardView cardView;
   - **State of the system**: current player is at board index `0`
   - **Expected output**: board view displays the player on GO / first tile and player info view shows the same position
 
-- **TC42: refreshViews_WhenPlayerAtLastBoardIndex_RendersPositionThirtyOne** ( :x: )
+- **TC42: refreshViews_WhenPlayerAtLastBoardIndex_RendersPositionThirtyOne** ( :white_check_mark: )
   - **State of the system**: current player is at board index `31`
   - **Expected output**: board view displays the player on the last tile and player info view shows the same position
 
-- **TC43: refreshViews_WhenNoCardIsActive_ClearsCardView** ( :x: )
+- **TC43: refreshViews_WhenNoCardIsActive_ClearsCardView** ( :white_check_mark: )
   - **State of the system**: game is in progress and no chance/card action is active
   - **Expected output**: card view is cleared or hidden
 
-- **TC44: refreshViews_WhenCardIsActive_DisplaysCurrentCard** ( :x: )
+- **TC44: refreshViews_WhenCardIsActive_DisplaysCurrentCard** ( :white_check_mark: )
   - **State of the system**: current tile action produced a visible card effect
   - **Expected output**: card view displays the current card details and other views remain synchronized with the model
 
