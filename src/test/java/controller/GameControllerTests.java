@@ -199,8 +199,12 @@ public class GameControllerTests {
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
+        EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.NOT_STARTED);
+        EasyMock.replay(gameEngine);
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
         assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of(EasyMock.createMock(Player.class))));
+        assertEquals(GameStatus.NOT_STARTED, gameController.getStatus());
+        EasyMock.verify(gameEngine);
     }
 
 
