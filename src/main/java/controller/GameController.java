@@ -44,5 +44,8 @@ public class GameController {
         return gameEngine.getCurrentPlayer();
     }
 
+    public List<Player> getActivePlayers() {
+        return gameEngine.getActivePlayers();
+    }
 
 }

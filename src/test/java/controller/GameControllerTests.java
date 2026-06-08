@@ -79,4 +79,17 @@ public class GameControllerTests {
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
         assertEquals(firstPlayer, gameController.getCurrentPlayer());
     }
+
+    @Test
+    public void TC6_getActivePlayers_WhenGameEngineActivePlayersIsEmpty_ReturnsEmptyList() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        EasyMock.expect(gameEngine.getActivePlayers()).andStubReturn(List.of());
+        EasyMock.replay(gameEngine);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertEquals(List.of(), gameController.getActivePlayers());
+    }
 }
