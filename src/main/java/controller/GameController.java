@@ -31,7 +31,7 @@ public class GameController {
 
     public void startGame(List<Player> players) {
         Objects.requireNonNull(players, "Player cannot be null");
-        if (players.isEmpty()) {
+        if (players.size() <= 1) {
             throw new IllegalArgumentException("Cannot start a game with no players");
         }
     }
