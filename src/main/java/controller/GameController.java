@@ -1,5 +1,6 @@
 package controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.*;
 import util.Constants;
 import view.BoardView;
@@ -20,7 +21,11 @@ public class GameController {
     private Dice dice;
     private Card activeCard;
 
-    GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "GameController intentionally keeps references to model and view collaborators supplied "
+                    + "by the application wiring.")
+    public GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
                     CardView cardView) {
         Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
         this.gameEngine = gameEngine;
@@ -31,7 +36,10 @@ public class GameController {
 
     }
 
-    GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "GameController intentionally keeps the injected Dice so tests and UI wiring share roll state.")
+    public GameController(GameEngine gameEngine, BoardView boardView, PlayerInfoView playerInfoView, DiceView diceView,
                     CardView cardView, Dice dice) {
         this(gameEngine, boardView, playerInfoView, diceView, cardView);
         this.dice = Objects.requireNonNull(dice, "Dice cannot be null");
