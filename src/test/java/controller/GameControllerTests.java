@@ -288,6 +288,20 @@ public class GameControllerTests {
         EasyMock.verify(gameEngine);
     }
 
+    @Test
+    public void TC18_startGame_WhenGameAlreadyInProgress_ThrowsException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        EasyMock.expect(gameEngine.getStatus()).andReturn(GameStatus.IN_PROGRESS);
+        EasyMock.replay(gameEngine);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertThrows(IllegalStateException.class, () -> gameController.startGame(List.of(player1, player2)));
+    }
 
 
 
