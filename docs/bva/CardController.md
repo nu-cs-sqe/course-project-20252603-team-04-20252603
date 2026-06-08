@@ -42,7 +42,7 @@ constructor fails fast at the construction site.
 
 - **TC18: Both null** ( :white_check_mark: )
     - **State of the system**: `deck = null`, `game = null`
-    - **Expected output**: `IllegalArgumentException` thrown; no `CardController` instance is created
+    - **Expected output**: `NullPointerException` thrown; no `CardController` instance is created
 
 ### Normal operation
 
