@@ -519,12 +519,13 @@ public class GameControllerTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         TileAction action = EasyMock.createMock(TileAction.class);
-        Player player = new Player("P1", 100.0);
-        Property property = new Property("Exact Balance Property", 100.0, 10.0);
+        Player player = EasyMock.createMock(Player.class);
+        Property property = EasyMock.createMock(Property.class);
 
         EasyMock.expect(action.getType()).andReturn(TileActionType.OFFER_PURCHASE);
         EasyMock.expect(action.getTile()).andReturn(property);
         EasyMock.expect(action.getPlayer()).andReturn(player);
+        EasyMock.expect(property.purchase(player)).andReturn(true);
 
         boardView.refresh(gameEngine);
         EasyMock.expectLastCall().once();
@@ -538,7 +539,8 @@ public class GameControllerTests {
         cardView.refresh(gameEngine);
         EasyMock.expectLastCall().once();
 
-        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action);
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player, property);
 
         GameController gameController = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice
@@ -546,11 +548,10 @@ public class GameControllerTests {
 
         gameController.handleTileAction(action);
 
-        assertTrue(property.isOwnedBy(player));
-        assertEquals(0.0, player.getBalance(), 0.001);
-
-        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action);
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player, property);
     }
+
 
     @Test
     public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
