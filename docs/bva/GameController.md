@@ -254,11 +254,11 @@ CardView cardView;
   - **State of the system**: game is in progress, all view dependencies are non-null
   - **Expected output**: `boardView`, `playerInfoView`, `diceView`, and `cardView` receive the current model state exactly once
 
-- **TC40: refreshViews_WithNullBoardView_ThrowsExceptionBeforePartialUpdate** ( :x: )
+- **TC40: refreshViews_WithNullBoardView_ThrowsExceptionBeforePartialUpdate** ( :white_check_mark: )
   - **State of the system**: `boardView = null`; other views and game are valid
   - **Expected output**: throws `NullPointerException`; avoids silently skipping the board update
 
-- **TC41: refreshViews_WhenPlayerAtFirstBoardIndex_RendersPositionZero** ( :x: )
+- **TC41: refreshViews_WhenPlayerAtFirstBoardIndex_RendersPositionZero** ( :white_check_mark: )
   - **State of the system**: current player is at board index `0`
   - **Expected output**: board view displays the player on GO / first tile and player info view shows the same position
 

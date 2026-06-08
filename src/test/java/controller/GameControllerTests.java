@@ -1115,6 +1115,44 @@ public class GameControllerTests {
         EasyMock.verify(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 
+    @Test
+    public void TC42_refreshViews_WhenPlayerAtLastBoardIndex_RendersPositionThirtyOne() {
+        Player player = EasyMock.createMock(Player.class);
+        Board board = EasyMock.createMock(Board.class);
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        int lastBoardIndex = Constants.BOARD_SIZE - 1;
+
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(lastBoardIndex);
+
+        boardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        playerInfoView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        assertEquals(lastBoardIndex, gameEngine.getPlayerPosition(player));
+        gameController.refreshViews();
+
+        EasyMock.verify(player, board, gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
 
 
 }
