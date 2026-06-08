@@ -212,7 +212,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC14_startGame_WithTwoPlayers_StartsGame() {
+    public void TC14_startGame_WithMinimumPlayers_StartsGame() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
