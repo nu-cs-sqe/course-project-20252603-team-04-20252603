@@ -902,6 +902,26 @@ public class GameControllerTests {
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 
+    @Test
+    public void TC35_handleBankruptcy_WithNullPlayer_ThrowsException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        assertThrows(NullPointerException.class, () -> gameController.handleBankruptcy(null));
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
 
 
     @Test
