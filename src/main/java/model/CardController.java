@@ -20,7 +20,7 @@ public class CardController {
     public Card drawChanceCard(Player player) {
         Objects.requireNonNull(player, "player must not be null");
         if (!player.getActive()) {
-            throw new IllegalArgumentException("player must not be inactive");
+            throw new IllegalArgumentException("player must be active");
         }
         return deck.draw();
     }
