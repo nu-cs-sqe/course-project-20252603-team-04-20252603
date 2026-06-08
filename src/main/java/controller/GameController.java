@@ -113,6 +113,9 @@ public class GameController {
         cardView.refresh(gameEngine);
     }
 
-
+    public void handleEndTurn() {
+        gameEngine.nextTurn();
+        refreshViews();
+    }
 
 }
