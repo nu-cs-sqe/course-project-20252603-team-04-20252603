@@ -20,6 +20,86 @@ CardView cardView;
 
 ---
 
+## Method under test: `getStatus()`
+
+1. Input: current `GameEngine` state, Output: current game status
+2. Input type: none
+3. Output boundary values: no game engine, `NOT_STARTED`, `IN_PROGRESS`, `GAME_OVER`
+
+- **TC_STATUS1: getStatus_WhenGameEngineIsNull_ThrowsNullPointerException** ( :x: )
+  - **State of the system**: controller has no `GameEngine`
+  - **Expected output**: throws `NullPointerException`
+
+- **TC_STATUS2: getStatus_WhenGameEngineStatusIsNotStarted_ReturnsNotStarted** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.NOT_STARTED`
+  - **Expected output**: controller returns `GameStatus.NOT_STARTED`
+
+- **TC_STATUS3: getStatus_WhenGameEngineStatusIsInProgress_ReturnsInProgress** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.IN_PROGRESS`
+  - **Expected output**: returns `GameStatus.IN_PROGRESS`
+
+- **TC_STATUS4: getStatus_WhenGameEngineStatusIsGameOver_ReturnsGameOver** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getStatus()` returns `GameStatus.GAME_OVER`
+  - **Expected output**: returns `GameStatus.GAME_OVER`
+
+---
+
+## Method under test: `getCurrentPlayer()`
+
+1. Input: current `GameEngine` turn state, Output: player whose turn it is
+2. Input type: none
+3. Output boundary values: no game engine, first player, middle player, last player
+
+- **TC_CURRENT1: getCurrentPlayer_WhenGameEngineIsNull_ReturnsNullOrThrowsException** ( :x: )
+  - **State of the system**: controller has no `GameEngine`
+  - **Expected output**: returns `null` or throws `IllegalStateException` consistently
+
+- **TC_CURRENT2: getCurrentPlayer_WhenGameEngineCurrentPlayerIsFirstPlayer_ReturnsFirstPlayer** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getCurrentPlayer()` returns `P1`
+  - **Expected output**: controller returns `P1`
+
+- **TC_CURRENT3: getCurrentPlayer_WhenGameEngineCurrentPlayerIsMiddlePlayer_ReturnsMiddlePlayer** ( :x: )
+  - **State of the system**: active players are `[P1, P2, P3]`; mocked or stubbed `GameEngine.getCurrentPlayer()` returns `P2`
+  - **Expected output**: controller returns `P2`
+
+- **TC_CURRENT4: getCurrentPlayer_WhenGameEngineCurrentPlayerIsLastPlayer_ReturnsLastPlayer** ( :x: )
+  - **State of the system**: active players are `[P1, P2, P3]`; mocked or stubbed `GameEngine.getCurrentPlayer()` returns `P3`
+  - **Expected output**: controller returns `P3`
+
+---
+
+## Method under test: `getActivePlayers()`
+
+1. Input: current `GameEngine` roster, Output: active players in turn order
+2. Input type: none
+3. Output boundary values: no game engine, empty list, minimum players, maximum players, one remaining player
+
+- **TC_ACTIVE1: getActivePlayers_WhenGameEngineIsNull_ReturnsEmptyListOrThrowsException** ( :x: )
+  - **State of the system**: controller has no `GameEngine`
+  - **Expected output**: returns an empty list or throws `IllegalStateException` consistently
+
+- **TC_ACTIVE2: getActivePlayers_WhenGameEngineActivePlayersIsEmpty_ReturnsEmptyList** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[]`
+  - **Expected output**: controller returns `[]`
+
+- **TC_ACTIVE3: getActivePlayers_WhenGameEngineHasMinimumPlayers_ReturnsBothPlayers** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1, P2]`
+  - **Expected output**: controller returns `[P1, P2]` in turn order
+
+- **TC_ACTIVE4: getActivePlayers_WhenGameEngineHasMaximumPlayers_ReturnsAllPlayers** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1, P2, P3, P4]`
+  - **Expected output**: controller returns `[P1, P2, P3, P4]` in turn order
+
+- **TC_ACTIVE5: getActivePlayers_WhenGameEngineHasOneRemainingPlayer_ReturnsWinnerOnly** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns `[P1]`
+  - **Expected output**: controller returns `[P1]`
+
+- **TC_ACTIVE6: getActivePlayers_ReturnedListCannotMutateControllerState** ( :x: )
+  - **State of the system**: mocked or stubbed `GameEngine.getActivePlayers()` returns an unmodifiable list `[P1, P2]`
+  - **Expected output**: controller returns an unmodifiable list, or mutating the returned list does not change the controller's active player list
+
+---
+
 ## Method under test: `startGame(List<Player> players)`
 
 1. Input: player list, Output: initialized game and refreshed views
@@ -40,7 +120,7 @@ CardView cardView;
 
 - **TC4: startGame_WithMinimumPlayers_StartsGame** ( :x: )
   - **State of the system**: `players = [P1, P2]`
-  - **Expected output**: `game` is created or reset, active players are `[P1, P2]`, current player is `P1`, all players start at board index `0`, and views are refreshed once
+  - **Expected output**: `game` is created or reset, `getStatus()` returns `GameStatus.IN_PROGRESS`, `getActivePlayers()` returns `[P1, P2]`, `getCurrentPlayer()` returns `P1`, all players start at board index `0`, and views are refreshed once
 
 - **TC5: startGame_WithMaximumPlayers_StartsGame** ( :x: )
   - **State of the system**: `players = [P1, P2, P3, P4]`
