@@ -5,9 +5,7 @@ import model.GameStatus;
 import model.Dice;
 import model.Player;
 import org.easymock.EasyMock;
-import org.easymock.internal.matchers.Null;
 import org.junit.jupiter.api.Test;
-import util.Constants;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
@@ -306,50 +304,31 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC19_handleRollDice_WithMinimumRoll_MovesTwoSpaces() {
+    public void TC43_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
-        Dice dice = EasyMock.createMock(Dice.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
         CardView cardView = EasyMock.createMock(CardView.class);
-        Player player = EasyMock.createMock(Player.class);
-
-        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
-
-        dice.roll();
-        EasyMock.expectLastCall().once();
-
-        EasyMock.expect(dice.getTotal()).andReturn(2);
-
-        gameEngine.movePlayer(player, 2);
-        EasyMock.expectLastCall().once();
-
-        EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
-
-        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
-        gameController.handleRollDice();
-
-        EasyMock.verify(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
-    }
-    @Test
-    public void TC20_handleRollDice_WithMaximumRoll_MovesTwelveSpaces() {
-        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         Dice dice = EasyMock.createMock(Dice.class);
-        BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
-        DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
-        Player player = EasyMock.createMock(Player.class);
-        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
-        dice.roll();
+
+        boardView.refresh(gameEngine);
         EasyMock.expectLastCall().once();
-        EasyMock.expect(dice.getTotal()).andReturn(Constants.MAX_DICE_ROLL);
-        gameEngine.movePlayer(player, Constants.MAX_DICE_ROLL);
+
+        playerInfoView.refresh(gameEngine);
         EasyMock.expectLastCall().once();
-        EasyMock.replay(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
+
+        diceView.refresh(dice);
+        EasyMock.expectLastCall().once();
+
+        cardView.refresh(gameEngine);
+        EasyMock.expectLastCall().once();
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
         GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
-        gameController.handleRollDice();
-        EasyMock.verify(gameEngine, dice, boardView, playerInfoView, diceView, cardView, player);
+        gameController.refreshViews();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 }

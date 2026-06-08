@@ -266,7 +266,7 @@ CardView cardView;
 2. Input type: object references and current model state
 3. Input boundary values: game not started, all dependencies present, one dependency null, first board index, last board index, no card, visible card
 
-- **TC43: refreshViews_WithAllViewsPresent_UpdatesEveryView** ( :x: )
+- **TC43: refreshViews_WithAllViewsPresent_UpdatesEveryView** ( :white_check_mark: )
   - **State of the system**: game is in progress, all view dependencies are non-null
   - **Expected output**: `boardView`, `playerInfoView`, `diceView`, and `cardView` receive the current model state exactly once
 

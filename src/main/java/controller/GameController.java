@@ -67,4 +67,11 @@ public class GameController {
         gameEngine.movePlayer(currentPlayer, dice.getTotal());
     }
 
+    public void refreshViews() {
+        boardView.refresh(gameEngine);
+        playerInfoView.refresh(gameEngine);
+        diceView.refresh(dice);
+        cardView.refresh(gameEngine);
+    }
+
 }
