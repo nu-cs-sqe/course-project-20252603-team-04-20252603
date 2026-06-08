@@ -1089,6 +1089,37 @@ public class GameControllerTests {
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action, card);
     }
 
+    @Test
+    public void TC45_refreshViews_AfterBankruptcy_RemovesPlayerFromVisibleTurnOrder() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        Player remainingPlayer = EasyMock.createMock(Player.class);
+        Player bankruptPlayer = EasyMock.createMock(Player.class);
+
+        gameEngine.removeBankruptPlayer(bankruptPlayer);
+        EasyMock.expectLastCall().once();
+
+        expectRefreshViewsWithPlayerPosition(
+                gameEngine, boardView, playerInfoView, diceView, cardView, remainingPlayer, 0
+        );
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                remainingPlayer, bankruptPlayer);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleBankruptcy(bankruptPlayer);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                remainingPlayer, bankruptPlayer);
+    }
+
 
 
 }
