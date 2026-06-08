@@ -31,7 +31,7 @@ public class GameController {
 
     public void startGame(List<Player> players) {
         Objects.requireNonNull(players, "Player cannot be null");
-        if (players.size() < 2) {
+        if (players.size() < 2 || players.size() > 4) {
             throw new IllegalArgumentException("Cannot start a game with less than two players");
         }
         gameEngine.startGame();

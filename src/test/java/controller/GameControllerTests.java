@@ -262,4 +262,24 @@ public class GameControllerTests {
         EasyMock.verify(gameEngine);
     }
 
+    @Test
+    public void TC16_startGame_WithMoreThanMaximumPlayers_ThrowsException() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Player player1 = EasyMock.createMock(Player.class);
+        Player player2 = EasyMock.createMock(Player.class);
+        Player player3 = EasyMock.createMock(Player.class);
+        Player player4 = EasyMock.createMock(Player.class);
+        Player player5 = EasyMock.createMock(Player.class);
+
+        EasyMock.replay(gameEngine);
+        GameController gameController = new GameController(gameEngine, boardView, playerInfoView, diceView, cardView);
+        assertThrows(IllegalArgumentException.class, () -> gameController.startGame(List.of(player1, player2, player3, player4, player5)));
+
+        EasyMock.verify(gameEngine);
+    }
+
 }
