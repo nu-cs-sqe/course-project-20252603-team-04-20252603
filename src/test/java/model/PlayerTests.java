@@ -529,4 +529,22 @@ public class PlayerTests {
                 "incrementJailTurnCount should not change position");
     }
 
+
+    @Test
+    public void TC38_IncrementJailTurnCount_FromOne_IncrementsToTwo() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+
+        player.incrementJailTurnCount();
+
+        assertEquals(2, player.getJailTurnCount(),
+                "jailTurnCount should be 2 after incrementing from 1");
+        assertTrue(player.inJail(), "player should remain in jail");
+        assertEquals(Constants.JAIL_POSITION, player.getPosition(),
+                "position should remain unchanged");
+    }
+
+  
+
+
 }
