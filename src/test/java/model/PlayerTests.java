@@ -543,6 +543,18 @@ public class PlayerTests {
         assertEquals(Constants.JAIL_POSITION, player.getPosition(),
                 "position should remain unchanged");
     }
+    @Test
+    public void TC39_IncrementJailTurnCount_FromTwo_IncrementsToMax() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+        player.incrementJailTurnCount();
+
+        player.incrementJailTurnCount();
+
+        assertEquals(Constants.MAX_JAIL_TURNS, player.getJailTurnCount(),
+                "jailTurnCount should reach MAX_JAIL_TURNS after incrementing from 2");
+        assertTrue(player.inJail(), "player should remain in jail");
+    }
 
   
 
