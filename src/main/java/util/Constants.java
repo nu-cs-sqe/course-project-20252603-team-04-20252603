@@ -14,6 +14,8 @@ public class Constants {
     public static final double AI_BUBBLE_POP_FEE = 500.0;
     public static final double SUBSCRIPTION_SERVICE_FEE = 100.0;
     public static final double STOCK_MARKET_CRASH_LOSS = 200.0;
+    public static final int MIN_DICE_ROLL = 2;
+    public static final int MAX_DICE_ROLL = 12;
 
     private Constants() {}
 
