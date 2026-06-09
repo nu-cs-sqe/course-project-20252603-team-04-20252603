@@ -512,4 +512,21 @@ public class PlayerTests {
         assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
 
+    // ==================================================================================================
+    // Test suite for incrementJailTurnCount method (TC37–TC40)
+    // ==================================================================================================
+
+    @Test
+    public void TC37_IncrementJailTurnCount_FromZero_IncrementsToOne() {
+        Player player = new Player("John", 100.0);
+
+        player.incrementJailTurnCount();
+
+        assertEquals(1, player.getJailTurnCount(),
+                "jailTurnCount should be 1 after incrementing from 0");
+        assertFalse(player.inJail(), "incrementJailTurnCount should not change inJail");
+        assertEquals(0, player.getPosition(),
+                "incrementJailTurnCount should not change position");
+    }
+
 }
