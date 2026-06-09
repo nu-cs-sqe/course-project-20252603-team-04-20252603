@@ -215,3 +215,24 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 - **TC36: Get jailTurnCount after leaving jail** ( :white_check_mark: )  
   - **State of the system**: player called goToJail() then leaveJail()  
   - **Expected output**: returns 0
+
+
+## Method under test: `incrementJailTurnCount()`
+
+Increments `jailTurnCount` by 1. No guard on `inJail` or `Constants.MAX_JAIL_TURNS`; callers (e.g. `JailController`) enforce those limits before invoking.
+
+- **TC37: Increment from initial count (0)** ( )
+  - **State of the system**: `jailTurnCount = 0` (newly created player, not in jail)
+  - **Expected output**: `jailTurnCount` becomes `1`; no other state change
+
+- **TC38: Increment from first jail turn (1)** ( )
+  - **State of the system**: `jailTurnCount = 1` (e.g. after `goToJail()`)
+  - **Expected output**: `jailTurnCount` becomes `2`; `inJail` and `position` unchanged
+
+- **TC39: Increment from one below max (2)** ( )
+  - **State of the system**: `jailTurnCount = 2` (`Constants.MAX_JAIL_TURNS - 1`)
+  - **Expected output**: `jailTurnCount` becomes `3` (`Constants.MAX_JAIL_TURNS`); player remains in jail
+
+- **TC40: Increment at max jail turns (3)** ( )
+  - **State of the system**: `jailTurnCount = Constants.MAX_JAIL_TURNS` (= 3)
+  - **Expected output**: `jailTurnCount` becomes `4` (method has no cap; documents raw `Player` behavior—callers must not invoke when count is already at max)
