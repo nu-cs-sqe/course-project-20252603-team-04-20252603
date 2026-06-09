@@ -556,6 +556,21 @@ public class PlayerTests {
         assertTrue(player.inJail(), "player should remain in jail");
     }
 
+
+    @Test
+    public void TC40_IncrementJailTurnCount_AtMax_IncrementsPastMax() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+        player.incrementJailTurnCount();
+        player.incrementJailTurnCount();
+
+        player.incrementJailTurnCount();
+
+        assertEquals(Constants.MAX_JAIL_TURNS + 1, player.getJailTurnCount(),
+                "incrementJailTurnCount has no cap and should increment past MAX_JAIL_TURNS");
+    }
+
+
   
 
 
