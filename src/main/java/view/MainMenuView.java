@@ -38,7 +38,16 @@ public class MainMenuView extends JFrame {
 
     private static final String FONT_FAMILY = "Segoe UI";
 
+    private static final VectorIcon.Type[] TOKEN_SET = {
+            VectorIcon.Type.CAR, VectorIcon.Type.HAT, VectorIcon.Type.BOAT, VectorIcon.Type.IRON
+    };
+
     private final List<JTextField> nameFields = new ArrayList<>();
+    private final List<VectorIcon.Type> selectedTokens = new ArrayList<>();
+    private int selectedCount = 2;
+    private JPanel playersPanel;
+    private JPanel pillGroup;
+    private JPanel assembleCard;
     private JButton newGameButton;
     private JButton optionsButton;
     private JButton recordsButton;
@@ -84,19 +93,29 @@ public class MainMenuView extends JFrame {
         for (int i = 0; i < nameFields.size(); i++) {
             String typed = nameFields.get(i).getText().trim();
             names.add(typed.isEmpty() ? "Player " + (i + 1) : typed);
-            icons.add(new ImageIcon(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)));
+            icons.add(iconFor(selectedTokens.get(i)));
         }
 
         try {
             MainMenuController controller = new MainMenuController(names, icons);
             GameEngine startedGame = controller.startNewGame();
             List<Player> players = new ArrayList<>(startedGame.getActivePlayers());
-            BoardView.launch(players);
+            BoardView.launch(players, icons);
             dispose();
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
                     "Cannot start game", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    /** Renders a token's vector artwork to an {@link ImageIcon} the board can paint. */
+    private ImageIcon iconFor(VectorIcon.Type type) {
+        int size = 40;
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        new VectorIcon(type, size).paintIcon(this, g, 0, 0);
+        g.dispose();
+        return new ImageIcon(img);
     }
 
     // ============================================================ Top navigation bar ==========
@@ -203,9 +222,9 @@ public class MainMenuView extends JFrame {
 
         // Fixed preferred widths in a ~65/35 ratio keep GridBag from skewing the split toward
         // whichever card has the larger intrinsic preferred width.
-        JPanel assemble = createAssembleCard();
-        assemble.setPreferredSize(new Dimension(680, 440));
-        assemble.setMinimumSize(new Dimension(560, 440));
+        assembleCard = createAssembleCard();
+        assembleCard.setPreferredSize(new Dimension(680, 440));
+        assembleCard.setMinimumSize(new Dimension(560, 440));
         JPanel trade = createTradeColumn();
         trade.setPreferredSize(new Dimension(360, 440));
         trade.setMinimumSize(new Dimension(360, 440));
@@ -213,7 +232,7 @@ public class MainMenuView extends JFrame {
         c.gridx = 0;
         c.weightx = 0.65;
         c.insets = new Insets(0, 0, 0, 24);
-        row.add(assemble, c);
+        row.add(assembleCard, c);
 
         c.gridx = 1;
         c.weightx = 0.35;
@@ -251,45 +270,84 @@ public class MainMenuView extends JFrame {
         headText.add(Box.createVerticalStrut(4));
         headText.add(sub);
 
-        RoundedPanel pillGroup = new RoundedPanel(PILL_INACTIVE_BG, 24);
+        pillGroup = new RoundedPanel(PILL_INACTIVE_BG, 24);
         pillGroup.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 4));
         pillGroup.setAlignmentY(Component.TOP_ALIGNMENT);
         pillGroup.setMaximumSize(new Dimension(320, 40));
-        for (int n : new int[]{2, 3, 4}) {
-            boolean active = (n == 2);
-            JButton pill = new RoundedButton(n + " PLAYERS",
-                    active ? EMERALD : PILL_INACTIVE_BG,
-                    active ? Color.WHITE : MUTED, 20, null);
-            pill.setFont(font(Font.BOLD, 10));
-            pill.setPreferredSize(new Dimension(92, 30));
-            pillGroup.add(pill);
-        }
+        populatePills();
 
         header.add(headText);
         header.add(Box.createHorizontalGlue());
         header.add(pillGroup);
 
-        // Two player cards side by side.
-        JPanel players = new JPanel(new GridLayout(1, 2, 20, 0));
-        players.setOpaque(false);
-        players.setAlignmentX(Component.LEFT_ALIGNMENT);
-        players.setMaximumSize(new Dimension(Integer.MAX_VALUE, 240));
-        players.add(createPlayerCard(1));
-        players.add(createPlayerCard(2));
+        // Player cards: rebuilt whenever the player count changes.
+        playersPanel = new JPanel();
+        playersPanel.setOpaque(false);
+        playersPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 240));
+        rebuildPlayerCards();
 
         card.add(header);
         card.add(Box.createVerticalStrut(24));
-        card.add(players);
+        card.add(playersPanel);
         card.add(Box.createVerticalGlue());
         return card;
     }
 
-    private JPanel createPlayerCard(int playerNum) {
+    /** (Re)builds the 2/3/4-player selector pills, highlighting the active count. */
+    private void populatePills() {
+        pillGroup.removeAll();
+        for (int n : new int[]{2, 3, 4}) {
+            boolean active = (n == selectedCount);
+            JButton pill = new RoundedButton(n + " PLAYERS",
+                    active ? EMERALD : PILL_INACTIVE_BG,
+                    active ? Color.WHITE : MUTED, 20, null);
+            pill.setFont(font(Font.BOLD, 10));
+            pill.setPreferredSize(new Dimension(92, 30));
+            final int count = n;
+            pill.addActionListener(e -> {
+                selectedCount = count;
+                populatePills();
+                rebuildPlayerCards();
+            });
+            pillGroup.add(pill);
+        }
+        pillGroup.revalidate();
+        pillGroup.repaint();
+    }
+
+    /** Rebuilds the player-name/token cards to match {@link #selectedCount}. */
+    private void rebuildPlayerCards() {
+        nameFields.clear();
+        selectedTokens.clear();
+        playersPanel.removeAll();
+        // 4 players use a 2x2 grid so each card stays wide enough for all four token choices;
+        // 2 or 3 players sit in a single row.
+        int rows = (selectedCount == 4) ? 2 : 1;
+        int cols = (selectedCount == 4) ? 2 : selectedCount;
+        playersPanel.setLayout(new GridLayout(rows, cols, 20, 16));
+        playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, rows * 220));
+        for (int i = 0; i < selectedCount; i++) {
+            selectedTokens.add(TOKEN_SET[i % TOKEN_SET.length]);
+            playersPanel.add(createPlayerCard(i));
+        }
+        // Grow the surrounding card so the two-row (4-player) grid stays inside its white panel.
+        if (assembleCard != null) {
+            int h = (rows == 2) ? 600 : 440;
+            assembleCard.setPreferredSize(new Dimension(680, h));
+            assembleCard.setMinimumSize(new Dimension(560, h));
+            assembleCard.revalidate();
+        }
+        playersPanel.revalidate();
+        playersPanel.repaint();
+    }
+
+    private JPanel createPlayerCard(int index) {
         RoundedPanel card = new RoundedPanel(PLAYER_CARD_BG, 16);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel label = new JLabel("PLAYER 0" + playerNum);
+        JLabel label = new JLabel("PLAYER 0" + (index + 1));
         label.setFont(font(Font.BOLD, 12));
         label.setForeground(EMERALD);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -309,11 +367,7 @@ public class MainMenuView extends JFrame {
         tokens.setOpaque(false);
         tokens.setAlignmentX(Component.LEFT_ALIGNMENT);
         tokens.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        VectorIcon.Type[] set = {VectorIcon.Type.CAR, VectorIcon.Type.HAT,
-                VectorIcon.Type.BOAT, VectorIcon.Type.IRON};
-        for (int i = 0; i < set.length; i++) {
-            tokens.add(createTokenCircle(set[i], i == playerNum - 1));
-        }
+        populateTokenRow(tokens, index);
 
         card.add(label);
         card.add(Box.createVerticalStrut(12));
@@ -323,6 +377,22 @@ public class MainMenuView extends JFrame {
         card.add(Box.createVerticalStrut(10));
         card.add(tokens);
         return card;
+    }
+
+    /** Fills a token row with the four choices, highlighting this player's current selection. */
+    private void populateTokenRow(JPanel row, int index) {
+        row.removeAll();
+        for (VectorIcon.Type type : TOKEN_SET) {
+            boolean selected = type == selectedTokens.get(index);
+            JButton circle = createTokenCircle(type, selected);
+            circle.addActionListener(e -> {
+                selectedTokens.set(index, type);
+                populateTokenRow(row, index);
+                row.revalidate();
+                row.repaint();
+            });
+            row.add(circle);
+        }
     }
 
     private JButton createTokenCircle(VectorIcon.Type type, boolean selected) {

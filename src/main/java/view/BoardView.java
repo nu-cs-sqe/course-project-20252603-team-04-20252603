@@ -54,18 +54,22 @@ public class BoardView extends JFrame {
     private JButton boardNav;
     private JButton tradeNav;
     private JButton portfolioNav;
-    private JButton auctionNav;
     private JButton endTurnButton;
     private JButton rollDiceButton;
     private GameEngine gameEngine;
     private GameController gameController;
     private BoardStage boardStage;
     private Map<Player, Color> playerColors;
+    private Map<Player, Image> playerTokens;
+    private JLabel turnLabel;
+    private JLabel currentPlayerName;
+    private JLabel currentPlayerBalance;
 
     public BoardView(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
         this.playerColors = new HashMap<>();
-        
+        this.playerTokens = new HashMap<>();
+
         setTitle("Emerald Estate - Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 860);
@@ -93,9 +97,27 @@ public class BoardView extends JFrame {
     public void refresh() {
         List<Player> activePlayers = gameEngine.getActivePlayers();
         initializePlayerColors(activePlayers);
+        updateCurrentPlayer(activePlayers);
         if (boardStage != null) {
             boardStage.refreshPills();
             boardStage.repaintTokens();
+        }
+    }
+
+    /** Reflects the engine's current player in the top bar and the sidebar card. */
+    private void updateCurrentPlayer(List<Player> activePlayers) {
+        if (activePlayers.isEmpty()) {
+            return;
+        }
+        Player current = gameEngine.getCurrentPlayer();
+        if (turnLabel != null) {
+            turnLabel.setText(current.getName() + "'s Turn");
+        }
+        if (currentPlayerName != null) {
+            currentPlayerName.setText(current.getName());
+        }
+        if (currentPlayerBalance != null) {
+            currentPlayerBalance.setText("$" + (int) current.getBalance() + " Balance");
         }
     }
 
@@ -133,12 +155,12 @@ public class BoardView extends JFrame {
         JLabel divider = new JLabel("   |   ");
         divider.setFont(font(Font.PLAIN, 20));
         divider.setForeground(FIELD_BORDER);
-        JLabel turn = new JLabel("Player 1's Turn");
-        turn.setFont(font(Font.BOLD, 18));
-        turn.setForeground(INK);
+        turnLabel = new JLabel("Player 1's Turn");
+        turnLabel.setFont(font(Font.BOLD, 18));
+        turnLabel.setForeground(INK);
         left.add(brand);
         left.add(divider);
-        left.add(turn);
+        left.add(turnLabel);
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         right.setOpaque(false);
@@ -166,14 +188,11 @@ public class BoardView extends JFrame {
         boardNav = createNavItem(BoardIcon.Type.NAV_BOARD, "Board", true);
         tradeNav = createNavItem(BoardIcon.Type.NAV_TRADE, "Trade", false);
         portfolioNav = createNavItem(BoardIcon.Type.NAV_PORTFOLIO, "Portfolio", false);
-        auctionNav = createNavItem(BoardIcon.Type.NAV_AUCTION, "Auction", false);
         nav.add(boardNav);
         nav.add(Box.createVerticalStrut(8));
         nav.add(tradeNav);
         nav.add(Box.createVerticalStrut(8));
         nav.add(portfolioNav);
-        nav.add(Box.createVerticalStrut(8));
-        nav.add(auctionNav);
 
         nav.add(Box.createVerticalGlue());
 
@@ -224,17 +243,17 @@ public class BoardView extends JFrame {
         JPanel text = new JPanel();
         text.setLayout(new BoxLayout(text, BoxLayout.Y_AXIS));
         text.setOpaque(false);
-        JLabel name = new JLabel("Current Player");
-        name.setFont(font(Font.BOLD, 14));
-        name.setForeground(INK);
-        name.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JLabel balance = new JLabel("$1,500 Balance");
-        balance.setFont(font(Font.PLAIN, 12));
-        balance.setForeground(EMERALD);
-        balance.setAlignmentX(Component.LEFT_ALIGNMENT);
-        text.add(name);
+        currentPlayerName = new JLabel("Current Player");
+        currentPlayerName.setFont(font(Font.BOLD, 14));
+        currentPlayerName.setForeground(INK);
+        currentPlayerName.setAlignmentX(Component.LEFT_ALIGNMENT);
+        currentPlayerBalance = new JLabel("$1,500 Balance");
+        currentPlayerBalance.setFont(font(Font.PLAIN, 12));
+        currentPlayerBalance.setForeground(EMERALD);
+        currentPlayerBalance.setAlignmentX(Component.LEFT_ALIGNMENT);
+        text.add(currentPlayerName);
         text.add(Box.createVerticalStrut(2));
-        text.add(balance);
+        text.add(currentPlayerBalance);
 
         card.add(avatar);
         card.add(text);
@@ -436,16 +455,29 @@ public class BoardView extends JFrame {
                 // stagger up to 4 tokens on the same tile in a 2×2 grid
                 int dx = (i % 2) * 14 - 7;
                 int dy = (i / 2) * 14 - 7;
-                int r = 10;
+                int r = 12;
+                int cx = centre.x + dx;
+                int cy = centre.y + dy;
+
+                // Coloured ring identifies the player regardless of the token artwork.
                 g2.setColor(c);
-                g2.fillOval(centre.x + dx - r, centre.y + dy - r, r * 2, r * 2);
+                g2.fillOval(cx - r, cy - r, r * 2, r * 2);
                 g2.setColor(Color.WHITE);
-                g2.setFont(font(Font.BOLD, 10));
-                String label = String.valueOf(i + 1);
-                FontMetrics fm = g2.getFontMetrics();
-                g2.drawString(label,
-                        centre.x + dx - fm.stringWidth(label) / 2,
-                        centre.y + dy + fm.getAscent() / 2 - 1);
+                g2.fillOval(cx - r + 2, cy - r + 2, (r - 2) * 2, (r - 2) * 2);
+
+                Image token = playerTokens.get(p);
+                if (token != null) {
+                    int d = (r - 2) * 2;
+                    g2.drawImage(token, cx - d / 2, cy - d / 2, d, d, this);
+                } else {
+                    g2.setColor(c);
+                    g2.setFont(font(Font.BOLD, 11));
+                    String label = String.valueOf(i + 1);
+                    FontMetrics fm = g2.getFontMetrics();
+                    g2.drawString(label,
+                            cx - fm.stringWidth(label) / 2,
+                            cy + fm.getAscent() / 2 - 1);
+                }
             }
             g2.dispose();
         }
@@ -1088,10 +1120,6 @@ public class BoardView extends JFrame {
         return portfolioNav;
     }
 
-    public JButton getAuctionNav() {
-        return auctionNav;
-    }
-
     public JButton getEndTurnButton() {
         return endTurnButton;
     }
@@ -1150,8 +1178,19 @@ public class BoardView extends JFrame {
      * @return the visible {@link BoardView}
      */
     public static BoardView launch(List<Player> players) {
+        return launch(players, null);
+    }
+
+    /**
+     * As {@link #launch(List)} but also assigns each player the token image (by matching index)
+     * that they selected in the main menu. A {@code null} list falls back to numbered dots.
+     *
+     * @return the visible {@link BoardView}
+     */
+    public static BoardView launch(List<Player> players, List<ImageIcon> tokenIcons) {
         GameEngine engine = buildEngine(players);
         BoardView view = new BoardView(engine);
+        view.assignTokens(players, tokenIcons);
 
         GameController controller = new GameController(
                 engine, view,
@@ -1162,6 +1201,19 @@ public class BoardView extends JFrame {
         controller.refreshViews();
         view.setVisible(true);
         return view;
+    }
+
+    /** Maps each player to their chosen token artwork (index-aligned with {@code players}). */
+    private void assignTokens(List<Player> players, List<ImageIcon> tokenIcons) {
+        if (tokenIcons == null) {
+            return;
+        }
+        for (int i = 0; i < players.size() && i < tokenIcons.size(); i++) {
+            ImageIcon icon = tokenIcons.get(i);
+            if (icon != null) {
+                playerTokens.put(players.get(i), icon.getImage());
+            }
+        }
     }
 
     private static GameEngine previewEngine() {
