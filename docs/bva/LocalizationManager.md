@@ -7,7 +7,7 @@
     - **State of the system**: `LocalizationManager` has just loaded
     - **Expected output**: returns one of the supported locales
 
-- **TC2: setLocale_WithEnglishLocale_SetsLocaleToEnglish**
+- **TC2: setLocale_WithEnglishLocale_SetsLocaleToEnglish** ( :white_check_mark: )
     - **State of the system**: locale = `Locale.ENGLISH`
     - **Expected output**: `getLocale()` returns `Locale.ENGLISH`
 

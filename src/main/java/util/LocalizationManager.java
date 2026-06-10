@@ -14,4 +14,7 @@ public final class LocalizationManager {
         return ENGLISH;
     }
 
+    public static void setLocale(Locale locale) {
+    }
+
 }
