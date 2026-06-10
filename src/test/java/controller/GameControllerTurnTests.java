@@ -49,7 +49,7 @@ public class GameControllerTurnTests {
         EasyMock.expectLastCall().once();
         playerInfoView.renderPlayers(List.of());
         EasyMock.expectLastCall().once();
-        diceView.enableRollButton();
+        diceView.disableRollButton();
         EasyMock.expectLastCall().once();
         cardView.showCard(card);
         EasyMock.expectLastCall().once();
@@ -73,6 +73,8 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
+        diceView.disableRollButton();
+        EasyMock.expectLastCall();
         prompt.showProperty(property, player);
         EasyMock.expectLastCall();
         prompt.setBuyListener(EasyMock.anyObject());
@@ -949,6 +951,8 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
+        diceView.disableRollButton();
+        EasyMock.expectLastCall().once();
         prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.capture(buyListener));
@@ -990,6 +994,8 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
+        diceView.disableRollButton();
+        EasyMock.expectLastCall().once();
         prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.anyObject());

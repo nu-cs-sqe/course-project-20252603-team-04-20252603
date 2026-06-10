@@ -374,6 +374,7 @@ public class BoardView extends JFrame {
             rollDiceButton.setIconTextGap(8);
             rollDiceButton.setFont(font(Font.BOLD, 16));
             rollDiceButton.setBounds(265, 498, 190, 44);
+            diceView.setRollButton(rollDiceButton);
             add(rollDiceButton, Integer.valueOf(3));
 
             JComponent diceReadout = diceView.getComponent();

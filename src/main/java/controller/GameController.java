@@ -198,10 +198,11 @@ public class GameController {
         if (!activePlayers.isEmpty()) {
             playerInfoView.showCurrentTurn(gameEngine.getCurrentPlayer());
         }
-        diceView.enableRollButton();
         if (activeCard == null) {
+            diceView.enableRollButton();
             cardView.close();
         } else {
+            diceView.disableRollButton();
             cardView.showCard(activeCard);
         }
     }
@@ -341,6 +342,7 @@ public class GameController {
     }
 
     private void offerPurchase(Player player, Property property, double price) {
+        diceView.disableRollButton();
         propertyPromptView.showProperty(property, player);
         propertyPromptView.setBuyListener(event ->
                 handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price)));
