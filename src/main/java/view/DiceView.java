@@ -1,5 +1,7 @@
 package view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -21,6 +23,9 @@ public class DiceView {
         label.setForeground(new Color(0x16, 0x1D, 0x19));
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "Exposes the label component so the board can host the dice readout.")
     public JComponent getComponent() {
         return label;
     }

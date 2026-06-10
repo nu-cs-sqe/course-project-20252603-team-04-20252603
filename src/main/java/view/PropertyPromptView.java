@@ -1,5 +1,6 @@
 package view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.Player;
 import model.Property;
 
@@ -36,6 +37,9 @@ public class PropertyPromptView {
         this(null);
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "The Swing parent frame is shared by reference solely for dialog ownership.")
     public PropertyPromptView(Frame owner) {
         this.owner = owner;
     }

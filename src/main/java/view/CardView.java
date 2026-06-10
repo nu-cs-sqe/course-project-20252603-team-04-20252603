@@ -1,5 +1,6 @@
 package view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.Card;
 
 import javax.swing.JButton;
@@ -32,6 +33,9 @@ public class CardView {
         this(null);
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "The Swing parent frame is shared by reference solely for dialog ownership.")
     public CardView(Frame owner) {
         this.owner = owner;
     }
