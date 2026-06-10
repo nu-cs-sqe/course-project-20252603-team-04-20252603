@@ -97,4 +97,13 @@ public class LocalizationManagerTests {
         assertThrows(NullPointerException.class, () -> LocalizationManager.getMessage(null));
     }
 
+    @Test
+    public void formatMessage_WithEnglishLocaleAndPlayerNumber_ReturnsFormattedEnglishLabel() {
+        LocalizationManager.setLocale(Locale.ENGLISH);
+
+        String actual = LocalizationManager.formatMessage("mainMenu.playerLabel", 1);
+
+        assertEquals("Player 1", actual);
+    }
+
 }

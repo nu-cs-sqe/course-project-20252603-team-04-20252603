@@ -1,5 +1,6 @@
 package util;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -28,6 +29,10 @@ public final class LocalizationManager {
     public static String getMessage(String key) {
         Objects.requireNonNull(key, "Message key cannot be null");
         return messages.getString(key);
+    }
+
+    public static String formatMessage(String key, Object... arguments) {
+        return MessageFormat.format(getMessage(key), arguments);
     }
 
     public static void setLocale(Locale locale) {

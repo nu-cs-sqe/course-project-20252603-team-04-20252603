@@ -62,7 +62,7 @@
 2. Input: key and argument category, Output: substituted string
 3. Input values: one replacement value, no replacement values
 
-- **TC12: formatMessage_WithEnglishLocaleAndPlayerNumber_ReturnsFormattedEnglishLabel**
+- **TC12: formatMessage_WithEnglishLocaleAndPlayerNumber_ReturnsFormattedEnglishLabel** ( :white_check_mark: )
     - **State of the system**: active locale = English, key = `mainMenu.playerLabel`, argument = `1`
     - **Expected output**: returns `Player 1`
 
