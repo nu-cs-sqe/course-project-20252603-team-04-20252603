@@ -3,6 +3,7 @@ package view;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.Player;
 import model.Property;
+import util.LocalizationManager;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -39,7 +40,7 @@ public class PropertyPromptView {
     }
 
     public void showProperty(Property property, Player player) {
-        dialog = new JDialog(owner, "Unowned Property", false);
+        dialog = new JDialog(owner, LocalizationManager.getMessage("propertyPrompt.title"), false);
         dialog.setSize(360, 260);
         dialog.setLocationRelativeTo(owner);
 
@@ -50,16 +51,20 @@ public class PropertyPromptView {
         title.setFont(new Font("Segoe UI", Font.BOLD, 18));
         title.setForeground(INK);
 
-        String detail = "<html><div style='text-align:center'>Price: $" + (int) property.getPrice()
-                + "<br>Rent: $" + (int) property.getRent()
-                + "<br><br>" + player.getName() + ", buy this property?</div></html>";
+        String detail = LocalizationManager.formatMessage(
+                "propertyPrompt.detailHtml",
+                formatMoney(property.getPrice()),
+                formatMoney(property.getRent()),
+                player.getName());
         JLabel info = new JLabel(detail, SwingConstants.CENTER);
         info.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
-        buyButton = new JButton("Buy ($" + (int) property.getPrice() + ")");
+        buyButton = new JButton(LocalizationManager.formatMessage(
+                "propertyPrompt.buyButton",
+                formatMoney(property.getPrice())));
         buyButton.setForeground(EMERALD);
-        declineButton = new JButton("Decline");
+        declineButton = new JButton(LocalizationManager.getMessage("propertyPrompt.declineButton"));
         buttons.add(buyButton);
         buttons.add(declineButton);
 
@@ -93,5 +98,9 @@ public class PropertyPromptView {
             dialog.dispose();
             dialog = null;
         }
+    }
+
+    private static String formatMoney(double amount) {
+        return String.format(java.util.Locale.US, "$%,d", (int) amount);
     }
 }

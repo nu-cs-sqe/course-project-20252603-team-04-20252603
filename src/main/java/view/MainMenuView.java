@@ -4,6 +4,7 @@ import controller.MainMenuController;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.GameEngine;
 import model.Player;
+import util.LocalizationManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,25 +15,19 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-/**
- * Main menu screen for the Emerald Estate edition.
- *
- * <p>All iconography is rendered with Graphics2D (no emoji / unicode glyphs) so the screen looks
- * identical regardless of the source-file compile encoding or the fonts installed on the host.</p>
- */
 public class MainMenuView extends JFrame {
 
-    // ----- Palette (taken from the Stitch design tokens) -------------------------------------
-    private static final Color BG = new Color(0xEE, 0xF6, 0xEE);          // surface-container-low
-    private static final Color NAV_BG = new Color(0xF4, 0xFB, 0xF4);      // surface
+    private static final Color BG = new Color(0xEE, 0xF6, 0xEE);
+    private static final Color NAV_BG = new Color(0xF4, 0xFB, 0xF4);
     private static final Color CARD_WHITE = Color.WHITE;
     private static final Color PLAYER_CARD_BG = new Color(0xF1, 0xF7, 0xF2);
-    private static final Color PRIMARY = new Color(0x00, 0x6C, 0x49);     // dark green (titles)
-    private static final Color EMERALD = new Color(0x10, 0xB9, 0x81);     // accent / active pill
-    private static final Color TRADE_GREEN = new Color(0x0C, 0x7A, 0x4E); // "Ready to Trade" card
-    private static final Color INK = new Color(0x16, 0x1D, 0x19);         // primary text
-    private static final Color MUTED = new Color(0x5C, 0x66, 0x60);       // secondary text
+    private static final Color PRIMARY = new Color(0x00, 0x6C, 0x49);
+    private static final Color EMERALD = new Color(0x10, 0xB9, 0x81);
+    private static final Color TRADE_GREEN = new Color(0x0C, 0x7A, 0x4E);
+    private static final Color INK = new Color(0x16, 0x1D, 0x19);
+    private static final Color MUTED = new Color(0x5C, 0x66, 0x60);
     private static final Color FIELD_BORDER = new Color(0xD8, 0xE2, 0xDB);
     private static final Color PILL_INACTIVE_BG = new Color(0xE3, 0xEA, 0xE3);
     private static final Color TRADE_SUBTEXT = new Color(0xCF, 0xE9, 0xDC);
@@ -52,14 +47,19 @@ public class MainMenuView extends JFrame {
     private JButton newGameButton;
     private JButton optionsButton;
     private JButton recordsButton;
+    private JComboBox<String> languageSelector;
 
     public MainMenuView() {
-        setTitle("Emerald Estate - Main Menu");
+        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 900);
         setMinimumSize(new Dimension(1024, 700));
         setLocationRelativeTo(null);
+        setContentPane(createRoot());
+        wireActions();
+    }
 
+    private JPanel createRoot() {
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(BG);
         root.add(createNavBar(), BorderLayout.NORTH);
@@ -73,27 +73,23 @@ public class MainMenuView extends JFrame {
         scroll.getVerticalScrollBar().setUnitIncrement(16);
         root.add(scroll, BorderLayout.CENTER);
 
-        setContentPane(root);
-        wireActions();
+        return root;
     }
 
-    /** Hooks the menu buttons to their behaviour. New Game drives the {@link MainMenuController}. */
     private void wireActions() {
         if (newGameButton != null) {
             newGameButton.addActionListener(e -> handleNewGame());
         }
     }
 
-    /**
-     * Collects the entered player names, runs them through {@link MainMenuController} (validation +
-     * game start), then hands the players to {@link BoardView} and closes this menu.
-     */
     private void handleNewGame() {
         List<String> names = new ArrayList<>();
         List<ImageIcon> icons = new ArrayList<>();
         for (int i = 0; i < nameFields.size(); i++) {
             String typed = nameFields.get(i).getText().trim();
-            names.add(typed.isEmpty() ? "Player " + (i + 1) : typed);
+            names.add(typed.isEmpty()
+                    ? LocalizationManager.formatMessage("mainMenu.defaultPlayerName", i + 1)
+                    : typed);
             icons.add(iconFor(selectedTokens.get(i)));
         }
 
@@ -105,11 +101,11 @@ public class MainMenuView extends JFrame {
             dispose();
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
-                    "Cannot start game", JOptionPane.WARNING_MESSAGE);
+                    LocalizationManager.getMessage("mainMenu.cannotStartTitle"),
+                    JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    /** Renders a token's vector artwork to an {@link ImageIcon} the board can paint. */
     private ImageIcon iconFor(VectorIcon.Type type) {
         int size = 40;
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
@@ -118,8 +114,6 @@ public class MainMenuView extends JFrame {
         g.dispose();
         return new ImageIcon(img);
     }
-
-    // ============================================================ Top navigation bar ==========
 
     private JPanel createNavBar() {
         JPanel nav = new JPanel(new BorderLayout());
@@ -130,17 +124,71 @@ public class MainMenuView extends JFrame {
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
         left.setOpaque(false);
         left.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 32)));
-        JLabel brand = new JLabel("Empire Tycoon");
+        JLabel brand = new JLabel(LocalizationManager.getMessage("mainMenu.brand"));
         brand.setFont(font(Font.BOLD, 22));
         brand.setForeground(PRIMARY);
         left.add(brand);
 
         nav.add(left, BorderLayout.WEST);
+        nav.add(createLanguagePanel(), BorderLayout.EAST);
         nav.add(new JSeparator(), BorderLayout.SOUTH);
         return nav;
     }
 
-    // ============================================================ Body ========================
+    private JPanel createLanguagePanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 14));
+        panel.setOpaque(false);
+
+        JLabel label = new JLabel(LocalizationManager.getMessage("mainMenu.languageLabel"));
+        label.setFont(font(Font.BOLD, 12));
+        label.setForeground(MUTED);
+
+        languageSelector = createLanguageSelector();
+        panel.add(label);
+        panel.add(languageSelector);
+        return panel;
+    }
+
+    private JComboBox<String> createLanguageSelector() {
+        JComboBox<String> selector = new JComboBox<>(new String[]{
+                LocalizationManager.getMessage("mainMenu.language.english"),
+                LocalizationManager.getMessage("mainMenu.language.spanish")
+        });
+        selector.setSelectedIndex(isSpanishLocale() ? 1 : 0);
+        selector.setFont(font(Font.PLAIN, 13));
+        selector.setFocusable(false);
+        selector.setPreferredSize(new Dimension(130, 32));
+        selector.addActionListener(event -> switchLanguage(selectedLocale(selector)));
+        return selector;
+    }
+
+    private Locale selectedLocale(JComboBox<String> selector) {
+        if (selector.getSelectedIndex() == 1) {
+            return LocalizationManager.SPANISH;
+        }
+        return LocalizationManager.ENGLISH;
+    }
+
+    private boolean isSpanishLocale() {
+        return LocalizationManager.getLocale().getLanguage()
+                .equals(LocalizationManager.SPANISH.getLanguage());
+    }
+
+    private void switchLanguage(Locale locale) {
+        if (LocalizationManager.getLocale().getLanguage().equals(locale.getLanguage())) {
+            return;
+        }
+        LocalizationManager.setLocale(locale);
+        SwingUtilities.invokeLater(this::refreshLocalizedContent);
+    }
+
+    private void refreshLocalizedContent() {
+        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
+        setContentPane(createRoot());
+        wireActions();
+        revalidate();
+        repaint();
+    }
 
     private JPanel createBody() {
         JPanel body = new ScrollableWidthPanel();
@@ -166,7 +214,6 @@ public class MainMenuView extends JFrame {
         c.insets = new Insets(0, 0, 0, 0);
         body.add(createShowcaseRow(), c);
 
-        // Filler row keeps everything anchored to the top when the window is tall.
         c.gridy = 3;
         c.weighty = 1.0;
         c.fill = GridBagConstraints.BOTH;
@@ -174,8 +221,6 @@ public class MainMenuView extends JFrame {
 
         return body;
     }
-
-    // ------------------------------------------------------------ Hero ------------------------
 
     private JPanel createHero() {
         JPanel hero = new JPanel();
@@ -192,13 +237,13 @@ public class MainMenuView extends JFrame {
         iconCard.setAlignmentX(Component.CENTER_ALIGNMENT);
         iconCard.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 64)));
 
-        JLabel title = new JLabel("Emerald Estate");
+        JLabel title = new JLabel(LocalizationManager.getMessage("mainMenu.heroTitle"));
         title.setFont(font(Font.BOLD, 46));
         title.setForeground(PRIMARY);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitle = centeredHtml(
-                "Reimagine property trading with clinical precision and modern elegance.", MUTED, 14);
+                LocalizationManager.getMessage("mainMenu.heroSubtitle"), MUTED, 14);
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hero.add(iconCard);
@@ -208,8 +253,6 @@ public class MainMenuView extends JFrame {
         hero.add(subtitle);
         return hero;
     }
-
-    // ------------------------------------------------------------ Main two-column row --------
 
     private JPanel createMainRow() {
         JPanel row = new JPanel(new GridBagLayout());
@@ -221,8 +264,6 @@ public class MainMenuView extends JFrame {
         c.fill = GridBagConstraints.BOTH;
         c.gridy = 0;
 
-        // Fixed preferred widths in a ~65/35 ratio keep GridBag from skewing the split toward
-        // whichever card has the larger intrinsic preferred width.
         assembleCard = createAssembleCard();
         assembleCard.setPreferredSize(new Dimension(680, 440));
         assembleCard.setMinimumSize(new Dimension(560, 440));
@@ -248,7 +289,6 @@ public class MainMenuView extends JFrame {
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(28, 32, 32, 32));
 
-        // Header: text on the left, player-count pills pushed to the right.
         JPanel header = new JPanel();
         header.setLayout(new BoxLayout(header, BoxLayout.X_AXIS));
         header.setOpaque(false);
@@ -259,11 +299,11 @@ public class MainMenuView extends JFrame {
         headText.setLayout(new BoxLayout(headText, BoxLayout.Y_AXIS));
         headText.setOpaque(false);
         headText.setAlignmentY(Component.TOP_ALIGNMENT);
-        JLabel h = new JLabel("Assemble Your Empire");
+        JLabel h = new JLabel(LocalizationManager.getMessage("mainMenu.assembleTitle"));
         h.setFont(font(Font.BOLD, 20));
         h.setForeground(INK);
         h.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JLabel sub = new JLabel("Configure up to 4 players for this session.");
+        JLabel sub = new JLabel(LocalizationManager.getMessage("mainMenu.assembleSubtitle"));
         sub.setFont(font(Font.PLAIN, 12));
         sub.setForeground(MUTED);
         sub.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -281,7 +321,6 @@ public class MainMenuView extends JFrame {
         header.add(Box.createHorizontalGlue());
         header.add(pillGroup);
 
-        // Player cards: rebuilt whenever the player count changes.
         playersPanel = new JPanel();
         playersPanel.setOpaque(false);
         playersPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -295,12 +334,12 @@ public class MainMenuView extends JFrame {
         return card;
     }
 
-    /** (Re)builds the 2/3/4-player selector pills, highlighting the active count. */
     private void populatePills() {
         pillGroup.removeAll();
         for (int n : new int[]{2, 3, 4}) {
             boolean active = (n == selectedCount);
-            JButton pill = new RoundedButton(n + " PLAYERS",
+            JButton pill = new RoundedButton(
+                    LocalizationManager.formatMessage("mainMenu.playerCount", n),
                     active ? EMERALD : PILL_INACTIVE_BG,
                     active ? Color.WHITE : MUTED, 20, null);
             pill.setFont(font(Font.BOLD, 10));
@@ -317,22 +356,21 @@ public class MainMenuView extends JFrame {
         pillGroup.repaint();
     }
 
-    /** Rebuilds the player-name/token cards to match {@link #selectedCount}. */
     private void rebuildPlayerCards() {
+        List<String> previousNames = currentNameEntries();
+        List<VectorIcon.Type> previousTokens = new ArrayList<>(selectedTokens);
         nameFields.clear();
         selectedTokens.clear();
         playersPanel.removeAll();
-        // 4 players use a 2x2 grid so each card stays wide enough for all four token choices;
-        // 2 or 3 players sit in a single row.
         int rows = (selectedCount == 4) ? 2 : 1;
         int cols = (selectedCount == 4) ? 2 : selectedCount;
         playersPanel.setLayout(new GridLayout(rows, cols, 20, 16));
         playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, rows * 220));
         for (int i = 0; i < selectedCount; i++) {
-            selectedTokens.add(TOKEN_SET[i % TOKEN_SET.length]);
+            selectedTokens.add(tokenAt(i, previousTokens));
             playersPanel.add(createPlayerCard(i));
         }
-        // Grow the surrounding card so the two-row (4-player) grid stays inside its white panel.
+        restoreNameEntries(previousNames);
         if (assembleCard != null) {
             int h = (rows == 2) ? 600 : 440;
             assembleCard.setPreferredSize(new Dimension(680, h));
@@ -343,23 +381,47 @@ public class MainMenuView extends JFrame {
         playersPanel.repaint();
     }
 
+    private List<String> currentNameEntries() {
+        List<String> names = new ArrayList<>();
+        for (JTextField field : nameFields) {
+            names.add(field.getText());
+        }
+        return names;
+    }
+
+    private VectorIcon.Type tokenAt(int index, List<VectorIcon.Type> previousTokens) {
+        if (index < previousTokens.size()) {
+            return previousTokens.get(index);
+        }
+        return TOKEN_SET[index % TOKEN_SET.length];
+    }
+
+    private void restoreNameEntries(List<String> names) {
+        int count = Math.min(names.size(), nameFields.size());
+        for (int i = 0; i < count; i++) {
+            nameFields.get(i).setText(names.get(i));
+        }
+    }
+
     private JPanel createPlayerCard(int index) {
         RoundedPanel card = new RoundedPanel(PLAYER_CARD_BG, 16);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel label = new JLabel("PLAYER 0" + (index + 1));
+        JLabel label = new JLabel(
+                LocalizationManager.formatMessage("mainMenu.playerLabelPadded", index + 1));
         label.setFont(font(Font.BOLD, 12));
         label.setForeground(EMERALD);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        RoundedTextField field = new RoundedTextField("Enter Name");
+        RoundedTextField field = new RoundedTextField(
+                LocalizationManager.getMessage("mainMenu.enterNamePlaceholder"));
         field.setFont(font(Font.PLAIN, 14));
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
         nameFields.add(field);
 
-        JLabel tokenLabel = new JLabel("SELECT TOKEN");
+        JLabel tokenLabel = new JLabel(LocalizationManager.getMessage("mainMenu.selectToken"));
         tokenLabel.setFont(font(Font.BOLD, 11));
         tokenLabel.setForeground(MUTED);
         tokenLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -380,7 +442,6 @@ public class MainMenuView extends JFrame {
         return card;
     }
 
-    /** Fills a token row with the four choices, highlighting this player's current selection. */
     private void populateTokenRow(JPanel row, int index) {
         row.removeAll();
         for (VectorIcon.Type type : TOKEN_SET) {
@@ -405,8 +466,6 @@ public class MainMenuView extends JFrame {
         return btn;
     }
 
-    // ------------------------------------------------------------ Trade column ----------------
-
     private JPanel createTradeColumn() {
         JPanel col = new JPanel();
         col.setLayout(new BoxLayout(col, BoxLayout.Y_AXIS));
@@ -418,21 +477,23 @@ public class MainMenuView extends JFrame {
         trade.setAlignmentX(Component.LEFT_ALIGNMENT);
         trade.setMaximumSize(new Dimension(Integer.MAX_VALUE, 380));
 
-        JLabel title = new JLabel("Ready to Trade?");
+        JLabel title = new JLabel(LocalizationManager.getMessage("mainMenu.readyTitle"));
         title.setFont(font(Font.BOLD, 24));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel desc1 = new JLabel("The board is set. The properties are");
+        JLabel desc1 = new JLabel(LocalizationManager.getMessage("mainMenu.readyLineOne"));
         desc1.setFont(font(Font.PLAIN, 14));
         desc1.setForeground(TRADE_SUBTEXT);
         desc1.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JLabel desc2 = new JLabel("waiting. Claim your fortune today.");
+        JLabel desc2 = new JLabel(LocalizationManager.getMessage("mainMenu.readyLineTwo"));
         desc2.setFont(font(Font.PLAIN, 14));
         desc2.setForeground(TRADE_SUBTEXT);
         desc2.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        newGameButton = new RoundedButton("New Game", Color.WHITE, TRADE_GREEN, 28, null);
+        newGameButton = new RoundedButton(
+                LocalizationManager.getMessage("mainMenu.startButton"),
+                Color.WHITE, TRADE_GREEN, 28, null);
         newGameButton.setFont(font(Font.BOLD, 17));
         newGameButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         newGameButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
@@ -451,10 +512,14 @@ public class MainMenuView extends JFrame {
         actions.setOpaque(false);
         actions.setAlignmentX(Component.LEFT_ALIGNMENT);
         actions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
-        optionsButton = new RoundedButton("Options", CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
+        optionsButton = new RoundedButton(
+                LocalizationManager.getMessage("mainMenu.optionsButton"),
+                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
         optionsButton.setFont(font(Font.BOLD, 13));
         optionsButton.setPreferredSize(new Dimension(110, 44));
-        recordsButton = new RoundedButton("Records", CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
+        recordsButton = new RoundedButton(
+                LocalizationManager.getMessage("mainMenu.recordsButton"),
+                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
         recordsButton.setFont(font(Font.BOLD, 13));
         recordsButton.setPreferredSize(new Dimension(110, 44));
         actions.add(optionsButton);
@@ -467,8 +532,6 @@ public class MainMenuView extends JFrame {
         return col;
     }
 
-    // ------------------------------------------------------------ Showcase row ----------------
-
     private JPanel createShowcaseRow() {
         JPanel row = new JPanel(new GridLayout(1, 4, 24, 0));
         row.setOpaque(false);
@@ -476,10 +539,10 @@ public class MainMenuView extends JFrame {
         row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
 
         Object[][] items = {
-                {VectorIcon.Type.CAR, "VINTAGE CAR"},
-                {VectorIcon.Type.BOAT, "LUXURY BOAT"},
-                {VectorIcon.Type.IRON, "IRONWORK"},
-                {VectorIcon.Type.HAT, "SILK TOP HAT"},
+                {VectorIcon.Type.CAR, LocalizationManager.getMessage("mainMenu.token.car")},
+                {VectorIcon.Type.BOAT, LocalizationManager.getMessage("mainMenu.token.boat")},
+                {VectorIcon.Type.IRON, LocalizationManager.getMessage("mainMenu.token.iron")},
+                {VectorIcon.Type.HAT, LocalizationManager.getMessage("mainMenu.token.hat")},
         };
         for (Object[] item : items) {
             RoundedPanel cell = new RoundedPanel(new Color(0xF3, 0xF8, 0xF3), 20);
@@ -501,8 +564,6 @@ public class MainMenuView extends JFrame {
         return row;
     }
 
-    // ============================================================ Helpers =====================
-
     private static Font font(int style, int size) {
         return new Font(FONT_FAMILY, style, size);
     }
@@ -515,9 +576,6 @@ public class MainMenuView extends JFrame {
         return label;
     }
 
-    // ============================================================ Reusable components ==========
-
-    /** Body panel that matches the scroll-pane viewport width (so it never scrolls sideways). */
     private static class ScrollableWidthPanel extends JPanel implements Scrollable {
         @Override
         public Dimension getPreferredScrollableViewportSize() {
@@ -545,7 +603,6 @@ public class MainMenuView extends JFrame {
         }
     }
 
-    /** Panel with an anti-aliased rounded-rectangle background. */
     private static class RoundedPanel extends JPanel {
         private final Color color;
         private final int arc;
@@ -567,7 +624,6 @@ public class MainMenuView extends JFrame {
         }
     }
 
-    /** Flat, rounded (optionally pill-shaped) button with optional border. */
     private static class RoundedButton extends JButton {
         private final Color bg;
         private final Color border;
@@ -616,7 +672,6 @@ public class MainMenuView extends JFrame {
         }
     }
 
-    /** Rounded text field that shows greyed placeholder text while empty and unfocused. */
     private static class RoundedTextField extends JTextField {
         private final String placeholder;
 
@@ -654,9 +709,6 @@ public class MainMenuView extends JFrame {
         }
     }
 
-    // ============================================================ Vector iconography ==========
-
-    /** Renders the logo and the playing tokens as scalable vector graphics. */
     private static class VectorIcon implements Icon {
         enum Type { LOGO, CAR, BOAT, HAT, IRON }
 
@@ -727,7 +779,6 @@ public class MainMenuView extends JFrame {
                 g2.setColor(tileColor);
                 g2.fill(new RoundRectangle2D.Double(pos[i][0], pos[i][1], tile, tile, r, r));
             }
-            // Bottom-right tile carries a little white house.
             double hx = pos[3][0];
             double hy = pos[3][1];
             g2.setColor(tileColor);
@@ -745,13 +796,10 @@ public class MainMenuView extends JFrame {
 
         private void paintCar(Graphics2D g2, double s) {
             g2.setPaint(new GradientPaint(0, 0, TOKEN_LIGHT, 0, (float) s, TOKEN_MID));
-            // cabin
             g2.fill(new RoundRectangle2D.Double(s * 0.22, s * 0.30, s * 0.46, s * 0.24,
                     s * 0.12, s * 0.12));
-            // body
             g2.fill(new RoundRectangle2D.Double(s * 0.06, s * 0.46, s * 0.88, s * 0.26,
                     s * 0.16, s * 0.16));
-            // wheels
             g2.setColor(TOKEN_DARK);
             double wr = s * 0.12;
             g2.fill(new Ellipse2D.Double(s * 0.20 - wr, s * 0.66, wr * 2, wr * 2));
@@ -763,7 +811,6 @@ public class MainMenuView extends JFrame {
         }
 
         private void paintBoat(Graphics2D g2, double s) {
-            // sail
             g2.setPaint(new GradientPaint(0, 0, TOKEN_LIGHT, 0, (float) s, TOKEN_MID));
             GeneralPath sail = new GeneralPath();
             sail.moveTo(s * 0.50, s * 0.08);
@@ -771,12 +818,10 @@ public class MainMenuView extends JFrame {
             sail.lineTo(s * 0.84, s * 0.60);
             sail.closePath();
             g2.fill(sail);
-            // mast
             g2.setColor(TOKEN_DARK);
             g2.setStroke(new BasicStroke((float) (s * 0.04), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND));
             g2.drawLine((int) (s * 0.46), (int) (s * 0.08), (int) (s * 0.46), (int) (s * 0.62));
-            // hull
             g2.setPaint(new GradientPaint(0, (float) (s * 0.6), TOKEN_MID, 0, (float) s, TOKEN_DARK));
             GeneralPath hull = new GeneralPath();
             hull.moveTo(s * 0.12, s * 0.64);
@@ -789,20 +834,16 @@ public class MainMenuView extends JFrame {
 
         private void paintHat(Graphics2D g2, double s) {
             g2.setPaint(new GradientPaint(0, 0, TOKEN_MID, 0, (float) s, TOKEN_DARK));
-            // brim
             g2.fill(new Ellipse2D.Double(s * 0.08, s * 0.66, s * 0.84, s * 0.18));
-            // crown
             g2.setPaint(new GradientPaint(0, 0, TOKEN_LIGHT, 0, (float) s, TOKEN_MID));
             g2.fill(new RoundRectangle2D.Double(s * 0.28, s * 0.16, s * 0.44, s * 0.56,
                     s * 0.06, s * 0.06));
-            // band
             g2.setColor(TOKEN_DARK);
             g2.fill(new RoundRectangle2D.Double(s * 0.28, s * 0.56, s * 0.44, s * 0.10,
                     s * 0.04, s * 0.04));
         }
 
         private void paintIron(Graphics2D g2, double s) {
-            // handle loop on top (drawn first so the body overlaps its base)
             g2.setColor(TOKEN_DARK);
             g2.setStroke(new BasicStroke((float) (s * 0.09), BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND));
@@ -810,7 +851,6 @@ public class MainMenuView extends JFrame {
             handle.moveTo(s * 0.24, s * 0.50);
             handle.curveTo(s * 0.24, s * 0.22, s * 0.66, s * 0.22, s * 0.66, s * 0.50);
             g2.draw(handle);
-            // body: flat-topped, pointed at the front (right), flat sole at the bottom
             g2.setPaint(new GradientPaint(0, (float) (s * 0.45), TOKEN_LIGHT,
                     0, (float) s, TOKEN_MID));
             GeneralPath body = new GeneralPath();
@@ -821,14 +861,11 @@ public class MainMenuView extends JFrame {
             body.quadTo(s * 0.12, s * 0.70, s * 0.12, s * 0.58);
             body.closePath();
             g2.fill(body);
-            // sole plate
             g2.setColor(TOKEN_DARK);
             g2.fill(new RoundRectangle2D.Double(s * 0.16, s * 0.70, s * 0.70, s * 0.06,
                     s * 0.03, s * 0.03));
         }
     }
-
-    // ============================================================ Accessors ===================
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP",

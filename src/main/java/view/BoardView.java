@@ -7,6 +7,7 @@ import controller.PropertyController;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.*;
 import util.Constants;
+import util.LocalizationManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -87,7 +88,7 @@ public class BoardView extends JFrame {
         this.playerColors = new HashMap<>();
         this.playerTokens = new HashMap<>();
 
-        setTitle("Emerald Estate - Board");
+        setTitle(LocalizationManager.getMessage("board.title"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 860);
         setMinimumSize(new Dimension(1100, 760));
@@ -132,7 +133,7 @@ public class BoardView extends JFrame {
         }
         gameOverShown = true;
         if (turnLabel != null) {
-            turnLabel.setText("Game Over");
+            turnLabel.setText(LocalizationManager.getMessage("board.gameOver"));
         }
         if (rollDiceButton != null) {
             rollDiceButton.setEnabled(false);
@@ -141,9 +142,13 @@ public class BoardView extends JFrame {
             endTurnButton.setEnabled(false);
         }
         String message = gameEngine.getWinner()
-                .map(winner -> winner.getName() + " wins!")
-                .orElse("Game over.");
-        JOptionPane.showMessageDialog(this, message, "Emerald Estate", JOptionPane.INFORMATION_MESSAGE);
+                .map(winner -> LocalizationManager.formatMessage("board.winnerMessage", winner.getName()))
+                .orElse(LocalizationManager.getMessage("board.gameOverMessage"));
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                LocalizationManager.getMessage("board.brand"),
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -153,13 +158,15 @@ public class BoardView extends JFrame {
         }
         Player current = gameEngine.getCurrentPlayer();
         if (turnLabel != null) {
-            turnLabel.setText(current.getName() + "'s Turn");
+            turnLabel.setText(LocalizationManager.formatMessage("board.currentTurn", current.getName()));
         }
         if (currentPlayerName != null) {
             currentPlayerName.setText(current.getName());
         }
         if (currentPlayerBalance != null) {
-            currentPlayerBalance.setText("$" + (int) current.getBalance() + " Balance");
+            currentPlayerBalance.setText(LocalizationManager.formatMessage(
+                    "board.balanceLabel",
+                    formatMoney(current.getBalance())));
         }
     }
 
@@ -189,13 +196,15 @@ public class BoardView extends JFrame {
 
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         left.setOpaque(false);
-        JLabel brand = new JLabel("Empire Tycoon");
+        JLabel brand = new JLabel(LocalizationManager.getMessage("board.brand"));
         brand.setFont(font(Font.BOLD, 20));
         brand.setForeground(PRIMARY);
         JLabel divider = new JLabel("   |   ");
         divider.setFont(font(Font.PLAIN, 20));
         divider.setForeground(FIELD_BORDER);
-        turnLabel = new JLabel("Player 1's Turn");
+        turnLabel = new JLabel(LocalizationManager.formatMessage(
+                "board.currentTurn",
+                LocalizationManager.formatMessage("mainMenu.defaultPlayerName", 1)));
         turnLabel.setFont(font(Font.BOLD, 18));
         turnLabel.setForeground(INK);
         left.add(brand);
@@ -223,9 +232,12 @@ public class BoardView extends JFrame {
         nav.add(createCurrentPlayerCard());
         nav.add(Box.createVerticalStrut(24));
 
-        boardNav = createNavItem(BoardIcon.Type.NAV_BOARD, "Board", true);
-        tradeNav = createNavItem(BoardIcon.Type.NAV_TRADE, "Trade", false);
-        portfolioNav = createNavItem(BoardIcon.Type.NAV_PORTFOLIO, "Portfolio", false);
+        boardNav = createNavItem(BoardIcon.Type.NAV_BOARD, LocalizationManager.getMessage("board.nav.board"), true);
+        tradeNav = createNavItem(BoardIcon.Type.NAV_TRADE, LocalizationManager.getMessage("board.nav.trade"), false);
+        portfolioNav = createNavItem(
+                BoardIcon.Type.NAV_PORTFOLIO,
+                LocalizationManager.getMessage("board.nav.portfolio"),
+                false);
         nav.add(boardNav);
         nav.add(Box.createVerticalStrut(8));
         nav.add(tradeNav);
@@ -236,7 +248,7 @@ public class BoardView extends JFrame {
 
         nav.add(Box.createVerticalGlue());
 
-        JLabel owned = new JLabel("OWNED PROPERTIES");
+        JLabel owned = new JLabel(LocalizationManager.getMessage("board.ownedProperties"));
         owned.setFont(font(Font.BOLD, 11));
         owned.setForeground(MUTED);
         owned.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -252,7 +264,7 @@ public class BoardView extends JFrame {
         nav.add(swatches);
         nav.add(Box.createVerticalStrut(16));
 
-        endTurnButton = new RoundedButton("End Turn", INK, Color.WHITE, 14, null);
+        endTurnButton = new RoundedButton(LocalizationManager.getMessage("board.endTurn"), INK, Color.WHITE, 14, null);
         endTurnButton.setFont(font(Font.BOLD, 15));
         endTurnButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         endTurnButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 52));
@@ -283,11 +295,13 @@ public class BoardView extends JFrame {
         JPanel text = new JPanel();
         text.setLayout(new BoxLayout(text, BoxLayout.Y_AXIS));
         text.setOpaque(false);
-        currentPlayerName = new JLabel("Current Player");
+        currentPlayerName = new JLabel(LocalizationManager.getMessage("board.currentPlayer"));
         currentPlayerName.setFont(font(Font.BOLD, 14));
         currentPlayerName.setForeground(INK);
         currentPlayerName.setAlignmentX(Component.LEFT_ALIGNMENT);
-        currentPlayerBalance = new JLabel("$1,500 Balance");
+        currentPlayerBalance = new JLabel(LocalizationManager.formatMessage(
+                "board.balanceLabel",
+                formatMoney(Constants.STARTING_BALANCE)));
         currentPlayerBalance.setFont(font(Font.PLAIN, 12));
         currentPlayerBalance.setForeground(EMERALD);
         currentPlayerBalance.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -350,7 +364,12 @@ public class BoardView extends JFrame {
             dice.setBounds(285, 430, 150, 64);
             add(dice, Integer.valueOf(3));
 
-            rollDiceButton = new RoundedButton("Roll Dice", EMERALD, Color.WHITE, 24, null);
+            rollDiceButton = new RoundedButton(
+                    LocalizationManager.getMessage("board.rollDice"),
+                    EMERALD,
+                    Color.WHITE,
+                    24,
+                    null);
             rollDiceButton.setIcon(new BoardIcon(BoardIcon.Type.DIE, 18, Color.WHITE));
             rollDiceButton.setIconTextGap(8);
             rollDiceButton.setFont(font(Font.BOLD, 16));
@@ -385,7 +404,10 @@ public class BoardView extends JFrame {
                     pillsContainer.add(Box.createVerticalStrut(8));
                 }
                 Color c = playerColors.getOrDefault(p, MUTED);
-                String text = p.getName() + ": $" + (int) p.getBalance();
+                String text = LocalizationManager.formatMessage(
+                        "board.otherPlayerStatus",
+                        p.getName(),
+                        formatMoney(p.getBalance()));
                 pillsContainer.add(createPlayerPill(c, text, null));
                 first = false;
             }
@@ -594,7 +616,7 @@ public class BoardView extends JFrame {
     private TileDef tileToTileDef(Tile tile, BarSide bar) {
         if (tile instanceof Property) {
             Property prop = (Property) tile;
-            String label = "P " + (int) prop.getPrice();
+            String label = LocalizationManager.formatMessage("board.propertyLabel", (int) prop.getPrice());
             Color group = getPropertyGroupColor((int) prop.getPrice());
             TileDef def = TileDef.property(label, group);
             def.bar = bar;
@@ -612,7 +634,7 @@ public class BoardView extends JFrame {
         } else if (tile instanceof FreeParking) {
             return TileDef.corner(Kind.FREE);
         }
-        return TileDef.property("?", NAV_BG);
+        return TileDef.property(LocalizationManager.getMessage("board.unknownTile"), NAV_BG);
     }
 
     private Color getPropertyGroupColor(int price) {
@@ -658,7 +680,7 @@ public class BoardView extends JFrame {
             g2.setFont(font(Font.BOLD, 44));
             g2.setColor(WATERMARK);
             g2.rotate(Math.toRadians(-20), getWidth() / 2.0, getHeight() / 2.0);
-            String mark = "EMERALD ESTATE";
+            String mark = LocalizationManager.getMessage("board.watermark");
             FontMetrics fm = g2.getFontMetrics();
             g2.drawString(mark, (getWidth() - fm.stringWidth(mark)) / 2,
                     getHeight() / 2 + fm.getAscent() / 2);
@@ -674,13 +696,11 @@ public class BoardView extends JFrame {
 
         JLabel icon = new JLabel(new BoardIcon(BoardIcon.Type.DIE, 26, INK));
         icon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JLabel title = new JLabel("CHANCE");
+        JLabel title = new JLabel(LocalizationManager.getMessage("board.chance"));
         title.setFont(font(Font.BOLD, 22));
         title.setForeground(INK);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JLabel desc = new JLabel("<html><div style='text-align:center;width:300px'>"
-                + "<i>\"Advance to the nearest Utility. If unowned, you may buy it...\"</i></div></html>",
-                SwingConstants.CENTER);
+        JLabel desc = new JLabel(LocalizationManager.getMessage("board.chanceDescription"), SwingConstants.CENTER);
         desc.setFont(font(Font.PLAIN, 13));
         desc.setForeground(MUTED);
         desc.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -717,11 +737,11 @@ public class BoardView extends JFrame {
         }
 
         static TileDef irs() {
-            return new TileDef(Kind.IRS, "IRS", null);
+            return new TileDef(Kind.IRS, LocalizationManager.getMessage("board.irs"), null);
         }
 
         static TileDef chanceTile() {
-            return new TileDef(Kind.CHANCE, "?", null);
+            return new TileDef(Kind.CHANCE, LocalizationManager.getMessage("board.unknownTile"), null);
         }
 
         static TileDef corner(Kind kind) {
@@ -755,7 +775,7 @@ public class BoardView extends JFrame {
                     irs.setLayout(new BoxLayout(irs, BoxLayout.Y_AXIS));
                     JLabel ic = new JLabel(new BoardIcon(BoardIcon.Type.BANK, 16, MUTED));
                     ic.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    JLabel it = new JLabel("IRS");
+                    JLabel it = new JLabel(LocalizationManager.getMessage("board.irs"));
                     it.setFont(font(Font.BOLD, 10));
                     it.setForeground(MUTED);
                     it.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -765,13 +785,13 @@ public class BoardView extends JFrame {
                     add(irs);
                     break;
                 case CHANCE:
-                    JLabel q = new JLabel("?");
+                    JLabel q = new JLabel(LocalizationManager.getMessage("board.unknownTile"));
                     q.setFont(font(Font.BOLD, 18));
                     q.setForeground(PRIMARY);
                     add(q);
                     break;
                 case GO:
-                    JLabel go = new JLabel("GO", SwingConstants.CENTER);
+                    JLabel go = new JLabel(LocalizationManager.getMessage("board.go"), SwingConstants.CENTER);
                     go.setFont(font(Font.BOLD, 15));
                     go.setForeground(PRIMARY);
                     add(go);
@@ -782,7 +802,7 @@ public class BoardView extends JFrame {
                     jail.setLayout(new BoxLayout(jail, BoxLayout.Y_AXIS));
                     JLabel lock = new JLabel(new BoardIcon(BoardIcon.Type.LOCK, 18, INK));
                     lock.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    JLabel jailLabel = new JLabel("JAIL");
+                    JLabel jailLabel = new JLabel(LocalizationManager.getMessage("board.jail"));
                     jailLabel.setFont(font(Font.BOLD, 10));
                     jailLabel.setForeground(INK);
                     jailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -796,7 +816,8 @@ public class BoardView extends JFrame {
                             new Color(0xE5, 0x3E, 0x3E))));
                     break;
                 case FREE:
-                    JLabel free = new JLabel("<html><div style='text-align:center'>FREE<br>PARKING</div></html>",
+                    JLabel free = new JLabel(
+                            LocalizationManager.getMessage("board.freeParking"),
                             SwingConstants.CENTER);
                     free.setFont(font(Font.BOLD, 9));
                     free.setForeground(MUTED);
@@ -1214,7 +1235,7 @@ public class BoardView extends JFrame {
                 tiles.add(new IRSTile());
             } else {
                 double price = 60 + (i * 20);
-                tiles.add(new Property("Estate " + i, price, price / 10));
+                tiles.add(new Property(LocalizationManager.formatMessage("board.estateName", i), price, price / 10));
             }
         }
         return new Board(tiles);
@@ -1292,13 +1313,21 @@ public class BoardView extends JFrame {
         SwingUtilities.invokeLater(() -> {
             try {
                 List<Player> players = new java.util.ArrayList<>();
-                players.add(new Player("Player 1", Constants.STARTING_BALANCE));
-                players.add(new Player("Player 2", Constants.STARTING_BALANCE));
+                players.add(new Player(
+                        LocalizationManager.formatMessage("mainMenu.defaultPlayerName", 1),
+                        Constants.STARTING_BALANCE));
+                players.add(new Player(
+                        LocalizationManager.formatMessage("mainMenu.defaultPlayerName", 2),
+                        Constants.STARTING_BALANCE));
                 launch(players);
             } catch (Exception e) {
-                System.err.println("Error: failed to launch BoardView preview");
+                System.err.println(LocalizationManager.getMessage("board.previewError"));
                 e.printStackTrace();
             }
         });
+    }
+
+    private static String formatMoney(double amount) {
+        return String.format(java.util.Locale.US, "$%,d", (int) amount);
     }
 }

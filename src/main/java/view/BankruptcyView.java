@@ -3,6 +3,7 @@ package view;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.Player;
 import model.Property;
+import util.LocalizationManager;
 
 import javax.swing.JOptionPane;
 import java.awt.Frame;
@@ -38,8 +39,8 @@ public class BankruptcyView {
         if (properties.isEmpty()) {
             JOptionPane.showMessageDialog(
                     owner,
-                    player.getName() + " has no properties available to sell.",
-                    "Bankruptcy",
+                    LocalizationManager.formatMessage("bankruptcy.noProperties", player.getName()),
+                    LocalizationManager.getMessage("bankruptcy.title"),
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -47,8 +48,8 @@ public class BankruptcyView {
         PropertyChoice[] choices = createChoices(properties);
         Object selected = JOptionPane.showInputDialog(
                 owner,
-                player.getName() + " must sell a property to raise funds.",
-                "Forced Sale",
+                LocalizationManager.formatMessage("bankruptcy.forcedSalePrompt", player.getName()),
+                LocalizationManager.getMessage("bankruptcy.forcedSaleTitle"),
                 JOptionPane.WARNING_MESSAGE,
                 null,
                 choices,
@@ -63,8 +64,8 @@ public class BankruptcyView {
         Objects.requireNonNull(player, "Player cannot be null");
         JOptionPane.showMessageDialog(
                 owner,
-                player.getName() + " has been eliminated.",
-                "Bankruptcy",
+                LocalizationManager.formatMessage("bankruptcy.eliminated", player.getName()),
+                LocalizationManager.getMessage("bankruptcy.title"),
                 JOptionPane.WARNING_MESSAGE);
     }
 
@@ -96,7 +97,10 @@ public class BankruptcyView {
 
         @Override
         public String toString() {
-            return property.getPropertyName() + " - Sale value " + formatMoney(property.getResaleValue());
+            return LocalizationManager.formatMessage(
+                    "bankruptcy.saleValue",
+                    property.getPropertyName(),
+                    formatMoney(property.getResaleValue()));
         }
     }
 }

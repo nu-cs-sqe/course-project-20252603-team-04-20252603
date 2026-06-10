@@ -1,6 +1,7 @@
 package view;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import util.LocalizationManager;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -8,11 +9,6 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 
-/**
- * Passive dice readout. The board hosts {@link #getComponent()} and the controller calls
- * {@link #showRollResult(int, int)} after each roll. Enable/disable are no-ops; the Roll button on
- * the board stays available between turns.
- */
 public class DiceView {
 
     private final JLabel label;
@@ -31,14 +27,12 @@ public class DiceView {
     }
 
     public void showRollResult(int dieOne, int dieTwo) {
-        label.setText("Rolled " + dieOne + " + " + dieTwo + " = " + (dieOne + dieTwo));
+        label.setText(LocalizationManager.formatMessage("dice.rollResult", dieOne, dieTwo, dieOne + dieTwo));
     }
 
     public void enableRollButton() {
-        // No-op: the board's Roll button remains enabled between turns.
     }
 
     public void disableRollButton() {
-        // No-op.
     }
 }

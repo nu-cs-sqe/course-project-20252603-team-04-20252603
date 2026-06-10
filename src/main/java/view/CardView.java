@@ -2,6 +2,7 @@ package view;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.Card;
+import util.LocalizationManager;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -38,7 +39,7 @@ public class CardView {
 
     public void showCard(Card card) {
         if (dialog == null) {
-            dialog = new JDialog(owner, "Chance", false);
+            dialog = new JDialog(owner, LocalizationManager.getMessage("card.title"), false);
             dialog.setSize(380, 220);
         }
         dialog.setLocationRelativeTo(owner);
@@ -56,7 +57,7 @@ public class CardView {
         description.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         description.setForeground(INK);
 
-        JButton proceed = new JButton("Proceed");
+        JButton proceed = new JButton(LocalizationManager.getMessage("card.proceedButton"));
         proceed.setForeground(PRIMARY);
         if (proceedListener != null) {
             proceed.addActionListener(proceedListener);
