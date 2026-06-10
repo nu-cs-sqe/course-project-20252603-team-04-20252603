@@ -221,12 +221,21 @@ public class GameController {
             return;
         }
         if (current.inJail()) {
+            playJailTurn(current);
             return;
         }
         int oldPosition = gameEngine.getPlayerPosition(current);
         rollAndMove(current);
         grantGoBonusIfPassed(current, oldPosition);
         resolveLanding();
+    }
+
+    private void playJailTurn(Player current) {
+        boolean escaped = jailController.attemptRollDoubles(current);
+        if (!escaped && current.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
+            jailController.payJailFee(current);
+        }
+        refreshViews();
     }
 
     private void rollAndMove(Player current) {

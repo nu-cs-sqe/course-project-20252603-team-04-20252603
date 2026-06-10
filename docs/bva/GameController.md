@@ -345,6 +345,21 @@ Owns one full turn: jail handling, roll, move, GO-pass bonus, then `resolveLandi
   - **Expected**: `COLLECT_MONEY` of `Constants.GO_BONUS` is granted exactly once (no double with a
     GO landing)
 
+#### Jail turn (a jailed player's `playTurn`)
+
+When the current player starts their turn in jail, the controller attempts to roll doubles; if that
+fails and the player has reached `MAX_JAIL_TURNS`, the jail fee is auto-paid so play can continue.
+
+- **TC61: playTurn_WhenInJailAndRollsDoubles_LeavesJail** ( :construction: )
+  - **State**: current player is in jail; `JailController.attemptRollDoubles` returns `true`
+  - **Expected**: no board move; views refreshed
+- **TC62: playTurn_WhenInJailNoDoublesBelowMaxTurns_StaysInJail** ( :construction: )
+  - **State**: in jail, `attemptRollDoubles` false, `getJailTurnCount` below `MAX_JAIL_TURNS`
+  - **Expected**: no fee paid; views refreshed (player remains jailed)
+- **TC63: playTurn_WhenInJailNoDoublesAtMaxTurns_PaysFee** ( :construction: )
+  - **State**: in jail, `attemptRollDoubles` false, `getJailTurnCount` equals `MAX_JAIL_TURNS`
+  - **Expected**: `JailController.payJailFee` is invoked; views refreshed
+
 ### Method under test: `handleTileAction(...)` — additive cases
 
 Existing `NONE`/`DRAW_CARD`/`OFFER_PURCHASE`/`PAY_BANK`/`PAY_TAX` cases unchanged (TC23–TC29). Adds:
