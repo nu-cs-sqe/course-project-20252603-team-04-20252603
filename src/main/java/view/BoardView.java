@@ -114,7 +114,6 @@ public class BoardView extends JFrame {
         initializePlayerColors(activePlayers);
         updateCurrentPlayer(activePlayers);
         if (boardStage != null) {
-            boardStage.refreshPills();
             boardStage.repaintTokens();
         }
         showWinnerIfGameOver();
@@ -316,7 +315,6 @@ public class BoardView extends JFrame {
 
     private class BoardStage extends JLayeredPane {
 
-        private JPanel pillsContainer;
         private TokenOverlay tokenOverlay;
 
         BoardStage() {
@@ -333,8 +331,6 @@ public class BoardView extends JFrame {
             CenterPanel center = new CenterPanel();
             center.setBounds(CENTER_X, CENTER_Y, CENTER_SIZE, CENTER_SIZE);
             add(center, Integer.valueOf(2));
-
-            refreshPills();
 
             JPanel dice = createDiceCluster();
             dice.setBounds(285, 430, 150, 64);
@@ -362,68 +358,11 @@ public class BoardView extends JFrame {
             add(tokenOverlay, Integer.valueOf(10));
         }
 
-        void refreshPills() {
-            if (pillsContainer != null) {
-                remove(pillsContainer);
-            }
-            pillsContainer = new JPanel();
-            pillsContainer.setLayout(new BoxLayout(pillsContainer, BoxLayout.Y_AXIS));
-            pillsContainer.setOpaque(false);
-
-            List<Player> players = gameEngine.getActivePlayers();
-            Player current = gameEngine.getCurrentPlayer();
-            boolean first = true;
-            for (Player p : players) {
-                if (p.equals(current)) {
-                    continue;
-                }
-                if (!first) {
-                    pillsContainer.add(Box.createVerticalStrut(8));
-                }
-                Color c = playerColors.getOrDefault(p, MUTED);
-                String text = LocalizationManager.formatMessage(
-                        "board.otherPlayerStatus",
-                        p.getName(),
-                        formatMoney(p.getBalance()));
-                pillsContainer.add(createPlayerPill(c, text, null));
-                first = false;
-            }
-
-            int nonCurrentCount = Math.max(0, players.size() - 1);
-            int pillsHeight = nonCurrentCount * 36 + Math.max(0, nonCurrentCount - 1) * 8;
-            pillsContainer.setBounds(456, 4, 250, Math.max(36, pillsHeight));
-            add(pillsContainer, Integer.valueOf(2));
-            revalidate();
-            repaint();
-        }
-
         void repaintTokens() {
             if (tokenOverlay != null) {
                 tokenOverlay.repaint();
             }
         }
-    }
-
-    private JComponent createPlayerPill(Color dot, String text, String tag) {
-        RoundedPanel pill = new RoundedPanel(CARD_WHITE, 18);
-        pill.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 7));
-        pill.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        pill.setMaximumSize(new Dimension(200, 36));
-
-        JPanel d = new RoundedPanel(dot, 10);
-        d.setPreferredSize(new Dimension(12, 12));
-        JLabel label = new JLabel(text);
-        label.setFont(font(Font.BOLD, 13));
-        label.setForeground(INK);
-        pill.add(d);
-        pill.add(label);
-        if (tag != null) {
-            JLabel tagLabel = new JLabel(tag);
-            tagLabel.setFont(font(Font.BOLD, 10));
-            tagLabel.setForeground(new Color(0xE5, 0x3E, 0x3E));
-            pill.add(tagLabel);
-        }
-        return pill;
     }
 
     private JPanel createDiceCluster() {
