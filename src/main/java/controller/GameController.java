@@ -22,6 +22,7 @@ public class GameController {
     private Dice dice;
     private Card activeCard;
 
+    private PropertyController propertyController;
     private PropertyPromptView propertyPromptView;
 
     @SuppressFBWarnings(
@@ -120,7 +121,25 @@ public class GameController {
                 return;
             }
             refreshViews();
+            return;
         }
+        if (actionType == TileActionType.PAY_RENT) {
+            activeCard = null;
+            payRent(action.getPlayer(), action.getTile());
+        }
+    }
+
+    private void payRent(Player renter, Tile tile) {
+        if (!(tile instanceof Property)) {
+            refreshViews();
+            return;
+        }
+        boolean paid = propertyController.handleRentPayment(renter, (Property) tile);
+        if (!paid) {
+            handleBankruptcy(renter);
+            return;
+        }
+        refreshViews();
     }
 
     public void refreshViews() {
@@ -151,6 +170,13 @@ public class GameController {
         }
         gameEngine.nextTurn();
         refreshViews();
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setPropertyController(PropertyController propertyController) {
+        this.propertyController = propertyController;
     }
 
     @SuppressFBWarnings(
