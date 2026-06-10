@@ -23,6 +23,7 @@ public class GameController {
     private Card activeCard;
 
     private PropertyController propertyController;
+    private JailController jailController;
     private PropertyPromptView propertyPromptView;
 
     @SuppressFBWarnings(
@@ -126,6 +127,18 @@ public class GameController {
         if (actionType == TileActionType.PAY_RENT) {
             activeCard = null;
             payRent(action.getPlayer(), action.getTile());
+            return;
+        }
+        if (actionType == TileActionType.COLLECT_MONEY) {
+            activeCard = null;
+            action.getPlayer().receive(action.getAmount());
+            refreshViews();
+            return;
+        }
+        if (actionType == TileActionType.GO_TO_JAIL) {
+            activeCard = null;
+            jailController.sendToJail(action.getPlayer());
+            refreshViews();
         }
     }
 
@@ -177,6 +190,13 @@ public class GameController {
             justification = "Optional collaborators supplied by the application wiring.")
     public void setPropertyController(PropertyController propertyController) {
         this.propertyController = propertyController;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setJailController(JailController jailController) {
+        this.jailController = jailController;
     }
 
     @SuppressFBWarnings(
