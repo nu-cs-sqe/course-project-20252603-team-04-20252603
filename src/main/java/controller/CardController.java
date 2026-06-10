@@ -1,10 +1,15 @@
-package model;
+package controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import model.Card;
+import model.Deck;
+import model.GameEngine;
+import model.Player;
 
 public class CardController {
 
