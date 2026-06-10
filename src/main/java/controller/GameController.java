@@ -6,6 +6,7 @@ import util.Constants;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
+import view.BankruptcyView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
 
@@ -26,6 +27,7 @@ public class GameController {
     private JailController jailController;
     private CardController cardController;
     private PropertyPromptView propertyPromptView;
+    private BankruptcyView bankruptcyView;
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
@@ -148,12 +150,26 @@ public class GameController {
             refreshViews();
             return;
         }
-        boolean paid = propertyController.handleRentPayment(renter, (Property) tile);
-        if (!paid) {
-            handleBankruptcy(renter);
+        Property property = (Property) tile;
+        if (propertyController.handleRentPayment(renter, property)) {
+            refreshViews();
             return;
         }
-        refreshViews();
+        double rent = property.getRent();
+        if (propertyController.handleForcedSale(renter, rent)
+                && propertyController.handleRentPayment(renter, property)) {
+            refreshViews();
+            return;
+        }
+        eliminate(renter);
+    }
+
+    /** Removes a player who cannot meet a required payment, announcing the elimination. */
+    private void eliminate(Player player) {
+        if (bankruptcyView != null) {
+            bankruptcyView.showPlayerEliminated(player);
+        }
+        handleBankruptcy(player);
     }
 
     public void refreshViews() {
@@ -212,6 +228,13 @@ public class GameController {
             justification = "Optional view collaborator supplied by the application wiring.")
     public void setPropertyPromptView(PropertyPromptView propertyPromptView) {
         this.propertyPromptView = propertyPromptView;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
+    public void setBankruptcyView(BankruptcyView bankruptcyView) {
+        this.bankruptcyView = bankruptcyView;
     }
 
     /** Plays one full turn for the current player: roll, move, GO-pass bonus, then tile resolution. */

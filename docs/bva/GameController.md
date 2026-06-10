@@ -374,6 +374,26 @@ Existing `NONE`/`DRAW_CARD`/`OFFER_PURCHASE`/`PAY_BANK`/`PAY_TAX` cases unchange
   - **State**: `GO_TO_JAIL` action
   - **Expected**: `JailController.sendToJail(player)`; views refreshed
 
+### Forced sale + elimination (rent / tax shortfall)
+
+When a required payment exceeds the player's cash, the controller first forces property sales
+(`PropertyController.handleForcedSale`, 80% resale) and only eliminates the player if that still
+isn't enough.
+
+- **TC64: resolveLanding_OnRentShortfallForcedSaleCovers_PaysRent** ( :construction: )
+  - **State**: renter can't afford rent, but `handleForcedSale` raises enough; second
+    `handleRentPayment` succeeds
+  - **Expected**: rent is paid after the sale; views refreshed; player not eliminated
+- **TC65: resolveLanding_OnRentShortfallForcedSaleFails_EliminatesPlayer** ( :construction: )
+  - **State**: renter can't afford rent and `handleForcedSale` can't raise enough
+  - **Expected**: `handleBankruptcy` runs and `BankruptcyView.showPlayerEliminated` is shown
+- **TC66: resolveLanding_OnTaxShortfallForcedSaleCovers_PaysTax** ( :construction: )
+  - **State**: player can't afford IRS tax, but `handleForcedSale` raises enough; `remove` then succeeds
+  - **Expected**: tax is paid after the sale; views refreshed
+- **TC67: resolveLanding_OnTaxShortfallForcedSaleFails_EliminatesPlayer** ( :construction: )
+  - **State**: player can't afford IRS tax and `handleForcedSale` can't raise enough
+  - **Expected**: `handleBankruptcy` runs and `BankruptcyView.showPlayerEliminated` is shown
+
 ### Method under test: `applyDrawnCard()`
 
 Applies the currently displayed chance card when the player clicks Proceed.
