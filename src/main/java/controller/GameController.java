@@ -214,6 +214,36 @@ public class GameController {
         this.propertyPromptView = propertyPromptView;
     }
 
+    /** Plays one full turn for the current player: roll, move, GO-pass bonus, then tile resolution. */
+    public void playTurn() {
+        Player current = gameEngine.getCurrentPlayer();
+        if (current.isBankrupt()) {
+            return;
+        }
+        if (current.inJail()) {
+            return;
+        }
+        int oldPosition = gameEngine.getPlayerPosition(current);
+        rollAndMove(current);
+        grantGoBonusIfPassed(current, oldPosition);
+        resolveLanding();
+    }
+
+    private void rollAndMove(Player current) {
+        dice.roll();
+        diceView.showRollResult(dice.getDieOne(), dice.getDieTwo());
+        gameEngine.movePlayer(current, dice.getTotal());
+    }
+
+    private void grantGoBonusIfPassed(Player current, int oldPosition) {
+        int newPosition = gameEngine.getPlayerPosition(current);
+        boolean landedOnGo = newPosition == Constants.GO_POSITION;
+        if (gameEngine.didPassGo(oldPosition, newPosition) && !landedOnGo) {
+            handleTileAction(new TileAction(
+                    TileActionType.COLLECT_MONEY, current, null, null, Constants.GO_BONUS));
+        }
+    }
+
     /** Resolves the effect of the tile the current player has landed on. */
     public void resolveLanding() {
         Player player = gameEngine.getCurrentPlayer();
