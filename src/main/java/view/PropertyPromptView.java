@@ -17,12 +17,6 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 
-/**
- * Passive modal-style prompt asking whether to buy the property just landed on.
- *
- * <p>The dialog is shown non-blocking so the controller can attach the buy/decline listeners after
- * {@code showProperty}. The view renders and forwards button events only; it makes no game decision.</p>
- */
 public class PropertyPromptView {
 
     private static final Color INK = new Color(0x16, 0x1D, 0x19);
@@ -46,7 +40,7 @@ public class PropertyPromptView {
 
     public void showProperty(Property property, Player player) {
         dialog = new JDialog(owner, "Unowned Property", false);
-        dialog.setSize(360, 200);
+        dialog.setSize(360, 260);
         dialog.setLocationRelativeTo(owner);
 
         JPanel body = new JPanel(new BorderLayout(0, 12));

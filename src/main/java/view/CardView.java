@@ -16,10 +16,6 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 
-/**
- * Passive dialog that shows a drawn chance card and a Proceed button. The view only renders the card
- * and forwards the Proceed event; the controller applies the effect.
- */
 public class CardView {
 
     private static final Color INK = new Color(0x16, 0x1D, 0x19);

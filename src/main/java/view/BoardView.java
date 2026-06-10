@@ -16,6 +16,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class BoardView extends JFrame {
@@ -69,6 +70,7 @@ public class BoardView extends JFrame {
     private BoardStage boardStage;
     private Map<Player, Color> playerColors;
     private Map<Player, Image> playerTokens;
+    private PlayerInfoView playerInfoView;
     private final DiceView diceView = new DiceView();
     private boolean gameOverShown;
     private JLabel turnLabel;
@@ -76,7 +78,12 @@ public class BoardView extends JFrame {
     private JLabel currentPlayerBalance;
 
     BoardView(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
+        this(gameEngine, new PlayerInfoView());
+    }
+
+    BoardView(GameEngine gameEngine, PlayerInfoView playerInfoView) {
+        this.gameEngine = Objects.requireNonNull(gameEngine, "GameEngine cannot be null");
+        this.playerInfoView = Objects.requireNonNull(playerInfoView, "PlayerInfoView cannot be null");
         this.playerColors = new HashMap<>();
         this.playerTokens = new HashMap<>();
 
@@ -224,6 +231,8 @@ public class BoardView extends JFrame {
         nav.add(tradeNav);
         nav.add(Box.createVerticalStrut(8));
         nav.add(portfolioNav);
+        nav.add(Box.createVerticalStrut(18));
+        nav.add(playerInfoView);
 
         nav.add(Box.createVerticalGlue());
 
@@ -1244,18 +1253,20 @@ public class BoardView extends JFrame {
 
     public static BoardView launch(List<Player> players, List<ImageIcon> tokenIcons) {
         GameEngine engine = buildEngine(players);
-        BoardView view = new BoardView(engine);
+        PlayerInfoView playerInfoView = new PlayerInfoView();
+        BoardView view = new BoardView(engine, playerInfoView);
         view.assignTokens(players, tokenIcons);
 
         Dice dice = new Dice(new java.util.Random());
         CardView cardView = new CardView(view);
         GameController controller = new GameController(
-                engine, view, new PlayerInfoView(), view.diceView, cardView, dice);
+                engine, view, playerInfoView, view.diceView, cardView, dice);
 
         controller.setPropertyController(new PropertyController());
         controller.setCardController(new CardController(engine.getChanceDeck(), engine));
         controller.setJailController(new JailController(engine, dice));
         controller.setPropertyPromptView(new PropertyPromptView(view));
+        controller.setBankruptcyView(new BankruptcyView(view));
         cardView.setProceedListener(event -> controller.applyDrawnCard());
 
         view.setController(controller);
