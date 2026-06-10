@@ -18,6 +18,7 @@ import view.BankruptcyView;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
+import view.JailStatusView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
 import view.RentConfirmationView;
@@ -572,6 +573,7 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         JailController jailController = EasyMock.createMock(JailController.class);
+        JailStatusView jailStatusView = EasyMock.createMock(JailStatusView.class);
         Player player = EasyMock.createMock(Player.class);
 
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
@@ -579,18 +581,21 @@ public class GameControllerTurnTests {
         EasyMock.expect(player.inJail()).andReturn(true);
         EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
         EasyMock.expect(player.getJailTurnCount()).andReturn(1);
+        jailStatusView.showStillInJail(player);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                jailController, player);
+                jailController, jailStatusView, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setJailController(jailController);
+        controller.setJailStatusView(jailStatusView);
         controller.playTurn();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                jailController, player);
+                jailController, jailStatusView, player);
     }
 
     @Test

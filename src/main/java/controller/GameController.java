@@ -7,6 +7,7 @@ import view.BoardView;
 import view.CardView;
 import view.DiceView;
 import view.BankruptcyView;
+import view.JailStatusView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
 import view.RentConfirmationView;
@@ -29,6 +30,7 @@ public class GameController {
     private CardController cardController;
     private PropertyPromptView propertyPromptView;
     private BankruptcyView bankruptcyView;
+    private JailStatusView jailStatusView;
     private RentConfirmationView rentConfirmationView;
 
     @SuppressFBWarnings(
@@ -264,6 +266,13 @@ public class GameController {
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
             justification = "Optional view collaborator supplied by the application wiring.")
+    public void setJailStatusView(JailStatusView jailStatusView) {
+        this.jailStatusView = jailStatusView;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
     public void setRentConfirmationView(RentConfirmationView rentConfirmationView) {
         this.rentConfirmationView = rentConfirmationView;
     }
@@ -287,10 +296,20 @@ public class GameController {
 
     private void playJailTurn(Player current) {
         boolean escaped = jailController.attemptRollDoubles(current);
-        if (!escaped && current.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
-            jailController.payJailFee(current);
+        if (!escaped) {
+            if (current.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
+                jailController.payJailFee(current);
+            } else {
+                showStillInJail(current);
+            }
         }
         refreshViews();
+    }
+
+    private void showStillInJail(Player player) {
+        if (jailStatusView != null) {
+            jailStatusView.showStillInJail(player);
+        }
     }
 
     private void rollAndMove(Player current) {
