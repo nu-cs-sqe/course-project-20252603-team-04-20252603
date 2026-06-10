@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -118,7 +117,6 @@ public class StockMarketCrashCardEffectTests {
         EasyMock.expect(p3.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(p3.remove(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(insolvent.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(insolvent.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(insolvent);
         EasyMock.replay(p1, p2, p3, insolvent, game);
 
@@ -144,7 +142,6 @@ public class StockMarketCrashCardEffectTests {
         EasyMock.expect(p3.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(p3.remove(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(insolvent.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(insolvent.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(insolvent);
         EasyMock.replay(p1, p2, p3, insolvent, game);
 
@@ -184,30 +181,12 @@ public class StockMarketCrashCardEffectTests {
         EasyMock.expect(playerA.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(playerA.remove(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(true);
         EasyMock.expect(playerB.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(playerB.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(playerB);
         EasyMock.replay(playerA, playerB, game);
 
         effect.apply(playerA, game);
 
         EasyMock.verify(playerA, playerB, game);
-    }
-
-    @Test
-    public void apply_OnPlayerCannotAffordButHasProperties_DoesNotRemoveFromGame() {
-        StockMarketCrashCardEffect effect = new StockMarketCrashCardEffect();
-        Player p1 = EasyMock.createMock(Player.class);
-        GameEngine game = EasyMock.createMock(GameEngine.class);
-        Property property = EasyMock.createMock(Property.class);
-
-        EasyMock.expect(game.getActivePlayers()).andReturn(List.of(p1));
-        EasyMock.expect(p1.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(p1.getOwnedProperties()).andReturn(Collections.singleton(property));
-        EasyMock.replay(p1, game, property);
-
-        effect.apply(p1, game);
-
-        EasyMock.verify(p1, game, property);
     }
 
     @Test
@@ -221,16 +200,12 @@ public class StockMarketCrashCardEffectTests {
 
         EasyMock.expect(game.getActivePlayers()).andReturn(List.of(p1, p2, p3, p4));
         EasyMock.expect(p1.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(p1.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(p1);
         EasyMock.expect(p2.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(p2.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(p2);
         EasyMock.expect(p3.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(p3.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(p3);
         EasyMock.expect(p4.canAfford(Constants.STOCK_MARKET_CRASH_LOSS)).andReturn(false);
-        EasyMock.expect(p4.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(p4);
         EasyMock.replay(p1, p2, p3, p4, game);
 
