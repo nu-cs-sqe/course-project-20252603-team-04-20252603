@@ -7,6 +7,7 @@ import view.BoardView;
 import view.CardView;
 import view.DiceView;
 import view.PlayerInfoView;
+import view.PropertyPromptView;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,8 @@ public class GameController {
     private CardView cardView;
     private Dice dice;
     private Card activeCard;
+
+    private PropertyPromptView propertyPromptView;
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
@@ -148,6 +151,40 @@ public class GameController {
         }
         gameEngine.nextTurn();
         refreshViews();
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
+    public void setPropertyPromptView(PropertyPromptView propertyPromptView) {
+        this.propertyPromptView = propertyPromptView;
+    }
+
+    /** Resolves the effect of the tile the current player has landed on. */
+    public void resolveLanding() {
+        Player player = gameEngine.getCurrentPlayer();
+        Tile tile = gameEngine.getTile(gameEngine.getPlayerPosition(player));
+        if (tile instanceof Property) {
+            resolveProperty(player, (Property) tile);
+        }
+    }
+
+    private void resolveProperty(Player player, Property property) {
+        if (!property.isOwned()) {
+            offerPurchase(player, property);
+        }
+    }
+
+    private void offerPurchase(Player player, Property property) {
+        double price = property.getPrice();
+        if (!player.canAfford(price)) {
+            return;
+        }
+        propertyPromptView.showProperty(property, player);
+        propertyPromptView.setBuyListener(event ->
+                handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price)));
+        propertyPromptView.setDeclineListener(event ->
+                handleTileAction(new TileAction(TileActionType.NONE, player, property, null, 0)));
     }
 
 }
