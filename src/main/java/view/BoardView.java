@@ -1,6 +1,9 @@
 package view;
 
+import controller.CardController;
 import controller.GameController;
+import controller.JailController;
+import controller.PropertyController;
 import model.*;
 import util.Constants;
 import javax.swing.*;
@@ -61,6 +64,7 @@ public class BoardView extends JFrame {
     private BoardStage boardStage;
     private Map<Player, Color> playerColors;
     private Map<Player, Image> playerTokens;
+    private final DiceView diceView = new DiceView();
     private JLabel turnLabel;
     private JLabel currentPlayerName;
     private JLabel currentPlayerBalance;
@@ -317,6 +321,10 @@ public class BoardView extends JFrame {
             rollDiceButton.setFont(font(Font.BOLD, 16));
             rollDiceButton.setBounds(265, 498, 190, 44);
             add(rollDiceButton, Integer.valueOf(3));
+
+            JComponent diceReadout = diceView.getComponent();
+            diceReadout.setBounds(265, 410, 190, 20);
+            add(diceReadout, Integer.valueOf(3));
 
             tokenOverlay = new TokenOverlay();
             tokenOverlay.setBounds(0, 0, 740, 660);
@@ -1128,10 +1136,6 @@ public class BoardView extends JFrame {
         return rollDiceButton;
     }
 
-    /**
-     * Builds a throwaway 32-tile engine so the board can be previewed standalone via {@code main}.
-     * Corners (indices 0, 8, 16, 24) get the special tiles; the rest are Chance / IRS / Property.
-     */
     /** Builds the standard 32-tile board layout used by every game. */
     private static Board standardBoard() {
         java.util.List<Tile> tiles = new java.util.ArrayList<>();
@@ -1164,7 +1168,7 @@ public class BoardView extends JFrame {
         for (Player p : players) {
             board.setPlayerPosition(p, Constants.GO_POSITION);
         }
-        GameEngine engine = new GameEngine(players, board);
+        GameEngine engine = new GameEngine(players, board, ChanceDeckFactory.standardDeck());
         if (engine.getStatus() != GameStatus.IN_PROGRESS) {
             engine.startGame();
         }
@@ -1192,12 +1196,18 @@ public class BoardView extends JFrame {
         BoardView view = new BoardView(engine);
         view.assignTokens(players, tokenIcons);
 
+        Dice dice = new Dice(new java.util.Random());
+        CardView cardView = new CardView(view);
         GameController controller = new GameController(
-                engine, view,
-                new PlayerInfoView(), new DiceView(), new CardView(),
-                new Dice(new java.util.Random()));
-        view.setController(controller);
+                engine, view, new PlayerInfoView(), view.diceView, cardView, dice);
 
+        controller.setPropertyController(new PropertyController());
+        controller.setCardController(new CardController(engine.getChanceDeck(), engine));
+        controller.setJailController(new JailController(engine, dice));
+        controller.setPropertyPromptView(new PropertyPromptView(view));
+        cardView.setProceedListener(event -> controller.applyDrawnCard());
+
+        view.setController(controller);
         controller.refreshViews();
         view.setVisible(true);
         return view;
@@ -1216,27 +1226,13 @@ public class BoardView extends JFrame {
         }
     }
 
-    private static GameEngine previewEngine() {
-        List<Player> players = new java.util.ArrayList<>();
-        players.add(new Player("Player 1", Constants.STARTING_BALANCE));
-        players.add(new Player("Player 2", Constants.STARTING_BALANCE));
-        return buildEngine(players);
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                GameEngine engine = previewEngine();
-                BoardView view = new BoardView(engine);
-
-                GameController controller = new GameController(
-                        engine, view,
-                        new PlayerInfoView(), new DiceView(), new CardView(),
-                        new Dice(new java.util.Random()));
-                view.setController(controller);
-
-                controller.refreshViews();
-                view.setVisible(true);
+                List<Player> players = new java.util.ArrayList<>();
+                players.add(new Player("Player 1", Constants.STARTING_BALANCE));
+                players.add(new Player("Player 2", Constants.STARTING_BALANCE));
+                launch(players);
             } catch (Exception e) {
                 System.err.println("Error: failed to launch BoardView preview");
                 e.printStackTrace();
