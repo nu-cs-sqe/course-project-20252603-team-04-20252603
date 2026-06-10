@@ -109,8 +109,7 @@ tasks.pitest {
 }
 
 pitest {
-    // targetTests must cover every package in targetClasses, or PIT will show 0%
-    // line/mutation coverage (with 0 tests run) for those classes.
+
     targetClasses = setOf("model.*", "controller.*")
     targetTests = setOf("model.*", "controller.*")
     junit5PluginVersion = "1.2.1"
