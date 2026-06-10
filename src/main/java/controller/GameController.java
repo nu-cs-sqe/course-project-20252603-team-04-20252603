@@ -9,6 +9,7 @@ import view.DiceView;
 import view.BankruptcyView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
+import view.RentConfirmationView;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,7 @@ public class GameController {
     private CardController cardController;
     private PropertyPromptView propertyPromptView;
     private BankruptcyView bankruptcyView;
+    private RentConfirmationView rentConfirmationView;
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
@@ -152,12 +154,14 @@ public class GameController {
         }
         Property property = (Property) tile;
         if (propertyController.handleRentPayment(renter, property)) {
+            showRentPaid(renter, property);
             refreshViews();
             return;
         }
         double rent = property.getRent();
         if (propertyController.handleForcedSale(renter, rent)
                 && propertyController.handleRentPayment(renter, property)) {
+            showRentPaid(renter, property);
             refreshViews();
             return;
         }
@@ -183,6 +187,12 @@ public class GameController {
             bankruptcyView.showPlayerEliminated(player);
         }
         handleBankruptcy(player);
+    }
+
+    private void showRentPaid(Player renter, Property property) {
+        if (rentConfirmationView != null) {
+            rentConfirmationView.showRentPaid(renter, property);
+        }
     }
 
     public void refreshViews() {
@@ -249,6 +259,13 @@ public class GameController {
             justification = "Optional view collaborator supplied by the application wiring.")
     public void setBankruptcyView(BankruptcyView bankruptcyView) {
         this.bankruptcyView = bankruptcyView;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
+    public void setRentConfirmationView(RentConfirmationView rentConfirmationView) {
+        this.rentConfirmationView = rentConfirmationView;
     }
 
     /** Plays one full turn for the current player: roll, move, GO-pass bonus, then tile resolution. */

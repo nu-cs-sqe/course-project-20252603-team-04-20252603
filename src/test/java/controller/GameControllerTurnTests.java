@@ -20,6 +20,7 @@ import view.CardView;
 import view.DiceView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
+import view.RentConfirmationView;
 
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -135,23 +136,27 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
         TileAction action = new TileAction(TileActionType.PAY_RENT, player, property, null, 0);
 
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.handleTileAction(action);
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test
@@ -163,6 +168,7 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
 
@@ -172,18 +178,21 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(true);
         EasyMock.expect(property.isOwnedBy(player)).andReturn(false);
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.resolveLanding();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test
@@ -619,6 +628,7 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
 
@@ -631,18 +641,21 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.getRent()).andReturn(75.0);
         EasyMock.expect(propertyController.handleForcedSale(player, 75.0)).andReturn(true);
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.resolveLanding();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test

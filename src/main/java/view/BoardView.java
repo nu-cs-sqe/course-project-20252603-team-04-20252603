@@ -1289,6 +1289,7 @@ public class BoardView extends JFrame {
         controller.setJailController(new JailController(engine, dice));
         controller.setPropertyPromptView(new PropertyPromptView(view));
         controller.setBankruptcyView(new BankruptcyView(view));
+        controller.setRentConfirmationView(new RentConfirmationView(view));
         cardView.setProceedListener(event -> controller.applyDrawnCard());
 
         view.setController(controller);
