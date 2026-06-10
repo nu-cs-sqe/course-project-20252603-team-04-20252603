@@ -43,6 +43,21 @@ public class BoardView extends JFrame {
     private static final Color G_STEEL = new Color(0xC2, 0xCB, 0xD6);
 
     private static final String FONT_FAMILY = "Segoe UI";
+    private static final int SIDE = 9;
+    private static final int TILE_CELL_SIZE = 64;
+    private static final int TILE_GAP = 2;
+    private static final int STAGE_WIDTH = 740;
+    private static final int STAGE_HEIGHT = 660;
+    private static final int RING_X = 74;
+    private static final int RING_Y = 70;
+    private static final int RING_SIZE = SIDE * TILE_CELL_SIZE;
+    private static final int FRAME_PADDING = 14;
+    private static final int FRAME_X = RING_X - FRAME_PADDING;
+    private static final int FRAME_Y = RING_Y - FRAME_PADDING;
+    private static final int FRAME_SIZE = RING_SIZE + FRAME_PADDING * 2;
+    private static final int CENTER_X = RING_X + TILE_CELL_SIZE;
+    private static final int CENTER_Y = RING_Y + TILE_CELL_SIZE;
+    private static final int CENTER_SIZE = TILE_CELL_SIZE * (SIDE - 2);
 
     private JButton boardNav;
     private JButton tradeNav;
@@ -295,7 +310,7 @@ public class BoardView extends JFrame {
         area.setBackground(BG);
 
         boardStage = new BoardStage();
-        boardStage.setPreferredSize(new Dimension(740, 660));
+        boardStage.setPreferredSize(new Dimension(STAGE_WIDTH, STAGE_HEIGHT));
         area.add(boardStage, new GridBagConstraints());
         return area;
     }
@@ -309,12 +324,16 @@ public class BoardView extends JFrame {
             setLayout(null);
 
             JPanel frame = new BoardFrame();
-            frame.setBounds(60, 56, 600, 560);
+            frame.setBounds(FRAME_X, FRAME_Y, FRAME_SIZE, FRAME_SIZE);
             add(frame, Integer.valueOf(0));
 
             BoardRing ring = new BoardRing();
-            ring.setBounds(74, 70, 572, 532);
+            ring.setBounds(RING_X, RING_Y, RING_SIZE, RING_SIZE);
             add(ring, Integer.valueOf(1));
+
+            CenterPanel center = new CenterPanel();
+            center.setBounds(CENTER_X, CENTER_Y, CENTER_SIZE, CENTER_SIZE);
+            add(center, Integer.valueOf(2));
 
             refreshPills();
 
@@ -334,7 +353,7 @@ public class BoardView extends JFrame {
             add(diceReadout, Integer.valueOf(3));
 
             tokenOverlay = new TokenOverlay();
-            tokenOverlay.setBounds(0, 0, 740, 660);
+            tokenOverlay.setBounds(0, 0, STAGE_WIDTH, STAGE_HEIGHT);
             add(tokenOverlay, Integer.valueOf(10));
         }
 
@@ -408,12 +427,6 @@ public class BoardView extends JFrame {
     }
 
     private java.awt.Point tileCenter(int tileIndex) {
-        int ringX = 74;
-        int ringY = 70;
-        int ringW = 572;
-        int ringH = 532;
-        double cellW = (double) ringW / SIDE;
-        double cellH = (double) ringH / SIDE;
         int row;
         int col;
         if (tileIndex <= 8) {
@@ -429,8 +442,8 @@ public class BoardView extends JFrame {
             row = 32 - tileIndex;
             col = 0;
         }
-        int x = ringX + (int) (col * cellW + cellW / 2);
-        int y = ringY + (int) (row * cellH + cellH / 2);
+        int x = RING_X + col * TILE_CELL_SIZE + TILE_CELL_SIZE / 2;
+        int y = RING_Y + row * TILE_CELL_SIZE + TILE_CELL_SIZE / 2;
         return new java.awt.Point(x, y);
     }
 
@@ -498,21 +511,13 @@ public class BoardView extends JFrame {
 
 
 
-    private static final int SIDE = 9;
-
-
     private class BoardRing extends JPanel {
 
         BoardRing() {
-            setLayout(new GridBagLayout());
+            setLayout(null);
             setOpaque(false);
 
             TileDef[][] grid = buildGrid();
-            GridBagConstraints c = new GridBagConstraints();
-            c.fill = GridBagConstraints.BOTH;
-            c.weightx = 1;
-            c.weighty = 1;
-            c.insets = new Insets(2, 2, 2, 2);
 
             for (int row = 0; row < SIDE; row++) {
                 for (int col = 0; col < SIDE; col++) {
@@ -520,20 +525,15 @@ public class BoardView extends JFrame {
                     if (def == null) {
                         continue;
                     }
-                    c.gridx = col;
-                    c.gridy = row;
-                    add(new TilePanel(def), c);
+                    TilePanel tile = new TilePanel(def);
+                    tile.setBounds(
+                            col * TILE_CELL_SIZE + TILE_GAP,
+                            row * TILE_CELL_SIZE + TILE_GAP,
+                            TILE_CELL_SIZE - TILE_GAP * 2,
+                            TILE_CELL_SIZE - TILE_GAP * 2);
+                    add(tile);
                 }
             }
-
-
-            c.gridx = 1;
-            c.gridy = 1;
-            c.gridwidth = SIDE - 2;
-            c.gridheight = SIDE - 2;
-            c.weightx = 0;
-            c.weighty = 0;
-            add(new CenterPanel(), c);
         }
     }
 
@@ -727,7 +727,7 @@ public class BoardView extends JFrame {
         TilePanel(TileDef def) {
             this.def = def;
             setOpaque(false);
-            setPreferredSize(new Dimension(56, 52));
+            setPreferredSize(new Dimension(TILE_CELL_SIZE - TILE_GAP * 2, TILE_CELL_SIZE - TILE_GAP * 2));
             setLayout(new GridBagLayout());
             addContent();
         }
