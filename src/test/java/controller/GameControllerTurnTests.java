@@ -1,7 +1,10 @@
 package controller;
 
+import model.Card;
+import model.ChanceTile;
 import model.Dice;
 import model.GameEngine;
+import model.GoToJailTile;
 import model.IRSTile;
 import model.Player;
 import model.Property;
@@ -31,6 +34,21 @@ public class GameControllerTurnTests {
         diceView.enableRollButton();
         EasyMock.expectLastCall().once();
         cardView.close();
+        EasyMock.expectLastCall().once();
+    }
+
+    /** Expects refreshViews() when a card is active (cardView shows it instead of closing). */
+    private void expectRefreshViewsWithCard(GameEngine gameEngine, BoardView boardView,
+                                            PlayerInfoView playerInfoView, DiceView diceView,
+                                            CardView cardView, Card card) {
+        EasyMock.expect(gameEngine.getActivePlayers()).andReturn(List.of());
+        boardView.refresh();
+        EasyMock.expectLastCall().once();
+        playerInfoView.renderPlayers(List.of());
+        EasyMock.expectLastCall().once();
+        diceView.enableRollButton();
+        EasyMock.expectLastCall().once();
+        cardView.showCard(card);
         EasyMock.expectLastCall().once();
     }
 
@@ -296,5 +314,66 @@ public class GameControllerTurnTests {
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
                 jailController, player);
+    }
+
+    @Test
+    public void TC52_resolveLanding_OnGoToJailTile_SendsToJail() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        JailController jailController = EasyMock.createMock(JailController.class);
+        GoToJailTile tile = EasyMock.createMock(GoToJailTile.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(24);
+        EasyMock.expect(gameEngine.getTile(24)).andReturn(tile);
+        EasyMock.expect(jailController.sendToJail(player)).andReturn(true);
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, tile, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setJailController(jailController);
+        controller.resolveLanding();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, tile, player);
+    }
+
+    @Test
+    public void TC51_resolveLanding_OnChanceTile_DrawsAndShowsCard() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        CardController cardController = EasyMock.createMock(CardController.class);
+        ChanceTile tile = EasyMock.createMock(ChanceTile.class);
+        Card card = EasyMock.createMock(Card.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(14);
+        EasyMock.expect(gameEngine.getTile(14)).andReturn(tile);
+        EasyMock.expect(cardController.drawChanceCard(player)).andReturn(card);
+        expectRefreshViewsWithCard(gameEngine, boardView, playerInfoView, diceView, cardView, card);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, tile, card, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setCardController(cardController);
+        controller.resolveLanding();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, tile, card, player);
     }
 }

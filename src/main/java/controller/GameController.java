@@ -24,6 +24,7 @@ public class GameController {
 
     private PropertyController propertyController;
     private JailController jailController;
+    private CardController cardController;
     private PropertyPromptView propertyPromptView;
 
     @SuppressFBWarnings(
@@ -201,6 +202,13 @@ public class GameController {
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setCardController(CardController cardController) {
+        this.cardController = cardController;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
             justification = "Optional view collaborator supplied by the application wiring.")
     public void setPropertyPromptView(PropertyPromptView propertyPromptView) {
         this.propertyPromptView = propertyPromptView;
@@ -214,9 +222,18 @@ public class GameController {
             resolveProperty(player, (Property) tile);
         } else if (tile instanceof IRSTile) {
             handleTileAction(new TileAction(TileActionType.PAY_TAX, player, tile, null, Constants.GO_BONUS));
+        } else if (tile instanceof GoToJailTile) {
+            handleTileAction(new TileAction(TileActionType.GO_TO_JAIL, player, tile, null, 0));
+        } else if (tile instanceof ChanceTile) {
+            drawChanceCard(player);
         } else {
             refreshViews();
         }
+    }
+
+    private void drawChanceCard(Player player) {
+        activeCard = cardController.drawChanceCard(player);
+        refreshViews();
     }
 
     private void resolveProperty(Player player, Property property) {
