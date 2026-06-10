@@ -87,7 +87,7 @@ public class BoardView extends JFrame {
     public void setController(GameController controller) {
         this.gameController = controller;
         if (rollDiceButton != null) {
-            rollDiceButton.addActionListener(e -> gameController.handleRollDice());
+            rollDiceButton.addActionListener(e -> gameController.playTurn());
         }
         if (endTurnButton != null) {
             endTurnButton.addActionListener(e -> gameController.handleEndTurn());
