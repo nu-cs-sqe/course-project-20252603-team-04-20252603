@@ -61,4 +61,11 @@ public class LocalizationManagerTests {
         assertTrue(supportedLocales.contains(LocalizationManager.SPANISH));
     }
 
+    @Test
+    public void getSupportedLocales_WhenCallerModifiesReturnedList_ThrowsException() {
+        List<Locale> supportedLocales = LocalizationManager.getSupportedLocales();
+
+        assertThrows(UnsupportedOperationException.class, () -> supportedLocales.add(Locale.FRENCH));
+    }
+
 }

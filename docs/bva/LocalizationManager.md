@@ -32,7 +32,7 @@
     - **State of the system**: manager is initialized
     - **Expected output**: returns supported locales containing English and Spanish
 
-- **TC7: getSupportedLocales_WhenCallerModifiesReturnedList_ThrowsException**
+- **TC7: getSupportedLocales_WhenCallerModifiesReturnedList_ThrowsException** ( :white_check_mark: )
     - **State of the system**: caller attempts to add another locale to the returned list
     - **Expected output**: throws `UnsupportedOperationException`
 
