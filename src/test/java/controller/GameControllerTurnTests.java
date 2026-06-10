@@ -440,6 +440,9 @@ public class GameControllerTurnTests {
         EasyMock.expect(dice.getTotal()).andReturn(5);
         gameEngine.movePlayer(player, 5);
         EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(5);
+        boardView.updatePlayerPosition(player, 5);
+        EasyMock.expectLastCall().once();
         EasyMock.expect(gameEngine.didPassGo(0, 5)).andReturn(false);
         EasyMock.expect(gameEngine.getTile(5)).andReturn(tile);
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
@@ -467,7 +470,7 @@ public class GameControllerTurnTests {
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player).times(2);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
         EasyMock.expect(player.inJail()).andReturn(false);
-        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(30).andReturn(3).andReturn(3);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(30).andReturn(3).andReturn(3).andReturn(3);
         dice.roll();
         EasyMock.expectLastCall().once();
         EasyMock.expect(dice.getDieOne()).andReturn(2);
@@ -476,6 +479,8 @@ public class GameControllerTurnTests {
         EasyMock.expectLastCall().once();
         EasyMock.expect(dice.getTotal()).andReturn(5);
         gameEngine.movePlayer(player, 5);
+        EasyMock.expectLastCall().once();
+        boardView.updatePlayerPosition(player, 3);
         EasyMock.expectLastCall().once();
         EasyMock.expect(gameEngine.didPassGo(30, 3)).andReturn(true);
         EasyMock.expect(player.receive(util.Constants.GO_BONUS)).andReturn(true);

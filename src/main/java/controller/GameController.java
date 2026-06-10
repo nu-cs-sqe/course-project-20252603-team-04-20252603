@@ -297,6 +297,11 @@ public class GameController {
         dice.roll();
         diceView.showRollResult(dice.getDieOne(), dice.getDieTwo());
         gameEngine.movePlayer(current, dice.getTotal());
+        refreshPlayerPosition(current);
+    }
+
+    private void refreshPlayerPosition(Player player) {
+        boardView.updatePlayerPosition(player, gameEngine.getPlayerPosition(player));
     }
 
     private void grantGoBonusIfPassed(Player current, int oldPosition) {

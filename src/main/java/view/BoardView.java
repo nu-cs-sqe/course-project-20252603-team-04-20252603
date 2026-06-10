@@ -173,6 +173,7 @@ public class BoardView extends JFrame {
     public void updatePlayerPosition(Player player, int position) {
         if (boardStage != null) {
             boardStage.repaintTokens();
+            boardStage.paintImmediately(boardStage.getBounds());
         }
     }
 
