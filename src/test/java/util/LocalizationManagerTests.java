@@ -115,4 +115,13 @@ public class LocalizationManagerTests {
         assertEquals("Jugador 1", actual);
     }
 
+    @Test
+    public void formatMessage_WithNoArgumentsForParameterizedMessage_ReturnsTemplateText() {
+        LocalizationManager.setLocale(Locale.ENGLISH);
+
+        String actual = LocalizationManager.formatMessage("mainMenu.playerLabel");
+
+        assertEquals("Player {0}", actual);
+    }
+
 }

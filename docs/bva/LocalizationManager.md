@@ -70,6 +70,6 @@
     - **State of the system**: active locale = Spanish, key = `mainMenu.playerLabel`, argument = `1`
     - **Expected output**: returns `Jugador 1`
 
-- **TC14: formatMessage_WithNoArgumentsForParameterizedMessage_ReturnsTemplateText**
+- **TC14: formatMessage_WithNoArgumentsForParameterizedMessage_ReturnsTemplateText** ( :white_check_mark: )
     - **State of the system**: active locale = English, key = `mainMenu.playerLabel`, no arguments
     - **Expected output**: returns unresolved template text from `MessageFormat`
