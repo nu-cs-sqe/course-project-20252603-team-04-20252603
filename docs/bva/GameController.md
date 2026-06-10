@@ -358,3 +358,16 @@ Existing `NONE`/`DRAW_CARD`/`OFFER_PURCHASE`/`PAY_BANK`/`PAY_TAX` cases unchange
 - **TC59: handleTileAction_WithGoToJail_SendsToJail** ( :construction: )
   - **State**: `GO_TO_JAIL` action
   - **Expected**: `JailController.sendToJail(player)`; views refreshed
+
+### Method under test: `applyDrawnCard()`
+
+Applies the currently displayed chance card when the player clicks Proceed.
+
+1. Input: the active drawn card, Output: card effect applied and card cleared
+2. Input type: presence/absence of an active card
+3. Input boundary values: a card is active, no card is active
+
+- **TC60: applyDrawnCard_WithActiveCard_AppliesEffectAndClears** ( :construction: )
+  - **State**: a chance card has been drawn and is active
+  - **Expected**: `CardController.applyCard(card, currentPlayer)` is invoked, the active card is
+    cleared, and views are refreshed (card view closed)

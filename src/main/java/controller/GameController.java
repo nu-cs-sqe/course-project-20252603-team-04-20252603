@@ -266,6 +266,18 @@ public class GameController {
         refreshViews();
     }
 
+    /** Applies the chance card currently shown to the player, then clears it. */
+    public void applyDrawnCard() {
+        if (activeCard == null) {
+            refreshViews();
+            return;
+        }
+        Card card = activeCard;
+        cardController.applyCard(card, gameEngine.getCurrentPlayer());
+        activeCard = null;
+        refreshViews();
+    }
+
     private void resolveProperty(Player player, Property property) {
         if (property.isOwned()) {
             if (property.isOwnedBy(player)) {

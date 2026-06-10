@@ -474,4 +474,41 @@ public class GameControllerTurnTests {
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, tile, player);
     }
+
+    @Test
+    public void TC60_applyDrawnCard_WithActiveCard_AppliesEffectAndClears() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        CardController cardController = EasyMock.createMock(CardController.class);
+        ChanceTile tile = EasyMock.createMock(ChanceTile.class);
+        Card card = EasyMock.createMock(Card.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        // First a chance tile draws and shows the card (sets the active card)...
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player).times(2);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(14);
+        EasyMock.expect(gameEngine.getTile(14)).andReturn(tile);
+        EasyMock.expect(cardController.drawChanceCard(player)).andReturn(card);
+        expectRefreshViewsWithCard(gameEngine, boardView, playerInfoView, diceView, cardView, card);
+        // ...then Proceed applies and clears it.
+        cardController.applyCard(card, player);
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, tile, card, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setCardController(cardController);
+        controller.resolveLanding();
+        controller.applyDrawnCard();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, tile, card, player);
+    }
 }
