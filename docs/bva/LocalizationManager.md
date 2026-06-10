@@ -49,7 +49,7 @@
     - **State of the system**: active locale = Spanish, key = `mainMenu.title`
     - **Expected output**: returns `Monopolio`
 
-- **TC10: getMessage_WithMissingKey_ThrowsException**
+- **TC10: getMessage_WithMissingKey_ThrowsException** ( :white_check_mark: )
     - **State of the system**: key is not in the resource bundle
     - **Expected output**: throws `MissingResourceException`
 

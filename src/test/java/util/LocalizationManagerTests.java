@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,6 +85,11 @@ public class LocalizationManagerTests {
         String actual = LocalizationManager.getMessage("mainMenu.title");
 
         assertEquals("Monopolio", actual);
+    }
+
+    @Test
+    public void getMessage_WithMissingKey_ThrowsException() {
+        assertThrows(MissingResourceException.class, () -> LocalizationManager.getMessage("missing.key"));
     }
 
 }
