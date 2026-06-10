@@ -66,7 +66,7 @@
     - **State of the system**: active locale = English, key = `mainMenu.playerLabel`, argument = `1`
     - **Expected output**: returns `Player 1`
 
-- **TC13: formatMessage_WithSpanishLocaleAndPlayerNumber_ReturnsFormattedSpanishLabel**
+- **TC13: formatMessage_WithSpanishLocaleAndPlayerNumber_ReturnsFormattedSpanishLabel** ( :white_check_mark: )
     - **State of the system**: active locale = Spanish, key = `mainMenu.playerLabel`, argument = `1`
     - **Expected output**: returns `Jugador 1`
 

@@ -106,4 +106,13 @@ public class LocalizationManagerTests {
         assertEquals("Player 1", actual);
     }
 
+    @Test
+    public void formatMessage_WithSpanishLocaleAndPlayerNumber_ReturnsFormattedSpanishLabel() {
+        LocalizationManager.setLocale(LocalizationManager.SPANISH);
+
+        String actual = LocalizationManager.formatMessage("mainMenu.playerLabel", 1);
+
+        assertEquals("Jugador 1", actual);
+    }
+
 }
