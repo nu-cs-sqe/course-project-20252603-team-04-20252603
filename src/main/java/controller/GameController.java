@@ -24,6 +24,8 @@ public class GameController {
     private CardView cardView;
     private Dice dice;
     private Card activeCard;
+    private boolean turnInProgress;
+    private boolean awaitingPlayerDecision;
 
     private PropertyController propertyController;
     private JailController jailController;
@@ -101,7 +103,7 @@ public class GameController {
         TileActionType actionType = action.getType();
         if (actionType == TileActionType.NONE) {
             activeCard = null;
-            refreshViews();
+            finishAction();
             return;
         }
         if (actionType == TileActionType.DRAW_CARD) {
@@ -113,11 +115,11 @@ public class GameController {
             activeCard = null;
             Tile tile = action.getTile();
             if (!(tile instanceof Property)) {
-                refreshViews();
+                finishAction();
                 return;
             }
             ((Property) tile).purchase(action.getPlayer());
-            refreshViews();
+            finishAction();
             return;
         }
         if (actionType == TileActionType.PAY_BANK || actionType == TileActionType.PAY_TAX) {
@@ -128,7 +130,7 @@ public class GameController {
                 handleBankruptcy(player);
                 return;
             }
-            refreshViews();
+            finishAction();
             return;
         }
         if (actionType == TileActionType.PAY_RENT) {
@@ -139,13 +141,13 @@ public class GameController {
         if (actionType == TileActionType.COLLECT_MONEY) {
             activeCard = null;
             action.getPlayer().receive(action.getAmount());
-            refreshViews();
+            finishAction();
             return;
         }
         if (actionType == TileActionType.GO_TO_JAIL) {
             activeCard = null;
             jailController.sendToJail(action.getPlayer());
-            refreshViews();
+            finishAction();
         }
     }
 
@@ -157,14 +159,14 @@ public class GameController {
         Property property = (Property) tile;
         if (propertyController.handleRentPayment(renter, property)) {
             showRentPaid(renter, property);
-            refreshViews();
+            finishAction();
             return;
         }
         double rent = property.getRent();
         if (propertyController.handleForcedSale(renter, rent)
                 && propertyController.handleRentPayment(renter, property)) {
             showRentPaid(renter, property);
-            refreshViews();
+            finishAction();
             return;
         }
         eliminate(renter);
@@ -173,11 +175,11 @@ public class GameController {
     /** Takes a mandatory payment from the bank, forcing property sales before eliminating the player. */
     private void requirePayment(Player player, double amount) {
         if (player.remove(amount)) {
-            refreshViews();
+            finishAction();
             return;
         }
         if (propertyController.handleForcedSale(player, amount) && player.remove(amount)) {
-            refreshViews();
+            finishAction();
             return;
         }
         eliminate(player);
@@ -225,6 +227,22 @@ public class GameController {
             return;
         }
         gameEngine.nextTurn();
+        refreshViews();
+    }
+
+    private void finishAction() {
+        if (turnInProgress && activeCard == null && !awaitingPlayerDecision) {
+            completeTurn();
+            return;
+        }
+        refreshViews();
+    }
+
+    private void completeTurn() {
+        turnInProgress = false;
+        if (!gameEngine.isGameOver()) {
+            gameEngine.nextTurn();
+        }
         refreshViews();
     }
 
@@ -284,6 +302,7 @@ public class GameController {
             handleBankruptcy(current);
             return;
         }
+        turnInProgress = true;
         if (current.inJail()) {
             playJailTurn(current);
             return;
@@ -306,7 +325,7 @@ public class GameController {
                 showStillInJail(current, getJailTurnsRemaining(turnCountAfterRoll));
             }
         }
-        refreshViews();
+        finishAction();
     }
 
     private int getJailTurnsRemaining(int jailTurnCount) {
@@ -333,8 +352,7 @@ public class GameController {
     private void grantGoBonusIfPassed(Player current, int oldPosition) {
         int newPosition = gameEngine.getPlayerPosition(current);
         if (gameEngine.didPassGo(oldPosition, newPosition)) {
-            handleTileAction(new TileAction(
-                    TileActionType.COLLECT_MONEY, current, null, null, Constants.GO_BONUS));
+            current.receive(Constants.GO_BONUS);
         }
     }
 
@@ -351,7 +369,7 @@ public class GameController {
         } else if (tile instanceof ChanceTile) {
             drawChanceCard(player);
         } else {
-            refreshViews();
+            finishAction();
         }
     }
 
@@ -369,13 +387,13 @@ public class GameController {
         Card card = activeCard;
         cardController.applyCard(card, gameEngine.getCurrentPlayer());
         activeCard = null;
-        refreshViews();
+        finishAction();
     }
 
     private void resolveProperty(Player player, Property property) {
         if (property.isOwned()) {
             if (property.isOwnedBy(player)) {
-                refreshViews();
+                finishAction();
             } else {
                 handleTileAction(new TileAction(TileActionType.PAY_RENT, player, property, null, 0));
             }
@@ -385,17 +403,22 @@ public class GameController {
         if (player.canAfford(price)) {
             offerPurchase(player, property, price);
         } else {
-            refreshViews();
+            finishAction();
         }
     }
 
     private void offerPurchase(Player player, Property property, double price) {
+        awaitingPlayerDecision = true;
         diceView.disableRollButton();
         propertyPromptView.showProperty(property, player);
-        propertyPromptView.setBuyListener(event ->
-                handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price)));
-        propertyPromptView.setDeclineListener(event ->
-                handleTileAction(new TileAction(TileActionType.NONE, player, property, null, 0)));
+        propertyPromptView.setBuyListener(event -> {
+            awaitingPlayerDecision = false;
+            handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price));
+        });
+        propertyPromptView.setDeclineListener(event -> {
+            awaitingPlayerDecision = false;
+            handleTileAction(new TileAction(TileActionType.NONE, player, property, null, 0));
+        });
     }
 
 }

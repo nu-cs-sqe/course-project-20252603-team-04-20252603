@@ -64,7 +64,6 @@ public class BoardView extends JFrame {
     private JButton boardNav;
     private JButton tradeNav;
     private JButton portfolioNav;
-    private JButton endTurnButton;
     private JButton rollDiceButton;
     private GameEngine gameEngine;
     private GameController gameController;
@@ -110,9 +109,6 @@ public class BoardView extends JFrame {
         if (rollDiceButton != null) {
             rollDiceButton.addActionListener(e -> gameController.playTurn());
         }
-        if (endTurnButton != null) {
-            endTurnButton.addActionListener(e -> gameController.handleEndTurn());
-        }
     }
 
     public void refresh() {
@@ -137,9 +133,6 @@ public class BoardView extends JFrame {
         }
         if (rollDiceButton != null) {
             rollDiceButton.setEnabled(false);
-        }
-        if (endTurnButton != null) {
-            endTurnButton.setEnabled(false);
         }
         String message = gameEngine.getWinner()
                 .map(winner -> LocalizationManager.formatMessage("board.winnerMessage", winner.getName()))
@@ -264,13 +257,6 @@ public class BoardView extends JFrame {
         swatches.add(swatch(G_SLATE));
         nav.add(swatches);
         nav.add(Box.createVerticalStrut(16));
-
-        endTurnButton = new RoundedButton(LocalizationManager.getMessage("board.endTurn"), INK, Color.WHITE, 14, null);
-        endTurnButton.setFont(font(Font.BOLD, 15));
-        endTurnButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        endTurnButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 52));
-        endTurnButton.setPreferredSize(new Dimension(220, 52));
-        nav.add(endTurnButton);
 
         return nav;
     }
@@ -1203,13 +1189,6 @@ public class BoardView extends JFrame {
             justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getPortfolioNav() {
         return portfolioNav;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getEndTurnButton() {
-        return endTurnButton;
     }
 
     @SuppressFBWarnings(
