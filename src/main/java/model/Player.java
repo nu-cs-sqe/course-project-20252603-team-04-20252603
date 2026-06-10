@@ -122,6 +122,12 @@ public class Player {
     public boolean getActive() {
         return this.active;
     }
+
+    public void incrementJailTurnCount() {
+        this.jailTurnCount++;
+    }
+
+
     
 
 
