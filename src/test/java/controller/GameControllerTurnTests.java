@@ -77,11 +77,11 @@ public class GameControllerTurnTests {
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
         diceView.disableRollButton();
         EasyMock.expectLastCall();
-        prompt.showProperty(property, player);
-        EasyMock.expectLastCall();
         prompt.setBuyListener(EasyMock.anyObject());
         EasyMock.expectLastCall();
         prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall();
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
@@ -1031,11 +1031,11 @@ public class GameControllerTurnTests {
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
         diceView.disableRollButton();
         EasyMock.expectLastCall().once();
-        prompt.showProperty(property, player);
-        EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.capture(buyListener));
         EasyMock.expectLastCall().once();
         prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         EasyMock.expect(property.purchase(player)).andReturn(true);
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
@@ -1074,11 +1074,11 @@ public class GameControllerTurnTests {
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
         diceView.disableRollButton();
         EasyMock.expectLastCall().once();
-        prompt.showProperty(property, player);
-        EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.anyObject());
         EasyMock.expectLastCall().once();
         prompt.setDeclineListener(EasyMock.capture(declineListener));
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
@@ -1130,11 +1130,11 @@ public class GameControllerTurnTests {
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
         diceView.disableRollButton();
         EasyMock.expectLastCall().once();
-        prompt.showProperty(property, player);
-        EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.capture(buyListener));
         EasyMock.expectLastCall().once();
         prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         EasyMock.expect(property.purchase(player)).andReturn(true);
         EasyMock.expect(gameEngine.isGameOver()).andReturn(false);

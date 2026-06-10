@@ -410,7 +410,6 @@ public class GameController {
     private void offerPurchase(Player player, Property property, double price) {
         awaitingPlayerDecision = true;
         diceView.disableRollButton();
-        propertyPromptView.showProperty(property, player);
         propertyPromptView.setBuyListener(event -> {
             awaitingPlayerDecision = false;
             handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price));
@@ -419,6 +418,7 @@ public class GameController {
             awaitingPlayerDecision = false;
             handleTileAction(new TileAction(TileActionType.NONE, player, property, null, 0));
         });
+        propertyPromptView.showProperty(property, player);
     }
 
 }
