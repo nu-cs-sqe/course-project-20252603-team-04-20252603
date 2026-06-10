@@ -3,7 +3,7 @@
 2. Input: locale category, Output: selected supported locale
 3. Input values: English locale, Spanish locale, unsupported locale, null locale
 
-- **TC1: getLocale_WithDefaultSystemLocale_ReturnsSupportedLocale**
+- **TC1: getLocale_WithDefaultSystemLocale_ReturnsSupportedLocale** ( :white_check_mark: )
     - **State of the system**: `LocalizationManager` has just loaded
     - **Expected output**: returns one of the supported locales
 
