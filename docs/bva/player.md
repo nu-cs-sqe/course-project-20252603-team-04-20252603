@@ -137,6 +137,10 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
   - **State of the system**: property in set, price = Double.MAX_VALUE  
   - **Expected output**: rejected / no change  
 
+- **TC22c: Sell owned property when removal fails** ( :white_check_mark: )  
+  - **State of the system**: property is initially in the owned property set, receive succeeds, but removing the property fails  
+  - **Expected output**: sellProperty returns false; original property remains owned; balance reflects the received price  
+
 
 ## Method under test: `goToJail(int jailPosition)`
 
@@ -155,6 +159,14 @@ For each test case, you may choose **any easy-to-read format** you like. Regardl
 - **TC24c: Minimum integer jail position (invalid)** (  :white_check_mark:  )
   - **State of the system**: jailPosition = Integer.MIN_VALUE
   - **Expected output**: rejected OR handled safely
+
+- **TC24d: Lower board boundary jail position** (  :white_check_mark:  )
+  - **State of the system**: jailPosition = 0
+  - **Expected output**: accepted; inJail = true; position = 0; jailTurnCount = 1
+
+- **TC24e: Upper board boundary jail position (invalid)** (  :white_check_mark:  )
+  - **State of the system**: jailPosition = Constants.BOARD_SIZE
+  - **Expected output**: rejected; inJail remains false; position and jailTurnCount remain unchanged
 
 
 ## Method under test: `leaveJail()`

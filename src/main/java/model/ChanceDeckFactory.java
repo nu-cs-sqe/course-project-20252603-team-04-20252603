@@ -11,6 +11,10 @@ public final class ChanceDeckFactory {
     }
 
     public static Deck standardDeck() {
+        return standardDeck(new Random());
+    }
+
+    static Deck standardDeck(Random random) {
         List<Card> cards = new ArrayList<>();
         cards.add(new Card("Advance to GO", "Advance to GO. Collect $200.",
                 new AdvanceToGoCardEffect()));
@@ -25,7 +29,7 @@ public final class ChanceDeckFactory {
         cards.add(new Card("Stock Market Crash", "Stock market crashes: every player loses $200.",
                 new StockMarketCrashCardEffect()));
 
-        Deck deck = new Deck(new Random(), cards);
+        Deck deck = new Deck(random, cards);
         deck.shuffle();
         return deck;
     }

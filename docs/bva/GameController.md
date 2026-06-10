@@ -301,30 +301,36 @@ per tile category.
 3. Input boundary values: unowned-affordable property, unowned-unaffordable property, property owned by
    another, property owned by self, IRS tile, chance tile, go-to-jail tile, GO tile, neutral tile
 
-- **TC46: resolveLanding_OnUnownedAffordableProperty_ShowsPurchasePrompt** ( :construction: )
+- **TC46: resolveLanding_OnUnownedAffordableProperty_ShowsPurchasePrompt** ( :white_check_mark: )
   - **State**: current tile is an unowned `Property`, `player.canAfford(price)` is `true`
   - **Expected**: `propertyPromptView.showProperty(property, player)` is shown and buy/decline
     listeners are registered; no money moves yet
-- **TC47: resolveLanding_OnUnownedUnaffordableProperty_RefreshesWithoutPrompt** ( :construction: )
+- **TC74: resolveLanding_WhenBuyListenerRuns_PurchasesPropertyAndRefreshes** ( :white_check_mark: )
+  - **State**: current tile is an unowned affordable `Property`; the registered buy listener is invoked
+  - **Expected**: `OFFER_PURCHASE` is handled, the property purchase is attempted, and views are refreshed
+- **TC75: resolveLanding_WhenDeclineListenerRuns_RefreshesWithoutPurchase** ( :white_check_mark: )
+  - **State**: current tile is an unowned affordable `Property`; the registered decline listener is invoked
+  - **Expected**: `NONE` is handled, no purchase is attempted, and views are refreshed
+- **TC47: resolveLanding_OnUnownedUnaffordableProperty_RefreshesWithoutPrompt** ( :white_check_mark: )
   - **State**: current tile is an unowned `Property`, `player.canAfford(price)` is `false`
   - **Expected**: no prompt is shown; views are refreshed; ownership/balance unchanged
-- **TC48: resolveLanding_OnPropertyOwnedByAnother_ChargesRent** ( :construction: )
+- **TC48: resolveLanding_OnPropertyOwnedByAnother_ChargesRent** ( :white_check_mark: )
   - **State**: current tile is a `Property` owned by another active player; renter can afford rent
   - **Expected**: rent is charged via `PropertyController.handleRentPayment`; views refreshed
-- **TC49: resolveLanding_OnPropertyOwnedBySelf_RefreshesOnly** ( :construction: )
+- **TC49: resolveLanding_OnPropertyOwnedBySelf_RefreshesOnly** ( :white_check_mark: )
   - **State**: current tile is a `Property` owned by the current player
   - **Expected**: no payment/prompt; views refreshed
-- **TC50: resolveLanding_OnIrsTile_PaysTax** ( :construction: )
+- **TC50: resolveLanding_OnIrsTile_PaysTax** ( :white_check_mark: )
   - **State**: current tile is an `IRSTile`; player can afford the tax
   - **Expected**: `PAY_TAX` of `Constants.GO_BONUS` is applied; views refreshed
-- **TC51: resolveLanding_OnChanceTile_DrawsAndShowsCard** ( :construction: )
+- **TC51: resolveLanding_OnChanceTile_DrawsAndShowsCard** ( :white_check_mark: )
   - **State**: current tile is a `ChanceTile`
   - **Expected**: `CardController.drawChanceCard(player)` is drawn and `cardView` displays it; effect
     is not applied until Proceed
-- **TC52: resolveLanding_OnGoToJailTile_SendsToJail** ( :construction: )
+- **TC52: resolveLanding_OnGoToJailTile_SendsToJail** ( :white_check_mark: )
   - **State**: current tile is a `GoToJailTile`
   - **Expected**: `JailController.sendToJail(player)` is called; views refreshed
-- **TC53: resolveLanding_OnNeutralTile_RefreshesOnly** ( :construction: )
+- **TC53: resolveLanding_OnNeutralTile_RefreshesOnly** ( :white_check_mark: )
   - **State**: current tile is `JailTile` (just visiting) or `FreeParking`
   - **Expected**: no payment/prompt; views refreshed
 
@@ -337,14 +343,14 @@ Owns one full turn: jail handling, roll, move, GO-pass bonus, then `resolveLandi
 3. Input boundary values: bankrupt current player, jailed current player, passes GO, lands on GO,
    lands elsewhere
 
-- **TC54: playTurn_WhenCurrentPlayerBankrupt_DoesNothing** ( :construction: )
+- **TC54: playTurn_WhenCurrentPlayerBankrupt_DoesNothing** ( :white_check_mark: )
   - **State**: `currentPlayer.isBankrupt()` is `true`
   - **Expected**: no roll/move; returns without changing state
-- **TC55: playTurn_WhenNotInJail_RollsMovesAndResolves** ( :construction: )
+- **TC55: playTurn_WhenNotInJail_RollsMovesAndResolves** ( :white_check_mark: )
   - **State**: active, not in jail; controlled dice total
   - **Expected**: `dice.roll()`, `diceView.showRollResult`, `gameEngine.movePlayer`, then landing is
     resolved
-- **TC56: playTurn_WhenPassesGoWithoutLanding_GrantsGoBonus** ( :construction: )
+- **TC56: playTurn_WhenPassesGoWithoutLanding_GrantsGoBonus** ( :white_check_mark: )
   - **State**: move wraps past GO and lands on a non-GO tile (`didPassGo` true)
   - **Expected**: `COLLECT_MONEY` of `Constants.GO_BONUS` is granted exactly once (no double with a
     GO landing)
@@ -354,13 +360,13 @@ Owns one full turn: jail handling, roll, move, GO-pass bonus, then `resolveLandi
 When the current player starts their turn in jail, the controller attempts to roll doubles; if that
 fails and the player has reached `MAX_JAIL_TURNS`, the jail fee is auto-paid so play can continue.
 
-- **TC61: playTurn_WhenInJailAndRollsDoubles_LeavesJail** ( :construction: )
+- **TC61: playTurn_WhenInJailAndRollsDoubles_LeavesJail** ( :white_check_mark: )
   - **State**: current player is in jail; `JailController.attemptRollDoubles` returns `true`
   - **Expected**: no board move; views refreshed
-- **TC62: playTurn_WhenInJailNoDoublesBelowMaxTurns_StaysInJail** ( :construction: )
+- **TC62: playTurn_WhenInJailNoDoublesBelowMaxTurns_StaysInJail** ( :white_check_mark: )
   - **State**: in jail, `attemptRollDoubles` false, `getJailTurnCount` below `MAX_JAIL_TURNS`
   - **Expected**: no fee paid; views refreshed (player remains jailed)
-- **TC63: playTurn_WhenInJailNoDoublesAtMaxTurns_PaysFee** ( :construction: )
+- **TC63: playTurn_WhenInJailNoDoublesAtMaxTurns_PaysFee** ( :white_check_mark: )
   - **State**: in jail, `attemptRollDoubles` false, `getJailTurnCount` equals `MAX_JAIL_TURNS`
   - **Expected**: `JailController.payJailFee` is invoked; views refreshed
 
@@ -368,15 +374,22 @@ fails and the player has reached `MAX_JAIL_TURNS`, the jail fee is auto-paid so 
 
 Existing `NONE`/`DRAW_CARD`/`OFFER_PURCHASE`/`PAY_BANK`/`PAY_TAX` cases unchanged (TC23–TC29). Adds:
 
-- **TC57: handleTileAction_WithPayRentAffordable_TransfersRent** ( :construction: )
+- **TC57: handleTileAction_WithPayRentAffordable_TransfersRent** ( :white_check_mark: )
   - **State**: `PAY_RENT` action, renter can afford rent
   - **Expected**: rent moves renter→owner via `PropertyController.handleRentPayment`; views refreshed
-- **TC58: handleTileAction_WithCollectMoney_CreditsPlayer** ( :construction: )
+- **TC58: handleTileAction_WithCollectMoney_CreditsPlayer** ( :white_check_mark: )
   - **State**: `COLLECT_MONEY` action with amount
   - **Expected**: `player.receive(amount)`; views refreshed
-- **TC59: handleTileAction_WithGoToJail_SendsToJail** ( :construction: )
+- **TC59: handleTileAction_WithGoToJail_SendsToJail** ( :white_check_mark: )
   - **State**: `GO_TO_JAIL` action
   - **Expected**: `JailController.sendToJail(player)`; views refreshed
+- **TC68: handleTileAction_WithUnhandledMovePlayerAction_DoesNothing** ( :white_check_mark: )
+  - **State**: `MOVE_PLAYER` action reaches `GameController.handleTileAction`
+  - **Expected**: no controller-side effect occurs; no views are refreshed because movement is handled
+    through `playTurn` / `GameEngine.movePlayer`
+- **TC69: handleTileAction_WithPayRentOnNonProperty_RefreshesOnly** ( :white_check_mark: )
+  - **State**: `PAY_RENT` action is supplied with a tile that is not a `Property`
+  - **Expected**: rent payment is rejected; views are refreshed; no player is eliminated
 
 ### Forced sale + elimination (rent / tax shortfall)
 
@@ -384,19 +397,31 @@ When a required payment exceeds the player's cash, the controller first forces p
 (`PropertyController.handleForcedSale`, 80% resale) and only eliminates the player if that still
 isn't enough.
 
-- **TC64: resolveLanding_OnRentShortfallForcedSaleCovers_PaysRent** ( :construction: )
+- **TC64: resolveLanding_OnRentShortfallForcedSaleCovers_PaysRent** ( :white_check_mark: )
   - **State**: renter can't afford rent, but `handleForcedSale` raises enough; second
     `handleRentPayment` succeeds
   - **Expected**: rent is paid after the sale; views refreshed; player not eliminated
-- **TC65: resolveLanding_OnRentShortfallForcedSaleFails_EliminatesPlayer** ( :construction: )
+- **TC65: resolveLanding_OnRentShortfallForcedSaleFails_EliminatesPlayer** ( :white_check_mark: )
   - **State**: renter can't afford rent and `handleForcedSale` can't raise enough
   - **Expected**: `handleBankruptcy` runs and `BankruptcyView.showPlayerEliminated` is shown
-- **TC66: resolveLanding_OnTaxShortfallForcedSaleCovers_PaysTax** ( :construction: )
+- **TC66: resolveLanding_OnTaxShortfallForcedSaleCovers_PaysTax** ( :white_check_mark: )
   - **State**: player can't afford IRS tax, but `handleForcedSale` raises enough; `remove` then succeeds
   - **Expected**: tax is paid after the sale; views refreshed
-- **TC67: resolveLanding_OnTaxShortfallForcedSaleFails_EliminatesPlayer** ( :construction: )
+- **TC67: resolveLanding_OnTaxShortfallForcedSaleFails_EliminatesPlayer** ( :white_check_mark: )
   - **State**: player can't afford IRS tax and `handleForcedSale` can't raise enough
   - **Expected**: `handleBankruptcy` runs and `BankruptcyView.showPlayerEliminated` is shown
+- **TC70: resolveLanding_OnRentShortfallSecondPaymentFails_EliminatesPlayer** ( :white_check_mark: )
+  - **State**: renter initially cannot pay rent; forced sale succeeds, but the second rent payment
+    still fails
+  - **Expected**: player is eliminated after the failed post-sale rent attempt; views are refreshed
+- **TC71: resolveLanding_OnTaxForcedSaleThenRemoveFails_EliminatesPlayer** ( :white_check_mark: )
+  - **State**: player initially cannot pay IRS tax; forced sale succeeds, but the second `remove`
+    still fails
+  - **Expected**: player is eliminated after the failed post-sale tax attempt; views are refreshed
+- **TC72: resolveLanding_OnRentShortfallWithoutBankruptcyView_EliminatesPlayer** ( :white_check_mark: )
+  - **State**: renter cannot pay rent and no `BankruptcyView` collaborator has been injected
+  - **Expected**: player is removed through `handleBankruptcy`; elimination announcement is skipped
+    safely; views are refreshed
 
 ### Method under test: `applyDrawnCard()`
 
@@ -406,7 +431,10 @@ Applies the currently displayed chance card when the player clicks Proceed.
 2. Input type: presence/absence of an active card
 3. Input boundary values: a card is active, no card is active
 
-- **TC60: applyDrawnCard_WithActiveCard_AppliesEffectAndClears** ( :construction: )
+- **TC60: applyDrawnCard_WithActiveCard_AppliesEffectAndClears** ( :white_check_mark: )
   - **State**: a chance card has been drawn and is active
   - **Expected**: `CardController.applyCard(card, currentPlayer)` is invoked, the active card is
     cleared, and views are refreshed (card view closed)
+- **TC73: applyDrawnCard_WithNoActiveCard_RefreshesOnly** ( :white_check_mark: )
+  - **State**: no chance card is active when Proceed is invoked
+  - **Expected**: no card effect is applied; views are refreshed and the card view remains closed
