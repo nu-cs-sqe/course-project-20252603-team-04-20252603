@@ -23,12 +23,15 @@ public class JailStatusView {
         this.owner = owner;
     }
 
-    public void showStillInJail(Player player) {
+    public void showStillInJail(Player player, int turnsRemaining) {
         Objects.requireNonNull(player, "Player cannot be null");
 
         JOptionPane.showMessageDialog(
                 owner,
-                LocalizationManager.formatMessage("jailStatus.stillInJailMessage", player.getName()),
+                LocalizationManager.formatMessage(
+                        "jailStatus.stillInJailMessage",
+                        player.getName(),
+                        turnsRemaining),
                 LocalizationManager.getMessage("jailStatus.title"),
                 JOptionPane.INFORMATION_MESSAGE);
     }

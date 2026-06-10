@@ -295,20 +295,27 @@ public class GameController {
     }
 
     private void playJailTurn(Player current) {
+        int turnCountBeforeRoll = current.getJailTurnCount();
         boolean escaped = jailController.attemptRollDoubles(current);
         if (!escaped) {
-            if (current.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
+            int turnCountAfterRoll = current.getJailTurnCount();
+            if (turnCountBeforeRoll >= Constants.MAX_JAIL_TURNS
+                    && turnCountAfterRoll >= Constants.MAX_JAIL_TURNS) {
                 jailController.payJailFee(current);
             } else {
-                showStillInJail(current);
+                showStillInJail(current, getJailTurnsRemaining(turnCountAfterRoll));
             }
         }
         refreshViews();
     }
 
-    private void showStillInJail(Player player) {
+    private int getJailTurnsRemaining(int jailTurnCount) {
+        return Constants.MAX_JAIL_TURNS - jailTurnCount + 1;
+    }
+
+    private void showStillInJail(Player player, int turnsRemaining) {
         if (jailStatusView != null) {
-            jailStatusView.showStillInJail(player);
+            jailStatusView.showStillInJail(player, turnsRemaining);
         }
     }
 
