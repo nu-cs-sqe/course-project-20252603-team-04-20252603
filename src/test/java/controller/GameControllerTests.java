@@ -711,7 +711,42 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC29_handleTileAction_WithActionForWrongTile_RejectsAction() {
+    public void TC29_handleTileAction_WithTaxPaymentAboveBalance_TriggersBankruptcy() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        TileAction action = EasyMock.createMock(TileAction.class);
+        Player player = EasyMock.createMock(Player.class);
+        double taxAmount = 100.0;
+
+        EasyMock.expect(action.getType()).andReturn(TileActionType.PAY_TAX);
+        EasyMock.expect(action.getPlayer()).andReturn(player);
+        EasyMock.expect(action.getAmount()).andReturn(taxAmount);
+        EasyMock.expect(player.remove(taxAmount)).andReturn(false);
+
+        gameEngine.removeBankruptPlayer(player);
+        EasyMock.expectLastCall().once();
+
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player);
+
+        GameController gameController = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice
+        );
+
+        gameController.handleTileAction(action);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, action,
+                player);
+    }
+
+    @Test
+    public void TC30_handleTileAction_WithActionForWrongTile_RejectsAction() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -740,7 +775,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC30_handleEndTurn_WithTwoPlayers_AdvancesToSecondPlayer() {
+    public void TC31_handleEndTurn_WithTwoPlayers_AdvancesToSecondPlayer() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -767,7 +802,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC31_handleEndTurn_WithMaximumPlayersMiddleTurn_AdvancesToNextPlayer() {
+    public void TC32_handleEndTurn_WithMaximumPlayersMiddleTurn_AdvancesToNextPlayer() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -794,7 +829,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC32_handleEndTurn_WithMaximumPlayersAtLastTurn_WrapsToFirstPlayer() {
+    public void TC33_handleEndTurn_WithMaximumPlayersAtLastTurn_WrapsToFirstPlayer() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -821,7 +856,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC33_handleEndTurn_WithOneActivePlayer_EndsGame() {
+    public void TC34_handleEndTurn_WithOneActivePlayer_EndsGame() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -845,7 +880,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC34_handleEndTurn_WhenNextPlayerIsBankrupt_SkipsRemovedPlayer() {
+    public void TC35_handleEndTurn_WhenNextPlayerIsBankrupt_SkipsRemovedPlayer() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -872,7 +907,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC35_handleBankruptcy_WithNullPlayer_ThrowsException() {
+    public void TC36_handleBankruptcy_WithNullPlayer_ThrowsException() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -892,7 +927,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC36_handleBankruptcy_WithPlayerNotInGame_DoesNotChangeGame() {
+    public void TC37_handleBankruptcy_WithPlayerNotInGame_DoesNotChangeGame() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -918,7 +953,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC37_handleBankruptcy_WithThreePlayers_RemovesPlayerAndContinuesGame() {
+    public void TC38_handleBankruptcy_WithThreePlayers_RemovesPlayerAndContinuesGame() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -944,7 +979,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC38_handleBankruptcy_WithTwoPlayers_RemovesPlayerAndEndsGame() {
+    public void TC39_handleBankruptcy_WithTwoPlayers_RemovesPlayerAndEndsGame() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -972,7 +1007,7 @@ public class GameControllerTests {
 
 
     @Test
-    public void TC39_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
+    public void TC40_refreshViews_WithAllViewsPresent_UpdatesEveryView() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -991,7 +1026,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC40_refreshViews_WithNullBoardView_ThrowsExceptionBeforePartialUpdate() {
+    public void TC41_refreshViews_WithNullBoardView_ThrowsExceptionBeforePartialUpdate() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
@@ -1008,7 +1043,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC41_refreshViews_WhenPlayerAtFirstBoardIndex_RendersPositionZero() {
+    public void TC42_refreshViews_WhenPlayerAtFirstBoardIndex_RendersPositionZero() {
         Player player = EasyMock.createMock(Player.class);
         Board board = EasyMock.createMock(Board.class);
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
@@ -1034,7 +1069,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC42_refreshViews_WhenPlayerAtLastBoardIndex_RendersPositionThirtyOne() {
+    public void TC43_refreshViews_WhenPlayerAtLastBoardIndex_RendersPositionThirtyOne() {
         Player player = EasyMock.createMock(Player.class);
         Board board = EasyMock.createMock(Board.class);
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
@@ -1061,7 +1096,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC43_refreshViews_WhenNoCardIsActive_ClearsCardView() {
+    public void TC44_refreshViews_WhenNoCardIsActive_ClearsCardView() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -1083,7 +1118,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC44_refreshViews_WhenCardIsActive_DisplaysCurrentCard() {
+    public void TC45_refreshViews_WhenCardIsActive_DisplaysCurrentCard() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -1110,7 +1145,7 @@ public class GameControllerTests {
     }
 
     @Test
-    public void TC45_refreshViews_AfterBankruptcy_RemovesPlayerFromVisibleTurnOrder() {
+    public void TC46_refreshViews_AfterBankruptcy_RemovesPlayerFromVisibleTurnOrder() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
