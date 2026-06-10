@@ -48,7 +48,7 @@ public class MainMenuView extends JFrame {
     private JComboBox<String> languageSelector;
 
     public MainMenuView() {
-        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
+        setTitle(LocalizationManager.getMessage("app.title"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 900);
         setMinimumSize(new Dimension(1024, 700));
@@ -122,7 +122,7 @@ public class MainMenuView extends JFrame {
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
         left.setOpaque(false);
         left.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 32)));
-        JLabel brand = new JLabel(LocalizationManager.getMessage("mainMenu.brand"));
+        JLabel brand = new JLabel(LocalizationManager.getMessage("app.title"));
         brand.setFont(font(Font.BOLD, 22));
         brand.setForeground(PRIMARY);
         left.add(brand);
@@ -181,7 +181,7 @@ public class MainMenuView extends JFrame {
     }
 
     private void refreshLocalizedContent() {
-        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
+        setTitle(LocalizationManager.getMessage("app.title"));
         setContentPane(createRoot());
         wireActions();
         revalidate();
@@ -235,7 +235,7 @@ public class MainMenuView extends JFrame {
         iconCard.setAlignmentX(Component.CENTER_ALIGNMENT);
         iconCard.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 64)));
 
-        JLabel title = new JLabel(LocalizationManager.getMessage("mainMenu.heroTitle"));
+        JLabel title = new JLabel(LocalizationManager.getMessage("app.title"));
         title.setFont(font(Font.BOLD, 46));
         title.setForeground(PRIMARY);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
