@@ -6,7 +6,9 @@ import util.Constants;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
+import view.BankruptcyView;
 import view.PlayerInfoView;
+import view.PropertyPromptView;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +22,12 @@ public class GameController {
     private CardView cardView;
     private Dice dice;
     private Card activeCard;
+
+    private PropertyController propertyController;
+    private JailController jailController;
+    private CardController cardController;
+    private PropertyPromptView propertyPromptView;
+    private BankruptcyView bankruptcyView;
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
@@ -117,7 +125,64 @@ public class GameController {
                 return;
             }
             refreshViews();
+            return;
         }
+        if (actionType == TileActionType.PAY_RENT) {
+            activeCard = null;
+            payRent(action.getPlayer(), action.getTile());
+            return;
+        }
+        if (actionType == TileActionType.COLLECT_MONEY) {
+            activeCard = null;
+            action.getPlayer().receive(action.getAmount());
+            refreshViews();
+            return;
+        }
+        if (actionType == TileActionType.GO_TO_JAIL) {
+            activeCard = null;
+            jailController.sendToJail(action.getPlayer());
+            refreshViews();
+        }
+    }
+
+    private void payRent(Player renter, Tile tile) {
+        if (!(tile instanceof Property)) {
+            refreshViews();
+            return;
+        }
+        Property property = (Property) tile;
+        if (propertyController.handleRentPayment(renter, property)) {
+            refreshViews();
+            return;
+        }
+        double rent = property.getRent();
+        if (propertyController.handleForcedSale(renter, rent)
+                && propertyController.handleRentPayment(renter, property)) {
+            refreshViews();
+            return;
+        }
+        eliminate(renter);
+    }
+
+    /** Takes a mandatory payment from the bank, forcing property sales before eliminating the player. */
+    private void requirePayment(Player player, double amount) {
+        if (player.remove(amount)) {
+            refreshViews();
+            return;
+        }
+        if (propertyController.handleForcedSale(player, amount) && player.remove(amount)) {
+            refreshViews();
+            return;
+        }
+        eliminate(player);
+    }
+
+    /** Removes a player who cannot meet a required payment, announcing the elimination. */
+    private void eliminate(Player player) {
+        if (bankruptcyView != null) {
+            bankruptcyView.showPlayerEliminated(player);
+        }
+        handleBankruptcy(player);
     }
 
     public void refreshViews() {
@@ -148,6 +213,138 @@ public class GameController {
         }
         gameEngine.nextTurn();
         refreshViews();
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setPropertyController(PropertyController propertyController) {
+        this.propertyController = propertyController;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setJailController(JailController jailController) {
+        this.jailController = jailController;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional collaborators supplied by the application wiring.")
+    public void setCardController(CardController cardController) {
+        this.cardController = cardController;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
+    public void setPropertyPromptView(PropertyPromptView propertyPromptView) {
+        this.propertyPromptView = propertyPromptView;
+    }
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Optional view collaborator supplied by the application wiring.")
+    public void setBankruptcyView(BankruptcyView bankruptcyView) {
+        this.bankruptcyView = bankruptcyView;
+    }
+
+    /** Plays one full turn for the current player: roll, move, GO-pass bonus, then tile resolution. */
+    public void playTurn() {
+        Player current = gameEngine.getCurrentPlayer();
+        if (current.isBankrupt()) {
+            return;
+        }
+        if (current.inJail()) {
+            playJailTurn(current);
+            return;
+        }
+        int oldPosition = gameEngine.getPlayerPosition(current);
+        rollAndMove(current);
+        grantGoBonusIfPassed(current, oldPosition);
+        resolveLanding();
+    }
+
+    private void playJailTurn(Player current) {
+        boolean escaped = jailController.attemptRollDoubles(current);
+        if (!escaped && current.getJailTurnCount() >= Constants.MAX_JAIL_TURNS) {
+            jailController.payJailFee(current);
+        }
+        refreshViews();
+    }
+
+    private void rollAndMove(Player current) {
+        dice.roll();
+        diceView.showRollResult(dice.getDieOne(), dice.getDieTwo());
+        gameEngine.movePlayer(current, dice.getTotal());
+    }
+
+    private void grantGoBonusIfPassed(Player current, int oldPosition) {
+        int newPosition = gameEngine.getPlayerPosition(current);
+        if (gameEngine.didPassGo(oldPosition, newPosition)) {
+            handleTileAction(new TileAction(
+                    TileActionType.COLLECT_MONEY, current, null, null, Constants.GO_BONUS));
+        }
+    }
+
+    /** Resolves the effect of the tile the current player has landed on. */
+    public void resolveLanding() {
+        Player player = gameEngine.getCurrentPlayer();
+        Tile tile = gameEngine.getTile(gameEngine.getPlayerPosition(player));
+        if (tile instanceof Property) {
+            resolveProperty(player, (Property) tile);
+        } else if (tile instanceof IRSTile) {
+            requirePayment(player, Constants.GO_BONUS);
+        } else if (tile instanceof GoToJailTile) {
+            handleTileAction(new TileAction(TileActionType.GO_TO_JAIL, player, tile, null, 0));
+        } else if (tile instanceof ChanceTile) {
+            drawChanceCard(player);
+        } else {
+            refreshViews();
+        }
+    }
+
+    private void drawChanceCard(Player player) {
+        activeCard = cardController.drawChanceCard(player);
+        refreshViews();
+    }
+
+    /** Applies the chance card currently shown to the player, then clears it. */
+    public void applyDrawnCard() {
+        if (activeCard == null) {
+            refreshViews();
+            return;
+        }
+        Card card = activeCard;
+        cardController.applyCard(card, gameEngine.getCurrentPlayer());
+        activeCard = null;
+        refreshViews();
+    }
+
+    private void resolveProperty(Player player, Property property) {
+        if (property.isOwned()) {
+            if (property.isOwnedBy(player)) {
+                refreshViews();
+            } else {
+                handleTileAction(new TileAction(TileActionType.PAY_RENT, player, property, null, 0));
+            }
+            return;
+        }
+        double price = property.getPrice();
+        if (player.canAfford(price)) {
+            offerPurchase(player, property, price);
+        } else {
+            refreshViews();
+        }
+    }
+
+    private void offerPurchase(Player player, Property property, double price) {
+        propertyPromptView.showProperty(property, player);
+        propertyPromptView.setBuyListener(event ->
+                handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price)));
+        propertyPromptView.setDeclineListener(event ->
+                handleTileAction(new TileAction(TileActionType.NONE, player, property, null, 0)));
     }
 
 }

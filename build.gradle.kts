@@ -18,7 +18,7 @@ repositories {
 }
 
 application {
-    mainClass = "Code.Main"
+    mainClass = "view.MainMenuView"
 }
 
 dependencies {
