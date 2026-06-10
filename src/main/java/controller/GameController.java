@@ -164,6 +164,19 @@ public class GameController {
         eliminate(renter);
     }
 
+    /** Takes a mandatory payment from the bank, forcing property sales before eliminating the player. */
+    private void requirePayment(Player player, double amount) {
+        if (player.remove(amount)) {
+            refreshViews();
+            return;
+        }
+        if (propertyController.handleForcedSale(player, amount) && player.remove(amount)) {
+            refreshViews();
+            return;
+        }
+        eliminate(player);
+    }
+
     /** Removes a player who cannot meet a required payment, announcing the elimination. */
     private void eliminate(Player player) {
         if (bankruptcyView != null) {
@@ -283,7 +296,7 @@ public class GameController {
         if (tile instanceof Property) {
             resolveProperty(player, (Property) tile);
         } else if (tile instanceof IRSTile) {
-            handleTileAction(new TileAction(TileActionType.PAY_TAX, player, tile, null, Constants.GO_BONUS));
+            requirePayment(player, Constants.GO_BONUS);
         } else if (tile instanceof GoToJailTile) {
             handleTileAction(new TileAction(TileActionType.GO_TO_JAIL, player, tile, null, 0));
         } else if (tile instanceof ChanceTile) {
