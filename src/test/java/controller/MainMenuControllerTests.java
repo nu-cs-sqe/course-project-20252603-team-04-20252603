@@ -1,16 +1,19 @@
 package controller;
 
-import model.GameEngine;
-import model.GameStatus;
 import org.junit.jupiter.api.Test;
 import util.PlayerConfig;
 import javax.swing.ImageIcon;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.image.BufferedImage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MainMenuControllerTests {
+
+    private ImageIcon createIcon() {
+        return new ImageIcon(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    }
 
     @Test
     public void validatePlayerCount_WithOneLessThanMinimum_ReturnsFalse() {
@@ -50,7 +53,7 @@ public class MainMenuControllerTests {
     @Test
     public void createPlayerConfigs_WithOneLessThanMinimumPlayers_ThrowsException() {
         List<String> playerNames = List.of("John");
-        List<ImageIcon> playerIcons = List.of(new ImageIcon());
+        List<ImageIcon> playerIcons = List.of(createIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
@@ -59,7 +62,7 @@ public class MainMenuControllerTests {
     @Test
     public void createPlayerConfigs_WithMinimumPlayers_ReturnsTwoPlayerConfigs() {
         List<String> playerNames = List.of("John", "Jane");
-        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        List<ImageIcon> playerIcons = List.of(createIcon(), createIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         List<PlayerConfig> configs = controller.createPlayerConfigs();
@@ -74,10 +77,10 @@ public class MainMenuControllerTests {
     public void createPlayerConfigs_WithMaximumPlayers_ReturnsFourPlayerConfigs() {
         List<String> playerNames = List.of("John", "Jane", "Jack", "Jill");
         List<ImageIcon> playerIcons = List.of(
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon()
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon()
         );
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
@@ -93,11 +96,11 @@ public class MainMenuControllerTests {
     public void createPlayerConfigs_WithOneMoreThanMaximumPlayers_ThrowsException() {
         List<String> playerNames = List.of("John", "Jane", "Jack", "Jill", "James");
         List<ImageIcon> playerIcons = List.of(
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon()
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon()
         );
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
@@ -107,7 +110,7 @@ public class MainMenuControllerTests {
     @Test
     public void createPlayerConfigs_WithEmptyPlayerName_ThrowsException() {
         List<String> playerNames = List.of("", "Jane");
-        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        List<ImageIcon> playerIcons = List.of(createIcon(), createIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::createPlayerConfigs);
@@ -118,7 +121,7 @@ public class MainMenuControllerTests {
         List<String> playerNames = List.of("John", "Jane");
 
         List<ImageIcon> playerIcons = new ArrayList<>();
-        playerIcons.add(new ImageIcon());
+        playerIcons.add(createIcon());
         playerIcons.add(null);
 
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
@@ -129,7 +132,7 @@ public class MainMenuControllerTests {
     @Test
     public void startNewGame_WithOneLessThanMinimumPlayers_ThrowsException() {
         List<String> playerNames = List.of("John");
-        List<ImageIcon> playerIcons = List.of(new ImageIcon());
+        List<ImageIcon> playerIcons = List.of(createIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertThrows(IllegalArgumentException.class, controller::startNewGame);
@@ -138,7 +141,7 @@ public class MainMenuControllerTests {
     @Test
     public void startNewGame_WithMinimumPlayers_StartsGame() {
         List<String> playerNames = List.of("John", "Jane");
-        List<ImageIcon> playerIcons = List.of(new ImageIcon(), new ImageIcon());
+        List<ImageIcon> playerIcons = List.of(createIcon(), createIcon());
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
         assertDoesNotThrow(controller::startNewGame);
@@ -148,10 +151,10 @@ public class MainMenuControllerTests {
     public void startNewGame_WithMaximumPlayers_StartsGame() {
         List<String> playerNames = List.of("John", "Jane", "Jack", "Jill");
         List<ImageIcon> playerIcons = List.of(
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon()
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon()
         );
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
@@ -162,11 +165,11 @@ public class MainMenuControllerTests {
     public void startNewGame_WithOneMoreThanMaximumPlayers_ThrowsException() {
         List<String> playerNames = List.of("John", "Jane", "Jack", "Jill", "James");
         List<ImageIcon> playerIcons = List.of(
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon(),
-                new ImageIcon()
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon(),
+                createIcon()
         );
         MainMenuController controller = new MainMenuController(playerNames, playerIcons);
 
