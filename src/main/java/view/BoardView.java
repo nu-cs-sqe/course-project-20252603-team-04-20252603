@@ -65,6 +65,7 @@ public class BoardView extends JFrame {
     private Map<Player, Color> playerColors;
     private Map<Player, Image> playerTokens;
     private final DiceView diceView = new DiceView();
+    private boolean gameOverShown;
     private JLabel turnLabel;
     private JLabel currentPlayerName;
     private JLabel currentPlayerBalance;
@@ -106,6 +107,28 @@ public class BoardView extends JFrame {
             boardStage.refreshPills();
             boardStage.repaintTokens();
         }
+        showWinnerIfGameOver();
+    }
+
+    /** When only one player remains, announce the winner once and stop further play. */
+    private void showWinnerIfGameOver() {
+        if (gameOverShown || !gameEngine.isGameOver()) {
+            return;
+        }
+        gameOverShown = true;
+        if (turnLabel != null) {
+            turnLabel.setText("Game Over");
+        }
+        if (rollDiceButton != null) {
+            rollDiceButton.setEnabled(false);
+        }
+        if (endTurnButton != null) {
+            endTurnButton.setEnabled(false);
+        }
+        String message = gameEngine.getWinner()
+                .map(winner -> winner.getName() + " wins!")
+                .orElse("Game over.");
+        JOptionPane.showMessageDialog(this, message, "Emerald Estate", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Reflects the engine's current player in the top bar and the sidebar card. */
