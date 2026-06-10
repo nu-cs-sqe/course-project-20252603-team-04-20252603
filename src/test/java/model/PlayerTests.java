@@ -11,6 +11,31 @@ import model.Player;
 
 public class PlayerTests {
 
+    private static class HashChangingProperty extends Property {
+
+        private boolean priceAccessed;
+
+        HashChangingProperty() {
+            super("Mutable Hash Property", 50.0, 5.0);
+        }
+
+        @Override
+        public double getPrice() {
+            this.priceAccessed = true;
+            return super.getPrice();
+        }
+
+        @Override
+        public int hashCode() {
+            return this.priceAccessed ? 2 : 1;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return this == other;
+        }
+    }
+
     // ==================================================================================================
     // Test suite for the buy method of the Player class, covering various scenarios
     // including edge cases
@@ -319,6 +344,24 @@ public class PlayerTests {
         assertTrue(player.getOwnedProperties().contains(propertyMock),
                 "Property should remain owned when sale fails");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
+    }
+
+    @Test
+    public void Test_Selling_Owned_Property_When_Remove_Fails() {
+        Player player = new Player("John", 100.0);
+        Property property = new HashChangingProperty();
+
+        assertTrue(player.addProperty(property), "Setup should add the property before selling");
+
+        boolean success = player.sellProperty(property);
+
+        assertFalse(success, "Selling should fail when property removal fails");
+        assertEquals(1, player.getOwnedProperties().size(),
+                "Property should remain owned when removal fails");
+        assertSame(property, player.getOwnedProperties().iterator().next(),
+                "Original property should still be stored");
+        assertEquals(150.0, player.getBalance(), 0.001,
+                "Balance should increase before the failed removal is reported");
     }
     // ==================================================================================================
     // Test suite for goToJail method
