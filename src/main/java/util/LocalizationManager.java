@@ -1,5 +1,6 @@
 package util;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -15,6 +16,10 @@ public final class LocalizationManager {
 
     public static Locale getLocale() {
         return currentLocale;
+    }
+
+    public static List<Locale> getSupportedLocales() {
+        return List.of(ENGLISH, SPANISH);
     }
 
     public static void setLocale(Locale locale) {

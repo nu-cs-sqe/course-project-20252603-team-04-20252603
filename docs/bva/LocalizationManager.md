@@ -28,7 +28,7 @@
 2. Input: none, Output: collection size and contents
 3. Output values: English and Spanish
 
-- **TC6: getSupportedLocales_ReturnsEnglishAndSpanish**
+- **TC6: getSupportedLocales_ReturnsEnglishAndSpanish** ( :white_check_mark: )
     - **State of the system**: manager is initialized
     - **Expected output**: returns supported locales containing English and Spanish
 
