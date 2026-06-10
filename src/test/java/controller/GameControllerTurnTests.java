@@ -927,4 +927,46 @@ public class GameControllerTurnTests {
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
     }
 
+    @Test
+    public void TC74_resolveLanding_WhenBuyListenerRuns_PurchasesPropertyAndRefreshes() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
+        Property property = EasyMock.createMock(Property.class);
+        Player player = EasyMock.createMock(Player.class);
+        Capture<ActionListener> buyListener = new Capture<>();
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(5);
+        EasyMock.expect(gameEngine.getTile(5)).andReturn(property);
+        EasyMock.expect(property.isOwned()).andReturn(false);
+        EasyMock.expect(property.getPrice()).andReturn(100.0);
+        EasyMock.expect(player.canAfford(100.0)).andReturn(true);
+        prompt.showProperty(property, player);
+        EasyMock.expectLastCall().once();
+        prompt.setBuyListener(EasyMock.capture(buyListener));
+        EasyMock.expectLastCall().once();
+        prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(property.purchase(player)).andReturn(true);
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                prompt, property, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setPropertyPromptView(prompt);
+        controller.resolveLanding();
+        buyListener.getValue().actionPerformed(null);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                prompt, property, player);
+    }
+
+
 }
