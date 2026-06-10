@@ -535,7 +535,10 @@ public class BoardView extends JFrame {
     private TileDef tileToTileDef(Tile tile, BarSide bar, int boardIndex) {
         if (tile instanceof Property) {
             Property prop = (Property) tile;
-            String label = LocalizationManager.formatMessage("board.propertyLabel", boardIndex);
+            String label = LocalizationManager.formatMessage(
+                    "board.propertyLabel",
+                    boardIndex,
+                    formatMoney(prop.getPrice()));
             Color group = getPropertyGroupColor((int) prop.getPrice());
             TileDef def = TileDef.property(label, group);
             def.bar = bar;
@@ -683,8 +686,8 @@ public class BoardView extends JFrame {
         private void addContent() {
             switch (def.kind) {
                 case PROPERTY:
-                    JLabel p = new JLabel(def.label);
-                    p.setFont(font(Font.BOLD, 11));
+                    JLabel p = new JLabel(def.label, SwingConstants.CENTER);
+                    p.setFont(font(Font.BOLD, 10));
                     p.setForeground(INK);
                     add(p);
                     break;
