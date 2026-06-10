@@ -192,6 +192,10 @@ public class GameController {
         Tile tile = gameEngine.getTile(gameEngine.getPlayerPosition(player));
         if (tile instanceof Property) {
             resolveProperty(player, (Property) tile);
+        } else if (tile instanceof IRSTile) {
+            handleTileAction(new TileAction(TileActionType.PAY_TAX, player, tile, null, Constants.GO_BONUS));
+        } else {
+            refreshViews();
         }
     }
 
