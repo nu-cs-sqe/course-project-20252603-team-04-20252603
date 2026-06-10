@@ -77,4 +77,13 @@ public class LocalizationManagerTests {
         assertEquals("Monopoly", actual);
     }
 
+    @Test
+    public void getMessage_WithSpanishLocaleAndTitleKey_ReturnsSpanishTitle() {
+        LocalizationManager.setLocale(LocalizationManager.SPANISH);
+
+        String actual = LocalizationManager.getMessage("mainMenu.title");
+
+        assertEquals("Monopolio", actual);
+    }
+
 }

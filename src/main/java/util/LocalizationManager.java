@@ -34,6 +34,7 @@ public final class LocalizationManager {
 
         if (locale.getLanguage().equals(SPANISH.getLanguage())) {
             currentLocale = SPANISH;
+            messages = ResourceBundle.getBundle(BUNDLE_NAME, currentLocale);
             return;
         }
 

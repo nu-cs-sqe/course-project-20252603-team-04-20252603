@@ -45,7 +45,7 @@
     - **State of the system**: active locale = English, key = `mainMenu.title`
     - **Expected output**: returns `Monopoly`
 
-- **TC9: getMessage_WithSpanishLocaleAndTitleKey_ReturnsSpanishTitle**
+- **TC9: getMessage_WithSpanishLocaleAndTitleKey_ReturnsSpanishTitle** ( :white_check_mark: )
     - **State of the system**: active locale = Spanish, key = `mainMenu.title`
     - **Expected output**: returns `Monopolio`
 
