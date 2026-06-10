@@ -62,8 +62,6 @@ public class BoardView extends JFrame {
     private static final int CENTER_SIZE = TILE_CELL_SIZE * (SIDE - 2);
 
     private JButton boardNav;
-    private JButton tradeNav;
-    private JButton portfolioNav;
     private JButton rollDiceButton;
     private GameEngine gameEngine;
     private GameController gameController;
@@ -227,16 +225,7 @@ public class BoardView extends JFrame {
         nav.add(Box.createVerticalStrut(24));
 
         boardNav = createNavItem(BoardIcon.Type.NAV_BOARD, LocalizationManager.getMessage("board.nav.board"), true);
-        tradeNav = createNavItem(BoardIcon.Type.NAV_TRADE, LocalizationManager.getMessage("board.nav.trade"), false);
-        portfolioNav = createNavItem(
-                BoardIcon.Type.NAV_PORTFOLIO,
-                LocalizationManager.getMessage("board.nav.portfolio"),
-                false);
         nav.add(boardNav);
-        nav.add(Box.createVerticalStrut(8));
-        nav.add(tradeNav);
-        nav.add(Box.createVerticalStrut(8));
-        nav.add(portfolioNav);
         nav.add(Box.createVerticalStrut(18));
         nav.add(playerInfoView);
 
@@ -1175,20 +1164,6 @@ public class BoardView extends JFrame {
             justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getBoardNav() {
         return boardNav;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getTradeNav() {
-        return tradeNav;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getPortfolioNav() {
-        return portfolioNav;
     }
 
     @SuppressFBWarnings(
