@@ -4,6 +4,7 @@ import controller.CardController;
 import controller.GameController;
 import controller.JailController;
 import controller.PropertyController;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.*;
 import util.Constants;
 import javax.swing.*;
@@ -16,34 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * In-game 9x9 board screen for the Emerald Estate edition.
- *
- * <p>The 32 playable tiles are arranged around the perimeter of a 9x9 grid (9 tiles per side, with
- * the four corners shared). The hollow centre hosts the active Chance / property card overlay and a
- * faint "EMERALD ESTATE" watermark.</p>
- *
- * <p>As with {@link MainMenuView}, every icon is rendered with Graphics2D (no emoji / unicode
- * glyphs) so the screen looks identical regardless of the host fonts or the source-file encoding.</p>
- */
+
 public class BoardView extends JFrame {
 
-    // ----- Palette (Stitch design tokens) ----------------------------------------------------
-    private static final Color BG = new Color(0xEC, 0xF3, 0xEC);          // board backdrop
-    private static final Color NAV_BG = new Color(0xF4, 0xFB, 0xF4);      // top bar / sidebar
+    private static final Color BG = new Color(0xEC, 0xF3, 0xEC);
+    private static final Color NAV_BG = new Color(0xF4, 0xFB, 0xF4);
     private static final Color CARD_WHITE = Color.WHITE;
-    private static final Color PRIMARY = new Color(0x00, 0x6C, 0x49);     // dark green text
-    private static final Color EMERALD = new Color(0x10, 0xB9, 0x81);     // accent / active pill
-    private static final Color INK = new Color(0x16, 0x1D, 0x19);         // primary text
-    private static final Color MUTED = new Color(0x5C, 0x66, 0x60);       // secondary text
+    private static final Color PRIMARY = new Color(0x00, 0x6C, 0x49);
+    private static final Color EMERALD = new Color(0x10, 0xB9, 0x81);
+    private static final Color INK = new Color(0x16, 0x1D, 0x19);
+    private static final Color MUTED = new Color(0x5C, 0x66, 0x60);
     private static final Color FIELD_BORDER = new Color(0xD8, 0xE2, 0xDB);
     private static final Color TILE_BORDER = new Color(0xE4, 0xEA, 0xE5);
-    private static final Color BOARD_FRAME = new Color(0x16, 0x1D, 0x19); // dark ring around board
-    private static final Color CHANCE_BG = new Color(0xDC, 0xF1, 0xE4);   // light green chance tile
+    private static final Color BOARD_FRAME = new Color(0x16, 0x1D, 0x19);
+    private static final Color CHANCE_BG = new Color(0xDC, 0xF1, 0xE4);
     private static final Color PLAYER_CARD_BG = new Color(0xED, 0xF4, 0xEE);
     private static final Color WATERMARK = new Color(0x10, 0xB9, 0x81, 36);
 
-    // Property group accents.
     private static final Color G_RED = new Color(0xF1, 0xCB, 0xCB);
     private static final Color G_DARK = new Color(0x3F, 0x4A, 0x45);
     private static final Color G_BLUE = new Color(0xC8, 0xD3, 0xEC);
@@ -70,7 +60,7 @@ public class BoardView extends JFrame {
     private JLabel currentPlayerName;
     private JLabel currentPlayerBalance;
 
-    public BoardView(GameEngine gameEngine) {
+    BoardView(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
         this.playerColors = new HashMap<>();
         this.playerTokens = new HashMap<>();
@@ -89,6 +79,9 @@ public class BoardView extends JFrame {
         setContentPane(root);
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "BoardView keeps the shared GameController used by button listeners.")
     public void setController(GameController controller) {
         this.gameController = controller;
         if (rollDiceButton != null) {
@@ -110,7 +103,7 @@ public class BoardView extends JFrame {
         showWinnerIfGameOver();
     }
 
-    /** When only one player remains, announce the winner once and stop further play. */
+
     private void showWinnerIfGameOver() {
         if (gameOverShown || !gameEngine.isGameOver()) {
             return;
@@ -131,7 +124,7 @@ public class BoardView extends JFrame {
         JOptionPane.showMessageDialog(this, message, "Emerald Estate", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Reflects the engine's current player in the top bar and the sidebar card. */
+
     private void updateCurrentPlayer(List<Player> activePlayers) {
         if (activePlayers.isEmpty()) {
             return;
@@ -156,17 +149,15 @@ public class BoardView extends JFrame {
 
     private void initializePlayerColors(List<Player> players) {
         Color[] colors = {
-                new Color(0xE5, 0x3E, 0x3E),    // Red
-                new Color(0x3B, 0x82, 0xF6),    // Blue
-                new Color(0xF5, 0xB0, 0x36),    // Orange
-                new Color(0x10, 0xB9, 0x81)     // Green
+                new Color(0xE5, 0x3E, 0x3E),
+                new Color(0x3B, 0x82, 0xF6),
+                new Color(0xF5, 0xB0, 0x36),
+                new Color(0x10, 0xB9, 0x81)
         };
         for (int i = 0; i < players.size(); i++) {
             playerColors.put(players.get(i), colors[i % colors.length]);
         }
     }
-
-    // ============================================================ Top bar =====================
 
     private JPanel createTopBar() {
         JPanel bar = new JPanel(new BorderLayout());
@@ -199,8 +190,6 @@ public class BoardView extends JFrame {
         bar.add(new JSeparator(), BorderLayout.SOUTH);
         return bar;
     }
-
-    // ============================================================ Sidebar =====================
 
     private JPanel createSidebar() {
         JPanel nav = new JPanel();
@@ -301,8 +290,6 @@ public class BoardView extends JFrame {
         return btn;
     }
 
-    // ============================================================ Board area ==================
-
     private JPanel createBoardArea() {
         JPanel area = new JPanel(new GridBagLayout());
         area.setBackground(BG);
@@ -313,7 +300,6 @@ public class BoardView extends JFrame {
         return area;
     }
 
-    /** Fixed-size layered stage: dark board frame, the tile ring, centre card and floating chrome. */
     private class BoardStage extends JLayeredPane {
 
         private JPanel pillsContainer;
@@ -332,8 +318,6 @@ public class BoardView extends JFrame {
 
             refreshPills();
 
-            // Dice + Roll button live inside the hollow centre (cols 1-7, rows 1-7) so they never
-            // overlap the tile ring. Hollow centre spans roughly x=138..582, y=129..543.
             JPanel dice = createDiceCluster();
             dice.setBounds(285, 430, 150, 64);
             add(dice, Integer.valueOf(3));
@@ -423,14 +407,11 @@ public class BoardView extends JFrame {
         return cluster;
     }
 
-    /**
-     * Maps a board tile index (0-31) to its pixel centre within {@link BoardStage}.
-     * Ring bounds within the stage: x=74, y=70, w=572, h=532.
-     * Index layout: 0-8 top row, 9-15 right col, 16-24 bottom row, 25-31 left col.
-     * Bottom and left edges are reversed so increasing indices follow the board perimeter.
-     */
     private java.awt.Point tileCenter(int tileIndex) {
-        int ringX = 74, ringY = 70, ringW = 572, ringH = 532;
+        int ringX = 74;
+        int ringY = 70;
+        int ringW = 572;
+        int ringH = 532;
         double cellW = (double) ringW / SIDE;
         double cellH = (double) ringH / SIDE;
         int row;
@@ -453,7 +434,7 @@ public class BoardView extends JFrame {
         return new java.awt.Point(x, y);
     }
 
-    /** Transparent overlay drawn at the top of {@link BoardStage} to paint player tokens. */
+
     private class TokenOverlay extends JPanel {
 
         TokenOverlay() {
@@ -484,14 +465,14 @@ public class BoardView extends JFrame {
                     continue;
                 }
                 java.awt.Point centre = tileCenter(pos);
-                // stagger up to 4 tokens on the same tile in a 2×2 grid
+
                 int dx = (i % 2) * 14 - 7;
                 int dy = (i / 2) * 14 - 7;
                 int r = 12;
                 int cx = centre.x + dx;
                 int cy = centre.y + dy;
 
-                // Coloured ring identifies the player regardless of the token artwork.
+
                 g2.setColor(c);
                 g2.fillOval(cx - r, cy - r, r * 2, r * 2);
                 g2.setColor(Color.WHITE);
@@ -515,11 +496,11 @@ public class BoardView extends JFrame {
         }
     }
 
-    // ------------------------------------------------------------ Tile ring -------------------
 
-    private static final int SIDE = 9; // 9 tiles per edge
 
-    /** The 32-tile ring laid out on a 9x9 GridBag; the hollow centre carries the card overlay. */
+    private static final int SIDE = 9;
+
+
     private class BoardRing extends JPanel {
 
         BoardRing() {
@@ -545,7 +526,7 @@ public class BoardView extends JFrame {
                 }
             }
 
-            // Hollow centre (7x7) holds the active card + watermark.
+
             c.gridx = 1;
             c.gridy = 1;
             c.gridwidth = SIDE - 2;
@@ -556,12 +537,12 @@ public class BoardView extends JFrame {
         }
     }
 
-    /** Builds the 9x9 grid with the 32 perimeter tiles populated (interior left null). */
+
     private TileDef[][] buildGrid() {
         TileDef[][] g = new TileDef[SIDE][SIDE];
-        // Map tile indices to board positions: 0-8 (top), 9-15 (right),
-        // 16-24 (bottom, right to left), 25-31 (left, bottom to top).
-        // Top edge (row 0), left to right; accent bar faces inward (bottom).
+
+
+
         TileDef[] top = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
             top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM);
@@ -570,7 +551,7 @@ public class BoardView extends JFrame {
             g[0][col] = top[col];
         }
 
-        // Right edge (col 8), rows 1..7; bar faces inward (left).
+
         TileDef[] right = new TileDef[7];
         for (int i = 0; i < 7; i++) {
             right[i] = tileToTileDef(gameEngine.getTile(9 + i), BarSide.LEFT);
@@ -579,7 +560,7 @@ public class BoardView extends JFrame {
             g[i + 1][SIDE - 1] = right[i];
         }
 
-        // Bottom edge (row 8), right to left; bar faces inward (top).
+
         TileDef[] bottom = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
             bottom[col] = tileToTileDef(gameEngine.getTile(16 + col), BarSide.TOP);
@@ -588,7 +569,7 @@ public class BoardView extends JFrame {
             g[SIDE - 1][SIDE - 1 - col] = bottom[col];
         }
 
-        // Left edge (col 0), rows 7..1; bar faces inward (right).
+
         TileDef[] left = new TileDef[7];
         for (int i = 0; i < 7; i++) {
             left[i] = tileToTileDef(gameEngine.getTile(25 + i), BarSide.RIGHT);
@@ -626,18 +607,32 @@ public class BoardView extends JFrame {
     }
 
     private Color getPropertyGroupColor(int price) {
-        // Hardcoded color mapping based on price ranges (typical Monopoly groups)
-        if (price >= 320) return G_DARK;          // Dark blue
-        if (price >= 260) return G_BLUE;          // Light blue
-        if (price >= 200) return G_RED;           // Red
-        if (price >= 180) return G_SLATE;         // Purple
-        if (price >= 140) return G_GREEN;         // Green
-        if (price >= 100) return G_MINT;          // Yellow
-        if (price >= 80) return G_RED;            // Orange/Red
-        return G_STEEL;                           // Brown/Tan
+
+        if (price >= 320) {
+            return G_DARK;
+        }
+        if (price >= 260) {
+            return G_BLUE;
+        }
+        if (price >= 200) {
+            return G_RED;
+        }
+        if (price >= 180) {
+            return G_SLATE;
+        }
+        if (price >= 140) {
+            return G_GREEN;
+        }
+        if (price >= 100) {
+            return G_MINT;
+        }
+        if (price >= 80) {
+            return G_RED;
+        }
+        return G_STEEL;
     }
 
-    // ------------------------------------------------------------ Centre overlay --------------
+
 
     private class CenterPanel extends JPanel {
         CenterPanel() {
@@ -689,13 +684,13 @@ public class BoardView extends JFrame {
         return card;
     }
 
-    // ============================================================ Tile model ==================
+
 
     private enum Kind { PROPERTY, IRS, CHANCE, GO, JAIL, GOTOJAIL, FREE }
 
     private enum BarSide { TOP, BOTTOM, LEFT, RIGHT, NONE }
 
-    /** Lightweight render descriptor for a single board tile. */
+
     private static class TileDef {
         final Kind kind;
         final String label;
@@ -725,8 +720,8 @@ public class BoardView extends JFrame {
         }
     }
 
-    /** Renders one tile: white card (or green Chance), an optional group accent bar and a label. */
-    private class TilePanel extends JPanel {
+
+    private static class TilePanel extends JPanel {
         private final TileDef def;
 
         TilePanel(TileDef def) {
@@ -840,7 +835,7 @@ public class BoardView extends JFrame {
         }
     }
 
-    /** Dark rounded frame drawn behind the tile ring. */
+
     private static class BoardFrame extends JPanel {
         BoardFrame() {
             setOpaque(false);
@@ -859,15 +854,15 @@ public class BoardView extends JFrame {
         }
     }
 
-    // ============================================================ Helpers =====================
+
 
     private static Font font(int style, int size) {
         return new Font(FONT_FAMILY, style, size);
     }
 
-    // ============================================================ Reusable components ==========
 
-    /** Panel with an anti-aliased rounded-rectangle background. */
+
+
     private static class RoundedPanel extends JPanel {
         private final Color color;
         private final int arc;
@@ -889,7 +884,7 @@ public class BoardView extends JFrame {
         }
     }
 
-    /** Flat, rounded (optionally pill-shaped) button with optional border. */
+
     private static class RoundedButton extends JButton {
         private final Color bg;
         private final Color border;
@@ -926,9 +921,9 @@ public class BoardView extends JFrame {
         }
     }
 
-    // ============================================================ Vector iconography ==========
 
-    /** Small monochrome line/solid icons drawn with Graphics2D. */
+
+
     private static class BoardIcon implements Icon {
         enum Type {
             HISTORY, GEAR, NAV_BOARD, NAV_TRADE, NAV_PORTFOLIO, NAV_AUCTION,
@@ -1019,13 +1014,13 @@ public class BoardView extends JFrame {
         private void paintGear(Graphics2D g2, double s) {
             double cx = s * 0.5;
             double cy = s * 0.5;
-            double rOuter = s * 0.42;
-            double rInner = s * 0.30;
+            double outerRadius = s * 0.42;
+            double innerRadius = s * 0.30;
             GeneralPath gear = new GeneralPath();
             int teeth = 8;
             for (int i = 0; i < teeth * 2; i++) {
                 double ang = Math.PI * i / teeth;
-                double r = (i % 2 == 0) ? rOuter : rInner;
+                double r = (i % 2 == 0) ? outerRadius : innerRadius;
                 double px = cx + Math.cos(ang) * r;
                 double py = cy + Math.sin(ang) * r;
                 if (i == 0) {
@@ -1155,29 +1150,44 @@ public class BoardView extends JFrame {
         }
     }
 
-    // ============================================================ Accessors ===================
 
+
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getBoardNav() {
         return boardNav;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getTradeNav() {
         return tradeNav;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getPortfolioNav() {
         return portfolioNav;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getEndTurnButton() {
         return endTurnButton;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getRollDiceButton() {
         return rollDiceButton;
     }
 
-    /** Builds the standard 32-tile board layout used by every game. */
+
     private static Board standardBoard() {
         java.util.List<Tile> tiles = new java.util.ArrayList<>();
         for (int i = 0; i < Constants.BOARD_SIZE; i++) {
@@ -1201,9 +1211,9 @@ public class BoardView extends JFrame {
         return new Board(tiles);
     }
 
-    /**
-     * Builds a started {@link GameEngine} on the standard board with every player placed on GO.
-     */
+
+
+
     private static GameEngine buildEngine(List<Player> players) {
         Board board = standardBoard();
         for (Player p : players) {
@@ -1216,22 +1226,22 @@ public class BoardView extends JFrame {
         return engine;
     }
 
-    /**
-     * Creates the in-game board screen for the supplied players, wires it to a fresh
-     * {@link GameController}, performs the initial render and shows the window.
-     *
-     * @return the visible {@link BoardView}
-     */
+
+
+
+
+
+
     public static BoardView launch(List<Player> players) {
         return launch(players, null);
     }
 
-    /**
-     * As {@link #launch(List)} but also assigns each player the token image (by matching index)
-     * that they selected in the main menu. A {@code null} list falls back to numbered dots.
-     *
-     * @return the visible {@link BoardView}
-     */
+
+
+
+
+
+
     public static BoardView launch(List<Player> players, List<ImageIcon> tokenIcons) {
         GameEngine engine = buildEngine(players);
         BoardView view = new BoardView(engine);
@@ -1254,7 +1264,7 @@ public class BoardView extends JFrame {
         return view;
     }
 
-    /** Maps each player to their chosen token artwork (index-aligned with {@code players}). */
+
     private void assignTokens(List<Player> players, List<ImageIcon> tokenIcons) {
         if (tokenIcons == null) {
             return;

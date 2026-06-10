@@ -1,6 +1,7 @@
 package view;
 
 import controller.MainMenuController;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import model.GameEngine;
 import model.Player;
 
@@ -829,20 +830,29 @@ public class MainMenuView extends JFrame {
 
     // ============================================================ Accessors ===================
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
     public JButton getNewGameButton() {
         return newGameButton;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
     public JButton getOptionsButton() {
         return optionsButton;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
     public JButton getRecordsButton() {
         return recordsButton;
     }
 
     public List<JTextField> getNameFields() {
-        return nameFields;
+        return new ArrayList<>(nameFields);
     }
 
     public static void main(String[] args) {

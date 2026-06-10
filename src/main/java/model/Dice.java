@@ -1,5 +1,7 @@
 package model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.Random;
 
 public class Dice {
@@ -9,6 +11,9 @@ public class Dice {
     private int dieTwo;
 
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Dice keeps the injected Random so tests and controllers can control randomness.")
     public Dice(Random rand) {
         this.rand = rand;
     }
