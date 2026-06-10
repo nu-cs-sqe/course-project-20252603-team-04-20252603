@@ -119,7 +119,7 @@ public class MainMenuView extends JFrame {
         nav.setBorder(new EmptyBorder(0, 24, 0, 24));
         nav.setPreferredSize(new Dimension(0, 64));
 
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 14));
         left.setOpaque(false);
         left.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 32)));
         JLabel brand = new JLabel(LocalizationManager.getMessage("app.title"));
