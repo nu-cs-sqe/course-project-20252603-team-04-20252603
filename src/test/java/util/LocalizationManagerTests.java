@@ -28,4 +28,13 @@ public class LocalizationManagerTests {
         assertEquals(Locale.ENGLISH, actual);
     }
 
+    @Test
+    public void setLocale_WithSpanishLocale_SetsLocaleToSpanish() {
+        LocalizationManager.setLocale(LocalizationManager.SPANISH);
+
+        Locale actual = LocalizationManager.getLocale();
+
+        assertEquals(LocalizationManager.SPANISH, actual);
+    }
+
 }

@@ -11,7 +11,7 @@
     - **State of the system**: locale = `Locale.ENGLISH`
     - **Expected output**: `getLocale()` returns `Locale.ENGLISH`
 
-- **TC3: setLocale_WithSpanishLocale_SetsLocaleToSpanish**
+- **TC3: setLocale_WithSpanishLocale_SetsLocaleToSpanish** ( :white_check_mark: )
     - **State of the system**: locale = Spanish locale
     - **Expected output**: `getLocale()` returns Spanish locale
 
