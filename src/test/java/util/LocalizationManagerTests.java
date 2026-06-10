@@ -68,4 +68,13 @@ public class LocalizationManagerTests {
         assertThrows(UnsupportedOperationException.class, () -> supportedLocales.add(Locale.FRENCH));
     }
 
+    @Test
+    public void getMessage_WithEnglishLocaleAndTitleKey_ReturnsEnglishTitle() {
+        LocalizationManager.setLocale(Locale.ENGLISH);
+
+        String actual = LocalizationManager.getMessage("mainMenu.title");
+
+        assertEquals("Monopoly", actual);
+    }
+
 }

@@ -41,7 +41,7 @@
 2. Input: key category, Output: localized string or exception
 3. Input values: valid title key, missing key, null key
 
-- **TC8: getMessage_WithEnglishLocaleAndTitleKey_ReturnsEnglishTitle**
+- **TC8: getMessage_WithEnglishLocaleAndTitleKey_ReturnsEnglishTitle** ( :white_check_mark: )
     - **State of the system**: active locale = English, key = `mainMenu.title`
     - **Expected output**: returns `Monopoly`
 
