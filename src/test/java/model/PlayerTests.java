@@ -331,7 +331,8 @@ public class PlayerTests {
         
         assertTrue(success, "Sending player to valid jail position should be successful");
         assertTrue(player.inJail(), "Player should be marked as in jail");
-        assertEquals(10, player.getPosition(), "Player position should be set to 10 (the jail tile)");
+        assertEquals(Constants.JAIL_POSITION, player.getPosition(),
+                "Player position should be set to the jail tile");
     }
 
     @Test

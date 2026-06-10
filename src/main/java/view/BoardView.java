@@ -427,6 +427,7 @@ public class BoardView extends JFrame {
      * Maps a board tile index (0-31) to its pixel centre within {@link BoardStage}.
      * Ring bounds within the stage: x=74, y=70, w=572, h=532.
      * Index layout: 0-8 top row, 9-15 right col, 16-24 bottom row, 25-31 left col.
+     * Bottom and left edges are reversed so increasing indices follow the board perimeter.
      */
     private java.awt.Point tileCenter(int tileIndex) {
         int ringX = 74, ringY = 70, ringW = 572, ringH = 532;
@@ -442,9 +443,9 @@ public class BoardView extends JFrame {
             col = 8;
         } else if (tileIndex <= 24) {
             row = 8;
-            col = tileIndex - 16;
+            col = 24 - tileIndex;
         } else {
-            row = tileIndex - 24;
+            row = 32 - tileIndex;
             col = 0;
         }
         int x = ringX + (int) (col * cellW + cellW / 2);
@@ -558,9 +559,8 @@ public class BoardView extends JFrame {
     /** Builds the 9x9 grid with the 32 perimeter tiles populated (interior left null). */
     private TileDef[][] buildGrid() {
         TileDef[][] g = new TileDef[SIDE][SIDE];
-        int boardSize = gameEngine.getBoardSize();
-        
-        // Map tile indices to board positions: 0-8 (top), 9-16 (right), 17-25 (bottom), 26-31 (left)
+        // Map tile indices to board positions: 0-8 (top), 9-15 (right),
+        // 16-24 (bottom, right to left), 25-31 (left, bottom to top).
         // Top edge (row 0), left to right; accent bar faces inward (bottom).
         TileDef[] top = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
@@ -579,23 +579,23 @@ public class BoardView extends JFrame {
             g[i + 1][SIDE - 1] = right[i];
         }
 
-        // Bottom edge (row 8), left to right; bar faces inward (top).
+        // Bottom edge (row 8), right to left; bar faces inward (top).
         TileDef[] bottom = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
             bottom[col] = tileToTileDef(gameEngine.getTile(16 + col), BarSide.TOP);
         }
         for (int col = 0; col < SIDE; col++) {
-            g[SIDE - 1][col] = bottom[col];
+            g[SIDE - 1][SIDE - 1 - col] = bottom[col];
         }
 
-        // Left edge (col 0), rows 1..7; bar faces inward (right).
+        // Left edge (col 0), rows 7..1; bar faces inward (right).
         TileDef[] left = new TileDef[7];
         for (int i = 0; i < 7; i++) {
             left[i] = tileToTileDef(gameEngine.getTile(25 + i), BarSide.RIGHT);
         }
         for (int i = 0; i < left.length; i++) {
             left[i].bar = BarSide.RIGHT;
-            g[i + 1][0] = left[i];
+            g[SIDE - 2 - i][0] = left[i];
         }
 
         return g;
@@ -614,7 +614,7 @@ public class BoardView extends JFrame {
         } else if (tile instanceof IRSTile) {
             return TileDef.irs();
         } else if (tile instanceof GoTile) {
-            return TileDef.corner(Kind.CHANCE);
+            return TileDef.corner(Kind.GO);
         } else if (tile instanceof GoToJailTile) {
             return TileDef.corner(Kind.GOTOJAIL);
         } else if (tile instanceof JailTile) {
@@ -691,7 +691,7 @@ public class BoardView extends JFrame {
 
     // ============================================================ Tile model ==================
 
-    private enum Kind { PROPERTY, IRS, CHANCE, JAIL, GOTOJAIL, FREE }
+    private enum Kind { PROPERTY, IRS, CHANCE, GO, JAIL, GOTOJAIL, FREE }
 
     private enum BarSide { TOP, BOTTOM, LEFT, RIGHT, NONE }
 
@@ -766,8 +766,26 @@ public class BoardView extends JFrame {
                     q.setForeground(PRIMARY);
                     add(q);
                     break;
+                case GO:
+                    JLabel go = new JLabel("GO", SwingConstants.CENTER);
+                    go.setFont(font(Font.BOLD, 15));
+                    go.setForeground(PRIMARY);
+                    add(go);
+                    break;
                 case JAIL:
-                    add(new JLabel(new BoardIcon(BoardIcon.Type.LOCK, 22, INK)));
+                    JPanel jail = new JPanel();
+                    jail.setOpaque(false);
+                    jail.setLayout(new BoxLayout(jail, BoxLayout.Y_AXIS));
+                    JLabel lock = new JLabel(new BoardIcon(BoardIcon.Type.LOCK, 18, INK));
+                    lock.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    JLabel jailLabel = new JLabel("JAIL");
+                    jailLabel.setFont(font(Font.BOLD, 10));
+                    jailLabel.setForeground(INK);
+                    jailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    jail.add(lock);
+                    jail.add(Box.createVerticalStrut(2));
+                    jail.add(jailLabel);
+                    add(jail);
                     break;
                 case GOTOJAIL:
                     add(new JLabel(new BoardIcon(BoardIcon.Type.GOTOJAIL, 22,
@@ -1165,7 +1183,7 @@ public class BoardView extends JFrame {
         for (int i = 0; i < Constants.BOARD_SIZE; i++) {
             if (i == 0) {
                 tiles.add(new GoTile());
-            } else if (i == 8) {
+            } else if (i == Constants.JAIL_POSITION) {
                 tiles.add(new JailTile());
             } else if (i == 16) {
                 tiles.add(new FreeParking());
