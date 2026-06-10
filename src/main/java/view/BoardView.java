@@ -492,7 +492,7 @@ public class BoardView extends JFrame {
 
         TileDef[] top = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM);
+            top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM, col);
         }
         for (int col = 0; col < SIDE; col++) {
             g[0][col] = top[col];
@@ -501,7 +501,8 @@ public class BoardView extends JFrame {
 
         TileDef[] right = new TileDef[7];
         for (int i = 0; i < 7; i++) {
-            right[i] = tileToTileDef(gameEngine.getTile(9 + i), BarSide.LEFT);
+            int boardIndex = 9 + i;
+            right[i] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.LEFT, boardIndex);
         }
         for (int i = 0; i < right.length; i++) {
             g[i + 1][SIDE - 1] = right[i];
@@ -510,7 +511,8 @@ public class BoardView extends JFrame {
 
         TileDef[] bottom = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            bottom[col] = tileToTileDef(gameEngine.getTile(16 + col), BarSide.TOP);
+            int boardIndex = 16 + col;
+            bottom[col] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.TOP, boardIndex);
         }
         for (int col = 0; col < SIDE; col++) {
             g[SIDE - 1][SIDE - 1 - col] = bottom[col];
@@ -519,7 +521,8 @@ public class BoardView extends JFrame {
 
         TileDef[] left = new TileDef[7];
         for (int i = 0; i < 7; i++) {
-            left[i] = tileToTileDef(gameEngine.getTile(25 + i), BarSide.RIGHT);
+            int boardIndex = 25 + i;
+            left[i] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.RIGHT, boardIndex);
         }
         for (int i = 0; i < left.length; i++) {
             left[i].bar = BarSide.RIGHT;
@@ -529,10 +532,10 @@ public class BoardView extends JFrame {
         return g;
     }
 
-    private TileDef tileToTileDef(Tile tile, BarSide bar) {
+    private TileDef tileToTileDef(Tile tile, BarSide bar, int boardIndex) {
         if (tile instanceof Property) {
             Property prop = (Property) tile;
-            String label = LocalizationManager.formatMessage("board.propertyLabel", (int) prop.getPrice());
+            String label = LocalizationManager.formatMessage("board.propertyLabel", boardIndex);
             Color group = getPropertyGroupColor((int) prop.getPrice());
             TileDef def = TileDef.property(label, group);
             def.bar = bar;
