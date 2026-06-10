@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocalizationManagerTests {
@@ -44,6 +45,11 @@ public class LocalizationManagerTests {
         Locale actual = LocalizationManager.getLocale();
 
         assertEquals(Locale.ENGLISH, actual);
+    }
+
+    @Test
+    public void setLocale_WithNullLocale_ThrowsException() {
+        assertThrows(NullPointerException.class, () -> LocalizationManager.setLocale(null));
     }
 
 }

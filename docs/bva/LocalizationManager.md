@@ -19,7 +19,7 @@
     - **State of the system**: locale = unsupported locale
     - **Expected output**: `getLocale()` returns `Locale.ENGLISH`
 
-- **TC5: setLocale_WithNullLocale_ThrowsException**
+- **TC5: setLocale_WithNullLocale_ThrowsException** ( :white_check_mark: )
     - **State of the system**: locale = `null`
     - **Expected output**: throws `NullPointerException`
 
