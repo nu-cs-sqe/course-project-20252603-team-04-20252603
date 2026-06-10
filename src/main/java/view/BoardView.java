@@ -1,11 +1,16 @@
 package view;
 
+import controller.GameController;
+import model.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * In-game 9x9 board screen for the Emerald Estate edition.
@@ -51,8 +56,15 @@ public class BoardView extends JFrame {
     private JButton auctionNav;
     private JButton endTurnButton;
     private JButton rollDiceButton;
+    private GameEngine gameEngine;
+    private GameController gameController;
+    private BoardStage boardStage;
+    private Map<Player, Color> playerColors;
 
-    public BoardView() {
+    public BoardView(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
+        this.playerColors = new HashMap<>();
+        
         setTitle("Emerald Estate - Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 860);
@@ -65,6 +77,43 @@ public class BoardView extends JFrame {
         root.add(createSidebar(), BorderLayout.WEST);
         root.add(createBoardArea(), BorderLayout.CENTER);
         setContentPane(root);
+    }
+
+    public void setController(GameController controller) {
+        this.gameController = controller;
+        if (rollDiceButton != null) {
+            rollDiceButton.addActionListener(e -> gameController.handleRollDice());
+        }
+        if (endTurnButton != null) {
+            endTurnButton.addActionListener(e -> gameController.handleEndTurn());
+        }
+    }
+
+    public void refresh() {
+        List<Player> activePlayers = gameEngine.getActivePlayers();
+        initializePlayerColors(activePlayers);
+        if (boardStage != null) {
+            boardStage.refreshPills();
+            boardStage.repaintTokens();
+        }
+    }
+
+    public void updatePlayerPosition(Player player, int position) {
+        if (boardStage != null) {
+            boardStage.repaintTokens();
+        }
+    }
+
+    private void initializePlayerColors(List<Player> players) {
+        Color[] colors = {
+                new Color(0xE5, 0x3E, 0x3E),    // Red
+                new Color(0x3B, 0x82, 0xF6),    // Blue
+                new Color(0xF5, 0xB0, 0x36),    // Orange
+                new Color(0x10, 0xB9, 0x81)     // Green
+        };
+        for (int i = 0; i < players.size(); i++) {
+            playerColors.put(players.get(i), colors[i % colors.length]);
+        }
     }
 
     // ============================================================ Top bar =====================
@@ -211,14 +260,17 @@ public class BoardView extends JFrame {
         JPanel area = new JPanel(new GridBagLayout());
         area.setBackground(BG);
 
-        BoardStage stage = new BoardStage();
-        stage.setPreferredSize(new Dimension(740, 660));
-        area.add(stage, new GridBagConstraints());
+        boardStage = new BoardStage();
+        boardStage.setPreferredSize(new Dimension(740, 660));
+        area.add(boardStage, new GridBagConstraints());
         return area;
     }
 
     /** Fixed-size layered stage: dark board frame, the tile ring, centre card and floating chrome. */
     private class BoardStage extends JLayeredPane {
+
+        private JPanel pillsContainer;
+        private TokenOverlay tokenOverlay;
 
         BoardStage() {
             setLayout(null);
@@ -231,41 +283,63 @@ public class BoardView extends JFrame {
             ring.setBounds(74, 70, 572, 532);
             add(ring, Integer.valueOf(1));
 
-            JPanel pills = createPlayerPills();
-            pills.setBounds(456, 4, 250, 90);
-            add(pills, Integer.valueOf(2));
+            refreshPills();
 
-            JLabel freeParking = new JLabel("FREE PARKING");
-            freeParking.setFont(font(Font.BOLD, 9));
-            freeParking.setForeground(MUTED);
-            freeParking.setHorizontalAlignment(SwingConstants.CENTER);
-            JPanel freeChip = new RoundedPanel(NAV_BG, 12);
-            freeChip.setLayout(new GridBagLayout());
-            freeChip.add(freeParking);
-            freeChip.setBounds(540, 480, 96, 26);
-            add(freeChip, Integer.valueOf(3));
-
+            // Dice + Roll button live inside the hollow centre (cols 1-7, rows 1-7) so they never
+            // overlap the tile ring. Hollow centre spans roughly x=138..582, y=129..543.
             JPanel dice = createDiceCluster();
-            dice.setBounds(548, 502, 150, 64);
+            dice.setBounds(285, 430, 150, 64);
             add(dice, Integer.valueOf(3));
 
             rollDiceButton = new RoundedButton("Roll Dice", EMERALD, Color.WHITE, 24, null);
             rollDiceButton.setIcon(new BoardIcon(BoardIcon.Type.DIE, 18, Color.WHITE));
             rollDiceButton.setIconTextGap(8);
             rollDiceButton.setFont(font(Font.BOLD, 16));
-            rollDiceButton.setBounds(556, 574, 150, 48);
+            rollDiceButton.setBounds(265, 498, 190, 44);
             add(rollDiceButton, Integer.valueOf(3));
-        }
-    }
 
-    private JPanel createPlayerPills() {
-        JPanel col = new JPanel();
-        col.setLayout(new BoxLayout(col, BoxLayout.Y_AXIS));
-        col.setOpaque(false);
-        col.add(createPlayerPill(new Color(0xE5, 0x3E, 0x3E), "P2: $1,240", "IN JAIL"));
-        col.add(Box.createVerticalStrut(8));
-        col.add(createPlayerPill(new Color(0x3B, 0x82, 0xF6), "P3: $890", null));
-        return col;
+            tokenOverlay = new TokenOverlay();
+            tokenOverlay.setBounds(0, 0, 740, 660);
+            add(tokenOverlay, Integer.valueOf(10));
+        }
+
+        void refreshPills() {
+            if (pillsContainer != null) {
+                remove(pillsContainer);
+            }
+            pillsContainer = new JPanel();
+            pillsContainer.setLayout(new BoxLayout(pillsContainer, BoxLayout.Y_AXIS));
+            pillsContainer.setOpaque(false);
+
+            List<Player> players = gameEngine.getActivePlayers();
+            Player current = gameEngine.getCurrentPlayer();
+            boolean first = true;
+            for (Player p : players) {
+                if (p.equals(current)) {
+                    continue;
+                }
+                if (!first) {
+                    pillsContainer.add(Box.createVerticalStrut(8));
+                }
+                Color c = playerColors.getOrDefault(p, MUTED);
+                String text = p.getName() + ": $" + (int) p.getBalance();
+                pillsContainer.add(createPlayerPill(c, text, null));
+                first = false;
+            }
+
+            int nonCurrentCount = Math.max(0, players.size() - 1);
+            int pillsHeight = nonCurrentCount * 36 + Math.max(0, nonCurrentCount - 1) * 8;
+            pillsContainer.setBounds(456, 4, 250, Math.max(36, pillsHeight));
+            add(pillsContainer, Integer.valueOf(2));
+            revalidate();
+            repaint();
+        }
+
+        void repaintTokens() {
+            if (tokenOverlay != null) {
+                tokenOverlay.repaint();
+            }
+        }
     }
 
     private JComponent createPlayerPill(Color dot, String text, String tag) {
@@ -296,6 +370,84 @@ public class BoardView extends JFrame {
         cluster.add(new JLabel(new BoardIcon(BoardIcon.Type.DIE_FACE, 52, INK)));
         cluster.add(new JLabel(new BoardIcon(BoardIcon.Type.DIE_DARK, 52, INK)));
         return cluster;
+    }
+
+    /**
+     * Maps a board tile index (0-31) to its pixel centre within {@link BoardStage}.
+     * Ring bounds within the stage: x=74, y=70, w=572, h=532.
+     * Index layout: 0-8 top row, 9-15 right col, 16-24 bottom row, 25-31 left col.
+     */
+    private java.awt.Point tileCenter(int tileIndex) {
+        int ringX = 74, ringY = 70, ringW = 572, ringH = 532;
+        double cellW = (double) ringW / SIDE;
+        double cellH = (double) ringH / SIDE;
+        int row;
+        int col;
+        if (tileIndex <= 8) {
+            row = 0;
+            col = tileIndex;
+        } else if (tileIndex <= 15) {
+            row = tileIndex - 8;
+            col = 8;
+        } else if (tileIndex <= 24) {
+            row = 8;
+            col = tileIndex - 16;
+        } else {
+            row = tileIndex - 24;
+            col = 0;
+        }
+        int x = ringX + (int) (col * cellW + cellW / 2);
+        int y = ringY + (int) (row * cellH + cellH / 2);
+        return new java.awt.Point(x, y);
+    }
+
+    /** Transparent overlay drawn at the top of {@link BoardStage} to paint player tokens. */
+    private class TokenOverlay extends JPanel {
+
+        TokenOverlay() {
+            setOpaque(false);
+            setLayout(null);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (playerColors.isEmpty()) {
+                return;
+            }
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            List<Player> players = gameEngine.getActivePlayers();
+            for (int i = 0; i < players.size(); i++) {
+                Player p = players.get(i);
+                Color c = playerColors.get(p);
+                if (c == null) {
+                    continue;
+                }
+                int pos;
+                try {
+                    pos = gameEngine.getPlayerPosition(p);
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+                java.awt.Point centre = tileCenter(pos);
+                // stagger up to 4 tokens on the same tile in a 2×2 grid
+                int dx = (i % 2) * 14 - 7;
+                int dy = (i / 2) * 14 - 7;
+                int r = 10;
+                g2.setColor(c);
+                g2.fillOval(centre.x + dx - r, centre.y + dy - r, r * 2, r * 2);
+                g2.setColor(Color.WHITE);
+                g2.setFont(font(Font.BOLD, 10));
+                String label = String.valueOf(i + 1);
+                FontMetrics fm = g2.getFontMetrics();
+                g2.drawString(label,
+                        centre.x + dx - fm.stringWidth(label) / 2,
+                        centre.y + dy + fm.getAscent() / 2 - 1);
+            }
+            g2.dispose();
+        }
     }
 
     // ------------------------------------------------------------ Tile ring -------------------
@@ -342,44 +494,41 @@ public class BoardView extends JFrame {
     /** Builds the 9x9 grid with the 32 perimeter tiles populated (interior left null). */
     private TileDef[][] buildGrid() {
         TileDef[][] g = new TileDef[SIDE][SIDE];
-
+        int boardSize = gameEngine.getBoardSize();
+        
+        // Map tile indices to board positions: 0-8 (top), 9-16 (right), 17-25 (bottom), 26-31 (left)
         // Top edge (row 0), left to right; accent bar faces inward (bottom).
-        TileDef[] top = {
-                TileDef.corner(Kind.CHANCE), prop(120, G_RED), prop(300, G_DARK),
-                TileDef.chanceTile(), prop(250, G_BLUE), prop(120, G_RED),
-                prop(250, G_BLUE), prop(140, G_BLUE), TileDef.corner(Kind.GOTOJAIL)
-        };
+        TileDef[] top = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            top[col].bar = BarSide.BOTTOM;
+            top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM);
+        }
+        for (int col = 0; col < SIDE; col++) {
             g[0][col] = top[col];
         }
 
         // Right edge (col 8), rows 1..7; bar faces inward (left).
-        TileDef[] right = {
-                prop(200, G_GREEN), TileDef.chanceTile(), prop(180, G_GREEN),
-                prop(180, G_GREEN), TileDef.irs(), prop(160, G_GREEN), prop(160, G_GREEN)
-        };
+        TileDef[] right = new TileDef[7];
+        for (int i = 0; i < 7; i++) {
+            right[i] = tileToTileDef(gameEngine.getTile(9 + i), BarSide.LEFT);
+        }
         for (int i = 0; i < right.length; i++) {
-            right[i].bar = BarSide.LEFT;
             g[i + 1][SIDE - 1] = right[i];
         }
 
         // Bottom edge (row 8), left to right; bar faces inward (top).
-        TileDef[] bottom = {
-                TileDef.corner(Kind.JAIL), prop(100, G_STEEL), prop(80, G_MINT),
-                prop(80, G_MINT), TileDef.chanceTile(), prop(60, G_GREEN),
-                TileDef.irs(), prop(60, G_GREEN), TileDef.corner(Kind.FREE)
-        };
+        TileDef[] bottom = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            bottom[col].bar = BarSide.TOP;
+            bottom[col] = tileToTileDef(gameEngine.getTile(16 + col), BarSide.TOP);
+        }
+        for (int col = 0; col < SIDE; col++) {
             g[SIDE - 1][col] = bottom[col];
         }
 
         // Left edge (col 0), rows 1..7; bar faces inward (right).
-        TileDef[] left = {
-                prop(120, G_RED), prop(350, G_SLATE), TileDef.irs(), prop(400, G_GREEN),
-                TileDef.irs(), prop(120, G_RED), TileDef.irs()
-        };
+        TileDef[] left = new TileDef[7];
+        for (int i = 0; i < 7; i++) {
+            left[i] = tileToTileDef(gameEngine.getTile(25 + i), BarSide.RIGHT);
+        }
         for (int i = 0; i < left.length; i++) {
             left[i].bar = BarSide.RIGHT;
             g[i + 1][0] = left[i];
@@ -388,8 +537,40 @@ public class BoardView extends JFrame {
         return g;
     }
 
-    private static TileDef prop(int price, Color group) {
-        return TileDef.property("P " + price, group);
+    private TileDef tileToTileDef(Tile tile, BarSide bar) {
+        if (tile instanceof Property) {
+            Property prop = (Property) tile;
+            String label = "P " + (int) prop.getPrice();
+            Color group = getPropertyGroupColor((int) prop.getPrice());
+            TileDef def = TileDef.property(label, group);
+            def.bar = bar;
+            return def;
+        } else if (tile instanceof ChanceTile) {
+            return TileDef.chanceTile();
+        } else if (tile instanceof IRSTile) {
+            return TileDef.irs();
+        } else if (tile instanceof GoTile) {
+            return TileDef.corner(Kind.CHANCE);
+        } else if (tile instanceof GoToJailTile) {
+            return TileDef.corner(Kind.GOTOJAIL);
+        } else if (tile instanceof JailTile) {
+            return TileDef.corner(Kind.JAIL);
+        } else if (tile instanceof FreeParking) {
+            return TileDef.corner(Kind.FREE);
+        }
+        return TileDef.property("?", NAV_BG);
+    }
+
+    private Color getPropertyGroupColor(int price) {
+        // Hardcoded color mapping based on price ranges (typical Monopoly groups)
+        if (price >= 320) return G_DARK;          // Dark blue
+        if (price >= 260) return G_BLUE;          // Light blue
+        if (price >= 200) return G_RED;           // Red
+        if (price >= 180) return G_SLATE;         // Purple
+        if (price >= 140) return G_GREEN;         // Green
+        if (price >= 100) return G_MINT;          // Yellow
+        if (price >= 80) return G_RED;            // Orange/Red
+        return G_STEEL;                           // Brown/Tan
     }
 
     // ------------------------------------------------------------ Centre overlay --------------
@@ -529,7 +710,11 @@ public class BoardView extends JFrame {
                             new Color(0xE5, 0x3E, 0x3E))));
                     break;
                 case FREE:
-                    // The "Free Parking" chip is floated by the stage; corner stays empty.
+                    JLabel free = new JLabel("<html><div style='text-align:center'>FREE<br>PARKING</div></html>",
+                            SwingConstants.CENTER);
+                    free.setFont(font(Font.BOLD, 9));
+                    free.setForeground(MUTED);
+                    add(free);
                     break;
                 default:
                     break;
@@ -914,7 +1099,60 @@ public class BoardView extends JFrame {
         return rollDiceButton;
     }
 
+    /**
+     * Builds a throwaway 32-tile engine so the board can be previewed standalone via {@code main}.
+     * Corners (indices 0, 8, 16, 24) get the special tiles; the rest are Chance / IRS / Property.
+     */
+    private static GameEngine previewEngine() {
+        java.util.List<Tile> tiles = new java.util.ArrayList<>();
+        for (int i = 0; i < 32; i++) {
+            if (i == 0) {
+                tiles.add(new GoTile());
+            } else if (i == 8) {
+                tiles.add(new JailTile());
+            } else if (i == 16) {
+                tiles.add(new FreeParking());
+            } else if (i == 24) {
+                tiles.add(new GoToJailTile());
+            } else if (i % 7 == 0) {
+                tiles.add(new ChanceTile());
+            } else if (i % 9 == 0) {
+                tiles.add(new IRSTile());
+            } else {
+                double price = 60 + (i * 20);
+                tiles.add(new Property("Estate " + i, price, price / 10));
+            }
+        }
+        Board board = new Board(tiles);
+        java.util.List<Player> players = new java.util.ArrayList<>();
+        players.add(new Player("Player 1", 1500));
+        players.add(new Player("Player 2", 1500));
+        for (Player p : players) {
+            board.setPlayerPosition(p, 0);
+        }
+        return new GameEngine(players, board);
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BoardView().setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                GameEngine engine = previewEngine();
+                BoardView view = new BoardView(engine);
+
+                GameController controller = new GameController(
+                        engine, view,
+                        new PlayerInfoView(), new DiceView(), new CardView(),
+                        new Dice(new java.util.Random()));
+                view.setController(controller);
+
+                engine.startGame();
+                controller.refreshViews();
+
+                view.setVisible(true);
+            } catch (Exception e) {
+                System.err.println("Error: failed to launch BoardView preview");
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -9,7 +9,7 @@ public class Dice {
     private int dieTwo;
 
 
-    Dice(Random rand) {
+    public Dice(Random rand) {
         this.rand = rand;
     }
 
