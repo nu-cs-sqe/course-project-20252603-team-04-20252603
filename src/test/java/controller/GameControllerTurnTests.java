@@ -379,7 +379,7 @@ public class GameControllerTurnTests {
     }
 
     @Test
-    public void TC54_playTurn_WhenCurrentPlayerBankrupt_DoesNothing() {
+    public void TC54_playTurn_WhenCurrentPlayerBankrupt_RemovesPlayerAndRefreshes() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -390,6 +390,9 @@ public class GameControllerTurnTests {
 
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
         EasyMock.expect(player.isBankrupt()).andReturn(true);
+        gameEngine.removeBankruptPlayer(player);
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, player);
 

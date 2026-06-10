@@ -254,6 +254,7 @@ public class GameController {
     public void playTurn() {
         Player current = gameEngine.getCurrentPlayer();
         if (current.isBankrupt()) {
+            handleBankruptcy(current);
             return;
         }
         if (current.inJail()) {
