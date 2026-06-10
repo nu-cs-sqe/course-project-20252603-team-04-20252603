@@ -26,6 +26,7 @@ public final class LocalizationManager {
     }
 
     public static String getMessage(String key) {
+        Objects.requireNonNull(key, "Message key cannot be null");
         return messages.getString(key);
     }
 

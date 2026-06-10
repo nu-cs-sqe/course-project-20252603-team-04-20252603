@@ -53,7 +53,7 @@
     - **State of the system**: key is not in the resource bundle
     - **Expected output**: throws `MissingResourceException`
 
-- **TC11: getMessage_WithNullKey_ThrowsException**
+- **TC11: getMessage_WithNullKey_ThrowsException** ( :white_check_mark: )
     - **State of the system**: key = `null`
     - **Expected output**: throws `NullPointerException`
 

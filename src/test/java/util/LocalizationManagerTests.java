@@ -92,4 +92,9 @@ public class LocalizationManagerTests {
         assertThrows(MissingResourceException.class, () -> LocalizationManager.getMessage("missing.key"));
     }
 
+    @Test
+    public void getMessage_WithNullKey_ThrowsException() {
+        assertThrows(NullPointerException.class, () -> LocalizationManager.getMessage(null));
+    }
+
 }
