@@ -170,16 +170,19 @@ public class GameController {
     }
 
     private void resolveProperty(Player player, Property property) {
-        if (!property.isOwned()) {
-            offerPurchase(player, property);
+        if (property.isOwned()) {
+            refreshViews();
+            return;
+        }
+        double price = property.getPrice();
+        if (player.canAfford(price)) {
+            offerPurchase(player, property, price);
+        } else {
+            refreshViews();
         }
     }
 
-    private void offerPurchase(Player player, Property property) {
-        double price = property.getPrice();
-        if (!player.canAfford(price)) {
-            return;
-        }
+    private void offerPurchase(Player player, Property property, double price) {
         propertyPromptView.showProperty(property, player);
         propertyPromptView.setBuyListener(event ->
                 handleTileAction(new TileAction(TileActionType.OFFER_PURCHASE, player, property, null, price)));
