@@ -45,8 +45,6 @@ public class MainMenuView extends JFrame {
     private JPanel pillGroup;
     private JPanel assembleCard;
     private JButton newGameButton;
-    private JButton optionsButton;
-    private JButton recordsButton;
     private JComboBox<String> languageSelector;
 
     public MainMenuView() {
@@ -508,26 +506,7 @@ public class MainMenuView extends JFrame {
         trade.add(newGameButton);
         trade.add(Box.createVerticalGlue());
 
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
-        actions.setOpaque(false);
-        actions.setAlignmentX(Component.LEFT_ALIGNMENT);
-        actions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
-        optionsButton = new RoundedButton(
-                LocalizationManager.getMessage("mainMenu.optionsButton"),
-                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
-        optionsButton.setFont(font(Font.BOLD, 13));
-        optionsButton.setPreferredSize(new Dimension(110, 44));
-        recordsButton = new RoundedButton(
-                LocalizationManager.getMessage("mainMenu.recordsButton"),
-                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
-        recordsButton.setFont(font(Font.BOLD, 13));
-        recordsButton.setPreferredSize(new Dimension(110, 44));
-        actions.add(optionsButton);
-        actions.add(recordsButton);
-
         col.add(trade);
-        col.add(Box.createVerticalStrut(16));
-        col.add(actions);
         col.add(Box.createVerticalGlue());
         return col;
     }
@@ -872,20 +851,6 @@ public class MainMenuView extends JFrame {
             justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
     public JButton getNewGameButton() {
         return newGameButton;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getOptionsButton() {
-        return optionsButton;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getRecordsButton() {
-        return recordsButton;
     }
 
     public List<JTextField> getNameFields() {
