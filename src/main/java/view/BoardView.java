@@ -2,6 +2,7 @@ package view;
 
 import controller.GameController;
 import model.*;
+import util.Constants;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -1103,9 +1104,10 @@ public class BoardView extends JFrame {
      * Builds a throwaway 32-tile engine so the board can be previewed standalone via {@code main}.
      * Corners (indices 0, 8, 16, 24) get the special tiles; the rest are Chance / IRS / Property.
      */
-    private static GameEngine previewEngine() {
+    /** Builds the standard 32-tile board layout used by every game. */
+    private static Board standardBoard() {
         java.util.List<Tile> tiles = new java.util.ArrayList<>();
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < Constants.BOARD_SIZE; i++) {
             if (i == 0) {
                 tiles.add(new GoTile());
             } else if (i == 8) {
@@ -1123,14 +1125,50 @@ public class BoardView extends JFrame {
                 tiles.add(new Property("Estate " + i, price, price / 10));
             }
         }
-        Board board = new Board(tiles);
-        java.util.List<Player> players = new java.util.ArrayList<>();
-        players.add(new Player("Player 1", 1500));
-        players.add(new Player("Player 2", 1500));
+        return new Board(tiles);
+    }
+
+    /**
+     * Builds a started {@link GameEngine} on the standard board with every player placed on GO.
+     */
+    private static GameEngine buildEngine(List<Player> players) {
+        Board board = standardBoard();
         for (Player p : players) {
-            board.setPlayerPosition(p, 0);
+            board.setPlayerPosition(p, Constants.GO_POSITION);
         }
-        return new GameEngine(players, board);
+        GameEngine engine = new GameEngine(players, board);
+        if (engine.getStatus() != GameStatus.IN_PROGRESS) {
+            engine.startGame();
+        }
+        return engine;
+    }
+
+    /**
+     * Creates the in-game board screen for the supplied players, wires it to a fresh
+     * {@link GameController}, performs the initial render and shows the window.
+     *
+     * @return the visible {@link BoardView}
+     */
+    public static BoardView launch(List<Player> players) {
+        GameEngine engine = buildEngine(players);
+        BoardView view = new BoardView(engine);
+
+        GameController controller = new GameController(
+                engine, view,
+                new PlayerInfoView(), new DiceView(), new CardView(),
+                new Dice(new java.util.Random()));
+        view.setController(controller);
+
+        controller.refreshViews();
+        view.setVisible(true);
+        return view;
+    }
+
+    private static GameEngine previewEngine() {
+        List<Player> players = new java.util.ArrayList<>();
+        players.add(new Player("Player 1", Constants.STARTING_BALANCE));
+        players.add(new Player("Player 2", Constants.STARTING_BALANCE));
+        return buildEngine(players);
     }
 
     public static void main(String[] args) {
@@ -1145,9 +1183,7 @@ public class BoardView extends JFrame {
                         new Dice(new java.util.Random()));
                 view.setController(controller);
 
-                engine.startGame();
                 controller.refreshViews();
-
                 view.setVisible(true);
             } catch (Exception e) {
                 System.err.println("Error: failed to launch BoardView preview");

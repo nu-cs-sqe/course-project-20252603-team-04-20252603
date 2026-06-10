@@ -1,11 +1,16 @@
 package view;
 
+import controller.MainMenuController;
+import model.GameEngine;
+import model.Player;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +64,39 @@ public class MainMenuView extends JFrame {
         root.add(scroll, BorderLayout.CENTER);
 
         setContentPane(root);
+        wireActions();
+    }
+
+    /** Hooks the menu buttons to their behaviour. New Game drives the {@link MainMenuController}. */
+    private void wireActions() {
+        if (newGameButton != null) {
+            newGameButton.addActionListener(e -> handleNewGame());
+        }
+    }
+
+    /**
+     * Collects the entered player names, runs them through {@link MainMenuController} (validation +
+     * game start), then hands the players to {@link BoardView} and closes this menu.
+     */
+    private void handleNewGame() {
+        List<String> names = new ArrayList<>();
+        List<ImageIcon> icons = new ArrayList<>();
+        for (int i = 0; i < nameFields.size(); i++) {
+            String typed = nameFields.get(i).getText().trim();
+            names.add(typed.isEmpty() ? "Player " + (i + 1) : typed);
+            icons.add(new ImageIcon(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)));
+        }
+
+        try {
+            MainMenuController controller = new MainMenuController(names, icons);
+            GameEngine startedGame = controller.startNewGame();
+            List<Player> players = new ArrayList<>(startedGame.getActivePlayers());
+            BoardView.launch(players);
+            dispose();
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(),
+                    "Cannot start game", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     // ============================================================ Top navigation bar ==========
