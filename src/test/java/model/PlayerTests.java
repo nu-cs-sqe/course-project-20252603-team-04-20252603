@@ -512,4 +512,66 @@ public class PlayerTests {
         assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
 
+    // ==================================================================================================
+    // Test suite for incrementJailTurnCount method (TC37–TC40)
+    // ==================================================================================================
+
+    @Test
+    public void TC37_IncrementJailTurnCount_FromZero_IncrementsToOne() {
+        Player player = new Player("John", 100.0);
+
+        player.incrementJailTurnCount();
+
+        assertEquals(1, player.getJailTurnCount(),
+                "jailTurnCount should be 1 after incrementing from 0");
+        assertFalse(player.inJail(), "incrementJailTurnCount should not change inJail");
+        assertEquals(0, player.getPosition(),
+                "incrementJailTurnCount should not change position");
+    }
+
+
+    @Test
+    public void TC38_IncrementJailTurnCount_FromOne_IncrementsToTwo() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+
+        player.incrementJailTurnCount();
+
+        assertEquals(2, player.getJailTurnCount(),
+                "jailTurnCount should be 2 after incrementing from 1");
+        assertTrue(player.inJail(), "player should remain in jail");
+        assertEquals(Constants.JAIL_POSITION, player.getPosition(),
+                "position should remain unchanged");
+    }
+    @Test
+    public void TC39_IncrementJailTurnCount_FromTwo_IncrementsToMax() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+        player.incrementJailTurnCount();
+
+        player.incrementJailTurnCount();
+
+        assertEquals(Constants.MAX_JAIL_TURNS, player.getJailTurnCount(),
+                "jailTurnCount should reach MAX_JAIL_TURNS after incrementing from 2");
+        assertTrue(player.inJail(), "player should remain in jail");
+    }
+
+
+    @Test
+    public void TC40_IncrementJailTurnCount_AtMax_IncrementsPastMax() {
+        Player player = new Player("John", 100.0);
+        player.goToJail(Constants.JAIL_POSITION);
+        player.incrementJailTurnCount();
+        player.incrementJailTurnCount();
+
+        player.incrementJailTurnCount();
+
+        assertEquals(Constants.MAX_JAIL_TURNS + 1, player.getJailTurnCount(),
+                "incrementJailTurnCount has no cap and should increment past MAX_JAIL_TURNS");
+    }
+
+
+  
+
+
 }
