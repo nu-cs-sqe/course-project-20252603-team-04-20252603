@@ -907,4 +907,24 @@ public class GameControllerTurnTests {
                 propertyController, property, player);
     }
 
+    @Test
+    public void TC73_applyDrawnCard_WithNoActiveCard_RefreshesOnly() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.applyDrawnCard();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+    }
+
 }
