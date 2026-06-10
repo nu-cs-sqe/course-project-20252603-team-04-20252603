@@ -833,4 +833,42 @@ public class GameControllerTurnTests {
                 propertyController, bankruptcyView, property, player);
     }
 
+    @Test
+    public void TC71_resolveLanding_OnTaxForcedSaleThenRemoveFails_EliminatesPlayer() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        BankruptcyView bankruptcyView = EasyMock.createMock(BankruptcyView.class);
+        IRSTile tile = EasyMock.createMock(IRSTile.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(11);
+        EasyMock.expect(gameEngine.getTile(11)).andReturn(tile);
+        EasyMock.expect(player.remove(util.Constants.GO_BONUS)).andReturn(false).andReturn(false);
+        EasyMock.expect(propertyController.handleForcedSale(player, util.Constants.GO_BONUS))
+                .andReturn(true);
+        bankruptcyView.showPlayerEliminated(player);
+        EasyMock.expectLastCall().once();
+        gameEngine.removeBankruptPlayer(player);
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                propertyController, bankruptcyView, tile, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setPropertyController(propertyController);
+        controller.setBankruptcyView(bankruptcyView);
+        controller.resolveLanding();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                propertyController, bankruptcyView, tile, player);
+    }
+
 }
