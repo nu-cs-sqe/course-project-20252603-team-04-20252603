@@ -282,8 +282,7 @@ public class GameController {
 
     private void grantGoBonusIfPassed(Player current, int oldPosition) {
         int newPosition = gameEngine.getPlayerPosition(current);
-        boolean landedOnGo = newPosition == Constants.GO_POSITION;
-        if (gameEngine.didPassGo(oldPosition, newPosition) && !landedOnGo) {
+        if (gameEngine.didPassGo(oldPosition, newPosition)) {
             handleTileAction(new TileAction(
                     TileActionType.COLLECT_MONEY, current, null, null, Constants.GO_BONUS));
         }
