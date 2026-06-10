@@ -411,6 +411,20 @@ public class PlayerTests {
         assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
     }
 
+    @Test
+    public void Test_GoToJail_Position_Zero_Is_Valid() {
+        Player player = new Player("John", 100.0);
+
+        boolean success = player.goToJail(0);
+
+        assertTrue(success, "Position 0 is inside the board and should be accepted");
+        assertTrue(player.inJail(), "Player should be marked as in jail");
+        assertEquals(0, player.getPosition(), "Player position should be set to 0");
+        assertEquals(1, player.getJailTurnCount(), "Jail turn count should start at 1");
+    }
+
+
+
     // ==================================================================================================
     // Test suite for leaveJail method
     // ==================================================================================================
