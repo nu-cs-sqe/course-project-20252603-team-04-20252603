@@ -197,7 +197,11 @@ public class GameController {
 
     private void resolveProperty(Player player, Property property) {
         if (property.isOwned()) {
-            refreshViews();
+            if (property.isOwnedBy(player)) {
+                refreshViews();
+            } else {
+                handleTileAction(new TileAction(TileActionType.PAY_RENT, player, property, null, 0));
+            }
             return;
         }
         double price = property.getPrice();
