@@ -17,7 +17,12 @@ public final class LocalizationManager {
     }
 
     public static void setLocale(Locale locale) {
-        currentLocale = locale;
+        if (locale.getLanguage().equals(SPANISH.getLanguage())) {
+            currentLocale = SPANISH;
+            return;
+        }
+
+        currentLocale = ENGLISH;
     }
 
 }

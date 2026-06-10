@@ -15,7 +15,7 @@
     - **State of the system**: locale = Spanish locale
     - **Expected output**: `getLocale()` returns Spanish locale
 
-- **TC4: setLocale_WithUnsupportedLocale_FallsBackToEnglish**
+- **TC4: setLocale_WithUnsupportedLocale_FallsBackToEnglish** ( :white_check_mark: )
     - **State of the system**: locale = unsupported locale
     - **Expected output**: `getLocale()` returns `Locale.ENGLISH`
 

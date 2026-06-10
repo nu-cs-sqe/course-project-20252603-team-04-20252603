@@ -37,4 +37,13 @@ public class LocalizationManagerTests {
         assertEquals(LocalizationManager.SPANISH, actual);
     }
 
+    @Test
+    public void setLocale_WithUnsupportedLocale_FallsBackToEnglish() {
+        LocalizationManager.setLocale(Locale.FRENCH);
+
+        Locale actual = LocalizationManager.getLocale();
+
+        assertEquals(Locale.ENGLISH, actual);
+    }
+
 }
