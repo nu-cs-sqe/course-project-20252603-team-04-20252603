@@ -28,7 +28,6 @@ import java.util.List;
 
 public class GameControllerTurnTests {
 
-    /** Expects the minimal refreshViews() interaction (no active players, no active card). */
     private void expectRefreshViews(GameEngine gameEngine, BoardView boardView,
                                     PlayerInfoView playerInfoView, DiceView diceView, CardView cardView) {
         EasyMock.expect(gameEngine.getActivePlayers()).andReturn(List.of());
@@ -42,7 +41,6 @@ public class GameControllerTurnTests {
         EasyMock.expectLastCall().once();
     }
 
-    /** Expects refreshViews() when a card is active (cardView shows it instead of closing). */
     private void expectRefreshViewsWithCard(GameEngine gameEngine, BoardView boardView,
                                             PlayerInfoView playerInfoView, DiceView diceView,
                                             CardView cardView, Card card) {
