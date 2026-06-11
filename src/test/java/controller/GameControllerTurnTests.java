@@ -59,9 +59,9 @@ public class GameControllerTurnTests {
     public void TC46_resolveLanding_OnUnownedAffordableProperty_ShowsPurchasePrompt() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
         Property property = EasyMock.createMock(Property.class);
@@ -98,9 +98,9 @@ public class GameControllerTurnTests {
     public void TC47_resolveLanding_OnUnownedUnaffordableProperty_RefreshesWithoutPrompt() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
         Property property = EasyMock.createMock(Property.class);
@@ -130,9 +130,9 @@ public class GameControllerTurnTests {
     public void TC57_handleTileAction_WithPayRentAffordable_TransfersRent() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
         RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
@@ -162,9 +162,9 @@ public class GameControllerTurnTests {
     public void TC48_resolveLanding_OnPropertyOwnedByAnother_ChargesRent() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
         RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
@@ -419,9 +419,9 @@ public class GameControllerTurnTests {
     public void TC55_playTurn_WhenNotInJail_RollsMovesAndResolves() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         Tile tile = EasyMock.createMock(Tile.class);
         Player player = EasyMock.createMock(Player.class);
@@ -462,9 +462,9 @@ public class GameControllerTurnTests {
     public void TC56_playTurn_WhenPassesGoWithoutLanding_GrantsGoBonus() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         Tile tile = EasyMock.createMock(Tile.class);
         Player player = EasyMock.createMock(Player.class);
@@ -1012,14 +1012,14 @@ public class GameControllerTurnTests {
     public void TC74_resolveLanding_WhenBuyListenerRuns_PurchasesPropertyAndRefreshes() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
-        PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
+        final PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
-        Capture<ActionListener> buyListener = new Capture<>();
+        final Capture<ActionListener> buyListener = new Capture<>();
 
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
         EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(5);
@@ -1097,14 +1097,14 @@ public class GameControllerTurnTests {
     public void TC76_playTurn_WhenBuyListenerRuns_CompletesTurnAfterPurchase() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
-        PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
+        final PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
-        Capture<ActionListener> buyListener = new Capture<>();
+        final Capture<ActionListener> buyListener = new Capture<>();
 
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player).times(2);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
@@ -1345,14 +1345,14 @@ public class GameControllerTurnTests {
     public void TC82_finishAction_WhenTurnInProgressAndAwaitingDecision_RefreshesWithoutCompleting() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
-        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        final PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
         DiceView diceView = EasyMock.createMock(DiceView.class);
-        CardView cardView = EasyMock.createMock(CardView.class);
+        final CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
-        PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
+        final PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
-        TileAction noOp = new TileAction(TileActionType.NONE, player, property, null, 0);
+        final TileAction noOp = new TileAction(TileActionType.NONE, player, property, null, 0);
 
         // A turn rolls onto an affordable property and the buy/decline prompt is shown, so the
         // turn is left awaiting the player's decision (awaitingPlayerDecision == true).
