@@ -296,6 +296,15 @@ public class BoardTests {
     }
 
     @Test
+    public void didPassGo_WithOneLessThanFirstNewPosition_ThrowsException() {
+        List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
+        Board board = new Board(tiles);
+        board.initializeBoard();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.didPassGo(0, -1));
+    }
+
+    @Test
     public void didPassGo_WithOneMoreThanLastOldPosition_ThrowsException() {
         List<Tile> tiles = createTiles(NORMAL_TILE_SIZE);
         Board board = new Board(tiles);
