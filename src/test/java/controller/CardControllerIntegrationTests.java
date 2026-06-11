@@ -41,6 +41,23 @@ public class CardControllerIntegrationTests {
         assertTrue(player.getActive());
     }
 
+    @Test
+    public void applyCard_WithDrawnStandardCard_AppliesEffectAndDiscardsCard() {
+        Player player = new Player("John", STARTING_BALANCE);
+        Player otherPlayer = new Player("Jane", STARTING_BALANCE);
+        Deck deck = ChanceDeckFactory.standardDeck();
+        GameEngine game = createGame(player, otherPlayer, deck);
+        CardController controller = new CardController(deck, game);
+        Card drawnCard = controller.drawChanceCard(player);
+
+        controller.applyCard(drawnCard, player);
+
+        assertEquals(1, deck.getUsedCards().size());
+        assertTrue(deck.getUsedCards().contains(drawnCard));
+        assertTrue(player.getActive());
+        assertTrue(game.getActivePlayers().contains(player));
+    }
+
     private GameEngine createGame(Player player, Player otherPlayer, Deck deck) {
         Board board = new Board(createTiles());
         board.initializeBoard();
