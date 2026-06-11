@@ -3,6 +3,8 @@ package model;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChanceDeckFactoryTests {
 
@@ -46,5 +49,17 @@ public class ChanceDeckFactoryTests {
         assertSame(StockMarketCrashCardEffect.class, cards.get(4).getCardEffect().getClass());
         assertSame(AdvanceToGoCardEffect.class, cards.get(5).getCardEffect().getClass());
         EasyMock.verify(random);
+    }
+
+    @Test
+    public void TC3_privateConstructor_CannotBeUsedOutsideReflection() throws Exception {
+        Constructor<ChanceDeckFactory> constructor =
+                ChanceDeckFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()),
+                "ChanceDeckFactory should not be instantiable");
+
+        constructor.setAccessible(true);
+        ChanceDeckFactory instance = constructor.newInstance();
+        assertNotNull(instance);
     }
 }
