@@ -15,4 +15,8 @@
 - Gradle 8.10
 
 ## Acknowledgements
-REFERENCES, SOURCE OF HELP ETC
+Claude, Codex, Copilot, Oracle, Google Checkstyle, Clean Code (Robert C. Martin)
+
+## Exceptions
+- We started strictly adhering to TDD following commit 48af5b5 (after PR #60 "Wip card class"); disregard TDD practices before that (we talked about this during instructor meeting)
+- Disregard certain class constructors that are public because they are a result of not having enough time to restructure our software design, (with enough time, we would redesign to incorporate correct encapsulation) these warnings were suppressed in Spotbugs.
