@@ -1300,4 +1300,47 @@ public class GameControllerTurnTests {
                 jailController, jailStatusView, player);
     }
 
+    @Test
+    public void TC81_finishAction_WhenTurnInProgressAndCardActive_RefreshesWithoutCompleting() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        CardController cardController = EasyMock.createMock(CardController.class);
+        JailController jailController = EasyMock.createMock(JailController.class);
+        ChanceTile tile = EasyMock.createMock(ChanceTile.class);
+        Card card = EasyMock.createMock(Card.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        // A chance card is drawn and left active (turn not yet in progress)...
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(14);
+        EasyMock.expect(gameEngine.getTile(14)).andReturn(tile);
+        EasyMock.expect(cardController.drawChanceCard(player)).andReturn(card);
+        expectRefreshViewsWithCard(gameEngine, boardView, playerInfoView, diceView, cardView, card);
+        // ...then a new turn starts for a jailed player who escapes; finishAction sees the
+        // still-active card and must refresh without completing the turn.
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(player.isBankrupt()).andReturn(false);
+        EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(1);
+        EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(true);
+        expectRefreshViewsWithCard(gameEngine, boardView, playerInfoView, diceView, cardView, card);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, jailController, tile, card, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setCardController(cardController);
+        controller.setJailController(jailController);
+        controller.resolveLanding();
+        controller.playTurn();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                cardController, jailController, tile, card, player);
+    }
+
 }
