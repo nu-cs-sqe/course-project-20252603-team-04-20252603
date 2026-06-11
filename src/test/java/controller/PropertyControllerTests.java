@@ -17,9 +17,6 @@ import model.Property;
 
 public class PropertyControllerTests {
 
-    // =====================================================================
-    // promptPurchase
-    // =====================================================================
 
     @Test
     public void TC1_PromptPurchase_NullPlayer_ThrowsNullPointerException() {
@@ -107,9 +104,6 @@ public class PropertyControllerTests {
         EasyMock.verify(player, property);
     }
 
-    // =====================================================================
-    // buyProperty
-    // =====================================================================
 
     @Test
     public void TC7_BuyProperty_NullPlayer_ThrowsNullPointerException() {
@@ -163,9 +157,6 @@ public class PropertyControllerTests {
         EasyMock.verify(player, property);
     }
 
-    // =====================================================================
-    // declineProperty
-    // =====================================================================
 
     @Test
     public void TC11_DeclineProperty_NullPlayer_ThrowsNullPointerException() {
@@ -203,9 +194,6 @@ public class PropertyControllerTests {
         EasyMock.verify(player, property);
     }
 
-    // =====================================================================
-    // handleRentPayment
-    // =====================================================================
 
     @Test
     public void TC14_HandleRentPayment_NullRenter_ThrowsNullPointerException() {
@@ -259,9 +247,6 @@ public class PropertyControllerTests {
         EasyMock.verify(renter, property);
     }
 
-    // =====================================================================
-    // handleForcedSale
-    // =====================================================================
 
     @Test
     public void TC18_HandleForcedSale_NullPlayer_ThrowsNullPointerException() {

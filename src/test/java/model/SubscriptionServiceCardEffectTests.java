@@ -8,9 +8,6 @@ import util.Constants;
 
 public class SubscriptionServiceCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests (TC1 - TC3)
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -44,9 +41,6 @@ public class SubscriptionServiceCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests (TC4 - TC7)
-    // ==================================================================================================
 
     @Test
     public void apply_OnPlayerBalanceGreaterThan100_DeductsFee() {
@@ -112,9 +106,6 @@ public class SubscriptionServiceCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests (TC8 - TC9)
-    // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {

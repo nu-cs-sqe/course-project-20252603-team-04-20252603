@@ -36,10 +36,6 @@ public class PlayerTests {
         }
     }
 
-    // ==================================================================================================
-    // Test suite for the buy method of the Player class, covering various scenarios
-    // including edge cases
-    // ==================================================================================================
     @Test
     public void Tests_Buying_With_No_Money() {
         Player player = new Player("John", 100.0);
@@ -95,10 +91,6 @@ public class PlayerTests {
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
 
-    // ==================================================================================================
-    // Test suite for the sell method of the Player class, covering various
-    // scenarios including edge cases
-    // ===================================================================================================
     @Test
     public void Tests_Selling_With_No_Money() {
         Player player = new Player("John", 100.0);
@@ -135,10 +127,6 @@ public class PlayerTests {
         assertFalse(success, "Selling with maximum amount should fail due to overflow");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should not change");
     }
-    // ==================================================================================================
-    // Test suite for the canAfford method of the Player class, covering BVA
-    // scenarios
-    // ==================================================================================================
 
     @Test
     public void Tests_CanAfford_With_Zero_Amount() {
@@ -189,9 +177,6 @@ public class PlayerTests {
         assertFalse(result, "Should not be able to afford Double.MAX_VALUE");
     }
 
-    //
-    // Test suite for addproperty class
-    //
     @Test
     public void Test_Adding_Property_To_Player() {
         Player player = new Player("John", 100.0);
@@ -234,9 +219,6 @@ public class PlayerTests {
         assertEquals(1, player.getOwnedProperties().size(), "Player should only own one instance of the property");
     }
 
-    //
-    // Test suite for removeProperty method
-    ///
     @Test
     public void Test_Removing_Property_From_Player_Exists() {
         Player player = new Player("John", 100.0);
@@ -285,9 +267,6 @@ public class PlayerTests {
         assertFalse(success, "Removing a null property should be rejected");
     }
 
-    //
-    // Test suite for sell property method
-    //
     @Test
 
     public void Tests_Selling_Owned_Property() {
@@ -363,9 +342,6 @@ public class PlayerTests {
         assertEquals(150.0, player.getBalance(), 0.001,
                 "Balance should increase before the failed removal is reported");
     }
-    // ==================================================================================================
-    // Test suite for goToJail method
-    // ==================================================================================================
     @Test
     public void Test_GoToJail_Valid_Position() {
    
@@ -436,9 +412,6 @@ public class PlayerTests {
         assertEquals(0, player.getJailTurnCount(), "Jail turn count should remain unchanged");
     }
 
-    // ==================================================================================================
-    // Test suite for leaveJail method
-    // ==================================================================================================
     
     @Test
     public void Test_LeaveJail_When_In_Jail() {
@@ -465,9 +438,6 @@ public class PlayerTests {
         assertFalse(player.inJail(), "inJail flag should still be false");
     }
 
-    // ==================================================================================================
-    // Test suite for isBankrupt method
-    // ==================================================================================================
 
     @Test
     public void Test_IsBankrupt_Zero_Balance() {
@@ -500,9 +470,6 @@ public class PlayerTests {
         assertFalse(player.getActive(), "Player should be marked as inactive after being bankrupt");
     }
 
-    // ==================================================================================================
-    // Test suite for getActive method
-    // ==================================================================================================
 
     @Test
     public void Test_GetActive_When_Active() {
@@ -523,9 +490,6 @@ public class PlayerTests {
         assertFalse(active, "Player should be inactive after going bankrupt");
     }
 
-    // ==================================================================================================
-    // Test suite for getName method
-    // ==================================================================================================
 
     @Test
     public void Test_GetName_Returns_Correct_Name() {
@@ -547,9 +511,6 @@ public class PlayerTests {
         assertEquals(playerName, retrievedName, "getName() should return the correct name for different players");
     }
 
-    // ==================================================================================================
-    // Test suite for getJailTurnCount method
-    // ==================================================================================================
 
     @Test
     public void Test_GetJailTurnCount_Initially_Zero() {
@@ -581,9 +542,6 @@ public class PlayerTests {
         assertEquals(0, jailTurnCount, "jailTurnCount should be 0 after leaving jail");
     }
 
-    // ==================================================================================================
-    // Test suite for incrementJailTurnCount method (TC37–TC40)
-    // ==================================================================================================
 
     @Test
     public void TC37_IncrementJailTurnCount_FromZero_IncrementsToOne() {

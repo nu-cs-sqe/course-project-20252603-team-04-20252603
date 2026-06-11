@@ -8,9 +8,6 @@ import util.Constants;
 
 public class GoToJailCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -44,9 +41,6 @@ public class GoToJailCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnActivePlayerNotInJail_SendsToJail() {
@@ -112,9 +106,6 @@ public class GoToJailCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {

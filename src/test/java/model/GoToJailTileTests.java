@@ -8,11 +8,7 @@ import util.Constants;
 
 public class GoToJailTileTests {
 
-    // ==================================================================================================
-    // Test suite for the GoToJailTile class. Player and GameEngine collaborators are mocked with EasyMock.
-    // ==================================================================================================
 
-    // TC1: GoToJailTile reports its tile type
     @Test
     public void Tests_GetName_Returns_GOTOJAIL() {
         GoToJailTile tile = new GoToJailTile();
@@ -21,7 +17,6 @@ public class GoToJailTileTests {
                 "GoToJailTile.getName() should return TileType.GOTOJAIL");
     }
 
-    // TC2: Active player lands on GoToJailTile
     @Test
     public void Tests_LandOn_Sends_Active_Player_To_Jail() {
         Player player = EasyMock.createMock(Player.class);
@@ -36,7 +31,6 @@ public class GoToJailTileTests {
         EasyMock.verify(player, game);
     }
 
-    // TC3: Null player input
     @Test
     public void Tests_LandOn_Null_Player_Is_Rejected() {
         GameEngine game = EasyMock.createMock(GameEngine.class);
@@ -50,7 +44,6 @@ public class GoToJailTileTests {
         EasyMock.verify(game);
     }
 
-    // TC4: Null game input
     @Test
     public void Tests_LandOn_Null_Game_Is_Rejected() {
         Player player = EasyMock.createMock(Player.class);
@@ -64,7 +57,6 @@ public class GoToJailTileTests {
         EasyMock.verify(player);
     }
 
-    // TC5: Both player and game null
     @Test
     public void Tests_LandOn_Both_Null_Is_Rejected() {
         GoToJailTile tile = new GoToJailTile();
@@ -72,7 +64,6 @@ public class GoToJailTileTests {
                 () -> tile.landOn(null, null),
                 "GoToJailTile.landOn must reject when both inputs are null");
     }
-    // TC6: Eliminated / inactive player lands on GoToJailTile
     @Test
     public void Tests_LandOn_Eliminated_Player_Is_Not_Sent_To_Jail() {
         Player player = EasyMock.createMock(Player.class);
@@ -86,7 +77,6 @@ public class GoToJailTileTests {
         EasyMock.verify(player, game);
     }
 
-    // TC7: landOn does not modify player's balance
     @Test
     public void Tests_LandOn_Does_Not_Modify_Balance() {
         Player player = EasyMock.createMock(Player.class);

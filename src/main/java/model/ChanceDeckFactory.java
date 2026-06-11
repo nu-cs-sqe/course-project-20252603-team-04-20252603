@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/** Assembles the standard, shuffled chance deck (one card per implemented {@link CardEffect}). */
 public final class ChanceDeckFactory {
 
     private ChanceDeckFactory() {
