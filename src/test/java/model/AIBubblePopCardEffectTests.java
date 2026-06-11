@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Collections;
-
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +88,6 @@ public class AIBubblePopCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -107,7 +104,6 @@ public class AIBubblePopCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -159,7 +155,6 @@ public class AIBubblePopCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -168,20 +163,4 @@ public class AIBubblePopCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    @Test
-    public void apply_OnPlayerCannotAffordButHasProperties_DoesNotRemoveFromGame() {
-        AIBubblePopCardEffect effect = new AIBubblePopCardEffect();
-        Player player = EasyMock.createMock(Player.class);
-        GameEngine game = EasyMock.createMock(GameEngine.class);
-        Property property = EasyMock.createMock(Property.class);
-
-        EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.AI_BUBBLE_POP_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.singleton(property));
-        EasyMock.replay(player, game, property);
-
-        effect.apply(player, game);
-
-        EasyMock.verify(player, game, property);
-    }
 }

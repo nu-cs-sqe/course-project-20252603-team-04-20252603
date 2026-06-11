@@ -14,7 +14,7 @@ public class AIBubblePopCardEffect implements CardEffect {
         }
         if (player.canAfford(Constants.AI_BUBBLE_POP_FEE)) {
             player.remove(Constants.AI_BUBBLE_POP_FEE);
-        } else if (player.getOwnedProperties().isEmpty()) {
+        } else {
             game.removeBankruptPlayer(player);
         }
     }

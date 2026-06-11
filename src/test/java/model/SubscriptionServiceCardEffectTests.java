@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Collections;
-
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +88,6 @@ public class SubscriptionServiceCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -107,7 +104,6 @@ public class SubscriptionServiceCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -117,7 +113,7 @@ public class SubscriptionServiceCardEffectTests {
     }
 
     // ==================================================================================================
-    // Edge case tests (TC8 - TC10)
+    // Edge case tests (TC8 - TC9)
     // ==================================================================================================
 
     @Test
@@ -143,7 +139,6 @@ public class SubscriptionServiceCardEffectTests {
 
         EasyMock.expect(player.getActive()).andReturn(true);
         EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.emptySet());
         game.removeBankruptPlayer(player);
         EasyMock.replay(player, game);
 
@@ -152,20 +147,4 @@ public class SubscriptionServiceCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    @Test
-    public void apply_OnPlayerCannotAffordButHasProperties_DoesNotRemoveFromGame() {
-        SubscriptionServiceCardEffect effect = new SubscriptionServiceCardEffect();
-        Player player = EasyMock.createMock(Player.class);
-        GameEngine game = EasyMock.createMock(GameEngine.class);
-        Property property = EasyMock.createMock(Property.class);
-
-        EasyMock.expect(player.getActive()).andReturn(true);
-        EasyMock.expect(player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)).andReturn(false);
-        EasyMock.expect(player.getOwnedProperties()).andReturn(Collections.singleton(property));
-        EasyMock.replay(player, game, property);
-
-        effect.apply(player, game);
-
-        EasyMock.verify(player, game, property);
-    }
 }

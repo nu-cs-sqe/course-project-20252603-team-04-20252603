@@ -18,8 +18,10 @@ import view.BankruptcyView;
 import view.BoardView;
 import view.CardView;
 import view.DiceView;
+import view.JailStatusView;
 import view.PlayerInfoView;
 import view.PropertyPromptView;
+import view.RentConfirmationView;
 
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -49,7 +51,7 @@ public class GameControllerTurnTests {
         EasyMock.expectLastCall().once();
         playerInfoView.renderPlayers(List.of());
         EasyMock.expectLastCall().once();
-        diceView.enableRollButton();
+        diceView.disableRollButton();
         EasyMock.expectLastCall().once();
         cardView.showCard(card);
         EasyMock.expectLastCall().once();
@@ -73,11 +75,13 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
-        prompt.showProperty(property, player);
+        diceView.disableRollButton();
         EasyMock.expectLastCall();
         prompt.setBuyListener(EasyMock.anyObject());
         EasyMock.expectLastCall();
         prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall();
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
@@ -133,23 +137,27 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
         TileAction action = new TileAction(TileActionType.PAY_RENT, player, property, null, 0);
 
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.handleTileAction(action);
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test
@@ -161,6 +169,7 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
 
@@ -170,18 +179,21 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(true);
         EasyMock.expect(property.isOwnedBy(player)).andReturn(false);
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.resolveLanding();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test
@@ -429,8 +441,14 @@ public class GameControllerTurnTests {
         EasyMock.expect(dice.getTotal()).andReturn(5);
         gameEngine.movePlayer(player, 5);
         EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(5);
+        boardView.updatePlayerPosition(player, 5);
+        EasyMock.expectLastCall().once();
         EasyMock.expect(gameEngine.didPassGo(0, 5)).andReturn(false);
         EasyMock.expect(gameEngine.getTile(5)).andReturn(tile);
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, tile, player);
@@ -456,7 +474,7 @@ public class GameControllerTurnTests {
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player).times(2);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
         EasyMock.expect(player.inJail()).andReturn(false);
-        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(30).andReturn(3).andReturn(3);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(30).andReturn(3).andReturn(3).andReturn(3);
         dice.roll();
         EasyMock.expectLastCall().once();
         EasyMock.expect(dice.getDieOne()).andReturn(2);
@@ -466,10 +484,14 @@ public class GameControllerTurnTests {
         EasyMock.expect(dice.getTotal()).andReturn(5);
         gameEngine.movePlayer(player, 5);
         EasyMock.expectLastCall().once();
+        boardView.updatePlayerPosition(player, 3);
+        EasyMock.expectLastCall().once();
         EasyMock.expect(gameEngine.didPassGo(30, 3)).andReturn(true);
         EasyMock.expect(player.receive(util.Constants.GO_BONUS)).andReturn(true);
-        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
         EasyMock.expect(gameEngine.getTile(3)).andReturn(tile);
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice, tile, player);
@@ -532,7 +554,11 @@ public class GameControllerTurnTests {
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
         EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(1);
         EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(true);
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
@@ -556,29 +582,75 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         JailController jailController = EasyMock.createMock(JailController.class);
+        JailStatusView jailStatusView = EasyMock.createMock(JailStatusView.class);
         Player player = EasyMock.createMock(Player.class);
 
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
         EasyMock.expect(player.inJail()).andReturn(true);
-        EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
         EasyMock.expect(player.getJailTurnCount()).andReturn(1);
+        EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(2);
+        jailStatusView.showStillInJail(player, 2);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                jailController, player);
+                jailController, jailStatusView, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setJailController(jailController);
+        controller.setJailStatusView(jailStatusView);
         controller.playTurn();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                jailController, player);
+                jailController, jailStatusView, player);
     }
 
     @Test
-    public void TC63_playTurn_WhenInJailNoDoublesAtMaxTurns_PaysFee() {
+    public void TC63_playTurn_WhenInJailNoDoublesAtSecondTurn_ShowsOneTurnRemaining() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        JailController jailController = EasyMock.createMock(JailController.class);
+        JailStatusView jailStatusView = EasyMock.createMock(JailStatusView.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(player.isBankrupt()).andReturn(false);
+        EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(2);
+        EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(util.Constants.MAX_JAIL_TURNS);
+        jailStatusView.showStillInJail(player, 1);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, jailStatusView, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setJailController(jailController);
+        controller.setJailStatusView(jailStatusView);
+        controller.playTurn();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, jailStatusView, player);
+    }
+
+    @Test
+    public void TC63B_playTurn_WhenInJailNoDoublesAtMaxTurns_PaysFee() {
         GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
         BoardView boardView = EasyMock.createMock(BoardView.class);
         PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
@@ -591,9 +663,13 @@ public class GameControllerTurnTests {
         EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
         EasyMock.expect(player.isBankrupt()).andReturn(false);
         EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(util.Constants.MAX_JAIL_TURNS);
         EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
         EasyMock.expect(player.getJailTurnCount()).andReturn(util.Constants.MAX_JAIL_TURNS);
         EasyMock.expect(jailController.payJailFee(player)).andReturn(true);
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
@@ -617,6 +693,7 @@ public class GameControllerTurnTests {
         CardView cardView = EasyMock.createMock(CardView.class);
         Dice dice = EasyMock.createMock(Dice.class);
         PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        RentConfirmationView rentConfirmationView = EasyMock.createMock(RentConfirmationView.class);
         Property property = EasyMock.createMock(Property.class);
         Player player = EasyMock.createMock(Player.class);
 
@@ -629,18 +706,21 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.getRent()).andReturn(75.0);
         EasyMock.expect(propertyController.handleForcedSale(player, 75.0)).andReturn(true);
         EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        rentConfirmationView.showRentPaid(player, property);
+        EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
         EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
 
         GameController controller = new GameController(
                 gameEngine, boardView, playerInfoView, diceView, cardView, dice);
         controller.setPropertyController(propertyController);
+        controller.setRentConfirmationView(rentConfirmationView);
         controller.resolveLanding();
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
-                propertyController, property, player);
+                propertyController, rentConfirmationView, property, player);
     }
 
     @Test
@@ -949,11 +1029,13 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
-        prompt.showProperty(property, player);
+        diceView.disableRollButton();
         EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.capture(buyListener));
         EasyMock.expectLastCall().once();
         prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         EasyMock.expect(property.purchase(player)).andReturn(true);
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
@@ -990,11 +1072,13 @@ public class GameControllerTurnTests {
         EasyMock.expect(property.isOwned()).andReturn(false);
         EasyMock.expect(property.getPrice()).andReturn(100.0);
         EasyMock.expect(player.canAfford(100.0)).andReturn(true);
-        prompt.showProperty(property, player);
+        diceView.disableRollButton();
         EasyMock.expectLastCall().once();
         prompt.setBuyListener(EasyMock.anyObject());
         EasyMock.expectLastCall().once();
         prompt.setDeclineListener(EasyMock.capture(declineListener));
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
         EasyMock.expectLastCall().once();
         expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
 
@@ -1006,6 +1090,66 @@ public class GameControllerTurnTests {
         controller.setPropertyPromptView(prompt);
         controller.resolveLanding();
         declineListener.getValue().actionPerformed(null);
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                prompt, property, player);
+    }
+
+    @Test
+    public void TC76_playTurn_WhenBuyListenerRuns_CompletesTurnAfterPurchase() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        PropertyPromptView prompt = EasyMock.createMock(PropertyPromptView.class);
+        Property property = EasyMock.createMock(Property.class);
+        Player player = EasyMock.createMock(Player.class);
+        Capture<ActionListener> buyListener = new Capture<>();
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player).times(2);
+        EasyMock.expect(player.isBankrupt()).andReturn(false);
+        EasyMock.expect(player.inJail()).andReturn(false);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(0).andReturn(5).andReturn(5).andReturn(5);
+        dice.roll();
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(dice.getDieOne()).andReturn(3);
+        EasyMock.expect(dice.getDieTwo()).andReturn(2);
+        diceView.showRollResult(3, 2);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(dice.getTotal()).andReturn(5);
+        gameEngine.movePlayer(player, 5);
+        EasyMock.expectLastCall().once();
+        boardView.updatePlayerPosition(player, 5);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.didPassGo(0, 5)).andReturn(false);
+        EasyMock.expect(gameEngine.getTile(5)).andReturn(property);
+        EasyMock.expect(property.isOwned()).andReturn(false);
+        EasyMock.expect(property.getPrice()).andReturn(100.0);
+        EasyMock.expect(player.canAfford(100.0)).andReturn(true);
+        diceView.disableRollButton();
+        EasyMock.expectLastCall().once();
+        prompt.setBuyListener(EasyMock.capture(buyListener));
+        EasyMock.expectLastCall().once();
+        prompt.setDeclineListener(EasyMock.anyObject());
+        EasyMock.expectLastCall().once();
+        prompt.showProperty(property, player);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(property.purchase(player)).andReturn(true);
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                prompt, property, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setPropertyPromptView(prompt);
+        controller.playTurn();
+        buyListener.getValue().actionPerformed(null);
 
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
                 prompt, property, player);

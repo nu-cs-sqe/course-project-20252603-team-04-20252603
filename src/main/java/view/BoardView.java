@@ -62,9 +62,6 @@ public class BoardView extends JFrame {
     private static final int CENTER_SIZE = TILE_CELL_SIZE * (SIDE - 2);
 
     private JButton boardNav;
-    private JButton tradeNav;
-    private JButton portfolioNav;
-    private JButton endTurnButton;
     private JButton rollDiceButton;
     private GameEngine gameEngine;
     private GameController gameController;
@@ -110,9 +107,6 @@ public class BoardView extends JFrame {
         if (rollDiceButton != null) {
             rollDiceButton.addActionListener(e -> gameController.playTurn());
         }
-        if (endTurnButton != null) {
-            endTurnButton.addActionListener(e -> gameController.handleEndTurn());
-        }
     }
 
     public void refresh() {
@@ -120,7 +114,6 @@ public class BoardView extends JFrame {
         initializePlayerColors(activePlayers);
         updateCurrentPlayer(activePlayers);
         if (boardStage != null) {
-            boardStage.refreshPills();
             boardStage.repaintTokens();
         }
         showWinnerIfGameOver();
@@ -137,9 +130,6 @@ public class BoardView extends JFrame {
         }
         if (rollDiceButton != null) {
             rollDiceButton.setEnabled(false);
-        }
-        if (endTurnButton != null) {
-            endTurnButton.setEnabled(false);
         }
         String message = gameEngine.getWinner()
                 .map(winner -> LocalizationManager.formatMessage("board.winnerMessage", winner.getName()))
@@ -173,6 +163,7 @@ public class BoardView extends JFrame {
     public void updatePlayerPosition(Player player, int position) {
         if (boardStage != null) {
             boardStage.repaintTokens();
+            boardStage.paintImmediately(boardStage.getBounds());
         }
     }
 
@@ -233,16 +224,7 @@ public class BoardView extends JFrame {
         nav.add(Box.createVerticalStrut(24));
 
         boardNav = createNavItem(BoardIcon.Type.NAV_BOARD, LocalizationManager.getMessage("board.nav.board"), true);
-        tradeNav = createNavItem(BoardIcon.Type.NAV_TRADE, LocalizationManager.getMessage("board.nav.trade"), false);
-        portfolioNav = createNavItem(
-                BoardIcon.Type.NAV_PORTFOLIO,
-                LocalizationManager.getMessage("board.nav.portfolio"),
-                false);
         nav.add(boardNav);
-        nav.add(Box.createVerticalStrut(8));
-        nav.add(tradeNav);
-        nav.add(Box.createVerticalStrut(8));
-        nav.add(portfolioNav);
         nav.add(Box.createVerticalStrut(18));
         nav.add(playerInfoView);
 
@@ -263,13 +245,6 @@ public class BoardView extends JFrame {
         swatches.add(swatch(G_SLATE));
         nav.add(swatches);
         nav.add(Box.createVerticalStrut(16));
-
-        endTurnButton = new RoundedButton(LocalizationManager.getMessage("board.endTurn"), INK, Color.WHITE, 14, null);
-        endTurnButton.setFont(font(Font.BOLD, 15));
-        endTurnButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        endTurnButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 52));
-        endTurnButton.setPreferredSize(new Dimension(220, 52));
-        nav.add(endTurnButton);
 
         return nav;
     }
@@ -340,7 +315,6 @@ public class BoardView extends JFrame {
 
     private class BoardStage extends JLayeredPane {
 
-        private JPanel pillsContainer;
         private TokenOverlay tokenOverlay;
 
         BoardStage() {
@@ -358,8 +332,6 @@ public class BoardView extends JFrame {
             center.setBounds(CENTER_X, CENTER_Y, CENTER_SIZE, CENTER_SIZE);
             add(center, Integer.valueOf(2));
 
-            refreshPills();
-
             JPanel dice = createDiceCluster();
             dice.setBounds(285, 430, 150, 64);
             add(dice, Integer.valueOf(3));
@@ -374,6 +346,7 @@ public class BoardView extends JFrame {
             rollDiceButton.setIconTextGap(8);
             rollDiceButton.setFont(font(Font.BOLD, 16));
             rollDiceButton.setBounds(265, 498, 190, 44);
+            diceView.setRollButton(rollDiceButton);
             add(rollDiceButton, Integer.valueOf(3));
 
             JComponent diceReadout = diceView.getComponent();
@@ -385,68 +358,11 @@ public class BoardView extends JFrame {
             add(tokenOverlay, Integer.valueOf(10));
         }
 
-        void refreshPills() {
-            if (pillsContainer != null) {
-                remove(pillsContainer);
-            }
-            pillsContainer = new JPanel();
-            pillsContainer.setLayout(new BoxLayout(pillsContainer, BoxLayout.Y_AXIS));
-            pillsContainer.setOpaque(false);
-
-            List<Player> players = gameEngine.getActivePlayers();
-            Player current = gameEngine.getCurrentPlayer();
-            boolean first = true;
-            for (Player p : players) {
-                if (p.equals(current)) {
-                    continue;
-                }
-                if (!first) {
-                    pillsContainer.add(Box.createVerticalStrut(8));
-                }
-                Color c = playerColors.getOrDefault(p, MUTED);
-                String text = LocalizationManager.formatMessage(
-                        "board.otherPlayerStatus",
-                        p.getName(),
-                        formatMoney(p.getBalance()));
-                pillsContainer.add(createPlayerPill(c, text, null));
-                first = false;
-            }
-
-            int nonCurrentCount = Math.max(0, players.size() - 1);
-            int pillsHeight = nonCurrentCount * 36 + Math.max(0, nonCurrentCount - 1) * 8;
-            pillsContainer.setBounds(456, 4, 250, Math.max(36, pillsHeight));
-            add(pillsContainer, Integer.valueOf(2));
-            revalidate();
-            repaint();
-        }
-
         void repaintTokens() {
             if (tokenOverlay != null) {
                 tokenOverlay.repaint();
             }
         }
-    }
-
-    private JComponent createPlayerPill(Color dot, String text, String tag) {
-        RoundedPanel pill = new RoundedPanel(CARD_WHITE, 18);
-        pill.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 7));
-        pill.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        pill.setMaximumSize(new Dimension(200, 36));
-
-        JPanel d = new RoundedPanel(dot, 10);
-        d.setPreferredSize(new Dimension(12, 12));
-        JLabel label = new JLabel(text);
-        label.setFont(font(Font.BOLD, 13));
-        label.setForeground(INK);
-        pill.add(d);
-        pill.add(label);
-        if (tag != null) {
-            JLabel tagLabel = new JLabel(tag);
-            tagLabel.setFont(font(Font.BOLD, 10));
-            tagLabel.setForeground(new Color(0xE5, 0x3E, 0x3E));
-            pill.add(tagLabel);
-        }
-        return pill;
     }
 
     private JPanel createDiceCluster() {
@@ -576,7 +492,7 @@ public class BoardView extends JFrame {
 
         TileDef[] top = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM);
+            top[col] = tileToTileDef(gameEngine.getTile(col), BarSide.BOTTOM, col);
         }
         for (int col = 0; col < SIDE; col++) {
             g[0][col] = top[col];
@@ -585,7 +501,8 @@ public class BoardView extends JFrame {
 
         TileDef[] right = new TileDef[7];
         for (int i = 0; i < 7; i++) {
-            right[i] = tileToTileDef(gameEngine.getTile(9 + i), BarSide.LEFT);
+            int boardIndex = 9 + i;
+            right[i] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.LEFT, boardIndex);
         }
         for (int i = 0; i < right.length; i++) {
             g[i + 1][SIDE - 1] = right[i];
@@ -594,7 +511,8 @@ public class BoardView extends JFrame {
 
         TileDef[] bottom = new TileDef[SIDE];
         for (int col = 0; col < SIDE; col++) {
-            bottom[col] = tileToTileDef(gameEngine.getTile(16 + col), BarSide.TOP);
+            int boardIndex = 16 + col;
+            bottom[col] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.TOP, boardIndex);
         }
         for (int col = 0; col < SIDE; col++) {
             g[SIDE - 1][SIDE - 1 - col] = bottom[col];
@@ -603,7 +521,8 @@ public class BoardView extends JFrame {
 
         TileDef[] left = new TileDef[7];
         for (int i = 0; i < 7; i++) {
-            left[i] = tileToTileDef(gameEngine.getTile(25 + i), BarSide.RIGHT);
+            int boardIndex = 25 + i;
+            left[i] = tileToTileDef(gameEngine.getTile(boardIndex), BarSide.RIGHT, boardIndex);
         }
         for (int i = 0; i < left.length; i++) {
             left[i].bar = BarSide.RIGHT;
@@ -613,10 +532,13 @@ public class BoardView extends JFrame {
         return g;
     }
 
-    private TileDef tileToTileDef(Tile tile, BarSide bar) {
+    private TileDef tileToTileDef(Tile tile, BarSide bar, int boardIndex) {
         if (tile instanceof Property) {
             Property prop = (Property) tile;
-            String label = LocalizationManager.formatMessage("board.propertyLabel", (int) prop.getPrice());
+            String label = LocalizationManager.formatMessage(
+                    "board.propertyLabel",
+                    boardIndex,
+                    formatMoney(prop.getPrice()));
             Color group = getPropertyGroupColor((int) prop.getPrice());
             TileDef def = TileDef.property(label, group);
             def.bar = bar;
@@ -764,8 +686,8 @@ public class BoardView extends JFrame {
         private void addContent() {
             switch (def.kind) {
                 case PROPERTY:
-                    JLabel p = new JLabel(def.label);
-                    p.setFont(font(Font.BOLD, 11));
+                    JLabel p = new JLabel(def.label, SwingConstants.CENTER);
+                    p.setFont(font(Font.BOLD, 10));
                     p.setForeground(INK);
                     add(p);
                     break;
@@ -1192,27 +1114,6 @@ public class BoardView extends JFrame {
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP",
             justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getTradeNav() {
-        return tradeNav;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getPortfolioNav() {
-        return portfolioNav;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getEndTurnButton() {
-        return endTurnButton;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "BoardView exposes live Swing controls for view wiring and UI tests.")
     public JButton getRollDiceButton() {
         return rollDiceButton;
     }
@@ -1288,6 +1189,8 @@ public class BoardView extends JFrame {
         controller.setJailController(new JailController(engine, dice));
         controller.setPropertyPromptView(new PropertyPromptView(view));
         controller.setBankruptcyView(new BankruptcyView(view));
+        controller.setJailStatusView(new JailStatusView(view));
+        controller.setRentConfirmationView(new RentConfirmationView(view));
         cardView.setProceedListener(event -> controller.applyDrawnCard());
 
         view.setController(controller);

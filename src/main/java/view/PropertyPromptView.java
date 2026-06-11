@@ -17,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class PropertyPromptView {
 
@@ -27,6 +28,8 @@ public class PropertyPromptView {
     private JDialog dialog;
     private JButton buyButton;
     private JButton declineButton;
+    private ActionListener buyListener;
+    private ActionListener declineListener;
 
     public PropertyPromptView() {
         this(null);
@@ -65,6 +68,7 @@ public class PropertyPromptView {
                 formatMoney(property.getPrice())));
         buyButton.setForeground(EMERALD);
         declineButton = new JButton(LocalizationManager.getMessage("propertyPrompt.declineButton"));
+        attachButtonListeners();
         buttons.add(buyButton);
         buttons.add(declineButton);
 
@@ -76,20 +80,16 @@ public class PropertyPromptView {
     }
 
     public void setBuyListener(ActionListener listener) {
+        buyListener = Objects.requireNonNull(listener, "Buy listener cannot be null");
         if (buyButton != null) {
-            buyButton.addActionListener(event -> {
-                close();
-                listener.actionPerformed(event);
-            });
+            attachBuyListener();
         }
     }
 
     public void setDeclineListener(ActionListener listener) {
+        declineListener = Objects.requireNonNull(listener, "Decline listener cannot be null");
         if (declineButton != null) {
-            declineButton.addActionListener(event -> {
-                close();
-                listener.actionPerformed(event);
-            });
+            attachDeclineListener();
         }
     }
 
@@ -97,6 +97,31 @@ public class PropertyPromptView {
         if (dialog != null) {
             dialog.dispose();
             dialog = null;
+        }
+        buyButton = null;
+        declineButton = null;
+    }
+
+    private void attachButtonListeners() {
+        attachBuyListener();
+        attachDeclineListener();
+    }
+
+    private void attachBuyListener() {
+        if (buyButton != null && buyListener != null) {
+            buyButton.addActionListener(event -> {
+                close();
+                buyListener.actionPerformed(event);
+            });
+        }
+    }
+
+    private void attachDeclineListener() {
+        if (declineButton != null && declineListener != null) {
+            declineButton.addActionListener(event -> {
+                close();
+                declineListener.actionPerformed(event);
+            });
         }
     }
 

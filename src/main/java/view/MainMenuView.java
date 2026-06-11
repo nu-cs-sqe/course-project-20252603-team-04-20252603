@@ -45,12 +45,10 @@ public class MainMenuView extends JFrame {
     private JPanel pillGroup;
     private JPanel assembleCard;
     private JButton newGameButton;
-    private JButton optionsButton;
-    private JButton recordsButton;
     private JComboBox<String> languageSelector;
 
     public MainMenuView() {
-        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
+        setTitle(LocalizationManager.getMessage("app.title"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 900);
         setMinimumSize(new Dimension(1024, 700));
@@ -121,10 +119,10 @@ public class MainMenuView extends JFrame {
         nav.setBorder(new EmptyBorder(0, 24, 0, 24));
         nav.setPreferredSize(new Dimension(0, 64));
 
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 14));
         left.setOpaque(false);
         left.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 32)));
-        JLabel brand = new JLabel(LocalizationManager.getMessage("mainMenu.brand"));
+        JLabel brand = new JLabel(LocalizationManager.getMessage("app.title"));
         brand.setFont(font(Font.BOLD, 22));
         brand.setForeground(PRIMARY);
         left.add(brand);
@@ -183,7 +181,7 @@ public class MainMenuView extends JFrame {
     }
 
     private void refreshLocalizedContent() {
-        setTitle(LocalizationManager.getMessage("mainMenu.windowTitle"));
+        setTitle(LocalizationManager.getMessage("app.title"));
         setContentPane(createRoot());
         wireActions();
         revalidate();
@@ -237,7 +235,7 @@ public class MainMenuView extends JFrame {
         iconCard.setAlignmentX(Component.CENTER_ALIGNMENT);
         iconCard.add(new JLabel(new VectorIcon(VectorIcon.Type.LOGO, 64)));
 
-        JLabel title = new JLabel(LocalizationManager.getMessage("mainMenu.heroTitle"));
+        JLabel title = new JLabel(LocalizationManager.getMessage("app.title"));
         title.setFont(font(Font.BOLD, 46));
         title.setForeground(PRIMARY);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -265,8 +263,7 @@ public class MainMenuView extends JFrame {
         c.gridy = 0;
 
         assembleCard = createAssembleCard();
-        assembleCard.setPreferredSize(new Dimension(680, 440));
-        assembleCard.setMinimumSize(new Dimension(560, 440));
+        updateAssembleCardSize();
         JPanel trade = createTradeColumn();
         trade.setPreferredSize(new Dimension(360, 440));
         trade.setMinimumSize(new Dimension(360, 440));
@@ -314,7 +311,7 @@ public class MainMenuView extends JFrame {
         pillGroup = new RoundedPanel(PILL_INACTIVE_BG, 24);
         pillGroup.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 4));
         pillGroup.setAlignmentY(Component.TOP_ALIGNMENT);
-        pillGroup.setMaximumSize(new Dimension(320, 40));
+        pillGroup.setMaximumSize(new Dimension(360, 40));
         populatePills();
 
         header.add(headText);
@@ -324,7 +321,6 @@ public class MainMenuView extends JFrame {
         playersPanel = new JPanel();
         playersPanel.setOpaque(false);
         playersPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 240));
         rebuildPlayerCards();
 
         card.add(header);
@@ -343,7 +339,7 @@ public class MainMenuView extends JFrame {
                     active ? EMERALD : PILL_INACTIVE_BG,
                     active ? Color.WHITE : MUTED, 20, null);
             pill.setFont(font(Font.BOLD, 10));
-            pill.setPreferredSize(new Dimension(92, 30));
+            pill.setPreferredSize(new Dimension(112, 30));
             final int count = n;
             pill.addActionListener(e -> {
                 selectedCount = count;
@@ -365,20 +361,32 @@ public class MainMenuView extends JFrame {
         int rows = (selectedCount == 4) ? 2 : 1;
         int cols = (selectedCount == 4) ? 2 : selectedCount;
         playersPanel.setLayout(new GridLayout(rows, cols, 20, 16));
-        playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, rows * 220));
+        playersPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, playerPanelHeight()));
         for (int i = 0; i < selectedCount; i++) {
             selectedTokens.add(tokenAt(i, previousTokens));
             playersPanel.add(createPlayerCard(i));
         }
         restoreNameEntries(previousNames);
         if (assembleCard != null) {
-            int h = (rows == 2) ? 600 : 440;
-            assembleCard.setPreferredSize(new Dimension(680, h));
-            assembleCard.setMinimumSize(new Dimension(560, h));
+            updateAssembleCardSize();
             assembleCard.revalidate();
         }
         playersPanel.revalidate();
         playersPanel.repaint();
+    }
+
+    private void updateAssembleCardSize() {
+        int height = assembleCardHeight();
+        assembleCard.setPreferredSize(new Dimension(680, height));
+        assembleCard.setMinimumSize(new Dimension(560, height));
+    }
+
+    private int assembleCardHeight() {
+        return selectedCount == 4 ? 640 : 440;
+    }
+
+    private int playerPanelHeight() {
+        return selectedCount == 4 ? 480 : 220;
     }
 
     private List<String> currentNameEntries() {
@@ -426,10 +434,11 @@ public class MainMenuView extends JFrame {
         tokenLabel.setForeground(MUTED);
         tokenLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JPanel tokens = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JPanel tokens = new JPanel(new GridLayout(1, TOKEN_SET.length, 8, 0));
         tokens.setOpaque(false);
         tokens.setAlignmentX(Component.LEFT_ALIGNMENT);
         tokens.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        tokens.setMinimumSize(new Dimension(0, 50));
         populateTokenRow(tokens, index);
 
         card.add(label);
@@ -508,26 +517,7 @@ public class MainMenuView extends JFrame {
         trade.add(newGameButton);
         trade.add(Box.createVerticalGlue());
 
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
-        actions.setOpaque(false);
-        actions.setAlignmentX(Component.LEFT_ALIGNMENT);
-        actions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 56));
-        optionsButton = new RoundedButton(
-                LocalizationManager.getMessage("mainMenu.optionsButton"),
-                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
-        optionsButton.setFont(font(Font.BOLD, 13));
-        optionsButton.setPreferredSize(new Dimension(110, 44));
-        recordsButton = new RoundedButton(
-                LocalizationManager.getMessage("mainMenu.recordsButton"),
-                CARD_WHITE, PRIMARY, 24, FIELD_BORDER);
-        recordsButton.setFont(font(Font.BOLD, 13));
-        recordsButton.setPreferredSize(new Dimension(110, 44));
-        actions.add(optionsButton);
-        actions.add(recordsButton);
-
         col.add(trade);
-        col.add(Box.createVerticalStrut(16));
-        col.add(actions);
         col.add(Box.createVerticalGlue());
         return col;
     }
@@ -872,20 +862,6 @@ public class MainMenuView extends JFrame {
             justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
     public JButton getNewGameButton() {
         return newGameButton;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getOptionsButton() {
-        return optionsButton;
-    }
-
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP",
-            justification = "MainMenuView exposes live Swing controls for view wiring and UI tests.")
-    public JButton getRecordsButton() {
-        return recordsButton;
     }
 
     public List<JTextField> getNameFields() {
