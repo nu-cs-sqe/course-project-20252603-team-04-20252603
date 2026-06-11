@@ -25,7 +25,8 @@ public class MainMenuController {
 
     public List<PlayerConfig> createPlayerConfigs() {
         if (!validatePlayerCount(playerNames.size())) {
-            throw new IllegalArgumentException("Player count must be between " + Constants.MIN_NUM_PLAYERS + " and " + Constants.MAX_NUM_PLAYERS);
+            throw new IllegalArgumentException("Player count must be between "
+                    + Constants.MIN_NUM_PLAYERS + " and " + Constants.MAX_NUM_PLAYERS);
         }
 
         List<PlayerConfig> playerConfigs = new ArrayList<>();

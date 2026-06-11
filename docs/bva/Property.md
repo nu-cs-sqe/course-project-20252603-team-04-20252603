@@ -177,6 +177,22 @@
   - **State of the system**: player = null
   - **Expected output**: NullPointerException thrown (fail-fast)
 
-- **TC41: Land with null game (no validation)** ( :x: )
+- **TC43: Land with null game (no validation)** ( :x: )
   - **State of the system**: game = null
   - **Expected output**: Method executes normally (game param not used)
+
+
+## Method under test: `getName()`
+
+Tile interface method; returns the tile type constant for this tile.
+
+- **TC41: Get tile type for a property** ( :white_check_mark: )
+  - **State of the system**: `Property` constructed with name `"Boardwalk"`, price = 100.0, rent = 50.0
+  - **Expected output**: returns `TileType.PROPERTY`
+
+
+## Method under test: `getPropertyName()`
+
+- **TC42: Get property name after construction** ( :white_check_mark: )
+  - **State of the system**: `Property` constructed with name `"Boardwalk"`, price = 100.0, rent = 50.0
+  - **Expected output**: returns `"Boardwalk"`

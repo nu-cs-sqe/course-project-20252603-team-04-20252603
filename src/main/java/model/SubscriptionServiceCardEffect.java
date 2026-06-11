@@ -14,7 +14,7 @@ public class SubscriptionServiceCardEffect implements CardEffect {
         }
         if (player.canAfford(Constants.SUBSCRIPTION_SERVICE_FEE)) {
             player.remove(Constants.SUBSCRIPTION_SERVICE_FEE);
-        } else if (player.getOwnedProperties().isEmpty()) {
+        } else {
             game.removeBankruptPlayer(player);
         }
     }

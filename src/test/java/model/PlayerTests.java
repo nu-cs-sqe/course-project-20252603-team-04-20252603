@@ -11,6 +11,31 @@ import model.Player;
 
 public class PlayerTests {
 
+    private static class HashChangingProperty extends Property {
+
+        private boolean priceAccessed;
+
+        HashChangingProperty() {
+            super("Mutable Hash Property", 50.0, 5.0);
+        }
+
+        @Override
+        public double getPrice() {
+            this.priceAccessed = true;
+            return super.getPrice();
+        }
+
+        @Override
+        public int hashCode() {
+            return this.priceAccessed ? 2 : 1;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return this == other;
+        }
+    }
+
     // ==================================================================================================
     // Test suite for the buy method of the Player class, covering various scenarios
     // including edge cases
@@ -320,6 +345,24 @@ public class PlayerTests {
                 "Property should remain owned when sale fails");
         assertEquals(100.0, player.getBalance(), 0.001, "Balance should remain unchanged");
     }
+
+    @Test
+    public void Test_Selling_Owned_Property_When_Remove_Fails() {
+        Player player = new Player("John", 100.0);
+        Property property = new HashChangingProperty();
+
+        assertTrue(player.addProperty(property), "Setup should add the property before selling");
+
+        boolean success = player.sellProperty(property);
+
+        assertFalse(success, "Selling should fail when property removal fails");
+        assertEquals(1, player.getOwnedProperties().size(),
+                "Property should remain owned when removal fails");
+        assertSame(property, player.getOwnedProperties().iterator().next(),
+                "Original property should still be stored");
+        assertEquals(150.0, player.getBalance(), 0.001,
+                "Balance should increase before the failed removal is reported");
+    }
     // ==================================================================================================
     // Test suite for goToJail method
     // ==================================================================================================
@@ -331,7 +374,8 @@ public class PlayerTests {
         
         assertTrue(success, "Sending player to valid jail position should be successful");
         assertTrue(player.inJail(), "Player should be marked as in jail");
-        assertEquals(10, player.getPosition(), "Player position should be set to 10 (the jail tile)");
+        assertEquals(Constants.JAIL_POSITION, player.getPosition(),
+                "Player position should be set to the jail tile");
     }
 
     @Test
@@ -365,6 +409,31 @@ public class PlayerTests {
         assertFalse(success, "Minimum integer jail position should be rejected");
         assertFalse(player.inJail(), "Player should not be in jail");
         assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
+    }
+
+    @Test
+    public void Test_GoToJail_Position_Zero_Is_Valid() {
+        Player player = new Player("John", 100.0);
+
+        boolean success = player.goToJail(0);
+
+        assertTrue(success, "Position 0 is inside the board and should be accepted");
+        assertTrue(player.inJail(), "Player should be marked as in jail");
+        assertEquals(0, player.getPosition(), "Player position should be set to 0");
+        assertEquals(1, player.getJailTurnCount(), "Jail turn count should start at 1");
+    }
+
+    @Test
+    public void Test_GoToJail_Board_Size_Position_Is_Invalid() {
+        Player player = new Player("John", 100.0);
+        int initialPosition = player.getPosition();
+
+        boolean success = player.goToJail(Constants.BOARD_SIZE);
+
+        assertFalse(success, "Position equal to board size should be rejected");
+        assertFalse(player.inJail(), "Player should not be in jail");
+        assertEquals(initialPosition, player.getPosition(), "Player position should remain unchanged");
+        assertEquals(0, player.getJailTurnCount(), "Jail turn count should remain unchanged");
     }
 
     // ==================================================================================================

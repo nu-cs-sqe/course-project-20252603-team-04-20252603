@@ -82,7 +82,7 @@ public class GameControllerTests {
         playerInfoView.renderPlayers(activePlayers);
         EasyMock.expectLastCall().once();
 
-        diceView.enableRollButton();
+        diceView.disableRollButton();
         EasyMock.expectLastCall().once();
 
         cardView.showCard(card);
