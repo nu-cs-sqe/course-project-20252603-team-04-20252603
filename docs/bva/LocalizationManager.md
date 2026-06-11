@@ -73,3 +73,12 @@
 - **TC14: formatMessage_WithNoArgumentsForParameterizedMessage_ReturnsTemplateText** ( :white_check_mark: )
     - **State of the system**: active locale = English, key = `mainMenu.playerLabel`, no arguments
     - **Expected output**: returns unresolved template text from `MessageFormat`
+
+### Constructor behavior
+1. Input: reflective constructor access, Output: construction is rejected
+2. Input: utility class constructor path, Output: exception
+3. Input values: private no-argument constructor
+
+- **TC15: constructor_WhenInvokedReflectively_ThrowsException** ( :white_check_mark: )
+    - **State of the system**: private constructor is made accessible through reflection
+    - **Expected output**: constructor invocation throws `UnsupportedOperationException`

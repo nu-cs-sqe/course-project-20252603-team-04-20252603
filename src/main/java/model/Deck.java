@@ -60,7 +60,7 @@ public class Deck {
 
     public Card draw() {
         reshuffleIfEmpty();
-        if (unusedCards.isEmpty() && usedCards.isEmpty()) {
+        if (unusedCards.isEmpty()) {
             throw new IllegalStateException("Both unused and used piles are empty");
         }
         lastDrawn = Optional.of(unusedCards.removeFirst());

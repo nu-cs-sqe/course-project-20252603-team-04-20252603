@@ -2,6 +2,8 @@ package util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -122,6 +124,18 @@ public class LocalizationManagerTests {
         String actual = LocalizationManager.formatMessage("mainMenu.playerLabel");
 
         assertEquals("Player {0}", actual);
+    }
+
+    @Test
+    public void constructor_WhenInvokedReflectively_ThrowsException() throws Exception {
+        Constructor<LocalizationManager> constructor = LocalizationManager.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+
+        InvocationTargetException exception = assertThrows(
+                InvocationTargetException.class,
+                constructor::newInstance);
+
+        assertTrue(exception.getCause() instanceof UnsupportedOperationException);
     }
 
 }

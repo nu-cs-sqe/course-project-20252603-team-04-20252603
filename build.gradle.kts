@@ -110,8 +110,8 @@ tasks.pitest {
 
 pitest {
 
-    targetClasses = setOf("model.*", "controller.*")
-    targetTests = setOf("model.*", "controller.*")
+    targetClasses = setOf("model.*", "controller.*", "util.*")
+    targetTests = setOf("model.*", "controller.*", "util.*")
     junit5PluginVersion = "1.2.1"
     pitestVersion = "1.15.0" //not needed when a default PIT version should be used
 
