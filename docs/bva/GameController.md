@@ -438,3 +438,38 @@ Applies the currently displayed chance card when the player clicks Proceed.
 - **TC73: applyDrawnCard_WithNoActiveCard_RefreshesOnly** ( :white_check_mark: )
   - **State**: no chance card is active when Proceed is invoked
   - **Expected**: no card effect is applied; views are refreshed and the card view remains closed
+
+### Branch-coverage completion (defensive guards and compound conditions)
+
+These cases drive the remaining decision branches in the private turn-flow helpers so that
+`GameController` reaches 100% branch coverage. Optional view collaborators are deliberately left
+un-injected (`null`) where the guard's `false` branch is the target, and every collaborator that is
+not under test is an EasyMock mock.
+
+- **TC77: showRentPaid_WhenRentConfirmationViewNull_PaysRentWithoutAnnouncement** ( :white_check_mark: )
+  - **State**: renter lands on a property owned by another; rent is paid successfully, but no
+    `RentConfirmationView` collaborator has been injected (`rentConfirmationView == null`)
+  - **Expected**: rent is charged via `PropertyController.handleRentPayment`; the rent-paid
+    announcement is skipped safely; views are refreshed
+- **TC78: showStillInJail_WhenJailStatusViewNull_StaysInJailWithoutAnnouncement** ( :white_check_mark: )
+  - **State**: a jailed player fails to roll doubles below `MAX_JAIL_TURNS`, but no `JailStatusView`
+    collaborator has been injected (`jailStatusView == null`)
+  - **Expected**: the still-in-jail announcement is skipped safely; the turn completes and views are
+    refreshed (player remains jailed)
+- **TC79: playTurn_WhenTurnCompletesAndGameOver_DoesNotAdvanceTurn** ( :white_check_mark: )
+  - **State**: a turn completes (`completeTurn`) while `GameEngine.isGameOver()` returns `true`
+  - **Expected**: `GameEngine.nextTurn()` is not called; views are refreshed (final state preserved)
+- **TC80: playJailTurn_WhenBeforeAtMaxButAfterBelowMax_StaysInJail** ( :white_check_mark: )
+  - **State**: jailed player does not escape; `getJailTurnCount` is `>= MAX_JAIL_TURNS` before the
+    roll but `< MAX_JAIL_TURNS` after it (the compound jail-fee guard's second operand is `false`)
+  - **Expected**: no jail fee is auto-paid; `showStillInJail` is shown; the turn completes and views
+    are refreshed
+- **TC81: finishAction_WhenTurnInProgressAndCardActive_RefreshesWithoutCompleting** ( :white_check_mark: )
+  - **State**: a chance card is left active and a new turn is in progress (`turnInProgress == true`,
+    `activeCard != null`) when `finishAction` runs
+  - **Expected**: the turn is not completed (no `nextTurn`); views are refreshed with the card shown
+- **TC82: finishAction_WhenTurnInProgressAndAwaitingDecision_RefreshesWithoutCompleting** ( :white_check_mark: )
+  - **State**: a turn is in progress with no active card but a purchase decision is still pending
+    (`turnInProgress == true`, `activeCard == null`, `awaitingPlayerDecision == true`) when
+    `finishAction` runs
+  - **Expected**: the turn is not completed (no `nextTurn`); views are refreshed
