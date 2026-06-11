@@ -1155,4 +1155,36 @@ public class GameControllerTurnTests {
                 prompt, property, player);
     }
 
+    @Test
+    public void TC77_showRentPaid_WhenRentConfirmationViewNull_PaysRentWithoutAnnouncement() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        PropertyController propertyController = EasyMock.createMock(PropertyController.class);
+        Property property = EasyMock.createMock(Property.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(gameEngine.getPlayerPosition(player)).andReturn(7);
+        EasyMock.expect(gameEngine.getTile(7)).andReturn(property);
+        EasyMock.expect(property.isOwned()).andReturn(true);
+        EasyMock.expect(property.isOwnedBy(player)).andReturn(false);
+        EasyMock.expect(propertyController.handleRentPayment(player, property)).andReturn(true);
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                propertyController, property, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setPropertyController(propertyController);
+        controller.resolveLanding();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                propertyController, property, player);
+    }
+
 }
