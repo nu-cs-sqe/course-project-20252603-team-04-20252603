@@ -16,6 +16,7 @@ public final class LocalizationManager {
     private static ResourceBundle messages = ResourceBundle.getBundle(BUNDLE_NAME, currentLocale);
 
     private LocalizationManager() {
+        throw new UnsupportedOperationException("LocalizationManager cannot be instantiated");
     }
 
     public static Locale getLocale() {
