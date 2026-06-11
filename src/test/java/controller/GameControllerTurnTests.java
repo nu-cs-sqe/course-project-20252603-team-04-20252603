@@ -1262,4 +1262,42 @@ public class GameControllerTurnTests {
         EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice, tile, player);
     }
 
+    @Test
+    public void TC80_playJailTurn_WhenBeforeAtMaxButAfterBelowMax_StaysInJail() {
+        GameEngine gameEngine = EasyMock.createMock(GameEngine.class);
+        BoardView boardView = EasyMock.createMock(BoardView.class);
+        PlayerInfoView playerInfoView = EasyMock.createMock(PlayerInfoView.class);
+        DiceView diceView = EasyMock.createMock(DiceView.class);
+        CardView cardView = EasyMock.createMock(CardView.class);
+        Dice dice = EasyMock.createMock(Dice.class);
+        JailController jailController = EasyMock.createMock(JailController.class);
+        JailStatusView jailStatusView = EasyMock.createMock(JailStatusView.class);
+        Player player = EasyMock.createMock(Player.class);
+
+        EasyMock.expect(gameEngine.getCurrentPlayer()).andReturn(player);
+        EasyMock.expect(player.isBankrupt()).andReturn(false);
+        EasyMock.expect(player.inJail()).andReturn(true);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(util.Constants.MAX_JAIL_TURNS);
+        EasyMock.expect(jailController.attemptRollDoubles(player)).andReturn(false);
+        EasyMock.expect(player.getJailTurnCount()).andReturn(2);
+        jailStatusView.showStillInJail(player, 2);
+        EasyMock.expectLastCall().once();
+        EasyMock.expect(gameEngine.isGameOver()).andReturn(false);
+        gameEngine.nextTurn();
+        EasyMock.expectLastCall().once();
+        expectRefreshViews(gameEngine, boardView, playerInfoView, diceView, cardView);
+
+        EasyMock.replay(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, jailStatusView, player);
+
+        GameController controller = new GameController(
+                gameEngine, boardView, playerInfoView, diceView, cardView, dice);
+        controller.setJailController(jailController);
+        controller.setJailStatusView(jailStatusView);
+        controller.playTurn();
+
+        EasyMock.verify(gameEngine, boardView, playerInfoView, diceView, cardView, dice,
+                jailController, jailStatusView, player);
+    }
+
 }
