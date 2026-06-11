@@ -432,4 +432,21 @@ public class PropertyTests {
         }, "Should throw exception for null player");
     }
 
+    @Test
+    public void TC41_GetName_ReturnsPropertyTileType() {
+        Property property = new Property("Boardwalk", 100.0, 50.0);
+
+        assertEquals(TileType.PROPERTY, property.getName(),
+                "getName should return TileType.PROPERTY");
+    }
+
+    @Test
+    public void TC42_GetPropertyName_ReturnsConstructorName() {
+        String expectedName = "Boardwalk";
+        Property property = new Property(expectedName, 100.0, 50.0);
+
+        assertEquals(expectedName, property.getPropertyName(),
+                "getPropertyName should return the name passed to the constructor");
+    }
+
 }
