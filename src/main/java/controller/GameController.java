@@ -172,7 +172,6 @@ public class GameController {
         eliminate(renter);
     }
 
-    /** Takes a mandatory payment from the bank, forcing property sales before eliminating the player. */
     private void requirePayment(Player player, double amount) {
         if (player.remove(amount)) {
             finishAction();
@@ -185,7 +184,6 @@ public class GameController {
         eliminate(player);
     }
 
-    /** Removes a player who cannot meet a required payment, announcing the elimination. */
     private void eliminate(Player player) {
         if (bankruptcyView != null) {
             bankruptcyView.showPlayerEliminated(player);
@@ -295,7 +293,6 @@ public class GameController {
         this.rentConfirmationView = rentConfirmationView;
     }
 
-    /** Plays one full turn for the current player: roll, move, GO-pass bonus, then tile resolution. */
     public void playTurn() {
         Player current = gameEngine.getCurrentPlayer();
         if (current.isBankrupt()) {
@@ -356,7 +353,6 @@ public class GameController {
         }
     }
 
-    /** Resolves the effect of the tile the current player has landed on. */
     public void resolveLanding() {
         Player player = gameEngine.getCurrentPlayer();
         Tile tile = gameEngine.getTile(gameEngine.getPlayerPosition(player));
@@ -378,7 +374,6 @@ public class GameController {
         refreshViews();
     }
 
-    /** Applies the chance card currently shown to the player, then clears it. */
     public void applyDrawnCard() {
         if (activeCard == null) {
             refreshViews();

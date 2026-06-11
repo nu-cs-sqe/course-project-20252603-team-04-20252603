@@ -8,9 +8,6 @@ import util.Constants;
 
 public class AdvanceToGoCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -44,9 +41,6 @@ public class AdvanceToGoCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnPlayerAtPosition10_MovesToGoAndCollectsBonus() {
@@ -112,9 +106,6 @@ public class AdvanceToGoCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {

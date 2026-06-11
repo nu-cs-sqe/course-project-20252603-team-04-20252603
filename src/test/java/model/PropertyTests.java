@@ -11,7 +11,6 @@ import model.GameEngine;
 
 public class PropertyTests {
 
-    // Constructor validation
     @Test
     public void TC1_Constructor_Creates_Property_With_Valid_Values() {
         double expectedPrice = 100.0;
@@ -92,7 +91,6 @@ public class PropertyTests {
         }, "Empty property name should be rejected");
     }
 
-    // Ownership checks
     @Test
     public void TC11_Property_Unowned_Returns_False() {
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -150,7 +148,6 @@ public class PropertyTests {
         assertEquals(false, result, "Unowned property should return false");
     }
 
-    // Purchase behavior
     @Test
     public void TC17_Valid_Purchase_By_Player_With_Enough_Balance() {
         Player player = new Player("Alice", 200.0);
@@ -316,7 +313,6 @@ public class PropertyTests {
                 "Owner balance should be zero after purchase and zero rent received");
     }
 
-    // Resale value
     @Test
     public void TC30_Standard_Resale_80_Percent_Of_Price() {
         Property property = new Property("Test Property", 100.0, 50.0);
@@ -361,7 +357,6 @@ public class PropertyTests {
         assertEquals(Double.MAX_VALUE * 0.8, resaleValue, "Large price resale should be handled");
     }
 
-    // Reset ownership
     @Test
     public void TC34_Reset_When_Property_Owned() {
         Player owner = new Player("Alice", 200.0);
@@ -383,7 +378,6 @@ public class PropertyTests {
         assertEquals(false, property.isOwned());
     }
 
-    // Land on property behavior
     @Test
     public void TC36_Land_On_Owned_Property_Not_Yours() {
         Player owner = new Player("Alice", 200.0);

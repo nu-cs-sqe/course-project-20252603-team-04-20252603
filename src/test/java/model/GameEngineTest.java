@@ -78,8 +78,6 @@ public class GameEngineTest {
         EasyMock.verify(player1, player2, player3, player4, player5);
     }
 
-    // getCurrentPlayer tests
-
     @Test
     public void Before_Any_Turns_Current_Player_Is_First_Player(){
         Player player1 = EasyMock.createMock(Player.class);
@@ -125,8 +123,6 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2);
     }
-
-    // nextTurn tests
 
     @Test
     public void Advance_From_First_To_Second_Player(){
@@ -181,8 +177,6 @@ public class GameEngineTest {
 
         EasyMock.verify(player1, player2, player3, player4);
     }
-
-    // remove bankrupt player tests
 
     @Test
     public void Remove_Player_From_Two_Player_Game_Ends_Game(){
@@ -308,8 +302,6 @@ public class GameEngineTest {
         EasyMock.verify(player1, player2, player3, player4);
     }
 
-    // isGameOver tests
-
     @Test
     public void No_Players_Means_Game_Is_Over(){
         GameEngine gameEngine = new GameEngine(List.of());
@@ -371,7 +363,6 @@ public class GameEngineTest {
         EasyMock.verify(player1, player2);
     }
 
-    // getWinner tests
     @Test
     public void No_Winner_When_Multiple_Players_Remain(){
         Player player1 = EasyMock.createMock(Player.class);
@@ -414,8 +405,6 @@ public class GameEngineTest {
 
         EasyMock.verify(player1);
     }
-
-    // getTile tests (TC23-TC26)
 
     @Test
     public void getTile_WithNegativeIndex_ThrowsException() {
@@ -479,8 +468,6 @@ public class GameEngineTest {
         EasyMock.verify(p1, p2, board);
     }
 
-    // getPlayerPosition tests (TC27-TC29)
-
     @Test
     public void getPlayerPosition_WhenPlayerNotOnBoard_ThrowsException() {
         Player p1 = EasyMock.createMock(Player.class);
@@ -526,8 +513,6 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2, board);
     }
-
-    // setPlayerPosition tests (TC30-TC33)
 
     @Test
     public void setPlayerPosition_WithOneLessThanFirstIndex_ThrowsException() {
@@ -596,8 +581,6 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2, board);
     }
-
-    // movePlayer tests (TC34-TC38)
 
     @Test
     public void movePlayer_WhenPlayerNotOnBoard_ThrowsException() {
@@ -683,8 +666,6 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2, board);
     }
-
-    // didPassGo tests (TC39-TC45)
 
     @Test
     public void didPassGo_WithOneLessThanFirstOldPosition_ThrowsException() {
@@ -791,8 +772,6 @@ public class GameEngineTest {
         EasyMock.verify(p1, p2, board);
     }
 
-    // getBoardSize test (TC46)
-
     @Test
     public void getBoardSize_WhenBoardInitialized_Returns32() {
         Player p1 = EasyMock.createMock(Player.class);
@@ -807,10 +786,6 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2, board);
     }
-
-    // ==================================================================================================
-    // getActivePlayers() tests
-    // ==================================================================================================
 
     @Test
     public void getActivePlayers_WithTwoPlayers_ReturnsBothInOrder() {
@@ -887,10 +862,6 @@ public class GameEngineTest {
 
         EasyMock.verify(p1, p2);
     }
-
-    // ==================================================================================================
-    // getChanceDeck() tests (TC47-TC49)
-    // ==================================================================================================
 
     @Test
     public void getChanceDeck_ReturnsDeckSuppliedAtConstruction() {

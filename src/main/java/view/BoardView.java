@@ -142,7 +142,6 @@ public class BoardView extends JFrame {
         returnToMainMenu();
     }
 
-    /** Closes the finished game and reopens the main menu so a new game can be started. */
     private void returnToMainMenu() {
         dispose();
         new MainMenuView().setVisible(true);

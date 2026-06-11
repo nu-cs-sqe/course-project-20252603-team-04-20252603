@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GoBackThreeSpacesCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -42,9 +39,6 @@ public class GoBackThreeSpacesCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnPlayerAtPosition5_MovesBackToPosition2() {
@@ -126,9 +120,6 @@ public class GoBackThreeSpacesCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {

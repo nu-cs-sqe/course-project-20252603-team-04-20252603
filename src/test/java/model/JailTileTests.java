@@ -44,7 +44,6 @@ public class JailTileTests {
 
     @Test
     public void TC3_JailTile_LandOn_InJail(){
-        // Active player already in jail lands/remains on jail
         JailTile jailTile = new JailTile();
         Player player = EasyMock.createMock(Player.class);
         GameEngine game = EasyMock.createMock(GameEngine.class);
@@ -68,7 +67,6 @@ public class JailTileTests {
 
     @Test
     public void TC4_JailTile_LandOn_NullPlayer_Invalid(){
-        // rejects invalid input with IllegalArgumentException
         JailTile jailTile = new JailTile();
         GameEngine game = EasyMock.createMock(GameEngine.class);
         EasyMock.replay(game);

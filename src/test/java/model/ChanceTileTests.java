@@ -16,7 +16,6 @@ public class ChanceTileTests {
         assertEquals(TileType.CHANCE, chanceTile.getName());
     }
 
-    // TC2: Active player lands on ChanceTile
 
     @Test
     public void Active_Player_Lands_On_ChanceTile() {
@@ -37,7 +36,6 @@ public class ChanceTileTests {
         EasyMock.verify(player, game, deck);
     }
 
-    // TC3: Null player input
 
     @Test
     public void Null_Player_Input_Throws() {
@@ -51,7 +49,6 @@ public class ChanceTileTests {
         EasyMock.verify(game);
     }
 
-    // TC4: Null game input
 
     @Test
     public void Null_Game_Input_Throws() {
@@ -65,7 +62,6 @@ public class ChanceTileTests {
         EasyMock.verify(player);
     }
 
-    // TC5: Both player and game null
 
     @Test
     public void Null_Player_And_Game_Input_Throws() {
@@ -74,7 +70,6 @@ public class ChanceTileTests {
         assertThrows(NullPointerException.class, () -> chanceTile.landOn(null, null));
     }
 
-    // TC6: Inactive player lands on ChanceTile
 
     @Test
     public void Inactive_Player_Lands_On_ChanceTile_Does_Nothing() {

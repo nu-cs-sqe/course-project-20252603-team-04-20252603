@@ -8,9 +8,6 @@ import util.Constants;
 
 public class AIBubblePopCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -44,9 +41,6 @@ public class AIBubblePopCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnPlayerBalanceGreaterThan500_DeductsFee() {
@@ -128,9 +122,6 @@ public class AIBubblePopCardEffectTests {
         EasyMock.verify(player, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests
-    // ==================================================================================================
 
     @Test
     public void apply_OnEliminatedPlayer_ThrowsIllegalArgumentException() {

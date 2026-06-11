@@ -10,9 +10,6 @@ import util.Constants;
 
 public class StockMarketCrashCardEffectTests {
 
-    // ==================================================================================================
-    // Input validation tests (TC1 - TC3)
-    // ==================================================================================================
 
     @Test
     public void apply_OnNullPlayer_ThrowsIllegalArgumentException() {
@@ -46,9 +43,6 @@ public class StockMarketCrashCardEffectTests {
                 () -> effect.apply(null, null));
     }
 
-    // ==================================================================================================
-    // Normal operation tests (TC4 - TC7)
-    // ==================================================================================================
 
     @Test
     public void apply_OnAllFourPlayersCanAfford_EachLoses200() {
@@ -150,9 +144,6 @@ public class StockMarketCrashCardEffectTests {
         EasyMock.verify(p1, p2, p3, insolvent, game);
     }
 
-    // ==================================================================================================
-    // Edge case tests (TC8 - TC10)
-    // ==================================================================================================
 
     @Test
     public void apply_OnOnlyOneActivePlayerWhoCanAfford_LosesPaymentAndGameContinues() {
